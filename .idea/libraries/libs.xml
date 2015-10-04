@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/jpbc-api-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/bcprov-jdk15on-152.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jpbc-plaf-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jpbc-crypto-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/junit-4.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
