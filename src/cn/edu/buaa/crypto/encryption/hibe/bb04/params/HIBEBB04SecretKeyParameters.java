@@ -37,13 +37,13 @@ public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
 
     public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
 
-    public Element getElementIdAt(int index) { return this.elementIds[index]; }
+    public Element getElementIdAt(int index) { return this.elementIds[index].duplicate(); }
 
     public Element[] getElementIds() { return Arrays.copyOf(elementIds, elementIds.length); }
 
-    public Element getD0() { return this.d0; }
+    public Element getD0() { return this.d0.duplicate(); }
 
-    public Element getDsAt(int index) { return this.ds[index]; }
+    public Element getDsAt(int index) { return this.ds[index].duplicate(); }
 
     public Element[] getDs() { return Arrays.copyOf(ds, ds.length); }
 

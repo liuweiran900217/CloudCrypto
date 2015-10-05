@@ -19,7 +19,7 @@ public class HIBEBB04MasterSecretKeyParameters extends PairingKeyParameters {
     }
 
     public Element getG2Alpha(){
-        return this.g2Alpha;
+        return this.g2Alpha.duplicate();
     }
 
     @Override

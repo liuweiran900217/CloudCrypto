@@ -9,8 +9,9 @@ import org.w3c.dom.*;
  * Created by Weiran Liu on 15-10-2.
  */
 public interface CipherParameterSerializationFactory {
-    public static final String LABEL_TYPE = "Type";
+    public static final String ATTRI_TYPE = "Type";
     public static final String ATTRI_INDEX = "Index";
+    public static final String ATTRI_LENGTH = "Length";
 
     public static final String TYPE_PK = "PK";
     public static final String TYPE_MSK = "MSK";

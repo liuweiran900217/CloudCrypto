@@ -172,7 +172,7 @@ public class Utils {
         return elements;
     }
 
-    public static boolean isEqualElement(Element thisElement, Element thatElement) {
+    public static boolean isEqualElement(final Element thisElement, final Element thatElement) {
         if (thisElement == thatElement) {
             return true;
         }
@@ -181,7 +181,7 @@ public class Utils {
         return (stringThisElement.equals(stringThatElement));
     }
 
-    public static boolean isEqualElementArray(Element[] thisElementArray, Element[] thatElementArray) {
+    public static boolean isEqualElementArray(final Element[] thisElementArray, final Element[] thatElementArray) {
         if (thisElementArray == thatElementArray) {
             return true;
         }
