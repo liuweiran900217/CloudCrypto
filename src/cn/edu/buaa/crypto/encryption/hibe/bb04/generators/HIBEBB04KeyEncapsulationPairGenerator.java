@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
-import cn.edu.buaa.crypto.MapUtils;
+import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PairingKeyEncapsulationPairGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeyParameters;
@@ -30,7 +30,7 @@ public class HIBEBB04KeyEncapsulationPairGenerator implements PairingKeyEncapsul
         HIBEBB04PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
-        Element[] elementIds = MapUtils.MapToZr(pairing, ids);
+        Element[] elementIds = Utils.MapToZr(pairing, ids);
 
         Element s = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = pairing.pairing(publicKeyParameters.getG1(), publicKeyParameters.getG2()).powZn(s).getImmutable();
@@ -39,7 +39,7 @@ public class HIBEBB04KeyEncapsulationPairGenerator implements PairingKeyEncapsul
         Element B = publicKeyParameters.getG().powZn(s).getImmutable();
         Element[] Cs = new Element[ids.length];
         for (int i=0; i<Cs.length; i++){
-            Cs[i] = publicKeyParameters.getG1().powZn(elementIds[i]).mul(publicKeyParameters.getHAt(i)).powZn(s).getImmutable();
+            Cs[i] = publicKeyParameters.getG1().powZn(elementIds[i]).mul(publicKeyParameters.getHsAt(i)).powZn(s).getImmutable();
         }
         return new PairingKeyEncapsulationPair(
                 Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),

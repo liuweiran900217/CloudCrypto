@@ -24,13 +24,13 @@ public class HIBEBB04SecretKeyGenerationParameters extends KeyGenerationParamete
 
         if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
             throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04 Scheme, find "
+                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
                             + publicKeyParameters.getClass().getName() + ", require "
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
         if (!(masterSecretKeyParameters instanceof HIBEBB04MasterSecretKeyParameters)) {
             throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04 Scheme, find "
+                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
                             + masterSecretKeyParameters.getClass().getName() + ", require"
                             + HIBEBB04MasterSecretKeyParameters.class.getName());
         }

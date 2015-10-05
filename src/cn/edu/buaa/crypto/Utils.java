@@ -2,6 +2,7 @@ package cn.edu.buaa.crypto;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
+import org.bouncycastle.util.encoders.Hex;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * Created by Weiran Liu on 15-9-30.
  */
 
-public class MapUtils {
+public class Utils {
     private static final int default_block_size = 1024;
 
     /**
@@ -74,7 +75,7 @@ public class MapUtils {
     public static Element[] MapToZr(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = MapUtils.MapToZr(pairing, message[i]);
+            elements[i] = Utils.MapToZr(pairing, message[i]);
         }
         return elements;
     }
@@ -88,7 +89,7 @@ public class MapUtils {
     public static Element[] MapToZr(Pairing pairing, String[] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = MapUtils.MapToZr(pairing, message[i]);
+            elements[i] = Utils.MapToZr(pairing, message[i]);
         }
         return elements;
     }
@@ -114,7 +115,7 @@ public class MapUtils {
     public static Element[] MapToG1(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = MapUtils.MapToG1(pairing, message[i]);
+            elements[i] = Utils.MapToG1(pairing, message[i]);
         }
         return elements;
     }
@@ -140,7 +141,7 @@ public class MapUtils {
     public static Element[] MapToG2(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = MapUtils.MapToG2(pairing, message[i]);
+            elements[i] = Utils.MapToG2(pairing, message[i]);
         }
         return elements;
     }
@@ -166,8 +167,32 @@ public class MapUtils {
     public static Element[] MapToGT(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = MapUtils.MapToGT(pairing, message[i]);
+            elements[i] = Utils.MapToGT(pairing, message[i]);
         }
         return elements;
+    }
+
+    public static boolean isEqualElement(Element thisElement, Element thatElement) {
+        if (thisElement == thatElement) {
+            return true;
+        }
+        String stringThisElement = new String(Hex.encode(thisElement.toBytes()));
+        String stringThatElement = new String(Hex.encode(thatElement.toBytes()));
+        return (stringThisElement.equals(stringThatElement));
+    }
+
+    public static boolean isEqualElementArray(Element[] thisElementArray, Element[] thatElementArray) {
+        if (thisElementArray == thatElementArray) {
+            return true;
+        }
+        if (thisElementArray.length != thatElementArray.length) {
+            return false;
+        }
+        for (int i=0; i<thisElementArray.length; i++){
+            if (!(Utils.isEqualElement(thisElementArray[i], thatElementArray[i]))){
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
-import cn.edu.buaa.crypto.MapUtils;
+import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.*;
 import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -32,7 +32,7 @@ public class HIBEBB04KeyDecapsulationGenerator implements PairingKeyDecapsulatio
         int ciphertextLength = ciphertextParameters.getLength();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIdsCT = MapUtils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIdsCT = Utils.MapToZr(pairing, this.params.getIds());
 
         if (ciphertextLength < secretKeyLength) {
             throw new InvalidCipherTextException("Secret Key length is longer than Ciphertext length");
@@ -55,7 +55,7 @@ public class HIBEBB04KeyDecapsulationGenerator implements PairingKeyDecapsulatio
             if (i < secretKeyLength) {
                 ds[i] = secretKeyParameters.getDsAt(i).getImmutable();
             } else {
-                d0 = d0.mul(publicKeyParameters.getG1().powZn(elementIdsCT[i]).mul(publicKeyParameters.getHAt(i))).getImmutable();
+                d0 = d0.mul(publicKeyParameters.getG1().powZn(elementIdsCT[i]).mul(publicKeyParameters.getHsAt(i))).getImmutable();
                 ds[i] = publicKeyParameters.getG().getImmutable();
             }
             temp1 = temp1.mul(pairing.pairing(Cs[i], ds[i])).getImmutable();

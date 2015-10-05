@@ -20,7 +20,7 @@ import java.security.InvalidParameterException;
  * Created by Weiran Liu on 15-10-2.
  */
 public class HIBEBB04SerializationFactory implements CipherParameterSerializationFactory {
-    private static final String TAG_SCHEME = "HIBEBB04";
+    private static final String TAG_SCHEME = "HIBEBB04Engine";
 
     //Tags for public key
     private static final String TAG_PK_G = "G";
@@ -58,7 +58,7 @@ public class HIBEBB04SerializationFactory implements CipherParameterSerializatio
         } else if (cipherParameters instanceof HIBEBB04CiphertextParameters) {
             return getInstance().ciphertextParametersSerialization((HIBEBB04CiphertextParameters) cipherParameters);
         } else {
-            throw new InvalidParameterException("Invalid CipherParameter Instance of HIBEBB04 Scheme, find" + cipherParameters.getClass().getName());
+            throw new InvalidParameterException("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find" + cipherParameters.getClass().getName());
         }
     }
 
@@ -92,7 +92,7 @@ public class HIBEBB04SerializationFactory implements CipherParameterSerializatio
             for (int i=0; i<publicKeyParameters.getMaxLength(); i++){
                 Element hiElement = publicKeyParametersDocument.createElement(TAG_PK_HI);
                 hiElement.setAttribute(CipherParameterSerializationFactory.ATTRI_INDEX, Integer.toString(i));
-                String hiString = new String(Hex.encode(publicKeyParameters.getHAt(i).toBytes()));
+                String hiString = new String(Hex.encode(publicKeyParameters.getHsAt(i).toBytes()));
                 Text hiText = publicKeyParametersDocument.createTextNode(hiString);
                 hsElement.appendChild(hiElement);
                 hiElement.appendChild(hiText);
@@ -145,7 +145,7 @@ public class HIBEBB04SerializationFactory implements CipherParameterSerializatio
         } else if (cipherParameterType.equals(CipherParameterSerializationFactory.TYPE_CT)) {
             return null;
         } else {
-            throw new InvalidParameterException("Illegal HIBEBB04 Document Type, find " + cipherParameterType);
+            throw new InvalidParameterException("Illegal HIBEBB04Engine Document Type, find " + cipherParameterType);
         }
     }
 

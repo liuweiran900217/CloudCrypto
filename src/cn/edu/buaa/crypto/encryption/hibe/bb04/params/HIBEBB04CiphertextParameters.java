@@ -5,8 +5,6 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 15-9-30.
  */

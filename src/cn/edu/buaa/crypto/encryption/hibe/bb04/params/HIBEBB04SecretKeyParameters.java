@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
+import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -13,10 +14,10 @@ import java.util.Arrays;
 public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
 
     private String[] ids;
-    private Element[] ds;
+    private Element[] elementIds;
 
     private Element d0;
-    private Element[] elementIds;
+    private Element[] ds;
 
 
     public HIBEBB04SecretKeyParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds, Element d0, Element[] ds) {
@@ -43,4 +44,38 @@ public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
     public Element getD0() { return this.d0; }
 
     public Element getDsAt(int index) { return this.ds[index]; }
+
+    public Element[] getDs() { return Arrays.copyOf(ds, ds.length); }
+
+    @Override
+    public boolean equals(Object anOjbect) {
+        if (this == anOjbect) {
+            return true;
+        }
+        if (anOjbect instanceof HIBEBB04SecretKeyParameters) {
+            HIBEBB04SecretKeyParameters that = (HIBEBB04SecretKeyParameters)anOjbect;
+            //Compare length
+            if (this.getLength() != that.getLength()) {
+                return false;
+            }
+            //Compare ids
+            if (!Arrays.equals(this.ids, that.getIds())) {
+                return false;
+            }
+            //Compare elementIds
+            if (!Utils.isEqualElementArray(this.elementIds, that.getElementIds())) {
+                return false;
+            }
+            //Compare d0
+            if (!Utils.isEqualElement(this.d0, that.getD0())) {
+                return false;
+            }
+            //Compare ds
+            if (!Utils.isEqualElementArray(this.ds, that.getDs())) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

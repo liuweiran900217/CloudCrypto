@@ -1,7 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04KeyPairGenerator;
-import it.unisa.dia.gas.jpbc.Element;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -22,13 +21,13 @@ public class HIBEBB04DelegateGenerationParameters  extends KeyGenerationParamete
         super(null, HIBEBB04KeyPairGenerator.STENGTH);
         if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
             throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04 Scheme, find "
+                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
                             + publicKeyParameters.getClass().getName() + ", require "
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
         if (!(secretKeyParameters instanceof HIBEBB04SecretKeyParameters)) {
             throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04 Scheme, find "
+                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
                             + secretKeyParameters.getClass().getName() + ", require"
                             + HIBEBB04SecretKeyParameters.class.getName());
         }

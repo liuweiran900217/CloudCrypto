@@ -1,9 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.MapUtils;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import org.bouncycastle.crypto.CipherParameters;
-import org.w3c.dom.Element;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;
@@ -24,19 +21,19 @@ public class HIBEBB04DecapsulationParameters implements CipherParameters {
             CipherParameters ciphertextParameters) {
         if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
             throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04 Scheme, find "
+                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
                             + publicKeyParameters.getClass().getName() + ", require "
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
         if (!(secretKeyParameters instanceof HIBEBB04SecretKeyParameters)){
             throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04 Scheme, find "
+                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
                             + secretKeyParameters.getClass().getName() + ", require "
                             + HIBEBB04SecretKeyParameters.class.getName());
         }
         if (!(ciphertextParameters instanceof HIBEBB04CiphertextParameters)){
             throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04 Scheme, find "
+                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
                             + ciphertextParameters.getClass().getName() + ", require "
                             + HIBEBB04CiphertextParameters.class.getName());
         }
