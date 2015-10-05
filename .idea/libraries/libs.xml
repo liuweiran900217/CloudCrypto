@@ -8,6 +8,10 @@
       <root url="jar://$PROJECT_DIR$/libs/junit-4.12.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/sources/jpbc-crypto-2.0.0.zip!/jpbc-crypto/src/main/java" />
+      <root url="jar://$PROJECT_DIR$/sources/jpbc-crypto-2.0.0.zip!/jpbc-crypto/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/sources/bcprov-jdk15on-152.zip!/" />
+    </SOURCES>
   </library>
 </component>

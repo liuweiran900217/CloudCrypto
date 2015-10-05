@@ -9,7 +9,7 @@ import java.security.InvalidParameterException;
 import java.util.Arrays;
 
 /**
- * Created by Administrator on 15-10-1.
+ * Created by Weiran Liu on 15-10-1.
  */
 public class HIBEBB04DecapsulationParameters implements CipherParameters {
     private HIBEBB04PublicKeyParameters publicKeyParameters;

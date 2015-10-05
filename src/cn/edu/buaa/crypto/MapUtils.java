@@ -51,7 +51,7 @@ public class MapUtils {
      */
     public static Element MapToZr(Pairing pairing, byte[] message) {
         byte[] shaResult = hash(512, message);
-        Element hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length);
+        Element hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
         return hash;
     }
 
@@ -101,7 +101,7 @@ public class MapUtils {
      */
     public static Element MapToG1(Pairing pairing, byte[] message) {
         byte[] shaResult = hash(512, message);
-        Element hash = pairing.getG1().newElement().setFromHash(shaResult, 0, shaResult.length);
+        Element hash = pairing.getG1().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
         return hash;
     }
 
@@ -127,7 +127,7 @@ public class MapUtils {
      */
     public static Element MapToG2(Pairing pairing, byte[] message){
         byte[] shaResult = hash(512, message);
-        Element hash = pairing.getG2().newElement().setFromHash(shaResult, 0, shaResult.length);
+        Element hash = pairing.getG2().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
         return hash;
     }
 
@@ -153,7 +153,7 @@ public class MapUtils {
      */
     public static Element MapToGT(Pairing pairing, byte[] message){
         byte[] shaResult = hash(512, message);
-        Element hash = pairing.getGT().newElement().setFromHash(shaResult, 0, shaResult.length);
+        Element hash = pairing.getGT().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
         return hash;
     }
 
