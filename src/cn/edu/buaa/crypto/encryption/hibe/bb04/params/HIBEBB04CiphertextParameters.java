@@ -12,30 +12,18 @@ import java.util.Arrays;
  */
 public class HIBEBB04CiphertextParameters extends PairingCiphertextParameters {
 
-    private String[] ids;
-    private Element[] elementIds;
-
+    private int length;
     private Element B;
     private Element[] Cs;
 
-    public HIBEBB04CiphertextParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds, Element B, Element[] Cs) {
+    public HIBEBB04CiphertextParameters(PairingParameters pairingParameters, int length, Element B, Element[] Cs) {
         super(pairingParameters);
-        this.ids = Arrays.copyOf(ids, ids.length);
-        this.elementIds = ElementUtils.cloneImmutable(elementIds);
-
+        this.length = length;
         this.B = B.getImmutable();
         this.Cs = ElementUtils.cloneImmutable(Cs);
     }
 
-    public int getLength() { return this.ids.length; }
-
-    public String getIdAt(int index) { return this.ids[index]; }
-
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
-
-    public Element getElementIdAt(int index) { return this.elementIds[index]; }
-
-    public Element[] getElementIds() { return ElementUtils.cloneImmutable(elementIds); }
+    public int getLength() { return this.length; }
 
     public Element getB() { return this.B; }
 

@@ -1,8 +1,12 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
+import cn.edu.buaa.crypto.MapUtils;
+import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import org.bouncycastle.crypto.CipherParameters;
+import org.w3c.dom.Element;
 
 import java.security.InvalidParameterException;
+import java.util.Arrays;
 
 /**
  * Created by Administrator on 15-10-1.
@@ -10,11 +14,13 @@ import java.security.InvalidParameterException;
 public class HIBEBB04DecapsulationParameters implements CipherParameters {
     private HIBEBB04PublicKeyParameters publicKeyParameters;
     private HIBEBB04SecretKeyParameters secretKeyParameters;
+    private String[] ids;
     private HIBEBB04CiphertextParameters ciphertextParameters;
 
     public HIBEBB04DecapsulationParameters(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
+            String[] ids,
             CipherParameters ciphertextParameters) {
         if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
             throw new InvalidParameterException
@@ -36,7 +42,14 @@ public class HIBEBB04DecapsulationParameters implements CipherParameters {
         }
         this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
         this.secretKeyParameters = (HIBEBB04SecretKeyParameters)secretKeyParameters;
+        this.ids = Arrays.copyOf(ids, ids.length);
         this.ciphertextParameters = (HIBEBB04CiphertextParameters)ciphertextParameters;
+        if (this.ciphertextParameters.getLength() != ids.length) {
+            throw new InvalidParameterException
+                    ("Length of HIBEBBE04 Ciphertext and Identity Vector Mismatch, Ciphertext Length = "
+                            + this.ciphertextParameters.getLength() + ", Identity Vector Length = "
+                            + ids.length);
+        }
     }
 
     public HIBEBB04PublicKeyParameters getPublicKeyParameters() {
@@ -50,4 +63,10 @@ public class HIBEBB04DecapsulationParameters implements CipherParameters {
     public HIBEBB04CiphertextParameters getCiphertextParameters() {
         return this.ciphertextParameters;
     }
+
+    public int getLength() { return this.ids.length; }
+
+    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+
+    public String getIdsAt(int index) { return this.ids[index]; }
 }

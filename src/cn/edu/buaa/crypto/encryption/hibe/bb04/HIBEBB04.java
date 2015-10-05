@@ -58,10 +58,10 @@ public class HIBEBB04 {
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
-    public byte[] decapsulation(CipherParameters publicKey, CipherParameters secretKey, CipherParameters ciphertext) {
+    public byte[] decapsulation(CipherParameters publicKey, CipherParameters secretKey, String[] ids, CipherParameters ciphertext) {
         HIBEBB04KeyDecapsulationGenerator keyDecapsulationGenerator = new HIBEBB04KeyDecapsulationGenerator();
         keyDecapsulationGenerator.init(new HIBEBB04DecapsulationParameters(
-                publicKey, secretKey, ciphertext));
+                publicKey, secretKey, ids, ciphertext));
         try{
             return keyDecapsulationGenerator.recoverKey();
         } catch (InvalidCipherTextException e){
@@ -72,7 +72,7 @@ public class HIBEBB04 {
     public static void OutputXMLDocument(String name, Document document) {
         try {
             Transformer t = TransformerFactory.newInstance().newTransformer();
-            //ÉèÖÃ»»ÐÐºÍËõ½ø
+            //ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ðºï¿½ï¿½ï¿½ï¿½ï¿½
             t.setOutputProperty(OutputKeys.INDENT,"yes");
             t.setOutputProperty(OutputKeys.METHOD, "xml");
             t.transform(new DOMSource(document), new StreamResult(new FileOutputStream(new File(name))));
@@ -118,30 +118,33 @@ public class HIBEBB04 {
         CipherParameters sk021 = engine.keyGen(publicKey, masterKey, ids[0], ids[2], ids[1]);
 
         // Encryption
+        String[] ids0 = new String[]{ids[0]};
         PairingKeyEncapsulationPair ciphertextPair0 = engine.encapsulation(keyPair.getPublic(), ids[0]);
+        String[] ids01 = new String[]{ids[0], ids[1]};
         PairingKeyEncapsulationPair ciphertextPair01 = engine.encapsulation(keyPair.getPublic(), ids[0], ids[1]);
+        String[] ids012 = new String[]{ids[0], ids[1], ids[2]};
         PairingKeyEncapsulationPair ciphertextPair012 = engine.encapsulation(keyPair.getPublic(), ids[0], ids[1], ids[2]);
 
         // Decrypt with correct secret keys
         //Decrypt ciphertext 0 using secret key 0
-        assertEquals(new String(Hex.encode(ciphertextPair0.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk0, ciphertextPair0.getCiphertext()))));
+        assertEquals(new String(Hex.encode(ciphertextPair0.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk0, ids0, ciphertextPair0.getCiphertext()))));
         //Decrypt ciphertext 01 using secret key 01
-        assertEquals(new String(Hex.encode(ciphertextPair01.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk01, ciphertextPair01.getCiphertext()))));
+        assertEquals(new String(Hex.encode(ciphertextPair01.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk01, ids01, ciphertextPair01.getCiphertext()))));
         //Decrypt ciphertext 012 using secret key 012
-        assertEquals(new String(Hex.encode(ciphertextPair012.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk012, ciphertextPair012.getCiphertext()))));
+        assertEquals(new String(Hex.encode(ciphertextPair012.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk012, ids012, ciphertextPair012.getCiphertext()))));
         //Decrypt ciphertext 01 using secret key 0
-        assertEquals(new String(Hex.encode(ciphertextPair01.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk0, ciphertextPair01.getCiphertext()))));
+        assertEquals(new String(Hex.encode(ciphertextPair01.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk0, ids01, ciphertextPair01.getCiphertext()))));
         //Decrypt ciphertext 012 using secret key 0
-        assertEquals(new String(Hex.encode(ciphertextPair012.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk0, ciphertextPair012.getCiphertext()))));
+        assertEquals(new String(Hex.encode(ciphertextPair012.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk0, ids012, ciphertextPair012.getCiphertext()))));
         //Decrypt ciphertext 012 using secret key 01
-        assertEquals(new String(Hex.encode(ciphertextPair012.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk01, ciphertextPair012.getCiphertext()))));
+        assertEquals(new String(Hex.encode(ciphertextPair012.getSessionKey())), new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk01, ids012, ciphertextPair012.getCiphertext()))));
 
         //Decrypt with incorrect secret keys
         //Decrypt ciphertext 0 using secret key 1
-        assertEquals(false, new String(Hex.encode(ciphertextPair0.getSessionKey())).equals(new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk1, ciphertextPair0.getCiphertext())))));
+        assertEquals(false, new String(Hex.encode(ciphertextPair0.getSessionKey())).equals(new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk1, ids0, ciphertextPair0.getCiphertext())))));
         //Decrypt ciphertext 01 using secret key 10
-        assertEquals(false, new String(Hex.encode(ciphertextPair01.getSessionKey())).equals(new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk10, ciphertextPair01.getCiphertext())))));
+        assertEquals(false, new String(Hex.encode(ciphertextPair01.getSessionKey())).equals(new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk10, ids01, ciphertextPair01.getCiphertext())))));
         //Decrypt ciphertext 012 using secret key 021
-        assertEquals(false, new String(Hex.encode(ciphertextPair012.getSessionKey())).equals(new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk021, ciphertextPair012.getCiphertext())))));
+        assertEquals(false, new String(Hex.encode(ciphertextPair012.getSessionKey())).equals(new String(Hex.encode(engine.decapsulation(keyPair.getPublic(), sk021, ids012, ciphertextPair012.getCiphertext())))));
     }
 }

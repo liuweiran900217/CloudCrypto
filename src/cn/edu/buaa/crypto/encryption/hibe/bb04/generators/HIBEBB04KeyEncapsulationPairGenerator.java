@@ -43,6 +43,6 @@ public class HIBEBB04KeyEncapsulationPairGenerator implements PairingKeyEncapsul
         }
         return new PairingKeyEncapsulationPair(
                 Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
-                new HIBEBB04CiphertextParameters(publicKeyParameters.getParameters(), ids, elementIds, B, Cs));
+                new HIBEBB04CiphertextParameters(publicKeyParameters.getParameters(), ids.length, B, Cs));
     }
 }

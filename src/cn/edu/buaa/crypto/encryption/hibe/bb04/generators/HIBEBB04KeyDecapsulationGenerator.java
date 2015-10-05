@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
+import cn.edu.buaa.crypto.MapUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.*;
 import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -29,16 +30,19 @@ public class HIBEBB04KeyDecapsulationGenerator implements PairingKeyDecapsulatio
 
         int secretKeyLength = secretKeyParameters.getLength();
         int ciphertextLength = ciphertextParameters.getLength();
+
+        Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
+        Element[] elementIdsCT = MapUtils.MapToZr(pairing, this.params.getIds());
+
         if (ciphertextLength < secretKeyLength) {
             throw new InvalidCipherTextException("Secret Key length is longer than Ciphertext length");
         }
 
         for (int i=0; i<ciphertextLength && i<secretKeyLength; i++){
-            if (!secretKeyParameters.getElementIdAt(i).equals(ciphertextParameters.getElementIdAt(i))){
+            if (!secretKeyParameters.getElementIdAt(i).equals(elementIdsCT[i])){
                 throw new InvalidCipherTextException("Secret Key identity vector does not match Ciphertext identity vector");
             }
         }
-        Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
 
         Element d0 = secretKeyParameters.getD0().getImmutable();
         Element B = ciphertextParameters.getB().getImmutable();
@@ -51,7 +55,7 @@ public class HIBEBB04KeyDecapsulationGenerator implements PairingKeyDecapsulatio
             if (i < secretKeyLength) {
                 ds[i] = secretKeyParameters.getDsAt(i).getImmutable();
             } else {
-                d0 = d0.mul(publicKeyParameters.getG1().powZn(ciphertextParameters.getElementIdAt(i)).mul(publicKeyParameters.getHAt(i))).getImmutable();
+                d0 = d0.mul(publicKeyParameters.getG1().powZn(elementIdsCT[i]).mul(publicKeyParameters.getHAt(i))).getImmutable();
                 ds[i] = publicKeyParameters.getG().getImmutable();
             }
             temp1 = temp1.mul(pairing.pairing(Cs[i], ds[i])).getImmutable();
