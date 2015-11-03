@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
@@ -9,29 +9,34 @@ import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import java.util.Arrays;
 
 /**
- * Created by Weiran Liu on 15-9-30.
+ * Created by Weiran Liu on 2015/11/3.
  */
-public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
+public class HIBEBBG05SecretKeyParameters extends PairingKeyParameters {
 
-    private final String[] ids;
-    private final Element[] elementIds;
+    private String[] ids;
+    private Element[] elementIds;
 
-    private final Element d0;
-    private final Element[] ds;
+    private Element a0;
+    private Element a1;
 
+    private Element[] bs;
 
-    public HIBEBB04SecretKeyParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds, Element d0, Element[] ds) {
+    public HIBEBBG05SecretKeyParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds,
+                                        Element a0, Element a1, Element[] bs) {
         super(true, pairingParameters);
 
-        this.d0 = d0.getImmutable();
-        this.ds = ElementUtils.cloneImmutable(ds);
+        this.a0 = a0.getImmutable();
+        this.a1 = a1.getImmutable();
+        this.bs = ElementUtils.cloneImmutable(bs);
         this.ids = new String[ids.length];
 
         System.arraycopy(ids, 0, this.ids, 0, this.ids.length);
         this.elementIds = ElementUtils.cloneImmutable(elementIds);
     }
 
-    public int getLength() { return this.ids.length; }
+    public int getLength() {
+        return this.ids.length;
+    }
 
     public String getIdAt(int index) { return this.ids[index]; }
 
@@ -41,19 +46,21 @@ public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
 
     public Element[] getElementIds() { return Arrays.copyOf(elementIds, elementIds.length); }
 
-    public Element getD0() { return this.d0.duplicate(); }
+    public Element getA0() { return this.a0.duplicate(); }
 
-    public Element getDsAt(int index) { return this.ds[index].duplicate(); }
+    public Element getA1() { return this.a1.duplicate(); }
 
-    public Element[] getDs() { return Arrays.copyOf(ds, ds.length); }
+    public Element getBsAt(int index) { return this.bs[index].duplicate(); }
+
+    public Element[] getBs() { return Arrays.copyOf(bs, bs.length); }
 
     @Override
     public boolean equals(Object anOjbect) {
         if (this == anOjbect) {
             return true;
         }
-        if (anOjbect instanceof HIBEBB04SecretKeyParameters) {
-            HIBEBB04SecretKeyParameters that = (HIBEBB04SecretKeyParameters)anOjbect;
+        if (anOjbect instanceof HIBEBBG05SecretKeyParameters) {
+            HIBEBBG05SecretKeyParameters that = (HIBEBBG05SecretKeyParameters)anOjbect;
             //Compare length
             if (this.getLength() != that.getLength()) {
                 return false;
@@ -66,12 +73,16 @@ public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
             if (!Utils.isEqualElementArray(this.elementIds, that.getElementIds())) {
                 return false;
             }
-            //Compare d0
-            if (!Utils.isEqualElement(this.d0, that.getD0())) {
+            //Compare a0
+            if (!Utils.isEqualElement(this.a0, that.getA0())) {
                 return false;
             }
-            //Compare ds
-            if (!Utils.isEqualElementArray(this.ds, that.getDs())) {
+            //Compare a1
+            if (!Utils.isEqualElement(this.a1, that.getA1())) {
+                return false;
+            }
+            //Compare bs
+            if (!Utils.isEqualElementArray(this.bs, that.getBs())) {
                 return false;
             }
             return true;

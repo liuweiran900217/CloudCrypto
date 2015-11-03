@@ -17,9 +17,6 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Created by Weiran Liu on 15-9-30.
  */
 public class HIBEBB04KeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    public static final int STENGTH = 12;
-
     private HIBEBB04KeyPairGenerationParameters parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {

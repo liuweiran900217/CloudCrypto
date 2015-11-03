@@ -1,24 +1,22 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.util.encoders.Hex;
 
 /**
- * Created by Weiran Liu on 15-9-30.
+ * Created by Weiran Liu on 2015/11/3.
  */
-public class HIBEBB04MasterSecretKeyParameters extends PairingKeyParameters {
+public class HIBEBBG05MasterSecretKeyParameters extends PairingKeyParameters {
+    private Element g2Alpha;
 
-    private final Element g2Alpha;
-
-    public HIBEBB04MasterSecretKeyParameters(PairingParameters pairingParameters, Element g2Alpha) {
+    public HIBEBBG05MasterSecretKeyParameters(PairingParameters pairingParameters, Element g2Alpha) {
         super(true, pairingParameters);
         this.g2Alpha = g2Alpha.getImmutable();
     }
 
-    public Element getG2Alpha(){
+    public Element getG2Alpha() {
         return this.g2Alpha.duplicate();
     }
 
@@ -27,8 +25,8 @@ public class HIBEBB04MasterSecretKeyParameters extends PairingKeyParameters {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof HIBEBB04MasterSecretKeyParameters) {
-            HIBEBB04MasterSecretKeyParameters that = (HIBEBB04MasterSecretKeyParameters)anObject;
+        if (anObject instanceof HIBEBBG05MasterSecretKeyParameters) {
+            HIBEBBG05MasterSecretKeyParameters that = (HIBEBBG05MasterSecretKeyParameters)anObject;
             if (!(Utils.isEqualElement(this.g2Alpha, that.getG2Alpha()))) {
                 return false;
             }

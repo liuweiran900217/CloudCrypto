@@ -1,47 +1,46 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 
 /**
- * Created by Weiran Liu on 15-10-1.
+ * Created by Weiran Liu on 2015/11/3.
  */
-public class HIBEBB04DecapsulationParameters implements CipherParameters {
-    private HIBEBB04PublicKeyParameters publicKeyParameters;
-    private HIBEBB04SecretKeyParameters secretKeyParameters;
+public class HIBEBBG05DecapsulationParameters implements CipherParameters {
+    private HIBEBBG05PublicKeyParameters publicKeyParameters;
+    private HIBEBBG05SecretKeyParameters secretKeyParameters;
     private String[] ids;
-    private HIBEBB04CiphertextParameters ciphertextParameters;
+    private HIBEBBG05CiphertextParameters ciphertextParameters;
 
-    public HIBEBB04DecapsulationParameters(
+    public HIBEBBG05DecapsulationParameters(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String[] ids,
             CipherParameters ciphertextParameters) {
-        this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
-        this.secretKeyParameters = (HIBEBB04SecretKeyParameters)secretKeyParameters;
+        this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
+        this.secretKeyParameters = (HIBEBBG05SecretKeyParameters)secretKeyParameters;
         this.ids = Arrays.copyOf(ids, ids.length);
-        this.ciphertextParameters = (HIBEBB04CiphertextParameters)ciphertextParameters;
+        this.ciphertextParameters = (HIBEBBG05CiphertextParameters)ciphertextParameters;
         if (this.ciphertextParameters.getLength() != ids.length) {
             throw new IllegalArgumentException
-                    ("Length of " + HIBEBB04Engine.SCHEME_NAME
+                    ("Length of " + HIBEBBG05Engine.SCHEME_NAME
                             + " Ciphertext and Identity Vector Mismatch, Ciphertext Length = "
                             + this.ciphertextParameters.getLength() + ", Identity Vector Length = "
                             + ids.length);
         }
     }
 
-    public HIBEBB04PublicKeyParameters getPublicKeyParameters() {
+    public HIBEBBG05PublicKeyParameters getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public HIBEBB04SecretKeyParameters getSecretKeyParameters() {
+    public HIBEBBG05SecretKeyParameters getSecretKeyParameters() {
         return this.secretKeyParameters;
     }
 
-    public HIBEBB04CiphertextParameters getCiphertextParameters() {
+    public HIBEBBG05CiphertextParameters getCiphertextParameters() {
         return this.ciphertextParameters;
     }
 

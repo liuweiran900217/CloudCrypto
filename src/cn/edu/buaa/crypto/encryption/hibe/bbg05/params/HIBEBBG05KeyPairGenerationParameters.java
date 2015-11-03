@@ -1,19 +1,19 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04KeyPairGenerator;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
- * Created by Weiran Liu on 15-9-30.
+ * Created by Weiran Liu on 2015/11/3.
  */
-public class HIBEBB04KeyPairGenerationParameters extends KeyGenerationParameters {
+public class HIBEBBG05KeyPairGenerationParameters extends KeyGenerationParameters {
     private int maxDepth;
     private int rBitLength;
     private int qBitLength;
 
-    public HIBEBB04KeyPairGenerationParameters(int rBitLength, int qBitLength, int maxDepth) {
-        super(null, HIBEBB04Engine.STENGTH);
+    public HIBEBBG05KeyPairGenerationParameters(int rBitLength, int qBitLength, int maxDepth) {
+        super(null, HIBEBBG05Engine.STENGTH);
 
         this.maxDepth = maxDepth;
         this.rBitLength = rBitLength;
@@ -25,5 +25,4 @@ public class HIBEBB04KeyPairGenerationParameters extends KeyGenerationParameters
     public int getQBitLength() { return this.qBitLength; }
 
     public int getMaxDepth() { return this.maxDepth; }
-
 }
