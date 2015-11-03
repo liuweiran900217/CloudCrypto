@@ -26,4 +26,6 @@ public class HIBEBB04PairingKeyEncapsulationPairGenerationParameters implements 
     public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
 
     public String getIdAt(int index) { return ids[index]; }
+
+    public int getLength() { return this.ids.length; }
 }

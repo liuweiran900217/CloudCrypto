@@ -3,6 +3,7 @@ package cn.edu.buaa.crypto.encryption.hibe;
 import cn.edu.buaa.crypto.TestUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serialization.HIBEBB04SerializationFactory;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import cn.edu.buaa.crypto.serialization.CipherParameterSerializationFactory;
@@ -20,12 +21,17 @@ import static org.junit.Assert.assertEquals;
  * Created by Weiran Liu on 2015/10/5.
  */
 public class HIBEEngineTest {
-    public static void main(String[] args) {
-        HIBEEngine engine = new HIBEBB04Engine();
-        CipherParameterSerializationFactory serializationFactory = HIBEBB04SerializationFactory.getInstance();
+    private HIBEEngine engine;
+    private CipherParameterSerializationFactory serializationFactory;
 
+    public HIBEEngineTest(HIBEEngine engine, CipherParameterSerializationFactory serializationFactory) {
+        this.engine = engine;
+        this.serializationFactory = serializationFactory;
+    }
+
+    public void processTest(int rBitLength, int qBitLength, int maxDepth) {
         // Setup
-        AsymmetricCipherKeyPair keyPair = engine.setup(160, 256, 3);
+        AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength, maxDepth);
         CipherParameters publicKey = keyPair.getPublic();
         CipherParameters masterKey = keyPair.getPrivate();
         PairingParameters pairingParameters = ((PairingKeyParameters)publicKey).getParameters();
@@ -61,11 +67,14 @@ public class HIBEEngineTest {
         String stringSessionKey012 = new String(Hex.encode(sessionKey012));
 
         // Decrypt with correct secret keys
+        System.out.println("========================================");
+        System.out.println("Test decrypting with correct secret keys");
         try {
             //Decrypt ciphertext 0 using secret key 0
-            assertEquals(stringSessionKey0,
-                    new String(Hex.encode(engine.decapsulation(publicKey, sk0, ids0, ciphertext0)))
-            );
+            System.out.println("Test decrypting ciphertext 0 using secret key 0");
+            String sessionKey =  new String(Hex.encode(engine.decapsulation(publicKey, sk0, ids0, ciphertext0)));
+            assertEquals(stringSessionKey0, sessionKey);
+            System.out.println("Expect:" + stringSessionKey0 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -73,9 +82,10 @@ public class HIBEEngineTest {
         }
         try {
             //Decrypt ciphertext 01 using secret key 01
-            assertEquals(stringSessionKey01,
-                    new String(Hex.encode(engine.decapsulation(publicKey, sk01, ids01, ciphertext01)))
-            );
+            System.out.println("Test decrypting ciphertext 01 using secret key 01");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(publicKey, sk01, ids01, ciphertext01)));
+            assertEquals(stringSessionKey01, sessionKey);
+            System.out.println("Expect:" + stringSessionKey01 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -83,9 +93,10 @@ public class HIBEEngineTest {
         }
         try {
             //Decrypt ciphertext 012 using secret key 012
-            assertEquals(stringSessionKey012,
-                    new String(Hex.encode(engine.decapsulation(publicKey, sk012, ids012, ciphertext012)))
-            );
+            System.out.println("Test decrypting ciphertext 012 using secret key 012");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(publicKey, sk012, ids012, ciphertext012)));
+            assertEquals(stringSessionKey012, sessionKey);
+            System.out.println("Expect:" + stringSessionKey012 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -93,14 +104,12 @@ public class HIBEEngineTest {
         }
         try {
             //Decrypt ciphertext 01 using secret key 0
-            assertEquals(stringSessionKey01,
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            sk0,
-                            ids01,
-                            ciphertextPair01.getCiphertext()
-                    )))
-            );
+            System.out.println("Test decrypting ciphertext 01 using secret key 0");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, sk0, ids01, ciphertextPair01.getCiphertext()
+            )));
+            assertEquals(stringSessionKey01, sessionKey);
+            System.out.println("Expect:" + stringSessionKey01 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -108,14 +117,12 @@ public class HIBEEngineTest {
         }
         try {
             //Decrypt ciphertext 012 using secret key 0
-            assertEquals(stringSessionKey012,
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            sk0,
-                            ids012,
-                            ciphertextPair012.getCiphertext()
-                    )))
-            );
+            System.out.println("Test decrypting ciphertext 012 using secret key 0");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, sk0, ids012, ciphertextPair012.getCiphertext()
+            )));
+            assertEquals(stringSessionKey012, sessionKey);
+            System.out.println("Expect:" + stringSessionKey012 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -123,14 +130,12 @@ public class HIBEEngineTest {
         }
         try {
             //Decrypt ciphertext 012 using secret key 01
-            assertEquals(stringSessionKey012,
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            sk01,
-                            ids012,
-                            ciphertextPair012.getCiphertext()
-                    )))
-            );
+            System.out.println("Test decrypting ciphertext 012 using secret key 01");
+            String sessionKey =new String(Hex.encode(engine.decapsulation(
+                    publicKey, sk01, ids012, ciphertextPair012.getCiphertext()
+            )));
+            assertEquals(stringSessionKey012, sessionKey);
+            System.out.println("Expect:" + stringSessionKey012 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -138,8 +143,11 @@ public class HIBEEngineTest {
         }
 
         //Decrypt with incorrect secret keys
+        System.out.println("==========================================");
+        System.out.println("Test decrypting with incorrect secret keys");
         try {
             //Decrypt ciphertext 0 using secret key 1
+            System.out.println("Test decrypting ciphertext 0 using secret key 1");
             assertEquals(false, stringSessionKey0.equals(
                     new String(Hex.encode(engine.decapsulation(
                             publicKey,
@@ -153,6 +161,7 @@ public class HIBEEngineTest {
         }
         try {
             //Decrypt ciphertext 01 using secret key 10
+            System.out.println("Test decrypting ciphertext 01 using secret key 10");
             assertEquals(false, stringSessionKey01.equals(
                     new String(Hex.encode(engine.decapsulation(
                             publicKey,
@@ -166,6 +175,7 @@ public class HIBEEngineTest {
         }
         try {
             //Decrypt ciphertext 012 using secret key 021
+            System.out.println("Test decrypting ciphertext 012 using secret key 021");
             assertEquals(false, stringSessionKey012.equals(
                     new String(Hex.encode(engine.decapsulation(
                             publicKey,
@@ -179,16 +189,16 @@ public class HIBEEngineTest {
         }
 
         //Delegate & Correct Decrypt
+        System.out.println("======================================");
+        System.out.println("Test delegating and correct decrypting");
         try {
             //Delegate sk01 using sk0 and decrypt
-            assertEquals(stringSessionKey01,
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            engine.delegate(publicKey, sk0, ids[1]),
-                            ids01,
-                            ciphertextPair01.getCiphertext()
-                    )))
-            );
+            System.out.println("Test delegating sk01 using sk0 and decrypting");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, engine.delegate(publicKey, sk0, ids[1]), ids01, ciphertextPair01.getCiphertext()
+            )));
+            assertEquals(stringSessionKey01, sessionKey);
+            System.out.println("Expect:" + stringSessionKey01 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -196,14 +206,12 @@ public class HIBEEngineTest {
         }
         try {
             //Delegate sk012 using sk01 and decrypt
-            assertEquals(stringSessionKey012,
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            engine.delegate(publicKey, sk01, ids[2]),
-                            ids012,
-                            ciphertextPair012.getCiphertext()
-                    )))
-            );
+            System.out.println("Test delegating sk012 using sk01 and decrypting");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, engine.delegate(publicKey, sk01, ids[2]), ids012, ciphertextPair012.getCiphertext()
+            )));
+            assertEquals(stringSessionKey012, sessionKey);
+            System.out.println("Expect:" + stringSessionKey012 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
@@ -211,102 +219,121 @@ public class HIBEEngineTest {
         }
         try {
             //Delegate sk012 using sk0 and decrypt
-            assertEquals(stringSessionKey012,
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            engine.delegate(publicKey, engine.delegate(publicKey, sk0, ids[1]), ids[2]),
-                            ids012,
-                            ciphertextPair012.getCiphertext()
-                    )))
-            );
+            System.out.println("Test delegating sk012 using sk0 and decrypting");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, engine.delegate(publicKey, engine.delegate(publicKey, sk0, ids[1]), ids[2]),
+                    ids012, ciphertextPair012.getCiphertext()
+            )));
+            assertEquals(stringSessionKey012, sessionKey);
+            System.out.println("Expect:" + stringSessionKey012 + "\nActual:" + sessionKey);
         } catch (InvalidCipherTextException e) {
             //Bugs if getting there
             e.printStackTrace();
             System.exit(1);
         }
         //Delegate & Incorrect Decrypt
+        System.out.println("========================================");
+        System.out.println("Test delegating and incorrect decrypting");
         try {
-            assertEquals(false, stringSessionKey01.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            engine.delegate(publicKey, sk0, ids[0]),
-                            ids01,
-                            ciphertextPair01.getCiphertext()
-                    )))
-            ));
+            System.out.println("Test delegating sk00 and decrypting ciphertext 01");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, engine.delegate(publicKey, sk0, ids[0]),
+                    ids01, ciphertextPair01.getCiphertext()
+            )));
+            assertEquals(false, stringSessionKey01.equals(sessionKey));
         } catch (InvalidCipherTextException e) {
             //Correct if getting there, nothing to do
         }
         try {
-            assertEquals(false, stringSessionKey012.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            engine.delegate(publicKey, sk01, ids[1]),
-                            ids012,
-                            ciphertextPair012.getCiphertext()
-                    )))
-            ));
+            System.out.println("Test delegating sk011 and decrypting ciphertext 012");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, engine.delegate(publicKey, sk01, ids[1]),
+                    ids012, ciphertextPair012.getCiphertext()
+            )));
+            assertEquals(false, stringSessionKey012.equals(sessionKey));
         } catch (InvalidCipherTextException e) {
             //Correct if getting there, nothing to do
         }
         try {
-            assertEquals(false, stringSessionKey012.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            engine.delegate(publicKey, sk0, ids[2]),
-                            ids012,
-                            ciphertextPair012.getCiphertext()
-                    )))
-            ));
+            System.out.println("Test delegating sk02 and decrypting ciphertext 012");
+            String sessionKey = new String(Hex.encode(engine.decapsulation(
+                    publicKey, engine.delegate(publicKey, sk0, ids[2]),
+                    ids012, ciphertextPair012.getCiphertext()
+            )));
+            assertEquals(false, stringSessionKey012.equals(sessionKey));
         } catch (InvalidCipherTextException e) {
             //Correct if getting there, nothing to do
         }
+        System.out.println("======================================");
+        System.out.println("HIBE Engine tests passed.");
 
-        //Serialize & deserialize public key
-        TestUtils.OutputXMLDocument("HIBE_Public_Key.xml", serializationFactory.documentSerialization(publicKey));
-        Document documentPublicKey = TestUtils.InputXMLDocument("HIBE_Public_Key.xml");
-        CipherParameters anoPublicKey = serializationFactory.documentDeserialization(pairingParameters, documentPublicKey);
-        assertEquals(publicKey, anoPublicKey);
+        //Test Serialize & deserialize
+        if (this.serializationFactory != null) {
+            //Serialize & deserialize public key
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing public key");
+            TestUtils.OutputXMLDocument("HIBE_Public_Key.xml", serializationFactory.documentSerialization(publicKey));
+            Document documentPublicKey = TestUtils.InputXMLDocument("HIBE_Public_Key.xml");
+            CipherParameters anoPublicKey = serializationFactory.documentDeserialization(pairingParameters, documentPublicKey);
+            assertEquals(publicKey, anoPublicKey);
 
-        //Serialize & deserialize master secret key
-        TestUtils.OutputXMLDocument("HIBE_Master_Secret_Key.xml", serializationFactory.documentSerialization(masterKey));
-        Document documentMasterKey = TestUtils.InputXMLDocument("HIBE_Master_Secret_Key.xml");
-        CipherParameters anoMasterKey = serializationFactory.documentDeserialization(pairingParameters, documentMasterKey);
-        assertEquals(masterKey, anoMasterKey);
+            //Serialize & deserialize master secret key
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing master secret key");
+            TestUtils.OutputXMLDocument("HIBE_Master_Secret_Key.xml", serializationFactory.documentSerialization(masterKey));
+            Document documentMasterKey = TestUtils.InputXMLDocument("HIBE_Master_Secret_Key.xml");
+            CipherParameters anoMasterKey = serializationFactory.documentDeserialization(pairingParameters, documentMasterKey);
+            assertEquals(masterKey, anoMasterKey);
 
 
-        //Serialize & deserialize secret keys
-        //Serialize & deserialize sk0
-        TestUtils.OutputXMLDocument("HIBE_Secret_Key_0.xml", serializationFactory.documentSerialization(sk0));
-        Document documentSk0 = TestUtils.InputXMLDocument("HIBE_Secret_Key_0.xml");
-        CipherParameters anSk0 = serializationFactory.documentDeserialization(pairingParameters, documentSk0);
-        assertEquals(sk0, anSk0);
-        //Serialize & deserialize sk01
-        TestUtils.OutputXMLDocument("HIBE_Secret_Key_01.xml",serializationFactory.documentSerialization(sk01));
-        Document documentSk01 = TestUtils.InputXMLDocument("HIBE_Secret_Key_01.xml");
-        CipherParameters anSk01 = serializationFactory.documentDeserialization(pairingParameters, documentSk01);
-        assertEquals(sk01, anSk01);
-        //Serialize & deserialize sk012
-        TestUtils.OutputXMLDocument("HIBE_Secret_Key_012.xml", serializationFactory.documentSerialization(sk012));
-        Document documentSk012 = TestUtils.InputXMLDocument("HIBE_Secret_Key_012.xml");
-        CipherParameters anSk012 = serializationFactory.documentDeserialization(pairingParameters, documentSk012);
-        assertEquals(sk012, anSk012);
+            //Serialize & deserialize secret keys
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing secret key 0");
+            //Serialize & deserialize sk0
+            TestUtils.OutputXMLDocument("HIBE_Secret_Key_0.xml", serializationFactory.documentSerialization(sk0));
+            Document documentSk0 = TestUtils.InputXMLDocument("HIBE_Secret_Key_0.xml");
+            CipherParameters anSk0 = serializationFactory.documentDeserialization(pairingParameters, documentSk0);
+            assertEquals(sk0, anSk0);
+            //Serialize & deserialize sk01
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing secret key 01");
+            TestUtils.OutputXMLDocument("HIBE_Secret_Key_01.xml",serializationFactory.documentSerialization(sk01));
+            Document documentSk01 = TestUtils.InputXMLDocument("HIBE_Secret_Key_01.xml");
+            CipherParameters anSk01 = serializationFactory.documentDeserialization(pairingParameters, documentSk01);
+            assertEquals(sk01, anSk01);
+            //Serialize & deserialize sk012
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing secret key 012");
+            TestUtils.OutputXMLDocument("HIBE_Secret_Key_012.xml", serializationFactory.documentSerialization(sk012));
+            Document documentSk012 = TestUtils.InputXMLDocument("HIBE_Secret_Key_012.xml");
+            CipherParameters anSk012 = serializationFactory.documentDeserialization(pairingParameters, documentSk012);
+            assertEquals(sk012, anSk012);
 
-        //Serialize & deserialize ciphertexts
-        //Serialize & deserialize ciphertext0
-        TestUtils.OutputXMLDocument("HIBE_Ciphertext_0.xml", serializationFactory.documentSerialization(ciphertext0));
-        Document documentCiphertext0 = TestUtils.InputXMLDocument("HIBE_Ciphertext_0.xml");
-        CipherParameters anCiphertext0 = serializationFactory.documentDeserialization(pairingParameters, documentCiphertext0);
-        assertEquals(ciphertext0, anCiphertext0);
-        //Serialize & deserialize ciphertext01
-        TestUtils.OutputXMLDocument("HIBE_Ciphertext_01.xml", serializationFactory.documentSerialization(ciphertext01));
-        Document documentCiphertext01 = TestUtils.InputXMLDocument("HIBE_Ciphertext_01.xml");
-        CipherParameters anCiphertext01 = serializationFactory.documentDeserialization(pairingParameters, documentCiphertext01);
-        assertEquals(ciphertext01, anCiphertext01);
-        //Serialize & deserialize ciphertext012
-        TestUtils.OutputXMLDocument("HIBE_Ciphertext_012.xml", serializationFactory.documentSerialization(ciphertext012));
-        Document documentCiphertext012 = TestUtils.InputXMLDocument("HIBE_Ciphertext_012.xml");
-        CipherParameters anCiphertext012 = serializationFactory.documentDeserialization(pairingParameters, documentCiphertext012);
-        assertEquals(ciphertext012, anCiphertext012);
+            //Serialize & deserialize ciphertexts
+            //Serialize & deserialize ciphertext0
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing ciphertext 0");
+            TestUtils.OutputXMLDocument("HIBE_Ciphertext_0.xml", serializationFactory.documentSerialization(ciphertext0));
+            Document documentCiphertext0 = TestUtils.InputXMLDocument("HIBE_Ciphertext_0.xml");
+            CipherParameters anCiphertext0 = serializationFactory.documentDeserialization(pairingParameters, documentCiphertext0);
+            assertEquals(ciphertext0, anCiphertext0);
+            //Serialize & deserialize ciphertext01
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing ciphertext 01");
+            TestUtils.OutputXMLDocument("HIBE_Ciphertext_01.xml", serializationFactory.documentSerialization(ciphertext01));
+            Document documentCiphertext01 = TestUtils.InputXMLDocument("HIBE_Ciphertext_01.xml");
+            CipherParameters anCiphertext01 = serializationFactory.documentDeserialization(pairingParameters, documentCiphertext01);
+            assertEquals(ciphertext01, anCiphertext01);
+            //Serialize & deserialize ciphertext012
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing ciphertext 012");
+            TestUtils.OutputXMLDocument("HIBE_Ciphertext_012.xml", serializationFactory.documentSerialization(ciphertext012));
+            Document documentCiphertext012 = TestUtils.InputXMLDocument("HIBE_Ciphertext_012.xml");
+            CipherParameters anCiphertext012 = serializationFactory.documentDeserialization(pairingParameters, documentCiphertext012);
+            assertEquals(ciphertext012, anCiphertext012);
+
+            System.out.println("======================================");
+            System.out.println("Serialize & deserialize tests passed.");
+        }
     }
 }

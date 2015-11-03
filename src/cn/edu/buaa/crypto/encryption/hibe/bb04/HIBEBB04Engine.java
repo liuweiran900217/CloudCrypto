@@ -40,13 +40,13 @@ public class HIBEBB04Engine implements HIBEEngine {
     public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String... ids) {
         if (!(publicKey instanceof HIBEBB04PublicKeyParameters)){
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
         if (!(masterKey instanceof HIBEBB04MasterSecretKeyParameters)) {
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + masterKey.getClass().getName() + ", require"
                             + HIBEBB04MasterSecretKeyParameters.class.getName());
         }
@@ -61,13 +61,13 @@ public class HIBEBB04Engine implements HIBEEngine {
     public CipherParameters delegate(CipherParameters publicKey, CipherParameters secretKey, String id) {
         if (!(publicKey instanceof HIBEBB04PublicKeyParameters)){
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
         if (!(secretKey instanceof HIBEBB04SecretKeyParameters)) {
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require"
                             + HIBEBB04SecretKeyParameters.class.getName());
         }
@@ -82,7 +82,7 @@ public class HIBEBB04Engine implements HIBEEngine {
     public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids){
         if (!(publicKey instanceof HIBEBB04PublicKeyParameters)){
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
@@ -101,19 +101,19 @@ public class HIBEBB04Engine implements HIBEEngine {
             CipherParameters ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBEBB04PublicKeyParameters)){
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
         if (!(secretKey instanceof HIBEBB04SecretKeyParameters)){
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require "
                             + HIBEBB04SecretKeyParameters.class.getName());
         }
         if (!(ciphertext instanceof HIBEBB04CiphertextParameters)){
             throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
                             + HIBEBB04CiphertextParameters.class.getName());
         }
