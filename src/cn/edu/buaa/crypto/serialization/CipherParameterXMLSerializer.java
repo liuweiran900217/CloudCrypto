@@ -8,7 +8,7 @@ import org.w3c.dom.*;
 /**
  * Created by Weiran Liu on 15-10-2.
  */
-public interface CipherParameterSerializationFactory {
+public interface CipherParameterXMLSerializer {
     public static final String ATTRI_TYPE = "Type";
     public static final String ATTRI_INDEX = "Index";
     public static final String ATTRI_LENGTH = "Length";
