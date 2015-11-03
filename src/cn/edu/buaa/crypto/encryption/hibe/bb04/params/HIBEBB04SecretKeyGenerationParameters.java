@@ -21,19 +21,6 @@ public class HIBEBB04SecretKeyGenerationParameters extends KeyGenerationParamete
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
         super(null, HIBEBB04KeyPairGenerator.STENGTH);
-
-        if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + publicKeyParameters.getClass().getName() + ", require "
-                            + HIBEBB04PublicKeyParameters.class.getName());
-        }
-        if (!(masterSecretKeyParameters instanceof HIBEBB04MasterSecretKeyParameters)) {
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + masterSecretKeyParameters.getClass().getName() + ", require"
-                            + HIBEBB04MasterSecretKeyParameters.class.getName());
-        }
         this.masterSecretKeyParameters = (HIBEBB04MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
         this.ids = Arrays.copyOf(ids, ids.length);

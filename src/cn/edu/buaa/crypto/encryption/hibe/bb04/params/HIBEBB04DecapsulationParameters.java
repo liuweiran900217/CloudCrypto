@@ -19,24 +19,6 @@ public class HIBEBB04DecapsulationParameters implements CipherParameters {
             CipherParameters secretKeyParameters,
             String[] ids,
             CipherParameters ciphertextParameters) {
-        if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + publicKeyParameters.getClass().getName() + ", require "
-                            + HIBEBB04PublicKeyParameters.class.getName());
-        }
-        if (!(secretKeyParameters instanceof HIBEBB04SecretKeyParameters)){
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + secretKeyParameters.getClass().getName() + ", require "
-                            + HIBEBB04SecretKeyParameters.class.getName());
-        }
-        if (!(ciphertextParameters instanceof HIBEBB04CiphertextParameters)){
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + ciphertextParameters.getClass().getName() + ", require "
-                            + HIBEBB04CiphertextParameters.class.getName());
-        }
         this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
         this.secretKeyParameters = (HIBEBB04SecretKeyParameters)secretKeyParameters;
         this.ids = Arrays.copyOf(ids, ids.length);

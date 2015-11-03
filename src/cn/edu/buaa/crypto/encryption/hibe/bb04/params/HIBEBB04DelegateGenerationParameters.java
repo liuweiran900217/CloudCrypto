@@ -19,18 +19,6 @@ public class HIBEBB04DelegateGenerationParameters  extends KeyGenerationParamete
             CipherParameters secretKeyParameters,
             String id) {
         super(null, HIBEBB04KeyPairGenerator.STENGTH);
-        if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + publicKeyParameters.getClass().getName() + ", require "
-                            + HIBEBB04PublicKeyParameters.class.getName());
-        }
-        if (!(secretKeyParameters instanceof HIBEBB04SecretKeyParameters)) {
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + secretKeyParameters.getClass().getName() + ", require"
-                            + HIBEBB04SecretKeyParameters.class.getName());
-        }
         this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
         this.secretKeyParameters = (HIBEBB04SecretKeyParameters)secretKeyParameters;
         this.delegateId = id;

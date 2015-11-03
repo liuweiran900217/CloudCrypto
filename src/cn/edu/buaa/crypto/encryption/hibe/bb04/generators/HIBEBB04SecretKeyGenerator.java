@@ -73,7 +73,7 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
 
             return new HIBEBB04SecretKeyParameters(publicKeyParameters.getParameters(), ids, elementIds, d0, ds);
         } else {
-            throw new InvalidParameterException
+            throw new IllegalArgumentException
                     ("Invalid KeyGenerationParameters for HIBEBB04Engine Secret Key Generatation, find "
                             + params.getClass().getName() + ", require "
                             + HIBEBB04SecretKeyGenerationParameters.class.getName() + " or "

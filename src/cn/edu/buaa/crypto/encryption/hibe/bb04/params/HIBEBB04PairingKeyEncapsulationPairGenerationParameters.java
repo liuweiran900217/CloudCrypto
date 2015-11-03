@@ -14,12 +14,6 @@ public class HIBEBB04PairingKeyEncapsulationPairGenerationParameters implements 
 
     public HIBEBB04PairingKeyEncapsulationPairGenerationParameters(
             CipherParameters publicKeyParameters, String[] ids) {
-        if (!(publicKeyParameters instanceof HIBEBB04PublicKeyParameters)){
-            throw new InvalidParameterException
-                    ("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find "
-                            + publicKeyParameters.getClass().getName() + ", require "
-                            + HIBEBB04PublicKeyParameters.class.getName());
-        }
         this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
         assert(ids.length <= this.publicKeyParameters.getMaxLength());
         this.ids = Arrays.copyOf(ids, ids.length);
