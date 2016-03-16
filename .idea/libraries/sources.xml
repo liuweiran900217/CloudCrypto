@@ -2,7 +2,6 @@
   <library name="sources">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/sources/jpbc-crypto-2.0.0.zip!/" />
-      <root url="jar://$PROJECT_DIR$/sources/bcprov-jdk15on-152.zip!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
