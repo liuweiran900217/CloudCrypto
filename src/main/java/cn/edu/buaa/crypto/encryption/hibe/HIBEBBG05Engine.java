@@ -1,6 +1,5 @@
-package cn.edu.buaa.crypto.encryption.hibe.bbg05;
+package cn.edu.buaa.crypto.encryption.hibe;
 
-import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyDecapsulationGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyPairGenerator;

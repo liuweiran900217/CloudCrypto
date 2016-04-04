@@ -1,7 +1,7 @@
 package com.example.encryption.hibe.bbg05;
 
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.encryption.hibe.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.serialization.CipherParameterXMLSerializer;
 import com.example.HIBEEngineTest;
 

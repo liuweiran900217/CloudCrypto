@@ -12,6 +12,7 @@ public interface CipherParameterXMLSerializer {
     public static final String ATTRI_TYPE = "Type";
     public static final String ATTRI_INDEX = "Index";
     public static final String ATTRI_LENGTH = "Length";
+    public static final String ATTRI_MAX_LENGTH = "MaxLength";
 
     public static final String TYPE_PK = "PK";
     public static final String TYPE_MSK = "MSK";

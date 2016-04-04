@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.serialization;
 
 import cn.edu.buaa.crypto.Utils;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.encryption.hibe.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05PublicKeyParameters;
@@ -55,7 +55,6 @@ public class HIBEBBG05XMLSerializer implements CipherParameterXMLSerializer {
         return INSTANCE;
     }
 
-    @Override
     public Document documentSerialization(CipherParameters cipherParameters) {
         if (cipherParameters instanceof HIBEBBG05PublicKeyParameters) {
             return getInstance().publicKeyParametersSerialization((HIBEBBG05PublicKeyParameters) cipherParameters);
@@ -214,7 +213,6 @@ public class HIBEBBG05XMLSerializer implements CipherParameterXMLSerializer {
         }
     }
 
-    @Override
     public CipherParameters documentDeserialization(PairingParameters pairingParameters, Document document) {
         Element schemeElement = document.getDocumentElement();
         String cipherParameterType = schemeElement.getAttribute(CipherParameterXMLSerializer.ATTRI_TYPE);

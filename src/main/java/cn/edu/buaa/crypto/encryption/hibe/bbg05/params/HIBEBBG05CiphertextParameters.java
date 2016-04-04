@@ -4,7 +4,6 @@ import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
