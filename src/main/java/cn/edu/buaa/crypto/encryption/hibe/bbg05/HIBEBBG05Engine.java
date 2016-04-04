@@ -1,5 +1,6 @@
-package cn.edu.buaa.crypto.encryption.hibe;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05;
 
+import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyDecapsulationGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyPairGenerator;
@@ -14,9 +15,6 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Created by Weiran Liu on 2015/11/3.
  */
 public class HIBEBBG05Engine implements HIBEEngine {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    public static final int STENGTH = 12;
-
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "BBG05HIBE";
 
@@ -79,7 +77,7 @@ public class HIBEBBG05Engine implements HIBEEngine {
                             + HIBEBBG05PublicKeyParameters.class.getName());
         }
         HIBEBBG05KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new HIBEBBG05KeyEncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new HIBEBBG05PairingKeyEncapsulationPairGenerationParameters(
+        keyEncapsulationPairGenerator.init(new HIBEBBG05CiphertextGenerationParameters(
                 publicKey, ids));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();

@@ -14,6 +14,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 
 public interface REEngine {
+    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
+    int STENGTH = 12;
 
     /**
      * Setup Algorithm for RE

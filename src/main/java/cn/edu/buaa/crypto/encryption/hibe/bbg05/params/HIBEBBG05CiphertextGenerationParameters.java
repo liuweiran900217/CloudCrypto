@@ -1,25 +1,24 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 
 /**
- * Created by Weiran Liu on 15-10-1.
+ * Created by Weiran Liu on 2015/11/3.
  */
-public class HIBEBB04PairingKeyEncapsulationPairGenerationParameters implements CipherParameters {
-    private HIBEBB04PublicKeyParameters publicKeyParameters;
+public class HIBEBBG05CiphertextGenerationParameters implements CipherParameters {
+    private HIBEBBG05PublicKeyParameters publicKeyParameters;
     private String[] ids;
 
-    public HIBEBB04PairingKeyEncapsulationPairGenerationParameters(
+    public HIBEBBG05CiphertextGenerationParameters(
             CipherParameters publicKeyParameters, String[] ids) {
-        this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
+        this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
         assert(ids.length <= this.publicKeyParameters.getMaxLength());
         this.ids = Arrays.copyOf(ids, ids.length);
     }
 
-    public HIBEBB04PublicKeyParameters getPublicKeyParameters() {
+    public HIBEBBG05PublicKeyParameters getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 

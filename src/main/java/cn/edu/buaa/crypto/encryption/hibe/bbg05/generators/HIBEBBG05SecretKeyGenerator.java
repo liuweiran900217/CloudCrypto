@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
 import cn.edu.buaa.crypto.Utils;
-import cn.edu.buaa.crypto.encryption.hibe.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;

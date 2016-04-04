@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.serialization;
 
 import cn.edu.buaa.crypto.Utils;
-import cn.edu.buaa.crypto.encryption.hibe.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05PublicKeyParameters;
@@ -19,7 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.security.InvalidParameterException;
 
 /**
- * Created by liuweiran on 15/11/14.
+ * Created by Weiran Liu on 15/11/14.
  */
 public class HIBEBBG05XMLSerializer implements CipherParameterXMLSerializer {
     private static final String TAG_SCHEME_NAME = HIBEBBG05Engine.SCHEME_NAME;
@@ -223,7 +223,7 @@ public class HIBEBBG05XMLSerializer implements CipherParameterXMLSerializer {
         } else if (cipherParameterType.equals(CipherParameterXMLSerializer.TYPE_SK)) {
             return getInstance().secretKeyParametersDeserialization(pairingParameters, schemeElement);
         } else if (cipherParameterType.equals(CipherParameterXMLSerializer.TYPE_CT)) {
-            return getInstance().ciphertextKeyParametersDeserialization(pairingParameters, schemeElement);
+            return getInstance().ciphertextParametersDeserialization(pairingParameters, schemeElement);
         } else {
             throw new InvalidParameterException("Illegal " + HIBEBBG05Engine.SCHEME_NAME +
                     " Document Type, find " + cipherParameterType);
@@ -329,7 +329,7 @@ public class HIBEBBG05XMLSerializer implements CipherParameterXMLSerializer {
         return new HIBEBBG05SecretKeyParameters(pairingParameters, ids, elementIds, a0, a1, bs);
     }
 
-    private CipherParameters ciphertextKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
+    private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         int length = Integer.valueOf(schemeElement.getAttribute(CipherParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();

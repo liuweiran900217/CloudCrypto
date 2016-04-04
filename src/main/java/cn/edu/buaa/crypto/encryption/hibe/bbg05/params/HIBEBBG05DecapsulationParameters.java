@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.encryption.hibe.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import org.bouncycastle.crypto.CipherParameters;
 
 import java.util.Arrays;

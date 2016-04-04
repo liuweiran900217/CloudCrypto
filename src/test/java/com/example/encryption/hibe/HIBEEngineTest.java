@@ -1,9 +1,10 @@
-package com.example;
+package com.example.encryption.hibe;
 
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import cn.edu.buaa.crypto.serialization.CipherParameterXMLSerializer;
+import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;

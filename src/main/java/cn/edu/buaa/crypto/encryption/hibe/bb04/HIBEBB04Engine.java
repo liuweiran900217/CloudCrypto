@@ -18,9 +18,6 @@ import static org.junit.Assert.assertTrue;
  * Created by Weiran Liu on 15-10-1.
  */
 public class HIBEBB04Engine implements HIBEEngine {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    public static final int STENGTH = 12;
-
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "BB04HIBE";
 
@@ -83,7 +80,7 @@ public class HIBEBB04Engine implements HIBEEngine {
                             + HIBEBB04PublicKeyParameters.class.getName());
         }
         HIBEBB04KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new HIBEBB04KeyEncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new HIBEBB04PairingKeyEncapsulationPairGenerationParameters(
+        keyEncapsulationPairGenerator.init(new HIBEBB04CiphertextGenerationParameters(
                 publicKey, ids));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();

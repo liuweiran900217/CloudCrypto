@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PairingKeyEncapsulationPairGenerationParameters;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeyParameters;
 import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
@@ -18,10 +18,10 @@ import java.util.Arrays;
  */
 public class HIBEBB04KeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
 
-    private HIBEBB04PairingKeyEncapsulationPairGenerationParameters params;
+    private HIBEBB04CiphertextGenerationParameters params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBEBB04PairingKeyEncapsulationPairGenerationParameters)params;
+        this.params = (HIBEBB04CiphertextGenerationParameters)params;
     }
 
     public PairingKeyEncapsulationPair generateEncryptionPair() {
