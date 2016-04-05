@@ -2,6 +2,10 @@ package cn.edu.buaa.crypto;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
+import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
+import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import org.bouncycastle.util.encoders.Hex;
 
 import java.security.MessageDigest;
@@ -13,6 +17,26 @@ import java.security.NoSuchAlgorithmException;
 
 public class Utils {
     private static final int default_block_size = 1024;
+
+    public static PropertiesParameters GeneratePropertiesParameters(int rBitLength, int qBitLength) {
+        PropertiesParameters parameters;
+        Pairing pairing;
+        Element g;
+
+        // Generate curve parameters
+        while (true) {
+            parameters = generateCurveParams(rBitLength, qBitLength);
+            pairing = PairingFactory.getPairing(parameters);
+            g = pairing.getG1().newRandomElement().getImmutable();
+            if (!pairing.pairing(g, g).isOne()) { return parameters; }
+        }
+    }
+
+    private static PropertiesParameters generateCurveParams(int rBitLength, int qBitLength) {
+        PairingParametersGenerator parametersGenerator = new TypeACurveGenerator(rBitLength, qBitLength);
+        return (PropertiesParameters) parametersGenerator.generate();
+    }
+
 
     /**
      * A standard collision resistant hash function implementations used privately for Map.
