@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
+import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aKeyPairGenerationParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
@@ -24,19 +25,9 @@ public class RELSW10aKeyPairGenerator implements AsymmetricCipherKeyPairGenerato
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters;
-        Pairing pairing;
-        Element g;
-
-        // Generate curve parameters
-        while (true) {
-            parameters = generateCurveParams();
-            pairing = PairingFactory.getPairing(parameters);
-
-            g = pairing.getG1().newRandomElement().getImmutable();
-            if (!pairing.pairing(g, g).isOne()) { break; }
-        }
-
+        PropertiesParameters parameters = Utils.GeneratePropertiesParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
+        Pairing pairing =  PairingFactory.getPairing(parameters);
+        Element g = pairing.getG1().newRandomElement().getImmutable();
         Element alpha = pairing.getZr().newRandomElement().getImmutable();
         Element b = pairing.getZr().newRandomElement().getImmutable();
         Element b2 = b.mulZn(b).getImmutable();
@@ -51,10 +42,5 @@ public class RELSW10aKeyPairGenerator implements AsymmetricCipherKeyPairGenerato
         return new AsymmetricCipherKeyPair(
                 new RELSW10aPublicKeyParameters(parameters, g, gb, gb2, hb, eggAlpha),
                 new RELSW10aMasterSecretKeyParameters(parameters, alpha, b, h));
-    }
-
-    private PropertiesParameters generateCurveParams() {
-        PairingParametersGenerator parametersGenerator = new TypeACurveGenerator(parameters.getRBitLength(), parameters.getQBitLength());
-        return (PropertiesParameters) parametersGenerator.generate();
     }
 }

@@ -3,7 +3,7 @@ package com.example.encryption.re;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
-import cn.edu.buaa.crypto.serialization.CipherParameterXMLSerializer;
+import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
@@ -19,9 +19,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class REEngineTest {
     private REEngine engine;
-    private CipherParameterXMLSerializer schemeXMLSerializer;
+    private PairingParameterXMLSerializer schemeXMLSerializer;
 
-    public REEngineTest(REEngine engine, CipherParameterXMLSerializer schemeXMLSerializer) {
+    public REEngineTest(REEngine engine, PairingParameterXMLSerializer schemeXMLSerializer) {
         this.engine = engine;
         this.schemeXMLSerializer = schemeXMLSerializer;
     }
@@ -41,13 +41,13 @@ public class REEngineTest {
         CipherParameters skRid = engine.keyGen(publicKey, masterKey, rid);
 
         // Encryption
-        String[] rids1 = new String[]{rid, "Id1"};
+        String[] rids1 = new String[]{rid, "Id_1"};
         PairingKeyEncapsulationPair ciphertextPairRids1 = engine.encapsulation(publicKey, rids1);
         CipherParameters ciphertextRids1 = ciphertextPairRids1.getCiphertext();
         byte[] sessionKeyRids1 = ciphertextPairRids1.getSessionKey();
         String stringSessionKeyRids1 = new String(Hex.encode(sessionKeyRids1));
 
-        String[] rids2 = new String[]{"Id1", "Id2", "Id3", "Id4", "Id5", "Id6", "Id7", "Id8", "Id9", rid};
+        String[] rids2 = new String[]{"Id_1", "Id_2", "Id_3", "Id_4", "Id_5", "Id_6", "Id_7", "Id_8", "Id_9", rid};
         PairingKeyEncapsulationPair ciphertextPairRids2 = engine.encapsulation(publicKey, rids2);
         CipherParameters ciphertextRids2 = ciphertextPairRids2.getCiphertext();
         byte[] sessionKeyRids2 = ciphertextPairRids2.getSessionKey();
@@ -116,16 +116,16 @@ public class REEngineTest {
             //Serialize & deserialize public key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing public key");
-            TestUtils.OutputXMLDocument("RE_Public_Key.xml", schemeXMLSerializer.documentSerialization(publicKey));
-            Document documentPublicKey = TestUtils.InputXMLDocument("RE_Public_Key.xml");
+            TestUtils.OutputXMLDocument("serializations/re/RE_Public_Key.xml", schemeXMLSerializer.documentSerialization(publicKey));
+            Document documentPublicKey = TestUtils.InputXMLDocument("serializations/re/RE_Public_Key.xml");
             CipherParameters anoPublicKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentPublicKey);
             assertEquals(publicKey, anoPublicKey);
 
             //Serialize & deserialize master secret key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing master secret key");
-            TestUtils.OutputXMLDocument("RE_Master_Secret_Key.xml", schemeXMLSerializer.documentSerialization(masterKey));
-            Document documentMasterKey = TestUtils.InputXMLDocument("RE_Master_Secret_Key.xml");
+            TestUtils.OutputXMLDocument("serializations/re/RE_Master_Secret_Key.xml", schemeXMLSerializer.documentSerialization(masterKey));
+            Document documentMasterKey = TestUtils.InputXMLDocument("serializations/re/RE_Master_Secret_Key.xml");
             CipherParameters anoMasterKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentMasterKey);
             assertEquals(masterKey, anoMasterKey);
 
@@ -134,15 +134,15 @@ public class REEngineTest {
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing secret key skId");
             //Serialize & deserialize skId
-            TestUtils.OutputXMLDocument("RE_Secret_Key_Id.xml", schemeXMLSerializer.documentSerialization(skId));
-            Document documentSkId = TestUtils.InputXMLDocument("RE_Secret_Key_Id.xml");
+            TestUtils.OutputXMLDocument("serializations/re/RE_Secret_Key_Id.xml", schemeXMLSerializer.documentSerialization(skId));
+            Document documentSkId = TestUtils.InputXMLDocument("serializations/re/RE_Secret_Key_Id.xml");
             CipherParameters anSkId = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSkId);
             assertEquals(skId, anSkId);
             //Serialize & deserialize skRid
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing secret key skRid");
-            TestUtils.OutputXMLDocument("RE_Secret_Key_Rid.xml",schemeXMLSerializer.documentSerialization(skRid));
-            Document documentSkRid = TestUtils.InputXMLDocument("RE_Secret_Key_Rid.xml");
+            TestUtils.OutputXMLDocument("serializations/re/RE_Secret_Key_Rid.xml",schemeXMLSerializer.documentSerialization(skRid));
+            Document documentSkRid = TestUtils.InputXMLDocument("serializations/re/RE_Secret_Key_Rid.xml");
             CipherParameters anSkRid = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSkRid);
             assertEquals(skRid, anSkRid);
 
@@ -150,15 +150,15 @@ public class REEngineTest {
             //Serialize & deserialize ciphertext0
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing ciphertext Rids1");
-            TestUtils.OutputXMLDocument("RE_Ciphertext_Rids1.xml", schemeXMLSerializer.documentSerialization(ciphertextRids1));
-            Document documentCiphertextRids1 = TestUtils.InputXMLDocument("RE_Ciphertext_Rids1.xml");
+            TestUtils.OutputXMLDocument("serializations/re/RE_Ciphertext_Rids1.xml", schemeXMLSerializer.documentSerialization(ciphertextRids1));
+            Document documentCiphertextRids1 = TestUtils.InputXMLDocument("serializations/re/RE_Ciphertext_Rids1.xml");
             CipherParameters anCiphertextRids1 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextRids1);
             assertEquals(ciphertextRids1, anCiphertextRids1);
             //Serialize & deserialize ciphertext01
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing ciphertext Rids2");
-            TestUtils.OutputXMLDocument("RE_Ciphertext_Rids2.xml", schemeXMLSerializer.documentSerialization(ciphertextRids2));
-            Document documentCiphertextRids2 = TestUtils.InputXMLDocument("RE_Ciphertext_Rids2.xml");
+            TestUtils.OutputXMLDocument("serializations/re/RE_Ciphertext_Rids2.xml", schemeXMLSerializer.documentSerialization(ciphertextRids2));
+            Document documentCiphertextRids2 = TestUtils.InputXMLDocument("serializations/re/RE_Ciphertext_Rids2.xml");
             CipherParameters anCiphertextRids2 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextRids2);
             assertEquals(ciphertextRids2, anCiphertextRids2);
 

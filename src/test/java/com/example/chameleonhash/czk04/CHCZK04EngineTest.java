@@ -1,8 +1,7 @@
 package com.example.chameleonhash.czk04;
 
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
-import cn.edu.buaa.crypto.chameleonhash.czk04.CHCZK04Engine;
-import cn.edu.buaa.crypto.serialization.CipherParameterXMLSerializer;
+import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.CHCZK04Engine;
 import com.example.chameleonhash.CHEngineTest;
 
 /**
@@ -13,6 +12,6 @@ public class CHCZK04EngineTest {
         CHEngine engine = new CHCZK04Engine();
 
         CHEngineTest engineTest = new CHEngineTest(engine);
-        engineTest.processTest(160, 256);
+        engineTest.processTest(160, 512);
     }
 }

@@ -3,7 +3,7 @@ package com.example.encryption.hibe;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
-import cn.edu.buaa.crypto.serialization.CipherParameterXMLSerializer;
+import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
@@ -19,9 +19,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class HIBEEngineTest {
     private HIBEEngine engine;
-    private CipherParameterXMLSerializer schemeXMLSerializer;
+    private PairingParameterXMLSerializer schemeXMLSerializer;
 
-    public HIBEEngineTest(HIBEEngine engine, CipherParameterXMLSerializer schemeXMLSerializer) {
+    public HIBEEngineTest(HIBEEngine engine, PairingParameterXMLSerializer schemeXMLSerializer) {
         this.engine = engine;
         this.schemeXMLSerializer = schemeXMLSerializer;
     }
@@ -34,7 +34,7 @@ public class HIBEEngineTest {
         PairingParameters pairingParameters = ((PairingKeyParameters)publicKey).getParameters();
 
         // KeyGen
-        String[] ids = {"Liu", "Wei", "Ran"};
+        String[] ids = {"ID_1", "ID_2", "ID_3"};
 
         CipherParameters sk0 = engine.keyGen(publicKey, masterKey, ids[0]);
         CipherParameters sk01 = engine.keyGen(publicKey, masterKey, ids[0], ids[1]);
@@ -269,16 +269,16 @@ public class HIBEEngineTest {
             //Serialize & deserialize public key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing public key");
-            TestUtils.OutputXMLDocument("HIBE_Public_Key.xml", schemeXMLSerializer.documentSerialization(publicKey));
-            Document documentPublicKey = TestUtils.InputXMLDocument("HIBE_Public_Key.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Public_Key.xml", schemeXMLSerializer.documentSerialization(publicKey));
+            Document documentPublicKey = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Public_Key.xml");
             CipherParameters anoPublicKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentPublicKey);
             assertEquals(publicKey, anoPublicKey);
 
             //Serialize & deserialize master secret key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing master secret key");
-            TestUtils.OutputXMLDocument("HIBE_Master_Secret_Key.xml", schemeXMLSerializer.documentSerialization(masterKey));
-            Document documentMasterKey = TestUtils.InputXMLDocument("HIBE_Master_Secret_Key.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Master_Secret_Key.xml", schemeXMLSerializer.documentSerialization(masterKey));
+            Document documentMasterKey = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Master_Secret_Key.xml");
             CipherParameters anoMasterKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentMasterKey);
             assertEquals(masterKey, anoMasterKey);
 
@@ -287,22 +287,22 @@ public class HIBEEngineTest {
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing secret key 0");
             //Serialize & deserialize sk0
-            TestUtils.OutputXMLDocument("HIBE_Secret_Key_0.xml", schemeXMLSerializer.documentSerialization(sk0));
-            Document documentSk0 = TestUtils.InputXMLDocument("HIBE_Secret_Key_0.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Secret_Key_0.xml", schemeXMLSerializer.documentSerialization(sk0));
+            Document documentSk0 = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Secret_Key_0.xml");
             CipherParameters anSk0 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSk0);
             assertEquals(sk0, anSk0);
             //Serialize & deserialize sk01
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing secret key 01");
-            TestUtils.OutputXMLDocument("HIBE_Secret_Key_01.xml",schemeXMLSerializer.documentSerialization(sk01));
-            Document documentSk01 = TestUtils.InputXMLDocument("HIBE_Secret_Key_01.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Secret_Key_01.xml",schemeXMLSerializer.documentSerialization(sk01));
+            Document documentSk01 = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Secret_Key_01.xml");
             CipherParameters anSk01 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSk01);
             assertEquals(sk01, anSk01);
             //Serialize & deserialize sk012
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing secret key 012");
-            TestUtils.OutputXMLDocument("HIBE_Secret_Key_012.xml", schemeXMLSerializer.documentSerialization(sk012));
-            Document documentSk012 = TestUtils.InputXMLDocument("HIBE_Secret_Key_012.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Secret_Key_012.xml", schemeXMLSerializer.documentSerialization(sk012));
+            Document documentSk012 = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Secret_Key_012.xml");
             CipherParameters anSk012 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSk012);
             assertEquals(sk012, anSk012);
 
@@ -310,22 +310,22 @@ public class HIBEEngineTest {
             //Serialize & deserialize ciphertext0
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing ciphertext 0");
-            TestUtils.OutputXMLDocument("HIBE_Ciphertext_0.xml", schemeXMLSerializer.documentSerialization(ciphertext0));
-            Document documentCiphertext0 = TestUtils.InputXMLDocument("HIBE_Ciphertext_0.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Ciphertext_0.xml", schemeXMLSerializer.documentSerialization(ciphertext0));
+            Document documentCiphertext0 = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Ciphertext_0.xml");
             CipherParameters anCiphertext0 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertext0);
             assertEquals(ciphertext0, anCiphertext0);
             //Serialize & deserialize ciphertext01
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing ciphertext 01");
-            TestUtils.OutputXMLDocument("HIBE_Ciphertext_01.xml", schemeXMLSerializer.documentSerialization(ciphertext01));
-            Document documentCiphertext01 = TestUtils.InputXMLDocument("HIBE_Ciphertext_01.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Ciphertext_01.xml", schemeXMLSerializer.documentSerialization(ciphertext01));
+            Document documentCiphertext01 = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Ciphertext_01.xml");
             CipherParameters anCiphertext01 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertext01);
             assertEquals(ciphertext01, anCiphertext01);
             //Serialize & deserialize ciphertext012
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing ciphertext 012");
-            TestUtils.OutputXMLDocument("HIBE_Ciphertext_012.xml", schemeXMLSerializer.documentSerialization(ciphertext012));
-            Document documentCiphertext012 = TestUtils.InputXMLDocument("HIBE_Ciphertext_012.xml");
+            TestUtils.OutputXMLDocument("serializations/hibe/HIBE_Ciphertext_012.xml", schemeXMLSerializer.documentSerialization(ciphertext012));
+            Document documentCiphertext012 = TestUtils.InputXMLDocument("serializations/hibe/HIBE_Ciphertext_012.xml");
             CipherParameters anCiphertext012 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertext012);
             assertEquals(ciphertext012, anCiphertext012);
 

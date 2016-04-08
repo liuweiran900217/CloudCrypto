@@ -16,7 +16,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class RELSW10aEngine implements REEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LS10aRE";
+    public static final String SCHEME_NAME = "LSW10aRE";
 
     public RELSW10aEngine() {
 

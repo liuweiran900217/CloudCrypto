@@ -6,7 +6,7 @@ import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextParamete
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04SecretKeyParameters;
-import cn.edu.buaa.crypto.serialization.CipherParameterXMLSerializer;
+import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.*;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
@@ -21,7 +21,7 @@ import java.security.InvalidParameterException;
 /**
  * Created by Weiran Liu on 15-10-2.
  */
-public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
+public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
     private static final String TAG_SCHEME = HIBEBB04Engine.SCHEME_NAME;
 
     //Tags for public key
@@ -72,8 +72,8 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
         try {
             Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = publicKeyParametersDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
-            schemeElement.setAttribute(CipherParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_PK);
-            schemeElement.setAttribute(CipherParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(publicKeyParameters.getMaxLength()));
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_PK);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(publicKeyParameters.getMaxLength()));
             publicKeyParametersDocument.appendChild(schemeElement);
             //Set g
             Element gElement = publicKeyParametersDocument.createElement(TAG_PK_G);
@@ -98,7 +98,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
             schemeElement.appendChild(hsElement);
             for (int i=0; i<publicKeyParameters.getMaxLength(); i++){
                 Element hiElement = publicKeyParametersDocument.createElement(TAG_PK_HI);
-                hiElement.setAttribute(CipherParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
+                hiElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
                 String hiString = new String(Hex.encode(publicKeyParameters.getHsAt(i).toBytes()));
                 Text hiText = publicKeyParametersDocument.createTextNode(hiString);
                 hsElement.appendChild(hiElement);
@@ -115,7 +115,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
         try {
             Document masterSecretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = masterSecretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
-            schemeElement.setAttribute(CipherParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_MSK);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_MSK);
             masterSecretKeyDocument.appendChild(schemeElement);
             //Set g2Alpha
             Element g2AlphaElement = masterSecretKeyDocument.createElement(TAG_MSK_G2ALPHA);
@@ -135,15 +135,15 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
         try {
             Document secretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = secretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
-            schemeElement.setAttribute(CipherParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_SK);
-            schemeElement.setAttribute(CipherParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(secretKeyParameters.getLength()));
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_SK);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(secretKeyParameters.getLength()));
             secretKeyDocument.appendChild(schemeElement);
             //Set Ids
             Element idsElement = secretKeyDocument.createElement(TAG_SK_IDS);
             schemeElement.appendChild(idsElement);
             for (int i=0; i<secretKeyParameters.getLength(); i++) {
                 Element idiElement = secretKeyDocument.createElement(TAG_SK_IDI);
-                idiElement.setAttribute(CipherParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
+                idiElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
                 Text idiText = secretKeyDocument.createTextNode(secretKeyParameters.getIdAt(i));
                 idsElement.appendChild(idiElement);
                 idiElement.appendChild(idiText);
@@ -159,7 +159,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
             schemeElement.appendChild(dsElement);
             for (int i=0; i<secretKeyParameters.getLength(); i++){
                 Element diElement = secretKeyDocument.createElement(TAG_SK_DI);
-                diElement.setAttribute(CipherParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
+                diElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
                 String diString = new String(Hex.encode(secretKeyParameters.getDsAt(i).toBytes()));
                 Text diText = secretKeyDocument.createTextNode(diString);
                 dsElement.appendChild(diElement);
@@ -176,8 +176,8 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
         try {
             Document ciphertextDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = ciphertextDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
-            schemeElement.setAttribute(CipherParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_CT);
-            schemeElement.setAttribute(CipherParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(ciphertextParameters.getLength()));
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_CT);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(ciphertextParameters.getLength()));
             ciphertextDocument.appendChild(schemeElement);
             //Set B
             Element bElement = ciphertextDocument.createElement(HIBEBB04XMLSerializer.TAG_CT_B);
@@ -190,7 +190,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
             schemeElement.appendChild(csElement);
             for (int i=0; i<ciphertextParameters.getLength(); i++){
                 Element ciElement = ciphertextDocument.createElement(TAG_CT_CI);
-                ciElement.setAttribute(CipherParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
+                ciElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
                 String ciString = new String(Hex.encode(ciphertextParameters.getCsAt(i).toBytes()));
                 Text ciText = ciphertextDocument.createTextNode(ciString);
                 csElement.appendChild(ciElement);
@@ -205,14 +205,14 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
 
     public CipherParameters documentDeserialization(PairingParameters pairingParameters, Document document) {
         Element schemeElement = document.getDocumentElement();
-        String cipherParameterType = schemeElement.getAttribute(CipherParameterXMLSerializer.ATTRI_TYPE);
-        if (cipherParameterType.equals(CipherParameterXMLSerializer.TYPE_PK)){
+        String cipherParameterType = schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_TYPE);
+        if (cipherParameterType.equals(PairingParameterXMLSerializer.TYPE_PK)){
             return getInstance().publicKeyParametersDeserialization(pairingParameters, schemeElement);
-        } else if (cipherParameterType.equals(CipherParameterXMLSerializer.TYPE_MSK)){
+        } else if (cipherParameterType.equals(PairingParameterXMLSerializer.TYPE_MSK)){
             return getInstance().masterSecretKeyParametersDeserialization(pairingParameters, schemeElement);
-        } else if (cipherParameterType.equals(CipherParameterXMLSerializer.TYPE_SK)) {
+        } else if (cipherParameterType.equals(PairingParameterXMLSerializer.TYPE_SK)) {
             return getInstance().secretKeyParametersDeserialization(pairingParameters, schemeElement);
-        } else if (cipherParameterType.equals(CipherParameterXMLSerializer.TYPE_CT)) {
+        } else if (cipherParameterType.equals(PairingParameterXMLSerializer.TYPE_CT)) {
             return getInstance().ciphertextParametersDeserialization(pairingParameters, schemeElement);
         } else {
             throw new InvalidParameterException("Illegal HIBEBB04Engine Document Type, find " + cipherParameterType);
@@ -221,7 +221,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
 
     private CipherParameters publicKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int maxLength = Integer.valueOf(schemeElement.getAttribute(CipherParameterXMLSerializer.ATTRI_LENGTH));
+        int maxLength = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element g = null;
         it.unisa.dia.gas.jpbc.Element g1 = null;
@@ -246,7 +246,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
                 NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_PK_HI);
                 for (int j=0; j<nodeHsList.getLength(); j++) {
                     Element elementHi = (Element)nodeHsList.item(j);
-                    int index = Integer.valueOf(elementHi.getAttribute(CipherParameterXMLSerializer.ATTRI_INDEX));
+                    int index = Integer.valueOf(elementHi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
                     String hiString = elementHi.getFirstChild().getNodeValue();
                     hs[index] = pairing.getG1().newElementFromBytes(Hex.decode(hiString)).getImmutable();
                 }
@@ -272,7 +272,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
 
     private CipherParameters secretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int length = Integer.valueOf(schemeElement.getAttribute(CipherParameterXMLSerializer.ATTRI_LENGTH));
+        int length = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         String[] ids = new String[length];
         it.unisa.dia.gas.jpbc.Element[] elementIds = new it.unisa.dia.gas.jpbc.Element[length];
@@ -289,7 +289,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
                 NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_SK_DI);
                 for (int j=0; j<nodeHsList.getLength(); j++) {
                     Element elementDi = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementDi.getAttribute(CipherParameterXMLSerializer.ATTRI_INDEX));
+                    int index = Integer.valueOf(elementDi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
                     String diString = elementDi.getFirstChild().getNodeValue();
                     ds[index] = pairing.getG1().newElementFromBytes(Hex.decode(diString)).getImmutable();
                 }
@@ -298,7 +298,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
                 NodeList nodeIdsList = ((Element) node).getElementsByTagName(TAG_SK_IDI);
                 for (int j=0; j<nodeIdsList.getLength(); j++) {
                     Element elementIdi = (Element)nodeIdsList.item(j);
-                    int index = Integer.valueOf(elementIdi.getAttribute(CipherParameterXMLSerializer.ATTRI_INDEX));
+                    int index = Integer.valueOf(elementIdi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
                     ids[index] = elementIdi.getFirstChild().getNodeValue();
                 }
             }
@@ -309,7 +309,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
 
     private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int length = Integer.valueOf(schemeElement.getAttribute(CipherParameterXMLSerializer.ATTRI_LENGTH));
+        int length = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element B = null;
         it.unisa.dia.gas.jpbc.Element[] Cs = new it.unisa.dia.gas.jpbc.Element[length];
@@ -324,7 +324,7 @@ public class HIBEBB04XMLSerializer implements CipherParameterXMLSerializer {
                 NodeList nodeCsList = ((Element) node).getElementsByTagName(TAG_CT_CI);
                 for (int j=0; j<nodeCsList.getLength(); j++) {
                     Element elementCi = (Element) nodeCsList.item(j);
-                    int index = Integer.valueOf(elementCi.getAttribute(CipherParameterXMLSerializer.ATTRI_INDEX));
+                    int index = Integer.valueOf(elementCi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
                     String ciString = elementCi.getFirstChild().getNodeValue();
                     Cs[index] = pairing.getG1().newElementFromBytes(Hex.decode(ciString)).getImmutable();
                 }

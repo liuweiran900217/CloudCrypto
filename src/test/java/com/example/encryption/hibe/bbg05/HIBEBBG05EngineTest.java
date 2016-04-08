@@ -3,7 +3,7 @@ package com.example.encryption.hibe.bbg05;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serialization.HIBEBBG05XMLSerializer;
-import cn.edu.buaa.crypto.serialization.CipherParameterXMLSerializer;
+import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import com.example.encryption.hibe.HIBEEngineTest;
 
 /**
@@ -12,9 +12,9 @@ import com.example.encryption.hibe.HIBEEngineTest;
 public class HIBEBBG05EngineTest {
     public static void main(String[] args) {
         HIBEEngine engine = new HIBEBBG05Engine();
-        CipherParameterXMLSerializer schemeXMLSerializer = HIBEBBG05XMLSerializer.getInstance();
+        PairingParameterXMLSerializer schemeXMLSerializer = HIBEBBG05XMLSerializer.getInstance();
 
         HIBEEngineTest engineTest = new HIBEEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(160, 256, 10);
+        engineTest.processTest(160, 512, 10);
     }
 }

@@ -80,6 +80,20 @@ public class Utils {
         return hash;
     }
 
+    public static Element MapToFirstHalfZr(Pairing pairing, byte[] message) {
+        byte[] shaResult = hash(512, message);
+        shaResult[0] = (byte) (shaResult[0] & 0xFE);
+        Element hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
+        return hash;
+    }
+
+    public static Element MapToSecondHalfZr(Pairing pairing, byte[] message) {
+        byte[] shaResult = hash(512, message);
+        shaResult[0] = (byte) (shaResult[0] ^ 0x01);
+        Element hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
+        return hash;
+    }
+
     /**
      * Map a String to Element in Zr
      * @param pairing pairing of the underlying cryptography system
@@ -89,6 +103,8 @@ public class Utils {
     public static Element MapToZr(Pairing pairing, String message) {
         return MapToZr(pairing, message.getBytes());
     }
+
+    public static Element MapToFirstHalfZr(Pairing pairing, String message) { return MapToFirstHalfZr(pairing, message.getBytes()); }
 
     /**
      * Map several byte arrays to Elements in Zr
@@ -104,6 +120,14 @@ public class Utils {
         return elements;
     }
 
+    public static Element[] MapToFirstHalfZr(Pairing pairing, byte[][] message){
+        Element[] elements = new Element[message.length];
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = Utils.MapToFirstHalfZr(pairing, message[i]);
+        }
+        return elements;
+    }
+
     /**
      * Map a String array to Elements in Zr
      * @param pairing pairing of the underlying cryptography system
@@ -114,6 +138,14 @@ public class Utils {
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
             elements[i] = Utils.MapToZr(pairing, message[i]);
+        }
+        return elements;
+    }
+
+    public static Element[] MapToFirstHalfZr(Pairing pairing, String[] message){
+        Element[] elements = new Element[message.length];
+        for (int i = 0; i < elements.length; i++) {
+            elements[i] = Utils.MapToFirstHalfZr(pairing, message[i]);
         }
         return elements;
     }

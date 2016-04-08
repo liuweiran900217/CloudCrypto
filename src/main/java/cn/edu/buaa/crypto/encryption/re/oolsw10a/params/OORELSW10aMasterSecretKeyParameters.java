@@ -8,7 +8,7 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
  * Created by Weiran Liu on 2016/4/5.
  */
 public class OORELSW10aMasterSecretKeyParameters extends RELSW10aMasterSecretKeyParameters {
-    public OORELSW10aMasterSecretKeyParameters(PairingParameters pairingParameters, Element alpha, Element b, Element h) {
-        super(pairingParameters, alpha, b, h);
+    public OORELSW10aMasterSecretKeyParameters(RELSW10aMasterSecretKeyParameters parameters) {
+        super(parameters.getParameters(), parameters.getAlpha(), parameters.getB(), parameters.getH());
     }
 }
