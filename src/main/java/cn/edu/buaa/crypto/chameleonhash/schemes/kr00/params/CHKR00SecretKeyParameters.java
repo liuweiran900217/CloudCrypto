@@ -15,7 +15,7 @@ public class CHKR00SecretKeyParameters extends ChameleonHashSecretKeyParameters 
     private CHKR00PublicKeyParameters publicKey;
 
     public CHKR00SecretKeyParameters(PairingParameters params, Element x) {
-        super(true, params);
+        super(params);
         this.x = x.getImmutable();
     }
 
@@ -46,7 +46,7 @@ public class CHKR00SecretKeyParameters extends ChameleonHashSecretKeyParameters 
             if (!Utils.isEqualElement(this.x, that.getX())) {
                 return false;
             }
-            //Compare params
+            //Compare public key
             return this.publicKey.equals(that.getPublicKeyParameters());
         }
         return false;

@@ -8,8 +8,8 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
  */
 public abstract class ChameleonHashSecretKeyParameters extends PairingKeyParameters implements ChameleonHashParameters {
 
-    public ChameleonHashSecretKeyParameters(boolean isPrivate, PairingParameters parameters) {
-        super(isPrivate, parameters);
+    public ChameleonHashSecretKeyParameters(PairingParameters parameters) {
+        super(true, parameters);
     }
 
     public abstract void setPublicKeyParameters(ChameleonHashPublicKeyParameters publicKeyParameters);

@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.serialization;
 
+import cn.edu.buaa.crypto.SerializationUtils;
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
@@ -80,35 +81,15 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_PK);
             publicKeyParametersDocument.appendChild(schemeElement);
             //Set g
-            Element gElement = publicKeyParametersDocument.createElement(TAG_PK_G);
-            String gString = new String(Hex.encode(publicKeyParameters.getG().toBytes()));
-            Text gText = publicKeyParametersDocument.createTextNode(gString);
-            schemeElement.appendChild(gElement);
-            gElement.appendChild(gText);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_G, publicKeyParameters.getG());
             //Set gb
-            Element gbElement = publicKeyParametersDocument.createElement(TAG_PK_Gb);
-            String gbString = new String(Hex.encode(publicKeyParameters.getGb().toBytes()));
-            Text gbText = publicKeyParametersDocument.createTextNode(gbString);
-            schemeElement.appendChild(gbElement);
-            gbElement.appendChild(gbText);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_Gb, publicKeyParameters.getGb());
             //Set gb2
-            Element gb2Element = publicKeyParametersDocument.createElement(TAG_PK_Gb2);
-            String gb2String = new String(Hex.encode(publicKeyParameters.getGb2().toBytes()));
-            Text gb2Text = publicKeyParametersDocument.createTextNode(gb2String);
-            schemeElement.appendChild(gb2Element);
-            gb2Element.appendChild(gb2Text);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_Gb2, publicKeyParameters.getGb2());
             //Set hb
-            Element hbElement = publicKeyParametersDocument.createElement(TAG_PK_Hb);
-            String hbString = new String(Hex.encode(publicKeyParameters.getHb().toBytes()));
-            Text hbText = publicKeyParametersDocument.createTextNode(hbString);
-            schemeElement.appendChild(hbElement);
-            hbElement.appendChild(hbText);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_Hb, publicKeyParameters.getHb());
             //Set eggAlpha
-            Element eggAlphaElement = publicKeyParametersDocument.createElement(TAG_PK_EggAlpha);
-            String eggAlphaString = new String(Hex.encode(publicKeyParameters.getEggAlpha().toBytes()));
-            Text eggAlphaText = publicKeyParametersDocument.createTextNode(eggAlphaString);
-            schemeElement.appendChild(eggAlphaElement);
-            eggAlphaElement.appendChild(eggAlphaText);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_EggAlpha, publicKeyParameters.getEggAlpha());
             return publicKeyParametersDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -123,23 +104,11 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_MSK);
             masterSecretKeyDocument.appendChild(schemeElement);
             //Set alpha
-            Element alphaElement = masterSecretKeyDocument.createElement(TAG_MSK_ALPHA);
-            String alphaString = new String(Hex.encode(masterSecretKeyParameters.getAlpha().toBytes()));
-            Text alphaText = masterSecretKeyDocument.createTextNode(alphaString);
-            schemeElement.appendChild(alphaElement);
-            alphaElement.appendChild(alphaText);
+            SerializationUtils.SetElement(masterSecretKeyDocument, schemeElement, TAG_MSK_ALPHA, masterSecretKeyParameters.getAlpha());
             //Set b
-            Element bElement = masterSecretKeyDocument.createElement(TAG_MSK_B);
-            String bString = new String(Hex.encode(masterSecretKeyParameters.getB().toBytes()));
-            Text bText = masterSecretKeyDocument.createTextNode(bString);
-            schemeElement.appendChild(bElement);
-            bElement.appendChild(bText);
+            SerializationUtils.SetElement(masterSecretKeyDocument, schemeElement, TAG_MSK_B, masterSecretKeyParameters.getB());
             //Set h
-            Element hElement = masterSecretKeyDocument.createElement(TAG_MSK_H);
-            String hString = new String(Hex.encode(masterSecretKeyParameters.getH().toBytes()));
-            Text hText = masterSecretKeyDocument.createTextNode(hString);
-            schemeElement.appendChild(hElement);
-            hElement.appendChild(hText);
+            SerializationUtils.SetElement(masterSecretKeyDocument, schemeElement, TAG_MSK_H, masterSecretKeyParameters.getH());
             return masterSecretKeyDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -154,28 +123,13 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_SK);
             secretKeyDocument.appendChild(schemeElement);
             //Set id
-            Element idElement = secretKeyDocument.createElement(TAG_SK_ID);
-            Text idText = secretKeyDocument.createTextNode(secretKeyParameters.getId());
-            schemeElement.appendChild(idElement);
-            idElement.appendChild(idText);
+            SerializationUtils.SetString(secretKeyDocument, schemeElement, TAG_SK_ID, secretKeyParameters.getId());
             //Set d0
-            Element d0Element = secretKeyDocument.createElement(RELSW10aXMLSerializer.TAG_SK_D0);
-            String d0String = new String(Hex.encode(secretKeyParameters.getD0().toBytes()));
-            Text d0Text = secretKeyDocument.createTextNode(d0String);
-            schemeElement.appendChild(d0Element);
-            d0Element.appendChild(d0Text);
+            SerializationUtils.SetElement(secretKeyDocument, schemeElement, TAG_SK_D0, secretKeyParameters.getD0());
             //Set d1
-            Element d1Element = secretKeyDocument.createElement(RELSW10aXMLSerializer.TAG_SK_D1);
-            String d1String = new String(Hex.encode(secretKeyParameters.getD1().toBytes()));
-            Text d1Text = secretKeyDocument.createTextNode(d1String);
-            schemeElement.appendChild(d1Element);
-            d1Element.appendChild(d1Text);
+            SerializationUtils.SetElement(secretKeyDocument, schemeElement, TAG_SK_D1, secretKeyParameters.getD1());
             //Set d2
-            Element d2Element = secretKeyDocument.createElement(RELSW10aXMLSerializer.TAG_SK_D2);
-            String d2String = new String(Hex.encode(secretKeyParameters.getD2().toBytes()));
-            Text d2Text = secretKeyDocument.createTextNode(d2String);
-            schemeElement.appendChild(d2Element);
-            d2Element.appendChild(d2Text);
+            SerializationUtils.SetElement(secretKeyDocument, schemeElement, TAG_SK_D2, secretKeyParameters.getD2());
             return secretKeyDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -191,33 +145,11 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(ciphertextParameters.getLength()));
             ciphertextDocument.appendChild(schemeElement);
             //Set C0
-            Element c0Element = ciphertextDocument.createElement(RELSW10aXMLSerializer.TAG_CT_C0);
-            String c0String = new String(Hex.encode(ciphertextParameters.getC0().toBytes()));
-            Text c0Text = ciphertextDocument.createTextNode(c0String);
-            schemeElement.appendChild(c0Element);
-            c0Element.appendChild(c0Text);
+            SerializationUtils.SetElement(ciphertextDocument, schemeElement, TAG_CT_C0, ciphertextParameters.getC0());
             //Set C1s
-            Element c1sElement = ciphertextDocument.createElement(TAG_CT_C1S);
-            schemeElement.appendChild(c1sElement);
-            for (int i=0; i<ciphertextParameters.getC1s().length; i++){
-                Element c1iElement = ciphertextDocument.createElement(TAG_CT_C1I);
-                c1iElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
-                String c1iString = new String(Hex.encode(ciphertextParameters.getC1sAt(i).toBytes()));
-                Text c1iText = ciphertextDocument.createTextNode(c1iString);
-                c1sElement.appendChild(c1iElement);
-                c1iElement.appendChild(c1iText);
-            }
+            SerializationUtils.SetElementArray(ciphertextDocument, schemeElement, TAG_CT_C1S, TAG_CT_C1I, ciphertextParameters.getC1s());
             //Set C2s
-            Element c2sElement = ciphertextDocument.createElement(TAG_CT_C2S);
-            schemeElement.appendChild(c2sElement);
-            for (int i=0; i<ciphertextParameters.getC2s().length; i++){
-                Element c2iElement = ciphertextDocument.createElement(TAG_CT_C2I);
-                c2iElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
-                String c2iString = new String(Hex.encode(ciphertextParameters.getC2sAt(i).toBytes()));
-                Text c2iText = ciphertextDocument.createTextNode(c2iString);
-                c2sElement.appendChild(c2iElement);
-                c2iElement.appendChild(c2iText);
-            }
+            SerializationUtils.SetElementArray(ciphertextDocument, schemeElement, TAG_CT_C2S, TAG_CT_C2I, ciphertextParameters.getC2s());
             return ciphertextDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -304,7 +236,6 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         NodeList nodeList = schemeElement.getChildNodes();
         String id = null;
-        it.unisa.dia.gas.jpbc.Element elementId = null;
         it.unisa.dia.gas.jpbc.Element d0 = null;
         it.unisa.dia.gas.jpbc.Element d1 = null;
         it.unisa.dia.gas.jpbc.Element d2 = null;
@@ -326,7 +257,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
                 d2 = pairing.getG1().newElementFromBytes(Hex.decode(d2String)).getImmutable();
             }
         }
-        elementId = Utils.MapToZr(pairing, id);
+        it.unisa.dia.gas.jpbc.Element elementId = Utils.MapToZr(pairing, id);
         return new RELSW10aSecretKeyParameters(pairingParameters, id, elementId, d0, d1, d2);
     }
 

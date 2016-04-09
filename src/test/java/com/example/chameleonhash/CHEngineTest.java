@@ -1,11 +1,12 @@
 package com.example.chameleonhash;
 
 import cn.edu.buaa.crypto.chameleonhash.*;
-import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashAsymmetricCipherKeyPair;
-import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
-import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
-import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
+import cn.edu.buaa.crypto.chameleonhash.params.*;
+import cn.edu.buaa.crypto.chameleonhash.serialization.ChameleonHashXMLSerializer;
+import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
+import it.unisa.dia.gas.jpbc.PairingParameters;
+import org.w3c.dom.Document;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,9 +15,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class CHEngineTest {
     private CHEngine engine;
+    private ChameleonHashXMLSerializer chameleonHashXMLSerializer;
 
-    public CHEngineTest(CHEngine engine) {
+    public CHEngineTest(CHEngine engine, ChameleonHashXMLSerializer chameleonHashXMLSerializer) {
         this.engine = engine;
+        this.chameleonHashXMLSerializer = chameleonHashXMLSerializer;
     }
 
     public void processTest(int rBitLength, int qBitLength) {
@@ -24,6 +27,7 @@ public class CHEngineTest {
         ChameleonHashAsymmetricCipherKeyPair keyPair = this.engine.keyGen(rBitLength, qBitLength);
         ChameleonHashPublicKeyParameters publicKey = keyPair.getPublic();
         ChameleonHashSecretKeyParameters secretKey = keyPair.getPrivate();
+        PairingParameters pairingParameters = publicKey.getParameters();
 
         //Hash
         String message1 = "This is message 1";
@@ -60,5 +64,40 @@ public class CHEngineTest {
         ChameleonHashResultParameters hash1CollisionParametersPrime = this.engine.chameleonHash(publicKey, message2.getBytes(), rCollision);
         assertEquals(hash1Parameters.getHashResult(), hash1CollisionParametersPrime.getHashResult());
         System.out.println("Expect:" + hash1Parameters.getHashResult() + "\nActual:" +  hash1CollisionParametersPrime.getHashResult());
+
+        //Test Serialize & deserialize
+        if (this.chameleonHashXMLSerializer != null) {
+            //Serialize & deserialize public key
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing public key");
+            TestUtils.OutputXMLDocument("serializations/chameleonhash/CH_Public_Key.xml", this.chameleonHashXMLSerializer.documentSerialization(publicKey));
+            Document documentPublicKey = TestUtils.InputXMLDocument("serializations/chameleonhash/CH_Public_Key.xml");
+            ChameleonHashParameters anoPublicKey = this.chameleonHashXMLSerializer.documentDeserialization(pairingParameters, documentPublicKey);
+            assertEquals(publicKey, anoPublicKey);
+
+
+            //Serialize & deserialize secret key
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing secret key");
+            TestUtils.OutputXMLDocument("serializations/chameleonhash/CH_Secret_Key.xml", this.chameleonHashXMLSerializer.documentSerialization(secretKey));
+            Document documentSecretKey = TestUtils.InputXMLDocument("serializations/chameleonhash/CH_Secret_Key.xml");
+            ChameleonHashParameters anoSecretKey = this.chameleonHashXMLSerializer.documentDeserialization(pairingParameters, documentSecretKey);
+            assertEquals(secretKey, anoSecretKey);
+
+            //Serialize & deserialize hash result
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing hash result 1");
+            TestUtils.OutputXMLDocument("serializations/chameleonhash/CH_Hash_Result1.xml", this.chameleonHashXMLSerializer.documentSerialization(hash1Parameters));
+            Document documentHash1Parameters = TestUtils.InputXMLDocument("serializations/chameleonhash/CH_Hash_Result1.xml");
+            ChameleonHashParameters anoHash1Parameters = this.chameleonHashXMLSerializer.documentDeserialization(pairingParameters, documentHash1Parameters);
+            assertEquals(hash1Parameters, anoHash1Parameters);
+
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing hash result 2");
+            TestUtils.OutputXMLDocument("serializations/chameleonhash/CH_Hash_Result2.xml", this.chameleonHashXMLSerializer.documentSerialization(hash2Parameters));
+            Document documentHash2Parameters = TestUtils.InputXMLDocument("serializations/chameleonhash/CH_Hash_Result2.xml");
+            ChameleonHashParameters anoHash2Parameters = this.chameleonHashXMLSerializer.documentDeserialization(pairingParameters, documentHash2Parameters);
+            assertEquals(hash2Parameters, anoHash2Parameters);
+        }
     }
 }

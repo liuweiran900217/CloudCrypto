@@ -13,7 +13,7 @@ public class CHKR00PublicKeyParameters extends ChameleonHashPublicKeyParameters 
     private final Element y;
 
     public CHKR00PublicKeyParameters(PairingParameters pairingParameters, Element g, Element y) {
-        super(false, pairingParameters);
+        super(pairingParameters);
         this.g = g.getImmutable();
         this.y = y.getImmutable();
     }
@@ -33,8 +33,7 @@ public class CHKR00PublicKeyParameters extends ChameleonHashPublicKeyParameters 
             if (!Utils.isEqualElement(this.y, that.getY())) {
                 return false;
             }
-            //Compare params
-            return super.equals(anObject);
+            return true;
         }
         return false;
     }

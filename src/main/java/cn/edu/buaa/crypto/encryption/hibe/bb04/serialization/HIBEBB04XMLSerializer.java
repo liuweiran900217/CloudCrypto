@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.serialization;
 
+import cn.edu.buaa.crypto.SerializationUtils;
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextParameters;
@@ -22,7 +23,7 @@ import java.security.InvalidParameterException;
  * Created by Weiran Liu on 15-10-2.
  */
 public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
-    private static final String TAG_SCHEME = HIBEBB04Engine.SCHEME_NAME;
+    private static final String TAG_SCHEME_NAME = HIBEBB04Engine.SCHEME_NAME;
 
     //Tags for public key
     private static final String TAG_PK_G = "G";
@@ -64,46 +65,26 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         } else if (cipherParameters instanceof HIBEBB04CiphertextParameters) {
             return getInstance().ciphertextParametersSerialization((HIBEBB04CiphertextParameters) cipherParameters);
         } else {
-            throw new InvalidParameterException("Invalid CipherParameter Instance of HIBEBB04Engine Scheme, find" + cipherParameters.getClass().getName());
+            throw new InvalidParameterException("Invalid CipherParameter Instance of " + TAG_SCHEME_NAME +
+                    " Scheme, find" + cipherParameters.getClass().getName());
         }
     }
 
     private Document publicKeyParametersSerialization(HIBEBB04PublicKeyParameters publicKeyParameters){
         try {
             Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = publicKeyParametersDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
+            Element schemeElement = publicKeyParametersDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_PK);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(publicKeyParameters.getMaxLength()));
             publicKeyParametersDocument.appendChild(schemeElement);
             //Set g
-            Element gElement = publicKeyParametersDocument.createElement(TAG_PK_G);
-            String gString = new String(Hex.encode(publicKeyParameters.getG().toBytes()));
-            Text gText = publicKeyParametersDocument.createTextNode(gString);
-            schemeElement.appendChild(gElement);
-            gElement.appendChild(gText);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_G, publicKeyParameters.getG());
             //Set g1
-            Element g1Element = publicKeyParametersDocument.createElement(TAG_PK_G1);
-            String g1String = new String(Hex.encode(publicKeyParameters.getG1().toBytes()));
-            Text g1Text = publicKeyParametersDocument.createTextNode(g1String);
-            schemeElement.appendChild(g1Element);
-            g1Element.appendChild(g1Text);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_G1, publicKeyParameters.getG1());
             //Set g2
-            Element g2Element = publicKeyParametersDocument.createElement(TAG_PK_G2);
-            String g2String = new String(Hex.encode(publicKeyParameters.getG2().toBytes()));
-            Text g2Text = publicKeyParametersDocument.createTextNode(g2String);
-            schemeElement.appendChild(g2Element);
-            g2Element.appendChild(g2Text);
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_PK_G2, publicKeyParameters.getG2());
             //Set h
-            Element hsElement = publicKeyParametersDocument.createElement(TAG_PK_HS);
-            schemeElement.appendChild(hsElement);
-            for (int i=0; i<publicKeyParameters.getMaxLength(); i++){
-                Element hiElement = publicKeyParametersDocument.createElement(TAG_PK_HI);
-                hiElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
-                String hiString = new String(Hex.encode(publicKeyParameters.getHsAt(i).toBytes()));
-                Text hiText = publicKeyParametersDocument.createTextNode(hiString);
-                hsElement.appendChild(hiElement);
-                hiElement.appendChild(hiText);
-            }
+            SerializationUtils.SetElementArray(publicKeyParametersDocument, schemeElement, TAG_PK_HS, TAG_PK_HI, publicKeyParameters.getHs());
             return publicKeyParametersDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -114,16 +95,11 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
     private Document masterSecretKeyParametersSerialization(HIBEBB04MasterSecretKeyParameters masterSecretKeyParameters) {
         try {
             Document masterSecretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = masterSecretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
+            Element schemeElement = masterSecretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_MSK);
             masterSecretKeyDocument.appendChild(schemeElement);
             //Set g2Alpha
-            Element g2AlphaElement = masterSecretKeyDocument.createElement(TAG_MSK_G2ALPHA);
-            String g2AlphaString = new String(Hex.encode(masterSecretKeyParameters.getG2Alpha().toBytes()));
-            Text g2AlphaText = masterSecretKeyDocument.createTextNode(g2AlphaString);
-            schemeElement.appendChild(g2AlphaElement);
-            g2AlphaElement.appendChild(g2AlphaText);
-
+            SerializationUtils.SetElement(masterSecretKeyDocument, schemeElement, TAG_MSK_G2ALPHA, masterSecretKeyParameters.getG2Alpha());
             return masterSecretKeyDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -134,37 +110,16 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
     private Document secretKeyParametersSerialization(HIBEBB04SecretKeyParameters secretKeyParameters){
         try {
             Document secretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = secretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
+            Element schemeElement = secretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_SK);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(secretKeyParameters.getLength()));
             secretKeyDocument.appendChild(schemeElement);
             //Set Ids
-            Element idsElement = secretKeyDocument.createElement(TAG_SK_IDS);
-            schemeElement.appendChild(idsElement);
-            for (int i=0; i<secretKeyParameters.getLength(); i++) {
-                Element idiElement = secretKeyDocument.createElement(TAG_SK_IDI);
-                idiElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
-                Text idiText = secretKeyDocument.createTextNode(secretKeyParameters.getIdAt(i));
-                idsElement.appendChild(idiElement);
-                idiElement.appendChild(idiText);
-            }
+            SerializationUtils.SetStringArray(secretKeyDocument, schemeElement, TAG_SK_IDS, TAG_SK_IDI, secretKeyParameters.getIds());
             //Set d0
-            Element d0Element = secretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SK_D0);
-            String D0String = new String(Hex.encode(secretKeyParameters.getD0().toBytes()));
-            Text d0Text = secretKeyDocument.createTextNode(D0String);
-            schemeElement.appendChild(d0Element);
-            d0Element.appendChild(d0Text);
+            SerializationUtils.SetElement(secretKeyDocument, schemeElement, TAG_SK_D0, secretKeyParameters.getD0());
             //Set ds
-            Element dsElement = secretKeyDocument.createElement(TAG_SK_DS);
-            schemeElement.appendChild(dsElement);
-            for (int i=0; i<secretKeyParameters.getLength(); i++){
-                Element diElement = secretKeyDocument.createElement(TAG_SK_DI);
-                diElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
-                String diString = new String(Hex.encode(secretKeyParameters.getDsAt(i).toBytes()));
-                Text diText = secretKeyDocument.createTextNode(diString);
-                dsElement.appendChild(diElement);
-                diElement.appendChild(diText);
-            }
+            SerializationUtils.SetElementArray(secretKeyDocument, schemeElement, TAG_SK_DS, TAG_SK_DI, secretKeyParameters.getDs());
             return secretKeyDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -175,27 +130,14 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
     private Document ciphertextParametersSerialization(HIBEBB04CiphertextParameters ciphertextParameters){
         try {
             Document ciphertextDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = ciphertextDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME);
+            Element schemeElement = ciphertextDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, HIBEBB04XMLSerializer.TYPE_CT);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH, Integer.toString(ciphertextParameters.getLength()));
             ciphertextDocument.appendChild(schemeElement);
             //Set B
-            Element bElement = ciphertextDocument.createElement(HIBEBB04XMLSerializer.TAG_CT_B);
-            String bString = new String(Hex.encode(ciphertextParameters.getB().toBytes()));
-            Text bText = ciphertextDocument.createTextNode(bString);
-            schemeElement.appendChild(bElement);
-            bElement.appendChild(bText);
+            SerializationUtils.SetElement(ciphertextDocument, schemeElement, TAG_CT_B, ciphertextParameters.getB());
             //Set Cs
-            Element csElement = ciphertextDocument.createElement(TAG_CT_CS);
-            schemeElement.appendChild(csElement);
-            for (int i=0; i<ciphertextParameters.getLength(); i++){
-                Element ciElement = ciphertextDocument.createElement(TAG_CT_CI);
-                ciElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
-                String ciString = new String(Hex.encode(ciphertextParameters.getCsAt(i).toBytes()));
-                Text ciText = ciphertextDocument.createTextNode(ciString);
-                csElement.appendChild(ciElement);
-                ciElement.appendChild(ciText);
-            }
+            SerializationUtils.SetElementArray(ciphertextDocument, schemeElement, TAG_CT_CS, TAG_CT_CI, ciphertextParameters.getCs());
             return ciphertextDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -215,7 +157,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         } else if (cipherParameterType.equals(PairingParameterXMLSerializer.TYPE_CT)) {
             return getInstance().ciphertextParametersDeserialization(pairingParameters, schemeElement);
         } else {
-            throw new InvalidParameterException("Illegal HIBEBB04Engine Document Type, find " + cipherParameterType);
+            throw new InvalidParameterException("Illegal " + TAG_SCHEME_NAME + " Document Type, find " + cipherParameterType);
         }
     }
 

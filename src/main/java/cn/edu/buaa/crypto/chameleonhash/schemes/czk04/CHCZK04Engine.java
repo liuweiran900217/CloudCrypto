@@ -76,13 +76,14 @@ public class CHCZK04Engine implements CHEngine {
         }
         CHCZK04SecretKeyParameters secretKey = (CHCZK04SecretKeyParameters)secretKeyParameters;
         CHCZK04PublicKeyParameters publicKey = (CHCZK04PublicKeyParameters)secretKeyParameters.getPublicKeyParameters();
+        CHCZK04HashResultParameters hashResult = (CHCZK04HashResultParameters) hash;
         Pairing pairing = PairingFactory.getPairing(publicKey.getParameters());
-        Element m = hash.getHashMessage();
-        Element mPrime = Utils.MapToZr(pairing, anMessage);
-        Element[] r = hash.getRs();
+        Element m = hashResult.getHashMessage().getImmutable();
+        Element mPrime = Utils.MapToZr(pairing, anMessage).getImmutable();
+        Element[] r = hashResult.getRs();
         Element[] rPrime = new Element[] {
                 publicKey.getG().mul(r[2]).powZn(secretKey.getX().invert().mulZn(m.sub(mPrime))).mul(r[0]),
                 r[1].mul(publicKey.getG().mul(r[2]).powZn(m.sub(mPrime))), r[2]};
-        return new ChameleonHashResultParameters(mPrime, hash.getHashResult(), rPrime);
+        return new CHCZK04HashResultParameters(mPrime, hash.getHashResult(), rPrime);
     }
 }

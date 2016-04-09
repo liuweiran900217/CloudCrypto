@@ -13,7 +13,7 @@ public class CHCZK04PublicKeyParameters extends ChameleonHashPublicKeyParameters
     private final Element y;
 
     public CHCZK04PublicKeyParameters(PairingParameters pairingParameters, Element g, Element y) {
-        super(false, pairingParameters);
+        super(pairingParameters);
         this.g = g.getImmutable();
         this.y = y.getImmutable();
     }
@@ -29,12 +29,16 @@ public class CHCZK04PublicKeyParameters extends ChameleonHashPublicKeyParameters
         }
         if (anObject instanceof CHCZK04PublicKeyParameters) {
             CHCZK04PublicKeyParameters that = (CHCZK04PublicKeyParameters)anObject;
+            //Compare g
+            if (!Utils.isEqualElement(this.g, that.getG())) {
+                return false;
+            }
             //Compare y
             if (!Utils.isEqualElement(this.y, that.getY())) {
                 return false;
             }
             //Compare params
-            return super.equals(anObject);
+            return true;
         }
         return false;
     }
