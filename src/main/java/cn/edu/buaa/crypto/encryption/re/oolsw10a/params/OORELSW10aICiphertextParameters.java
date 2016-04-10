@@ -25,13 +25,14 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
     private final Element[] ss;
     private final Element sv;
     private final Element s;
+    private final Element sessionKey;
     private final ChameleonHashSecretKeyParameters chameleonHashSecretKey;
     private final ChameleonHashResultParameters chameleonHashResult;
 
     public OORELSW10aICiphertextParameters(
             PairingParameters pairingParameters,
             int length, Element C0, Element[] C1s, Element[] C2s, Element Cv1, Element Cv2,
-            Element[] Is, Element Iv, Element[] ss, Element sv, Element s,
+            Element[] Is, Element Iv, Element[] ss, Element sv, Element s, Element sessionKey,
             ChameleonHashSecretKeyParameters chameleonHashSecretKey, ChameleonHashResultParameters chameleonHashResult) {
         super(pairingParameters);
         this.length = length;
@@ -45,6 +46,7 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
         this.ss = ElementUtils.cloneImmutable(ss);
         this.sv = sv.getImmutable();
         this.s = s.getImmutable();
+        this.sessionKey = sessionKey.getImmutable();
         this.chameleonHashSecretKey = chameleonHashSecretKey;
         this.chameleonHashResult = chameleonHashResult;
     }
@@ -73,11 +75,13 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
 
     public Element[] getSs() { return Arrays.copyOf(this.ss, this.ss.length); }
 
-    public Element getSAt(int index) { return this.ss[index].duplicate(); }
+    public Element getSsAt(int index) { return this.ss[index].duplicate(); }
 
     public Element getSv() { return this.sv.duplicate(); }
 
     public Element getS() { return this.s.duplicate(); }
+
+    public Element getSessionKey() { return this.sessionKey.duplicate(); }
 
     public ChameleonHashSecretKeyParameters getChameleonHashSecretKey() {
         return this.chameleonHashSecretKey;
@@ -116,6 +120,8 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
             } else if (!Utils.isEqualElement(this.sv, that.getSv())) {
                 return false;
             } else if (!Utils.isEqualElement(this.s, that.getS())) {
+                return false;
+            } else if (!Utils.isEqualElement(this.sessionKey, that.getSessionKey())) {
                 return false;
             } else if (!this.chameleonHashSecretKey.equals(that.getChameleonHashSecretKey())) {
                 return false;

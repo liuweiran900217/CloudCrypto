@@ -5,6 +5,9 @@ import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 /**
  * Created by Weiran Liu on 2016/4/4.
  */
@@ -41,5 +44,20 @@ public class CHCZK04PublicKeyParameters extends ChameleonHashPublicKeyParameters
             return true;
         }
         return false;
+    }
+
+    @Override
+    public byte[] toBytes() {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byteArrayOutputStream.write(this.g.toBytes());
+            byteArrayOutputStream.write(this.y.toBytes());
+            byte[] resultBytes = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+            return resultBytes;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

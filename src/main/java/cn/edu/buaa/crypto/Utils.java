@@ -82,16 +82,16 @@ public class Utils {
 
     public static Element MapToFirstHalfZr(Pairing pairing, byte[] message) {
         byte[] shaResult = hash(512, message);
-        shaResult[0] = (byte) (shaResult[0] & 0xFE);
-        Element hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
-        return hash;
+        byte[] hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).toBytes();
+        hash[0] &= 0xEF;
+        return pairing.getZr().newElementFromBytes(hash).getImmutable();
     }
 
     public static Element MapToSecondHalfZr(Pairing pairing, byte[] message) {
         byte[] shaResult = hash(512, message);
-        shaResult[0] = (byte) (shaResult[0] ^ 0x01);
-        Element hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
-        return hash;
+        byte[] hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).toBytes();
+        hash[0] |= 0x80;
+        return pairing.getZr().newElementFromBytes(hash).getImmutable();
     }
 
     /**
