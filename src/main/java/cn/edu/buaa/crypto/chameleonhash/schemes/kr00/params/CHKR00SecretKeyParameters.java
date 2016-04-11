@@ -51,4 +51,8 @@ public class CHKR00SecretKeyParameters extends ChameleonHashSecretKeyParameters 
         }
         return false;
     }
+
+    public String getCHEngineName() {
+        return CHKR00Engine.SCHEME_NAME;
+    }
 }

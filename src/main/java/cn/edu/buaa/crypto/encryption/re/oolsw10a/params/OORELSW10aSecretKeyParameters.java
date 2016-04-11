@@ -42,8 +42,8 @@ public class OORELSW10aSecretKeyParameters extends PairingKeyParameters {
         if (this == anOjbect) {
             return true;
         }
-        if (anOjbect instanceof RELSW10aSecretKeyParameters) {
-            RELSW10aSecretKeyParameters that = (RELSW10aSecretKeyParameters) anOjbect;
+        if (anOjbect instanceof OORELSW10aSecretKeyParameters) {
+            OORELSW10aSecretKeyParameters that = (OORELSW10aSecretKeyParameters) anOjbect;
             //Compare id
             if (!this.id.equals(that.getId())) {
                 return false;

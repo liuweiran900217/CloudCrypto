@@ -204,7 +204,6 @@ public class OOREEngineTest {
             CipherParameters anoMasterKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentMasterKey);
             assertEquals(masterKey, anoMasterKey);
 
-
             //Serialize & deserialize secret keys
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing secret key skId");
@@ -221,6 +220,22 @@ public class OOREEngineTest {
             CipherParameters anSkRid = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSkRid);
             assertEquals(skRid, anSkRid);
 
+            //Serialize & deserialize intermediate ciphertexts
+            //Serialize & deserialize intermediate ciphertext0
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing intermediate ciphertext Rids1");
+            TestUtils.OutputXMLDocument("serializations/re/OORE_ICiphertext_Rids1.xml", schemeXMLSerializer.documentSerialization(iCiphertextRids1));
+            Document documentICiphertextRids1 = TestUtils.InputXMLDocument("serializations/re/OORE_ICiphertext_Rids1.xml");
+            CipherParameters anICiphertextRids1 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentICiphertextRids1);
+            assertEquals(iCiphertextRids1, anICiphertextRids1);
+            //Serialize & deserialize ciphertext01
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing intermediate ciphertext Rids2");
+            TestUtils.OutputXMLDocument("serializations/re/OORE_ICiphertext_Rids2.xml", schemeXMLSerializer.documentSerialization(iCiphertextRids2));
+            Document documentICiphertextRids2 = TestUtils.InputXMLDocument("serializations/re/OORE_ICiphertext_Rids2.xml");
+            CipherParameters anICiphertextRids2 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentICiphertextRids2);
+            assertEquals(iCiphertextRids2, anICiphertextRids2);
+
             //Serialize & deserialize ciphertexts
             //Serialize & deserialize ciphertext0
             System.out.println("======================================");
@@ -236,6 +251,22 @@ public class OOREEngineTest {
             Document documentCiphertextRids2 = TestUtils.InputXMLDocument("serializations/re/OORE_Ciphertext_Rids2.xml");
             CipherParameters anCiphertextRids2 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextRids2);
             assertEquals(ciphertextRids2, anCiphertextRids2);
+
+            //Serialize & deserialize online/offline ciphertexts
+            //Serialize & deserialize online/offline ciphertext0
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing online/offline ciphertext Rids1");
+            TestUtils.OutputXMLDocument("serializations/re/OORE_OOCiphertext_Rids1.xml", schemeXMLSerializer.documentSerialization(ooCiphertextRids1));
+            Document documentOOCiphertextRids1 = TestUtils.InputXMLDocument("serializations/re/OORE_OOCiphertext_Rids1.xml");
+            CipherParameters anOOCiphertextRids1 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentOOCiphertextRids1);
+            assertEquals(ooCiphertextRids1, anOOCiphertextRids1);
+            //Serialize & deserialize online/offline ciphertext01
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing online/offline ciphertext Rids2");
+            TestUtils.OutputXMLDocument("serializations/re/OORE_OOCiphertext_Rids2.xml", schemeXMLSerializer.documentSerialization(ooCiphertextRids2));
+            Document documentOOCiphertextRids2 = TestUtils.InputXMLDocument("serializations/re/OORE_OOCiphertext_Rids2.xml");
+            CipherParameters anOOCiphertextRids2 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentOOCiphertextRids2);
+            assertEquals(ooCiphertextRids2, anOOCiphertextRids2);
 
             System.out.println("======================================");
             System.out.println("Serialize & deserialize tests passed.");

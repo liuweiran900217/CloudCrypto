@@ -10,7 +10,7 @@ import java.math.BigInteger;
 /**
  * Created by Weiran Liu on 2016/4/4.
  */
-public class ChameleonHashResultParameters implements ChameleonHashParameters {
+public abstract class ChameleonHashResultParameters implements ChameleonHashParameters {
     private Element hashMessage;
     private Element hashResult;
     private Element[] r;

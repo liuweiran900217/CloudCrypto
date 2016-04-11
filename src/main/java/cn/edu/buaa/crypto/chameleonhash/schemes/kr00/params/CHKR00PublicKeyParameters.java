@@ -2,6 +2,7 @@ package cn.edu.buaa.crypto.chameleonhash.schemes.kr00.params;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
+import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.CHKR00Engine;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 
@@ -54,5 +55,9 @@ public class CHKR00PublicKeyParameters extends ChameleonHashPublicKeyParameters 
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String getCHEngineName() {
+        return CHKR00Engine.SCHEME_NAME;
     }
 }

@@ -46,8 +46,8 @@ public class OORELSW10aPublicKeyParameters extends PairingKeyParameters {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof RELSW10aPublicKeyParameters) {
-            RELSW10aPublicKeyParameters that = (RELSW10aPublicKeyParameters) anObject;
+        if (anObject instanceof OORELSW10aPublicKeyParameters) {
+            OORELSW10aPublicKeyParameters that = (OORELSW10aPublicKeyParameters) anObject;
             //Compare g
             if (!Utils.isEqualElement(this.g, that.getG())) {
                 return false;
@@ -66,6 +66,9 @@ public class OORELSW10aPublicKeyParameters extends PairingKeyParameters {
             }
             //Compare e_g_g_alpha
             if (!Utils.isEqualElement(this.eggAlpha, that.getEggAlpha())) {
+                return false;
+            }
+            if (!this.chEngine.getName().equals(that.getCHEngine().getName())) {
                 return false;
             }
             return true;

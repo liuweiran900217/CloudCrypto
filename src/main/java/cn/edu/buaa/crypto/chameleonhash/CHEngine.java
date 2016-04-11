@@ -14,6 +14,8 @@ public interface CHEngine {
     //Default strengh, useless in pairing-based cryptography
     int STRENGTH = 12;
 
+    public String getName();
+
     public ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength);
 
     public ChameleonHashAsymmetricCipherKeyPair keyGen(PairingParameters pairingParameters);

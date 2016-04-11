@@ -25,6 +25,10 @@ public class CHCZK04Engine implements CHEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "CZK04ChameleonHash";
 
+    public String getName() {
+        return SCHEME_NAME;
+    }
+
     public ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength) {
         CHCZK04KeyPairGenerator keyPairGenerator = new CHCZK04KeyPairGenerator();
         keyPairGenerator.init(new CHCZK04KeyGenerationParameters(Utils.GeneratePropertiesParameters(rBitLength, qBitLength)));

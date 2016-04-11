@@ -23,6 +23,10 @@ public class CHKR00Engine implements CHEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "KR00ChameleonHash";
 
+    public String getName() {
+        return SCHEME_NAME;
+    }
+
     public ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength) {
         CHKR00KeyPairGenerator keyPairGenerator = new CHKR00KeyPairGenerator();
         keyPairGenerator.init(new CHKR00KeyGenerationParameters(Utils.GeneratePropertiesParameters(rBitLength, qBitLength)));
@@ -78,6 +82,6 @@ public class CHKR00Engine implements CHEngine {
         Element mPrime = Utils.MapToZr(pairing, anMessage);
         Element[] r = hash.getRs();
         Element[] rPrime = new Element[] {r[0].add(secretKey.getX().invert().mul(m.sub(mPrime))).getImmutable()};
-        return new ChameleonHashResultParameters(mPrime, hash.getHashResult(), rPrime);
+        return new CHKR00HashResultParameters(mPrime, hash.getHashResult(), rPrime);
     }
 }

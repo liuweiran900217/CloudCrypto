@@ -32,8 +32,8 @@ public class OORELSW10aMasterSecretKeyParameters extends PairingKeyParameters {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof RELSW10aMasterSecretKeyParameters) {
-            RELSW10aMasterSecretKeyParameters that = (RELSW10aMasterSecretKeyParameters)anObject;
+        if (anObject instanceof OORELSW10aMasterSecretKeyParameters) {
+            OORELSW10aMasterSecretKeyParameters that = (OORELSW10aMasterSecretKeyParameters)anObject;
             if (!(Utils.isEqualElement(this.alpha, that.getAlpha()))) {
                 return false;
             }
