@@ -91,4 +91,4 @@ The most obvious way is to report bugs or request new features on GitHub that wo
 
 ## How to Use?
 
-Please see test codes in parkages com.example.
+Please see test codes in package com.example.
