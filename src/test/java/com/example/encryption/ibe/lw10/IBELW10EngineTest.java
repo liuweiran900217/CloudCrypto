@@ -1,8 +1,8 @@
 package com.example.encryption.ibe.lw10;
 
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
-import cn.edu.buaa.crypto.encryption.ibe.LW10.IBELW10Engine;
-import cn.edu.buaa.crypto.encryption.ibe.LW10.serialization.IBELW10XMLSerializer;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.IBELW10Engine;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.serialization.IBELW10XMLSerializer;
 import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import com.example.encryption.ibe.IBEEngineTest;
 
@@ -15,6 +15,6 @@ public class IBELW10EngineTest {
         PairingParameterXMLSerializer schemeXMLSerializer = IBELW10XMLSerializer.getInstance();
 
         IBEEngineTest engineTest = new IBEEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(-1, 128);
+        engineTest.processTest(-1, 512);
     }
 }
