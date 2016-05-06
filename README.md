@@ -62,6 +62,10 @@ We have implemented the following schemes. We will continue implementing others.
 based on the transformation technique proposed by me, Prof. Jianwei Liu, Prof. Qianhong Wu, and Dr. Bo Qin.
 (**The corresponding paper has been submitted to ESORICS 2016, under review**).
 
+### Identity-Based Encryption
+
+- (2016.05.07) Lewko-Waters Identity-Based Encryption scheme (TCC 2010).
+
 ### Hierarhical Identity-Based Encryption
 
 - Boneh-Boyen Hierarchical Identity-Based Encryption scheme (EUROCRYPT 2004).

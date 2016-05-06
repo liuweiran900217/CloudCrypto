@@ -13,6 +13,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * This interface is an abstract of IBE definitions.
  */
 public interface IBEEngine {
+    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
+    public static final int STENGTH = 12;
 
     /**
      * Setup Algorithm for IBE
@@ -48,10 +50,6 @@ public interface IBEEngine {
      * @return the decapsulated session key
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public byte[] decapsulation (
-            CipherParameters publicKey,
-            CipherParameters secretKey,
-            String[] id,
-            CipherParameters ciphertext
-    ) throws InvalidCipherTextException;
+    public byte[] decapsulation (CipherParameters publicKey, CipherParameters secretKey,
+            String id, CipherParameters ciphertext) throws InvalidCipherTextException;
 }
