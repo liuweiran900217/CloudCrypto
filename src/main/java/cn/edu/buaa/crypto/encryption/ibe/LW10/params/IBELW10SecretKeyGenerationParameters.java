@@ -4,8 +4,6 @@ import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 16/5/6.
  */

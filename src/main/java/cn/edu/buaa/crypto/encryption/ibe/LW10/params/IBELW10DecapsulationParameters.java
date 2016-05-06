@@ -2,8 +2,6 @@ package cn.edu.buaa.crypto.encryption.ibe.LW10.params;
 
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.util.Arrays;
-
 /**
  * Created by liuweiran on 16/5/7.
  */
