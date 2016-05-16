@@ -101,10 +101,18 @@ public class Utils {
      * @return Zr Element mapping the message
      */
     public static Element MapToZr(Pairing pairing, String message) {
+        if (message == null) {
+            return null;
+        }
         return MapToZr(pairing, message.getBytes());
     }
 
-    public static Element MapToFirstHalfZr(Pairing pairing, String message) { return MapToFirstHalfZr(pairing, message.getBytes()); }
+    public static Element MapToFirstHalfZr(Pairing pairing, String message) {
+        if (message == null) {
+            return null;
+        }
+        return MapToFirstHalfZr(pairing, message.getBytes());
+    }
 
     /**
      * Map several byte arrays to Elements in Zr
@@ -229,6 +237,12 @@ public class Utils {
     }
 
     public static boolean isEqualElement(final Element thisElement, final Element thatElement) {
+        if (thisElement == null && thatElement != null) {
+            return false;
+        }
+        if (thisElement != null && thatElement == null) {
+            return false;
+        }
         if (thisElement == thatElement) {
             return true;
         }

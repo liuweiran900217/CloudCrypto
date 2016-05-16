@@ -85,7 +85,7 @@ public class HIBEBBG05SecretKeyGenerator {
                             .mul(secretKeyParameters.getA0())
                             .mul(secretKeyParameters.getBsAt(i).powZn(elementIds[i])).getImmutable();
                     //Compute a1
-                    a1 = a1.mul(secretKeyParameters.getA1());
+                    a1 = a1.mul(secretKeyParameters.getA1()).getImmutable();
                     //Set h[i] to be one
                     hs[i] = pairing.getG1().newOneElement().getImmutable();
                 } else {

@@ -71,6 +71,10 @@ based on the transformation technique proposed by me, Prof. Jianwei Liu, Prof. Q
 - Boneh-Boyen Hierarchical Identity-Based Encryption scheme (EUROCRYPT 2004).
 - Boneh-Boyen-Goh Hierarhical Identity-Based Encryption scheme (EUROCRYPT 2005).
 
+### Hiererchical Identity-Based Broadcast Encryption
+
+- (2016.05.16) Liu-Liu-Wu Hierarchical Identity-Based Broadcast Encryption scheme (ACISP 2014).
+
 ### Chameleon Hash Functions
 Since the Online/Offline Predicate Encryption transformation technique 
 proposed by me, Prof. Jianwei Liu, Prof. Qianhong Wu, and Dr. Bo Qin 
@@ -79,6 +83,8 @@ for constructing instantiations of our transformation. The schemes include:
 
 - Katz-Rabin Chameleon Hash (NDSS 2000).
 - Chen-Zhang-Kim Chameleon Hash without Key Exposure (ISC 2004).
+
+### Cryptogrpahic Applications
 
 ## Contact and Contribute
 

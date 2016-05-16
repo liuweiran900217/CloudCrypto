@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
+import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
@@ -16,7 +17,7 @@ public class HIBEBBG05DelegateGenerationParameters extends KeyGenerationParamete
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String id) {
-        super(null, HIBEBBG05Engine.STENGTH);
+        super(null, HIBEEngine.STENGTH);
         this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
         this.secretKeyParameters = (HIBEBBG05SecretKeyParameters)secretKeyParameters;
         this.delegateId = id;
