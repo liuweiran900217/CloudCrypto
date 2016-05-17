@@ -5,7 +5,7 @@ import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10CiphertextParameters
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10DecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10SecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

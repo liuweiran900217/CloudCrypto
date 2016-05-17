@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05PublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;

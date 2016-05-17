@@ -5,7 +5,7 @@ import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextPara
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16DecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16SecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

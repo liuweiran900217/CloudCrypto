@@ -1,9 +1,7 @@
-package cn.edu.buaa.crypto.pairingkem.generator;
+package cn.edu.buaa.crypto.pairingkem.generators;
 
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.crypto.InvalidCipherTextException;
-import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 
 /**
  * Created by Weiran Liu on 15-9-30.

@@ -74,7 +74,8 @@ public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
             if (!Utils.isEqualElementArray(this.ds, that.getDs())) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

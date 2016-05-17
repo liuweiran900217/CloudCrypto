@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;

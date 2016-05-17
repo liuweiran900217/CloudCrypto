@@ -51,7 +51,8 @@ public class HIBEBB04CiphertextParameters extends PairingCiphertextParameters {
             if (!Utils.isEqualElementArray(this.Cs, that.getCs())){
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

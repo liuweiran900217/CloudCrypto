@@ -58,7 +58,8 @@ public class IBELW10SecretKeyParameters extends PairingKeyParameters {
             if (!Utils.isEqualElement(this.k2, that.getK2())) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

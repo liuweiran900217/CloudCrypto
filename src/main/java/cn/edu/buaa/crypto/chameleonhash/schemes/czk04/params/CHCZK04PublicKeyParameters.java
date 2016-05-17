@@ -41,8 +41,8 @@ public class CHCZK04PublicKeyParameters extends ChameleonHashPublicKeyParameters
             if (!Utils.isEqualElement(this.y, that.getY())) {
                 return false;
             }
-            //Compare params
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

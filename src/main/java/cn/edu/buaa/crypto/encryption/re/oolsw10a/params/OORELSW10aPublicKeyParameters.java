@@ -71,7 +71,8 @@ public class OORELSW10aPublicKeyParameters extends PairingKeyParameters {
             if (!this.chEngine.getName().equals(that.getCHEngine().getName())) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

@@ -123,7 +123,8 @@ public class OORELSW10aCiphertextParameters extends PairingCiphertextParameters 
             else if (!Utils.isEqualElement(this.Cv2, that.getCv2())) { return false; }
             else if (!this.chameleonHashPublicKeyParameters.equals(that.getChameleonHashPublicKeyParameters())) { return false; }
             else if (!this.chameleonHashResultParameters.equals(that.getChameleonHashResultParameters())) { return false; }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

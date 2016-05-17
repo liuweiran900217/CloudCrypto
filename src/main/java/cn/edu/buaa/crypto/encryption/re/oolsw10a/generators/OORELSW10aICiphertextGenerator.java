@@ -9,11 +9,10 @@ import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aICiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aICiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aPublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 

@@ -10,7 +10,7 @@ import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aCiphertextGene
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aICiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aPublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;

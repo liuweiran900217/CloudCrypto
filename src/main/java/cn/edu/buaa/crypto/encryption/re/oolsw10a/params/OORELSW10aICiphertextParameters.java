@@ -128,7 +128,8 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
             } else if (!this.chameleonHashResult.equals(that.chameleonHashResult)) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

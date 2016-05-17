@@ -1,6 +1,5 @@
-package cn.edu.buaa.crypto.pairingkem.generator;
+package cn.edu.buaa.crypto.pairingkem.generators;
 
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 

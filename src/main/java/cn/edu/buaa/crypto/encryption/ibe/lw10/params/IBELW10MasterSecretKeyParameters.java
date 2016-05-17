@@ -41,7 +41,8 @@ public class IBELW10MasterSecretKeyParameters extends PairingKeyParameters {
             if (!(Utils.isEqualElement(this.g3Generator, that.getG3Generator()))) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

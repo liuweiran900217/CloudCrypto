@@ -76,7 +76,8 @@ public class HIBBELLW14SecretKeyParameters extends PairingKeyParameters {
             if (!Utils.isEqualElementArray(this.bs, that.getBs())) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

@@ -39,7 +39,8 @@ public class IBELW10CiphertextParameters extends PairingCiphertextParameters {
             if (!Utils.isEqualElement(this.C2, that.getC2())){
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

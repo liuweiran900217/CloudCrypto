@@ -32,7 +32,8 @@ public class HIBBELLW16MasterSecretKeyParameters extends PairingKeyParameters {
             if (!(Utils.isEqualElement(this.g2Alpha, that.getG2Alpha()))) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

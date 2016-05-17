@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.*;
-import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

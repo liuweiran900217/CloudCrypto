@@ -43,7 +43,8 @@ public class OORELSW10aMasterSecretKeyParameters extends PairingKeyParameters {
             if (!(Utils.isEqualElement(this.h, that.getH()))) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

@@ -60,7 +60,8 @@ public class RELSW10aCiphertextParameters extends PairingCiphertextParameters {
             if (!Utils.isEqualElementArray(this.C2s, that.getC2s())) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

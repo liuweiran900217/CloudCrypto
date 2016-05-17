@@ -63,7 +63,8 @@ public class RELSW10aSecretKeyParameters extends PairingKeyParameters {
             if (!Utils.isEqualElement(this.d2, that.getD2())) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }

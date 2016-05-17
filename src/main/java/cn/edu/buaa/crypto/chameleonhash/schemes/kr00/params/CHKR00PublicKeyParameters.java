@@ -37,7 +37,8 @@ public class CHKR00PublicKeyParameters extends ChameleonHashPublicKeyParameters 
             if (!Utils.isEqualElement(this.y, that.getY())) {
                 return false;
             }
-            return true;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
     }
