@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.params;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import org.bouncycastle.crypto.KeyGenerationParameters;
@@ -6,11 +6,11 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aKeyPairGenerationParameters extends KeyGenerationParameters {
+public class HIBBELLW14KeyPairGenerationParameters extends KeyGenerationParameters {
     private int maxUser;
     private int qBitLength;
 
-    public HIBBELLW15aKeyPairGenerationParameters(int qBitLength, int maxUser) {
+    public HIBBELLW14KeyPairGenerationParameters(int qBitLength, int maxUser) {
         super(null, HIBBEEngine.STENGTH);
 
         this.qBitLength = qBitLength;

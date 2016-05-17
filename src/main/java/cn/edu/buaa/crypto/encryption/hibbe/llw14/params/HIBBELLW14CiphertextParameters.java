@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.params;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
@@ -8,11 +8,11 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aCiphertextParameters extends PairingCiphertextParameters {
+public class HIBBELLW14CiphertextParameters extends PairingCiphertextParameters {
     private final Element C0;
     private final Element C1;
 
-    public HIBBELLW15aCiphertextParameters(PairingParameters pairingParameters, Element C0, Element C1) {
+    public HIBBELLW14CiphertextParameters(PairingParameters pairingParameters, Element C0, Element C1) {
         super(pairingParameters);
         this.C0 = C0.getImmutable();
         this.C1 = C1.getImmutable();
@@ -27,8 +27,8 @@ public class HIBBELLW15aCiphertextParameters extends PairingCiphertextParameters
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof HIBBELLW15aCiphertextParameters) {
-            HIBBELLW15aCiphertextParameters that = (HIBBELLW15aCiphertextParameters)anObject;
+        if (anObject instanceof HIBBELLW14CiphertextParameters) {
+            HIBBELLW14CiphertextParameters that = (HIBBELLW14CiphertextParameters)anObject;
             //Compare C0
             if (!Utils.isEqualElement(this.C0, that.getC0())){
                 return false;

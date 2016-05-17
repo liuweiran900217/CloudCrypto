@@ -1,8 +1,8 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.generators;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aKeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aMasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aPublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14KeyPairGenerationParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14MasterSecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14PublicKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
@@ -16,11 +16,11 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aKeyPairGenerator {
-    private HIBBELLW15aKeyPairGenerationParameters parameters;
+public class HIBBELLW14KeyPairGenerator {
+    private HIBBELLW14KeyPairGenerationParameters parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (HIBBELLW15aKeyPairGenerationParameters)keyGenerationParameters;
+        this.parameters = (HIBBELLW14KeyPairGenerationParameters)keyGenerationParameters;
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
@@ -53,8 +53,8 @@ public class HIBBELLW15aKeyPairGenerator {
         parameters.remove("n1");
         parameters.remove("n2");
         return new AsymmetricCipherKeyPair(
-                new HIBBELLW15aPublicKeyParameters(parameters, g, h, u, X3, eggAlpha),
-                new HIBBELLW15aMasterSecretKeyParameters(parameters, gAlpha));
+                new HIBBELLW14PublicKeyParameters(parameters, g, h, u, X3, eggAlpha),
+                new HIBBELLW14MasterSecretKeyParameters(parameters, gAlpha));
     }
 
     private PropertiesParameters generateCurveParams() {

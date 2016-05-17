@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.params;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aPublicKeyParameters extends PairingKeyParameters {
+public class HIBBELLW14PublicKeyParameters extends PairingKeyParameters {
 
     private final int maxUser;
     private final Element g;
@@ -20,7 +20,7 @@ public class HIBBELLW15aPublicKeyParameters extends PairingKeyParameters {
     private final Element X3;
     private final Element eggAlpha;
 
-    public HIBBELLW15aPublicKeyParameters(PairingParameters parameters, Element g, Element h, Element[] u, Element X3, Element eggAlpha) {
+    public HIBBELLW14PublicKeyParameters(PairingParameters parameters, Element g, Element h, Element[] u, Element X3, Element eggAlpha) {
         super(false, parameters);
 
         this.g = g.getImmutable();
@@ -52,8 +52,8 @@ public class HIBBELLW15aPublicKeyParameters extends PairingKeyParameters {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof HIBBELLW15aPublicKeyParameters) {
-            HIBBELLW15aPublicKeyParameters that = (HIBBELLW15aPublicKeyParameters)anObject;
+        if (anObject instanceof HIBBELLW14PublicKeyParameters) {
+            HIBBELLW14PublicKeyParameters that = (HIBBELLW14PublicKeyParameters)anObject;
             //Compare g
             if (!Utils.isEqualElement(this.g, that.getG())) {
                 return false;

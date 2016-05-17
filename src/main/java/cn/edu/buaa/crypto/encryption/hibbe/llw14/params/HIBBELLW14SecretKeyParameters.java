@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.params;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aSecretKeyParameters extends PairingKeyParameters {
+public class HIBBELLW14SecretKeyParameters extends PairingKeyParameters {
     private final String[] ids;
     private final Element[] elementIds;
 
@@ -20,8 +20,8 @@ public class HIBBELLW15aSecretKeyParameters extends PairingKeyParameters {
     private final Element[] bs;
 
 
-    public HIBBELLW15aSecretKeyParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds,
-                                          Element a0, Element a1, Element[] bs) {
+    public HIBBELLW14SecretKeyParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds,
+                                         Element a0, Element a1, Element[] bs) {
         super(true, pairingParameters);
 
         this.a0 = a0.getImmutable();
@@ -54,8 +54,8 @@ public class HIBBELLW15aSecretKeyParameters extends PairingKeyParameters {
         if (this == anOjbect) {
             return true;
         }
-        if (anOjbect instanceof HIBBELLW15aSecretKeyParameters) {
-            HIBBELLW15aSecretKeyParameters that = (HIBBELLW15aSecretKeyParameters)anOjbect;
+        if (anOjbect instanceof HIBBELLW14SecretKeyParameters) {
+            HIBBELLW14SecretKeyParameters that = (HIBBELLW14SecretKeyParameters)anOjbect;
             //Compare ids
             if (!Arrays.equals(this.ids, that.getIds())) {
                 return false;

@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.params;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
 import org.bouncycastle.crypto.CipherParameters;
 
@@ -7,18 +7,18 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aCiphertextGenerationParameters implements CipherParameters {
-    private HIBBELLW15aPublicKeyParameters publicKeyParameters;
+public class HIBBELLW14CiphertextGenerationParameters implements CipherParameters {
+    private HIBBELLW14PublicKeyParameters publicKeyParameters;
     private String[] ids;
 
-    public HIBBELLW15aCiphertextGenerationParameters(
+    public HIBBELLW14CiphertextGenerationParameters(
             CipherParameters publicKeyParameters, String[] ids) {
-        this.publicKeyParameters = (HIBBELLW15aPublicKeyParameters)publicKeyParameters;
+        this.publicKeyParameters = (HIBBELLW14PublicKeyParameters)publicKeyParameters;
         assert(ids.length == this.publicKeyParameters.getMaxUser());
         this.ids = Arrays.copyOf(ids, ids.length);
     }
 
-    public HIBBELLW15aPublicKeyParameters getPublicKeyParameters() {
+    public HIBBELLW14PublicKeyParameters getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 

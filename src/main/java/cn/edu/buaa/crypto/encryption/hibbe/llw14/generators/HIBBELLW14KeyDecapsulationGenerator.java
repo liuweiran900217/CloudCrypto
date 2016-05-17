@@ -1,10 +1,10 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.generators;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
 import cn.edu.buaa.crypto.Utils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aCiphertextParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aDecapsulationParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aPublicKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aSecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14CiphertextParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14DecapsulationParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14SecretKeyParameters;
 import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -17,17 +17,17 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aKeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
-    private HIBBELLW15aDecapsulationParameters params;
+public class HIBBELLW14KeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
+    private HIBBELLW14DecapsulationParameters params;
 
     public void init(CipherParameters params) {
-        this.params = ( HIBBELLW15aDecapsulationParameters)params;
+        this.params = (HIBBELLW14DecapsulationParameters)params;
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
-        HIBBELLW15aPublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
-        HIBBELLW15aSecretKeyParameters secretKeyParameters = this.params.getSecretKeyParameters();
-        HIBBELLW15aCiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
+        HIBBELLW14PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
+        HIBBELLW14SecretKeyParameters secretKeyParameters = this.params.getSecretKeyParameters();
+        HIBBELLW14CiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIdsCT = Utils.MapToZr(pairing, this.params.getIds());

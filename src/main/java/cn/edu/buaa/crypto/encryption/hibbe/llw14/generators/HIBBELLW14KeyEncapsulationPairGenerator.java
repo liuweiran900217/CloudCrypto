@@ -1,9 +1,9 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.generators;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
 import cn.edu.buaa.crypto.Utils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aCiphertextGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aCiphertextParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.HIBBELLW15aPublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14CiphertextGenerationParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14CiphertextParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14PublicKeyParameters;
 import cn.edu.buaa.crypto.pairingkem.generator.PairingKeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
@@ -16,15 +16,15 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aKeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
-    private HIBBELLW15aCiphertextGenerationParameters params;
+public class HIBBELLW14KeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
+    private HIBBELLW14CiphertextGenerationParameters params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW15aCiphertextGenerationParameters)params;
+        this.params = (HIBBELLW14CiphertextGenerationParameters)params;
     }
 
     public PairingKeyEncapsulationPair generateEncryptionPair() {
-        HIBBELLW15aPublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
+        HIBBELLW14PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
         Element[] elementIds = Utils.MapToZr(pairing, ids);
@@ -43,6 +43,6 @@ public class HIBBELLW15aKeyEncapsulationPairGenerator implements PairingKeyEncap
         C1 = C1.powZn(beta).getImmutable();
         return new PairingKeyEncapsulationPair(
                 Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
-                new HIBBELLW15aCiphertextParameters(publicKeyParameters.getParameters(), C0, C1));
+                new HIBBELLW14CiphertextParameters(publicKeyParameters.getParameters(), C0, C1));
     }
 }

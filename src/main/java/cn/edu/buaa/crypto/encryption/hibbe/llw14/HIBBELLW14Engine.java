@@ -1,11 +1,11 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14;
 
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.generators.HIBBELLW15aKeyDecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.generators.HIBBELLW15aKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.generators.HIBBELLW15aKeyPairGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.generators.HIBBELLW15aSecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw15a.params.*;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14KeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14KeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14KeyPairGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14SecretKeyGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.*;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
@@ -14,70 +14,70 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aEngine implements HIBBEEngine {
+public class HIBBELLW14Engine implements HIBBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "LLW15aHIBBE";
 
-    public HIBBELLW15aEngine() {
+    public HIBBELLW14Engine() {
 
     }
 
     public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength, int maxUser) {
-        HIBBELLW15aKeyPairGenerator keyPairGenerator = new HIBBELLW15aKeyPairGenerator();
-        keyPairGenerator.init(new HIBBELLW15aKeyPairGenerationParameters(qBitLength, maxUser));
+        HIBBELLW14KeyPairGenerator keyPairGenerator = new HIBBELLW14KeyPairGenerator();
+        keyPairGenerator.init(new HIBBELLW14KeyPairGenerationParameters(qBitLength, maxUser));
 
         return keyPairGenerator.generateKeyPair();
     }
 
     public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String[] ids) {
-        if (!(publicKey instanceof HIBBELLW15aPublicKeyParameters)){
+        if (!(publicKey instanceof HIBBELLW14PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + HIBBELLW15aPublicKeyParameters.class.getName());
+                            + HIBBELLW14PublicKeyParameters.class.getName());
         }
-        if (!(masterKey instanceof HIBBELLW15aMasterSecretKeyParameters)) {
+        if (!(masterKey instanceof HIBBELLW14MasterSecretKeyParameters)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + masterKey.getClass().getName() + ", require"
-                            + HIBBELLW15aMasterSecretKeyParameters.class.getName());
+                            + HIBBELLW14MasterSecretKeyParameters.class.getName());
         }
-        HIBBELLW15aSecretKeyGenerator secretKeyGenerator = new HIBBELLW15aSecretKeyGenerator();
-        secretKeyGenerator.init(new HIBBELLW15aSecretKeyGenerationParameters(
+        HIBBELLW14SecretKeyGenerator secretKeyGenerator = new HIBBELLW14SecretKeyGenerator();
+        secretKeyGenerator.init(new HIBBELLW14SecretKeyGenerationParameters(
                 publicKey, masterKey, ids));
 
         return secretKeyGenerator.generateKey();
     }
 
     public CipherParameters delegate(CipherParameters publicKey, CipherParameters secretKey, int index, String id) {
-        if (!(publicKey instanceof HIBBELLW15aPublicKeyParameters)){
+        if (!(publicKey instanceof HIBBELLW14PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + HIBBELLW15aPublicKeyParameters.class.getName());
+                            + HIBBELLW14PublicKeyParameters.class.getName());
         }
-        if (!(secretKey instanceof HIBBELLW15aSecretKeyParameters)) {
+        if (!(secretKey instanceof HIBBELLW14SecretKeyParameters)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require"
-                            + HIBBELLW15aSecretKeyParameters.class.getName());
+                            + HIBBELLW14SecretKeyParameters.class.getName());
         }
-        HIBBELLW15aSecretKeyGenerator secretKeyGenerator = new HIBBELLW15aSecretKeyGenerator();
-        secretKeyGenerator.init(new HIBBELLW15aDelegateGenerationParameters(
+        HIBBELLW14SecretKeyGenerator secretKeyGenerator = new HIBBELLW14SecretKeyGenerator();
+        secretKeyGenerator.init(new HIBBELLW14DelegateGenerationParameters(
                 publicKey, secretKey, index, id));
 
         return secretKeyGenerator.generateKey();
     }
 
     public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids){
-        if (!(publicKey instanceof HIBBELLW15aPublicKeyParameters)){
+        if (!(publicKey instanceof HIBBELLW14PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + HIBBELLW15aPublicKeyParameters.class.getName());
+                            + HIBBELLW14PublicKeyParameters.class.getName());
         }
-        HIBBELLW15aKeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new HIBBELLW15aKeyEncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new HIBBELLW15aCiphertextGenerationParameters(
+        HIBBELLW14KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new HIBBELLW14KeyEncapsulationPairGenerator();
+        keyEncapsulationPairGenerator.init(new HIBBELLW14CiphertextGenerationParameters(
                 publicKey, ids));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();
@@ -88,26 +88,26 @@ public class HIBBELLW15aEngine implements HIBBEEngine {
             CipherParameters secretKey,
             String[] ids,
             CipherParameters ciphertext) throws InvalidCipherTextException {
-        if (!(publicKey instanceof HIBBELLW15aPublicKeyParameters)){
+        if (!(publicKey instanceof HIBBELLW14PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + HIBBELLW15aPublicKeyParameters.class.getName());
+                            + HIBBELLW14PublicKeyParameters.class.getName());
         }
-        if (!(secretKey instanceof HIBBELLW15aSecretKeyParameters)){
+        if (!(secretKey instanceof HIBBELLW14SecretKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require "
-                            + HIBBELLW15aSecretKeyParameters.class.getName());
+                            + HIBBELLW14SecretKeyParameters.class.getName());
         }
-        if (!(ciphertext instanceof HIBBELLW15aCiphertextParameters)){
+        if (!(ciphertext instanceof HIBBELLW14CiphertextParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + HIBBELLW15aCiphertextParameters.class.getName());
+                            + HIBBELLW14CiphertextParameters.class.getName());
         }
-        HIBBELLW15aKeyDecapsulationGenerator keyDecapsulationGenerator = new HIBBELLW15aKeyDecapsulationGenerator();
-        keyDecapsulationGenerator.init(new HIBBELLW15aDecapsulationParameters(
+        HIBBELLW14KeyDecapsulationGenerator keyDecapsulationGenerator = new HIBBELLW14KeyDecapsulationGenerator();
+        keyDecapsulationGenerator.init(new HIBBELLW14DecapsulationParameters(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
     }

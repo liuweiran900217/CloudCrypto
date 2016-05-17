@@ -84,7 +84,7 @@ for constructing instantiations of our transformation. The schemes include:
 - Katz-Rabin Chameleon Hash (NDSS 2000).
 - Chen-Zhang-Kim Chameleon Hash without Key Exposure (ISC 2004).
 
-### Cryptogrpahic Applications
+### Cryptographic Applications
 
 ## Contact and Contribute
 

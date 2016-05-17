@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw15a.params;
+package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
@@ -8,11 +8,11 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 /**
  * Created by Weiran Liu on 2016/5/16.
  */
-public class HIBBELLW15aMasterSecretKeyParameters extends PairingKeyParameters {
+public class HIBBELLW14MasterSecretKeyParameters extends PairingKeyParameters {
 
     private final Element gAlpha;
 
-    public HIBBELLW15aMasterSecretKeyParameters(PairingParameters pairingParameters, Element gAlpha) {
+    public HIBBELLW14MasterSecretKeyParameters(PairingParameters pairingParameters, Element gAlpha) {
         super(true, pairingParameters);
         this.gAlpha = gAlpha.getImmutable();
     }
@@ -26,8 +26,8 @@ public class HIBBELLW15aMasterSecretKeyParameters extends PairingKeyParameters {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof HIBBELLW15aMasterSecretKeyParameters) {
-            HIBBELLW15aMasterSecretKeyParameters that = (HIBBELLW15aMasterSecretKeyParameters)anObject;
+        if (anObject instanceof HIBBELLW14MasterSecretKeyParameters) {
+            HIBBELLW14MasterSecretKeyParameters that = (HIBBELLW14MasterSecretKeyParameters)anObject;
             //Compare gAlpha
             if (!(Utils.isEqualElement(this.gAlpha, that.getGAlpha()))) {
                 return false;
