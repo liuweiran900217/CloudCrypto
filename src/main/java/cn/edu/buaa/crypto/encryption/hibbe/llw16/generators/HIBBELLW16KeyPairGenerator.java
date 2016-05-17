@@ -1,8 +1,8 @@
-package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
+package cn.edu.buaa.crypto.encryption.hibbe.llw16.generators;
 
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16KeyPairGenerationParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16MasterSecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
@@ -13,18 +13,19 @@ import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
- * Created by Weiran Liu on 2015/11/3.
+ * Created by Weiran Liu on 2016/5/17.
  */
-public class HIBEBBG05KeyPairGenerator {
-    private HIBEBBG05KeyPairGenerationParameters parameters;
+public class HIBBELLW16KeyPairGenerator {
+    private HIBBELLW16KeyPairGenerationParameters parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (HIBEBBG05KeyPairGenerationParameters)keyGenerationParameters;
+        this.parameters = (HIBBELLW16KeyPairGenerationParameters)keyGenerationParameters;
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
         PropertiesParameters parameters;
         Pairing pairing;
+        Element generator;
         Element g;
 
         // Generate curve parameters
@@ -41,15 +42,14 @@ public class HIBEBBG05KeyPairGenerator {
         Element g2 = pairing.getG1().newRandomElement().getImmutable();
         Element g3 = pairing.getG1().newRandomElement().getImmutable();
         Element g2Alpha = g2.powZn(alpha).getImmutable();
-
-        Element[] hs = new Element[this.parameters.getMaxDepth()];
-        for (int i=0; i<this.parameters.getMaxDepth(); i++) {
-            hs[i] = pairing.getG1().newRandomElement().getImmutable();
+        Element[] u = new Element[this.parameters.getMaxUser()];
+        for (int i=0; i<u.length; i++) {
+            u[i] = pairing.getG1().newRandomElement().getImmutable();
         }
 
         return new AsymmetricCipherKeyPair(
-                new HIBEBBG05PublicKeyParameters(parameters, g, g1, g2, g3, hs),
-                new HIBEBBG05MasterSecretKeyParameters(parameters, g2Alpha));
+                new HIBBELLW16PublicKeyParameters(parameters, g, g1, g2, g3, u),
+                new HIBBELLW16MasterSecretKeyParameters(parameters, g2Alpha));
     }
 
     private PropertiesParameters generateCurveParams() {

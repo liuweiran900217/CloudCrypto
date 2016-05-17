@@ -15,6 +15,6 @@ public class HIBBELLW14EngineTest {
         PairingParameterXMLSerializer schemeXMLSerializer = HIBBELLW14XMLSerializer.getInstance();
 
         HIBBEEngineTest engineTest = new HIBBEEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(160, 128);
+        engineTest.processTest(-1, 512);
     }
 }

@@ -13,23 +13,23 @@ import java.util.Arrays;
  */
 public class HIBBELLW14PublicKeyParameters extends PairingKeyParameters {
 
-    private final int maxUser;
-    private final Element g;
-    private final Element h;
-    private final Element[] u;
-    private final Element X3;
-    private final Element eggAlpha;
+        private final int maxUser;
+        private final Element g;
+        private final Element h;
+        private final Element[] u;
+        private final Element X3;
+        private final Element eggAlpha;
 
-    public HIBBELLW14PublicKeyParameters(PairingParameters parameters, Element g, Element h, Element[] u, Element X3, Element eggAlpha) {
-        super(false, parameters);
+        public HIBBELLW14PublicKeyParameters(PairingParameters parameters, Element g, Element h, Element[] u, Element X3, Element eggAlpha) {
+            super(false, parameters);
 
-        this.g = g.getImmutable();
-        this.h = h.getImmutable();
-        this.u = ElementUtils.cloneImmutable(u);
-        this.X3 = X3.getImmutable();
-        this.eggAlpha = eggAlpha.getImmutable();
-        this.maxUser = u.length;
-    }
+            this.g = g.getImmutable();
+            this.h = h.getImmutable();
+            this.u = ElementUtils.cloneImmutable(u);
+            this.X3 = X3.getImmutable();
+            this.eggAlpha = eggAlpha.getImmutable();
+            this.maxUser = u.length;
+        }
 
     public Element getG() { return this.g.duplicate(); }
 

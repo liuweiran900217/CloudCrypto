@@ -74,6 +74,7 @@ based on the transformation technique proposed by me, Prof. Jianwei Liu, Prof. Q
 ### Hiererchical Identity-Based Broadcast Encryption
 
 - (2016.05.16) Liu-Liu-Wu Hierarchical Identity-Based Broadcast Encryption scheme (ACISP 2014).
+- (2016.05.17) Liu-Liu-Wu Hierarchical Identity-Based Broadcast Encryption scheme (IJIS 2016).
 
 ### Chameleon Hash Functions
 Since the Online/Offline Predicate Encryption transformation technique 
