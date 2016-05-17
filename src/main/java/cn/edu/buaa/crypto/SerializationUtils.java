@@ -45,9 +45,15 @@ public class SerializationUtils {
         for (int i=0; i<stringArray.length; i++){
             Element childIndexElement = document.createElement(indexTag);
             childIndexElement.setAttribute(PairingParameterXMLSerializer.ATTRI_INDEX, Integer.toString(i));
-            Text childIndexText = document.createTextNode(stringArray[i]);
-            childElement.appendChild(childIndexElement);
-            childIndexElement.appendChild(childIndexText);
+            if (stringArray[i] != null) {
+                Text childIndexText = document.createTextNode(stringArray[i]);
+                childElement.appendChild(childIndexElement);
+                childIndexElement.appendChild(childIndexText);
+            } else {
+                Text childIndexText = document.createTextNode("");
+                childElement.appendChild(childIndexElement);
+                childIndexElement.appendChild(childIndexText);
+            }
         }
     }
 }

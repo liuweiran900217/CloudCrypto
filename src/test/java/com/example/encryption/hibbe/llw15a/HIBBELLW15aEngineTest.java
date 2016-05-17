@@ -2,6 +2,7 @@ package com.example.encryption.hibbe.llw15a;
 
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw15a.HIBBELLW15aEngine;
+import cn.edu.buaa.crypto.encryption.hibbe.llw15a.serialization.HIBBELLW15aXMLSerializer;
 import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import com.example.encryption.hibbe.HIBBEEngineTest;
 
@@ -11,7 +12,7 @@ import com.example.encryption.hibbe.HIBBEEngineTest;
 public class HIBBELLW15aEngineTest {
     public static void main(String[] args) {
         HIBBEEngine engine = new HIBBELLW15aEngine();
-        PairingParameterXMLSerializer schemeXMLSerializer = null;
+        PairingParameterXMLSerializer schemeXMLSerializer = HIBBELLW15aXMLSerializer.getInstance();
 
         HIBBEEngineTest engineTest = new HIBBEEngineTest(engine, schemeXMLSerializer);
         engineTest.processTest(160, 128);
