@@ -16,7 +16,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class HIBBELLW14Engine implements HIBBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LLW15aHIBBE";
+    public static final String SCHEME_NAME = "LLW14HIBBE";
 
     public HIBBELLW14Engine() {
 
