@@ -27,7 +27,7 @@ public class RBACLLW15AccessCredentialMDeleParameters extends KeyGenerationParam
 
     public RBACLLW15PublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
 
-    public RBACLLW15AccessCredentialMParameters getSecretKeyParameters() { return this.accessCredentialMParameters; }
+    public RBACLLW15AccessCredentialMParameters getAccessCredentialMParameters() { return this.accessCredentialMParameters; }
 
     public int getIndex() { return this.index; }
 
