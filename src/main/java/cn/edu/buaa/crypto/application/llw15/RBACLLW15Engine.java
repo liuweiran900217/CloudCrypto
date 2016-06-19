@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15;
 
-import cn.edu.buaa.crypto.application.llw15.generator.*;
+import cn.edu.buaa.crypto.application.llw15.generators.*;
 import cn.edu.buaa.crypto.application.llw15.params.*;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;

@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.application.llw15.generator;
+package cn.edu.buaa.crypto.application.llw15.generators;
 
 import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15AccessCredentialPParameters;

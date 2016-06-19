@@ -13,7 +13,7 @@ import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
- * Created by Weiran Liu on 2016/5/19.
+ * Created by Weiran Liu on 16/6/19.
  */
 public class RBACLLW15KeyPairGenerator {
     private RBACLLW15KeyPairGenerationParameters parameters;
@@ -25,7 +25,6 @@ public class RBACLLW15KeyPairGenerator {
     public AsymmetricCipherKeyPair generateKeyPair() {
         PropertiesParameters parameters;
         Pairing pairing;
-        Element generator;
         Element g;
 
         // Generate curve parameters
@@ -42,9 +41,9 @@ public class RBACLLW15KeyPairGenerator {
         Element g2 = pairing.getG1().newRandomElement().getImmutable();
         Element g3 = pairing.getG1().newRandomElement().getImmutable();
         Element gh = pairing.getG1().newRandomElement().getImmutable();
-        Element g2Alpha = g2.powZn(alpha).getImmutable();
         Element u0 = pairing.getG1().newRandomElement().getImmutable();
         Element uv = pairing.getG1().newRandomElement().getImmutable();
+        Element g2Alpha = g2.powZn(alpha).getImmutable();
         Element[] u = new Element[this.parameters.getMaxRoleNumber()];
         for (int i=0; i<u.length; i++) {
             u[i] = pairing.getG1().newRandomElement().getImmutable();
