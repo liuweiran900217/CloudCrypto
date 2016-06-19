@@ -15,22 +15,22 @@ public class RBACLLW15AccessCredentialPParameters extends PairingKeyParameters {
     private final String id;
     private final Element elementId;
 
-    private final Element a0;
-    private final Element a1;
-    private final Element b0;
-    private final Element bv;
-    private final Element[] bs;
+    private final Element a0Prime;
+    private final Element a1Prime;
+    private final Element b0Prime;
+    private final Element bvPrime;
+    private final Element[] bsPrime;
 
 
     public RBACLLW15AccessCredentialPParameters(PairingParameters pairingParameters, String id, Element elementId,
-                                         Element a0, Element a1, Element b0, Element bv, Element[] bs) {
+                                         Element a0Prime, Element a1Prime, Element b0Prime, Element bvPrime, Element[] bsPrime) {
         super(true, pairingParameters);
 
-        this.a0 = a0.getImmutable();
-        this.a1 = a1.getImmutable();
-        this.b0 = b0.getImmutable();
-        this.bv = bv.getImmutable();
-        this.bs = ElementUtils.cloneImmutable(bs);
+        this.a0Prime = a0Prime.getImmutable();
+        this.a1Prime = a1Prime.getImmutable();
+        this.b0Prime = b0Prime.getImmutable();
+        this.bvPrime = bvPrime.getImmutable();
+        this.bsPrime = ElementUtils.cloneImmutable(bsPrime);
         this.id = new String(id);
         this.elementId = elementId.getImmutable();
     }
@@ -39,17 +39,17 @@ public class RBACLLW15AccessCredentialPParameters extends PairingKeyParameters {
 
     public Element getElementId() { return this.elementId.duplicate(); }
 
-    public Element getA0() { return this.a0.duplicate(); }
+    public Element getA0Prime() { return this.a0Prime.duplicate(); }
 
-    public Element getA1() { return this.a1.duplicate(); }
+    public Element getA1Prime() { return this.a1Prime.duplicate(); }
 
-    public Element getB0() { return this.b0.duplicate(); }
+    public Element getB0Prime() { return this.b0Prime.duplicate(); }
 
-    public Element getBv() { return this.bv.duplicate(); }
+    public Element getBvPrime() { return this.bvPrime.duplicate(); }
 
-    public Element getBsAt(int index) { return this.bs[index].duplicate(); }
+    public Element getBsPrimeAt(int index) { return this.bsPrime[index].duplicate(); }
 
-    public Element[] getBs() { return Arrays.copyOf(bs, bs.length); }
+    public Element[] getBsPrime() { return Arrays.copyOf(bsPrime, bsPrime.length); }
 
     @Override
     public boolean equals(Object anOjbect) {
@@ -66,24 +66,24 @@ public class RBACLLW15AccessCredentialPParameters extends PairingKeyParameters {
             if (!Utils.isEqualElement(this.elementId, that.getElementId())) {
                 return false;
             }
-            //Compare a0
-            if (!Utils.isEqualElement(this.a0, that.getA0())) {
+            //Compare a0Prime
+            if (!Utils.isEqualElement(this.a0Prime, that.getA0Prime())) {
                 return false;
             }
-            //Compare a1
-            if (!Utils.isEqualElement(this.a1, that.getA1())) {
+            //Compare a1Prime
+            if (!Utils.isEqualElement(this.a1Prime, that.getA1Prime())) {
                 return false;
             }
-            //Compare b0
-            if (!Utils.isEqualElement(this.b0, that.getB0())) {
+            //Compare b0Prime
+            if (!Utils.isEqualElement(this.b0Prime, that.getB0Prime())) {
                 return false;
             }
-            //Compare bv
-            if (!Utils.isEqualElement(this.bv, that.getBv())) {
+            //Compare bvPrime
+            if (!Utils.isEqualElement(this.bvPrime, that.getBvPrime())) {
                 return false;
             }
-            //Compare bs
-            if (!Utils.isEqualElementArray(this.bs, that.getBs())) {
+            //Compare bsPrime
+            if (!Utils.isEqualElementArray(this.bsPrime, that.getBsPrime())) {
                 return false;
             }
             //Compare Pairing Parameters
