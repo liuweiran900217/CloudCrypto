@@ -11,23 +11,23 @@ public class RBACLLW15DecapsulationPParameters implements CipherParameters {
     private RBACLLW15PublicKeyParameters publicKeyParameters;
     private RBACLLW15AccessCredentialPParameters accessCredentialPParameters;
     private String[] roles;
-    private String id;
     private String time;
+    private String id;
     private RBACLLW15EncapsulationParameters encapsulationParameters;
 
     public RBACLLW15DecapsulationPParameters(
             CipherParameters publicKeyParameters,
             CipherParameters accessCredentialPParameters,
-            String[] roles,
             String id,
+            String[] roles,
             String time,
             CipherParameters encapsulationParameters) {
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
         this.accessCredentialPParameters = (RBACLLW15AccessCredentialPParameters)accessCredentialPParameters;
         assert(roles.length == this.publicKeyParameters.getMaxRoleNumber());
         this.roles = Arrays.copyOf(roles, roles.length);
-        this.id = new String(id);
         this.time = new String(time);
+        this.id = new String(id);
         this.encapsulationParameters = (RBACLLW15EncapsulationParameters)encapsulationParameters;
     }
 

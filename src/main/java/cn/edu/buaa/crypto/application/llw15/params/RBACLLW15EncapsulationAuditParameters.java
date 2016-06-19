@@ -7,18 +7,17 @@ import java.util.Arrays;
 /**
  * Created by liuweiran on 16/5/19.
  */
-public class RBACLLW15EncapsulationVerifyParameters implements CipherParameters {
+public class RBACLLW15EncapsulationAuditParameters implements CipherParameters {
     private RBACLLW15PublicKeyParameters publicKeyParameters;
     private String[] roles;
     private String id;
     private String time;
     private RBACLLW15EncapsulationParameters encapsulationParameters;
 
-    public RBACLLW15EncapsulationVerifyParameters(
+    public RBACLLW15EncapsulationAuditParameters(
             CipherParameters publicKeyParameters,
-            CipherParameters accessCredentialPParameters,
-            String[] roles,
             String id,
+            String[] roles,
             String time,
             CipherParameters encapsulationParameters) {
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
