@@ -58,9 +58,8 @@ We have implemented the following schemes. We will continue implementing others.
 ### Revocation Systems
 
 - Lewko-Sahai-Waters Simple Revocation Systems (Security and Privacy 2010).
-- Chosen ciphertext secure Online/Offline LSW simple Revocation Systems 
-based on the transformation technique proposed by me, Prof. Jianwei Liu, Prof. Qianhong Wu, and Dr. Bo Qin.
-(**The corresponding paper has been submitted to ESORICS 2016, under review**).
+- Chosen ciphertext secure Online/Offline LSW simple Revocation Systems.
+    - An instance of Online/Offline Public Index Predicate Encryption, **related paper has been submitted to ESORICS 2016, under review**.
 
 ### Identity-Based Encryption
 
@@ -73,8 +72,12 @@ based on the transformation technique proposed by me, Prof. Jianwei Liu, Prof. Q
 
 ### Hiererchical Identity-Based Broadcast Encryption
 
-- (2016.05.16) Liu-Liu-Wu Hierarchical Identity-Based Broadcast Encryption scheme (ACISP 2014).
-- (2016.05.17) Liu-Liu-Wu Hierarchical Identity-Based Broadcast Encryption scheme (IJIS 2016).
+- (2016.05.16) Hierarchical Identity-Based Broadcast Encryption scheme.
+    - **Weiran Liu**, Jianwei Liu, Qianhong Wu, Bo Qin. Hierarchical Identity-Based Broadcast Encryption. ACISP 2014, 242-257.
+    - **The journal version has been submitted to "Soft Computing", under review**.
+- (2016.05.17) Liu-Liu-Wu Hierarchical Identity-Based Broadcast Encryption scheme.
+    - **Weiran Liu**, Jianwei Liu, Qianhong Wu, Bo Qin. Practical Chosen Ciphertext Secure Hierarhical Identity-Based Broadcast Encryption.
+    International Journal of Information Security, 2016, 15(1): 35-50.
 
 ### Chameleon Hash Functions
 Since the Online/Offline Predicate Encryption transformation technique 
@@ -87,6 +90,11 @@ for constructing instantiations of our transformation. The schemes include:
 
 ### Cryptographic Applications
 
+- (2016.06.20) Auditing and Revocation Enabled Role-Based Access Control over Outsourced Private EHRs. 
+    - **Weiran Liu**, Xiao Liu, Jianwei Liu, Jun Zhang, Yan Li. Auditing and Revocation Enabled Role-Based Access Control
+    over Outsourced Private EHRs. HPCC 2015, 336-341.
+    - **The journal version has been submitted to "The Computer Journal", under review**.
+    
 ## Contact and Contribute
 
 ### Contact 
