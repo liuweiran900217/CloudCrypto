@@ -45,6 +45,9 @@ import org.apache.commons.math3.linear.FieldLUDecomposition;
 import org.apache.commons.math3.linear.FieldMatrix;
 import org.apache.commons.math3.linear.FieldVector;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LSSSLCW10Engine implements AccessControlEngine {
     public static String SCHEME_NAME = "LCW10 Linear Secret Sharing Scheme";
 
@@ -160,7 +163,7 @@ public class LSSSLCW10Engine implements AccessControlEngine {
         return new LSSSPolicyParameter(rootAccessTreeNode, lsssMatrix, rhosParameter);
     }
 
-    public Element[] secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
+    public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
         if (!(accessControlParameter instanceof LSSSPolicyParameter)) {
             throw new UnsatisfiedAccessControlException("Invalid LSSSPolicy Parameter, find " + accessControlParameter.getClass().getName());
         }
@@ -181,17 +184,18 @@ public class LSSSLCW10Engine implements AccessControlEngine {
             elementsV[i] = pairing.getZr().newRandomElement().getImmutable();
         }
         //secret share by matrix multiplication
-        Element[] elementsLambda = new Element[row];
-        for (int i=0; i<elementsLambda.length; i++) {
-            elementsLambda[i] = pairing.getZr().newZeroElement().getImmutable();
+        Map<String, Element> lambdaElementsMap = new HashMap<String, Element>();
+        for (int i=0; i<row; i++) {
+            Element elementsLambda = pairing.getZr().newZeroElement().getImmutable();
             for (int j=0; j<column; j++) {
-                elementsLambda[i] = elementsLambda[i].add(elementLSSSMatrix[i][j].mulZn(elementsV[j])).getImmutable();
+                elementsLambda = elementsLambda.add(elementLSSSMatrix[i][j].mulZn(elementsV[j])).getImmutable();
             }
+            lambdaElementsMap.put(lsssPolicyParameter.getRhos()[i], elementsLambda);
         }
-        return elementsLambda;
+        return lambdaElementsMap;
     }
 
-    public Element[] reconstructOmegas(Pairing pairing, String[] attributes, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
+    public Map<String, Element> reconstructOmegas(Pairing pairing, String[] attributes, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
         if (!(accessControlParameter instanceof LSSSPolicyParameter)) {
             throw new UnsatisfiedAccessControlException("Invalid LSSSPolicy Parameter, find " + accessControlParameter.getClass().getName());
         }
@@ -250,21 +254,21 @@ public class LSSSLCW10Engine implements AccessControlEngine {
             minSatisfiedElementOmegas[i] = pairing.getZr().newElement(omegas[i].getNumerator()).div(pairing.getZr().newElement(omegas[i].getDenominator())).getImmutable();
         }
 
-        Element[] elementResult = new Element[attributes.length];
+        Map<String, Element> omegaElementsMap = new HashMap<String, Element>();
         for (int i = 0; i < rows.length; i++) {
             for (int j = 0; j < attributes.length; j++) {
                 if (leafAttributes[rows[i]].equals(attributes[j])) {
-                    elementResult[j] = minSatisfiedElementOmegas[i].duplicate().getImmutable();
+                    omegaElementsMap.put(attributes[j], minSatisfiedElementOmegas[i].duplicate().getImmutable());
+
                 }
             }
         }
-
-        for (int i = 0; i < elementResult.length; i++) {
-            if (elementResult[i] == null) {
-                elementResult[i] = pairing.getZr().newZeroElement().getImmutable();
+        for (int i = 0; i < attributes.length; i++) {
+            if (!omegaElementsMap.containsKey(attributes[i])) {
+                omegaElementsMap.put(attributes[i], pairing.getZr().newZeroElement().getImmutable());
             }
         }
-        return elementResult;
+        return omegaElementsMap;
     }
 
     private Fraction[] get_identity_vector(int length) {

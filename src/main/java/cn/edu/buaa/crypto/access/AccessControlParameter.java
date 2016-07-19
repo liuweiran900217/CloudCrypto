@@ -54,4 +54,8 @@ public class AccessControlParameter {
         }
         return minAttributeSet;
     }
+
+    public AccessTreeNode getRootAccessTreeNode() {
+        return this.rootAccessTreeNode;
+    }
 }

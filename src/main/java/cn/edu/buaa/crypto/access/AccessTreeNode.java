@@ -10,14 +10,14 @@ public class AccessTreeNode {
 
     private final AccessTreeNode[] childNodes;
     private final int t;
-    private final int index;
+    private final int label;
     private final String attribute;
     private final boolean isLeafNode;
 
     private AccessTreeNode(final int i, final String rho) {
         this.childNodes = null;
         this.t = 0;
-        this.index = i;
+        this.label = i;
         this.isLeafNode = true;
         this.attribute = rho;
     }
@@ -29,7 +29,7 @@ public class AccessTreeNode {
         }
         this.childNodes = new AccessTreeNode[accessPolicyNode[0]];
         this.t = accessPolicyNode[1];
-        this.index = i;
+        this.label = i;
         this.attribute = null;
         this.isLeafNode = false;
         int k = 0;
@@ -62,5 +62,29 @@ public class AccessTreeNode {
             }
             return false;
         }
+    }
+
+    public int getT() {
+        return this.t;
+    }
+
+    public int getN() {
+        return this.childNodes.length;
+    }
+
+    public AccessTreeNode getChildNodeAt(int index) {
+        return this.childNodes[index];
+    }
+
+    public boolean isLeafNode() {
+        return this.isLeafNode;
+    }
+
+    public String getAttribute() {
+        return this.attribute;
+    }
+
+    public int getLabel() {
+        return this.label;
     }
 }
