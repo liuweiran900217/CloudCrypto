@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.access;
+package cn.edu.buaa.crypto.access.tree;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
