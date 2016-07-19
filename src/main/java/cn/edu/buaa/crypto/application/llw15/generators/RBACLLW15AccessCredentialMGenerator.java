@@ -59,7 +59,7 @@ public class RBACLLW15AccessCredentialMGenerator {
             RBACLLW15AccessCredentialMDeleParameters parameters = (RBACLLW15AccessCredentialMDeleParameters)params;
 
             RBACLLW15PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            RBACLLW15AccessCredentialMParameters secretKeyParameters = parameters.getSecretKeyParameters();
+            RBACLLW15AccessCredentialMParameters secretKeyParameters = parameters.getAccessCredentialMParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] roles = new String[publicKeyParameters.getMaxRoleNumber()];

@@ -38,18 +38,18 @@ public class RBACLLW15DecapsulationPGenerator implements PairingKeyDecapsulation
             throw new InvalidCipherTextException("Patient identity does not match Encapsulation identity");
         }
 
-        Element a0 = secretKeyParameters.getA0().getImmutable();
+        Element a0 = secretKeyParameters.getA0Prime().getImmutable();
         Element C0 = ciphertextParameters.getC0().getImmutable();
         Element C1 = ciphertextParameters.getC1().getImmutable();
-        Element a1 = secretKeyParameters.getA1().getImmutable();
+        Element a1 = secretKeyParameters.getA1Prime().getImmutable();
 
         for (int i=0; i<publicKeyParameters.getMaxRoleNumber(); i++){
             if (params.getRolesAt(i) != null) {
-                a0 = a0.mul(secretKeyParameters.getBsAt(i).powZn(elementRolesCT[i])).getImmutable();
+                a0 = a0.mul(secretKeyParameters.getBsPrimeAt(i).powZn(elementRolesCT[i])).getImmutable();
             }
         }
-        a0 = a0.mul(secretKeyParameters.getB0().powZn(elementTimeCT))
-                .mul(secretKeyParameters.getBv().powZn(Utils.MapToZr(pairing, C0.toBytes()))).getImmutable();
+        a0 = a0.mul(secretKeyParameters.getB0Prime().powZn(elementTimeCT))
+                .mul(secretKeyParameters.getBvPrime().powZn(Utils.MapToZr(pairing, C0.toBytes()))).getImmutable();
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();
         Element sessionKey = temp0.div(temp1).getImmutable();

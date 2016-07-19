@@ -173,20 +173,20 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
             Document accessCredentialPDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = accessCredentialPDocument.createElement(this.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, this.TYPE_ACP);
-            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH, Integer.toString(accessCredentialPParameters.getBs().length));
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH, Integer.toString(accessCredentialPParameters.getBsPrime().length));
             accessCredentialPDocument.appendChild(schemeElement);
             //Set Identity
             SerializationUtils.SetString(accessCredentialPDocument, schemeElement, TAG_ACP_ID, accessCredentialPParameters.getId());
             //Set a0
-            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_A0, accessCredentialPParameters.getA0());
+            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_A0, accessCredentialPParameters.getA0Prime());
             //Set a1
-            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_A1, accessCredentialPParameters.getA1());
+            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_A1, accessCredentialPParameters.getA1Prime());
             //Set b0
-            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_B0, accessCredentialPParameters.getB0());
+            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_B0, accessCredentialPParameters.getB0Prime());
             //Set bv
-            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_BV, accessCredentialPParameters.getBv());
+            SerializationUtils.SetElement(accessCredentialPDocument, schemeElement, TAG_ACP_BV, accessCredentialPParameters.getBvPrime());
             //Set bs
-            SerializationUtils.SetElementArray(accessCredentialPDocument, schemeElement, TAG_ACP_BS, TAG_ACP_BI, accessCredentialPParameters.getBs());
+            SerializationUtils.SetElementArray(accessCredentialPDocument, schemeElement, TAG_ACP_BS, TAG_ACP_BI, accessCredentialPParameters.getBsPrime());
             return accessCredentialPDocument;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
