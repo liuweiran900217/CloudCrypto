@@ -14,6 +14,9 @@ import java.util.Set;
 
 /**
  * Created by Weiran Liu on 2016/7/20.
+ *
+ * This is the implementation of the access tree scheme proposed first proposed by Goyal, Pandey, Sahai, Waters in 2006.
+ * Conference version: V. Goyal, O. Pandey, A. Sahai, B. Waters. Attribute-based encryption for fine-grained access control of encrypted data. CCS 2006, 89-98.
  */
 public class AccessTreeEngine implements AccessControlEngine {
     public static String SCHEME_NAME = "General Access Tree Method";
@@ -30,6 +33,10 @@ public class AccessTreeEngine implements AccessControlEngine {
 
     public String getEngineName() {
         return this.SCHEME_NAME;
+    }
+
+    public boolean isSupportThresholdGate() {
+        return true;
     }
 
     public AccessControlParameter generateAccessControl(int[][] accessPolicy, String[] rhos) throws UnsatisfiedAccessControlException {
@@ -58,7 +65,16 @@ public class AccessTreeEngine implements AccessControlEngine {
         }
     }
 
-    public Map<String, Element> reconstructOmegas(Pairing pairing, String[] attributes, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
+    public Map<String, Element> reconstructOmegas(Pairing pairing, String[] attributes, AccessControlParameter accessControlParameter)
+            throws UnsatisfiedAccessControlException {
+        Map<String, String> collisionMap = new HashMap<String, String>();
+        for (int i = 0; i < attributes.length; i++) {
+            if (collisionMap.containsKey(attributes[i])) {
+                throw new UnsatisfiedAccessControlException("Invalid attribute set, containing identical attribute: " + attributes[i]);
+            } else {
+                collisionMap.put(attributes[i], attributes[i]);
+            }
+        }
         SatisfiedAccessTreeNode satisfiedAccessTreeNode = SatisfiedAccessTreeNode.GetSatisfiedAccessTreeNode(pairing, accessControlParameter.getRootAccessTreeNode());
         return SatisfiedAccessTreeNode.CalCoefficient(satisfiedAccessTreeNode, attributes);
     }

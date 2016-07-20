@@ -11,6 +11,8 @@ import java.util.Map;
 public interface AccessControlEngine {
     String getEngineName();
 
+    boolean isSupportThresholdGate();
+
     AccessControlParameter generateAccessControl(int[][] accessPolicy, String[] rhos) throws UnsatisfiedAccessControlException;
 
     Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException;

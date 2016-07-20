@@ -1,11 +1,29 @@
 package cn.edu.buaa.crypto.access;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Weiran Liu on 2016/7/19.
  */
 public class AccessTreeNode {
+    private static int numberOfLeafNodes = 0;
     public static AccessTreeNode GenerateAccessTree(final int[][] accessPolicy, final String[] rhos) throws UnsatisfiedAccessControlException {
-        return new AccessTreeNode(accessPolicy, 0, rhos);
+        Map<String, String> collisionMap = new HashMap<String, String>();
+        for (int i = 0; i < rhos.length; i++) {
+            if (collisionMap.containsKey(rhos[i])) {
+                throw new UnsatisfiedAccessControlException("Invalid access policy, rhos containing identical string: " + rhos[i]);
+            } else {
+                collisionMap.put(rhos[i], rhos[i]);
+            }
+        }
+        numberOfLeafNodes = 0;
+        AccessTreeNode rootAccessTreeNode = new AccessTreeNode(accessPolicy, 0, rhos);
+        if (numberOfLeafNodes != rhos.length) {
+            throw new UnsatisfiedAccessControlException("Invalid access policy, number of leaf nodes " + numberOfLeafNodes
+                    + " does not match number of rhos " + rhos.length);
+        }
+        return rootAccessTreeNode;
     }
 
     private final AccessTreeNode[] childNodes;
@@ -37,6 +55,7 @@ public class AccessTreeNode {
             if (accessPolicyNode[j] > 0) {
                 this.childNodes[k] = new AccessTreeNode(accessPolicy, accessPolicyNode[j], rhos);
             } else if (accessPolicyNode[j] < 0) {
+                numberOfLeafNodes++;
                 this.childNodes[k] = new AccessTreeNode(accessPolicyNode[j], rhos[-accessPolicyNode[j] - 1]);
             } else {
                 throw new UnsatisfiedAccessControlException("Invalid access policy, containing access node with index 0");
