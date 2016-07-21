@@ -106,4 +106,47 @@ public class AccessTreeNode {
     public int getLabel() {
         return this.label;
     }
+
+    @Override
+    public boolean equals(Object anOjbect) {
+        if (this == anOjbect) {
+            return true;
+        }
+        if (anOjbect instanceof AccessTreeNode) {
+            AccessTreeNode that = (AccessTreeNode) anOjbect;
+            //Compare t;
+            if (this.t != that.getT()) {
+                return false;
+            }
+            //Compare label
+            if (this.label != that.getLabel()) {
+                return false;
+            }
+            //Compare leafnode
+            if (this.isLeafNode) {
+                //Compare attribute
+                if (!this.attribute.equals(that.getAttribute())) {
+                    return false;
+                }
+                if (this.isLeafNode != that.isLeafNode) {
+                    return false;
+                }
+                return true;
+            } else {
+                //Compare nonleaf nodes
+                for (int i = 0; i < this.childNodes.length; i++) {
+                    //Compare child nodes
+                    if (!this.childNodes.equals(that.getChildNodeAt(i))) {
+                        return false;
+                    }
+                }
+                //Compare number of child nodes
+                if (this.childNodes.length != that.childNodes.length) {
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,5 +1,7 @@
 package cn.edu.buaa.crypto.access;
 
+import java.util.Arrays;
+
 /**
  * Created by Weiran Liu on 2016/7/19.
  */
@@ -57,5 +59,22 @@ public class AccessControlParameter {
 
     public AccessTreeNode getRootAccessTreeNode() {
         return this.rootAccessTreeNode;
+    }
+
+    @Override
+    public boolean equals(Object anOjbect) {
+        if (this == anOjbect) {
+            return true;
+        }
+        if (anOjbect instanceof AccessControlParameter) {
+            AccessControlParameter that = (AccessControlParameter) anOjbect;
+            //Compare rhos
+            if (!Arrays.equals(this.rhos, that.getRhos())) {
+                return false;
+            }
+            //Compare AccessTreeNode
+            return this.rootAccessTreeNode.equals(that.getRootAccessTreeNode());
+        }
+        return false;
     }
 }
