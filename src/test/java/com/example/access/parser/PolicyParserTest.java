@@ -3,7 +3,6 @@ package com.example.access.parser;
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
-import cn.edu.buaa.crypto.access.lsss.lcw10.LSSSLCW10Engine;
 import cn.edu.buaa.crypto.access.lsss.lsw10.LSSSLW10Engine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;

@@ -25,11 +25,12 @@ public class AccessControlEngineTest {
     private static String[] access_policy_exampe_1_satisfied_2 = new String[] {"school:pku", "professor", "academy:software", "academy:computer"};
     private static String[] access_policy_exampe_1_unsatisfied_1 = new String[] {"professor", "academy:software", "academy:computer"};
 
-    private static String access_policy_example_2 = "(school:pku and academy:software) or (school:mit and academy:computer)";
-    private static String[] access_policy_exampe_2_satisfied_1 = new String[] {"school:pku", "academy:software"};
-    private static String[] access_policy_exampe_2_satisfied_2 = new String[] {"school:pku", "school:mit", "academy:computer"};
-    private static String[] access_policy_exampe_2_unsatisfied_1 = new String[] {"school:pku"};
-    private static String[] access_policy_exampe_2_unsatisfied_2 = new String[] {"school:pku", "academy:computer"};
+    private static String access_policy_example_2 = "((A and B and C) and (D or E or F) and (G and H and (I or J or K or L)))";
+    private static String[] access_policy_exampe_2_satisfied_1 = new String[] {"A", "B", "C", "E", "G", "H", "K"};
+    private static String[] access_policy_exampe_2_satisfied_2 = new String[] {"A", "B", "C", "F", "E", "G", "H", "I", "J", "K", "L"};
+    private static String[] access_policy_exampe_2_unsatisfied_1 = new String[] {"A", "B", "C", "G", "H", "K"};
+    private static String[] access_policy_exampe_2_unsatisfied_2 = new String[] {"A", "B", "C", "E", "G", "K"};
+    private static String[] access_policy_exampe_2_unsatisfied_3 = new String[] {"A", "B", "C", "D", "G", "H"};
 
     private static String access_policy_example_3 =
             "A_00 and A_01 and A_02 and A_03 and A_04 and A_05 and A_06 and A_07 and A_08 and A_09 and " +
@@ -199,6 +200,7 @@ public class AccessControlEngineTest {
         test_invalid_access_policy(31, access_policy_example_1, access_policy_exampe_1_unsatisfied_1);
         test_invalid_access_policy(41, access_policy_example_2, access_policy_exampe_2_unsatisfied_1);
         test_invalid_access_policy(42, access_policy_example_2, access_policy_exampe_2_unsatisfied_2);
+        test_invalid_access_policy(53, access_policy_example_2, access_policy_exampe_2_unsatisfied_3);
         test_invalid_access_policy(51, access_policy_example_3, access_policy_exampe_3_unsatisfied_1);
         test_invalid_access_policy(52, access_policy_example_3, access_policy_exampe_3_unsatisfied_2);
     }
@@ -216,7 +218,7 @@ public class AccessControlEngineTest {
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
             test_valid_access_policy(testIndex, accessPolicy, rhos, attributeSet);
         } catch (PolicySyntaxException e) {
-            System.out.println("Access Policy with Combined Gate Satisfied Test + " + testIndex + ", Error for parsing...");
+            System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for parsing...");
             e.printStackTrace();
         }
     }
@@ -234,7 +236,7 @@ public class AccessControlEngineTest {
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
             test_invalid_access_policy(testIndex, accessPolicy, rhos, attributeSet);
         } catch (PolicySyntaxException e) {
-            System.out.println("Access Policy with Combined Gate Satisfied Test + " + testIndex + ", Error for parsing...");
+            System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for parsing...");
             e.printStackTrace();
         }
     }
@@ -258,13 +260,13 @@ public class AccessControlEngineTest {
             }
 //        System.out.println("Reconstruct Secret s = " + reconstructedSecret);
             if (!reconstructedSecret.equals(secret)) {
-                System.out.println("Access Policy with Combined Gate Satisfied Test + " + testIndex + ", Reconstructed Secret Wrong...");
+                System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Reconstructed Secret Wrong...");
 //                System.exit(0);
             } else {
-                System.out.println("Access Policy with Combined Gate Satisfied Test + " + testIndex + " Passed.");
+                System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + " Passed.");
             }
         } catch (UnsatisfiedAccessControlException e) {
-            System.out.println("Access Policy with Combined Gate Satisfied Test + " + testIndex + ", Error for getting Exceptions...");
+            System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for getting Exceptions...");
             e.printStackTrace();
             System.exit(0);
         }
