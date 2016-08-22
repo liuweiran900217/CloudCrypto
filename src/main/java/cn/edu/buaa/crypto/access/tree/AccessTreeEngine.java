@@ -4,13 +4,12 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.AccessTreeNode;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
+import cn.edu.buaa.crypto.algebra.LagrangePolynomial;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Weiran Liu on 2016/7/20.

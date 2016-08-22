@@ -10,7 +10,7 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 /**
  * Created by Weiran Liu on 2016/8/22.
  *
- * Given efficients of n fundamental polynomials, computes the efficients of the extended n-degree polynomial.
+ * Given coefficients of n fundamental polynomials, computes the coefficients of the extended n-degree polynomial.
  *
  * The algorithm is called Horner's Rule, or Qin Jiu Zhao algorithm.
  * The detailed algorithm is shown in the paper:
@@ -22,25 +22,25 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
  */
 public class HornerRule {
     /**
-     * Compute n efficients for n-degree polynomials by given n elementary efficients
-     * @param elementaryEfficient
-     * @return n efficients
+     * Compute n coefficients for n-degree polynomials by given n elementary coefficients
+     * @param elementaryCoefficient
+     * @return n coefficients
      */
-    public static Element[] ComputeEfficients(Pairing pairing, Element[] elementaryEfficient) {
-        int n = elementaryEfficient.length;
-        Element[] allEfficients = new Element[n+1];
+    public static Element[] ComputeEfficients(Pairing pairing, Element[] elementaryCoefficient) {
+        int n = elementaryCoefficient.length;
+        Element[] allCoefficients = new Element[n+1];
         //set a_{n} to be 1
-        allEfficients[n] = pairing.getZr().newOneElement().getImmutable();
+        allCoefficients[n] = pairing.getZr().newOneElement().getImmutable();
         //set all other efficients to be initially zero
         for (int i = 0; i < n; i++) {
-            allEfficients[i] = pairing.getZr().newZeroElement().getImmutable();
+            allCoefficients[i] = pairing.getZr().newZeroElement().getImmutable();
         }
         for (int k = 0; k < n; k++) {
             for (int i = n - k - 1; i < n - 1; i++) {
-                allEfficients[i] = allEfficients[i].add(allEfficients[i + 1].mulZn(elementaryEfficient[k])).getImmutable();
+                allCoefficients[i] = allCoefficients[i].add(allCoefficients[i + 1].mulZn(elementaryCoefficient[k])).getImmutable();
             }
-            allEfficients[n-1] = allEfficients[n-1].add(elementaryEfficient[k]).getImmutable();
+            allCoefficients[n-1] = allCoefficients[n-1].add(elementaryCoefficient[k]).getImmutable();
         }
-        return allEfficients;
+        return allCoefficients;
     }
 }

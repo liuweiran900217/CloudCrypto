@@ -39,7 +39,7 @@ by which the encryptor can use to encrypt arbitrary data.
 For Fully Homomorphic Encryption based on (Ideal) Lattices, we are busy finding reliable underlying algebric library. 
 We strongly welcome you to provide us useful suggestions and methods for implementing even Lattice-Based Cryptography in Java.
 
-## Develope Environments
+## Develop Environments
 
 Similar to Java Pairing-Based Cryptography Library, 
 CloudCrypto is built using Maven 2. You can download it from [http://maven.apache.org](http://maven.apache.org).
@@ -50,6 +50,28 @@ The only Jar library that you may need to download and configure by yourself is 
 
 The development enviroment is IntelliJ IDEA. In fact, the source codes is a whole IDEA project.
 For the ones who want to have a try, please simply download the code and import it into IntelliJ IDEA.
+
+## Algebra Tools
+
+We have implemented basic algebra tools in order to be further used in cryptographic schemes.
+
+### Horner's Rule
+
+Given the product $\prod\limits_{i = 1}^n {({b_i}x + 1)}$, find the coefficients $a_n, a_{n-1}, \cdots, a_1, a_0$ such that
+${a_n}{x^n} + {a_{n - 1}}{x^{n - 1}} +  \cdots  + {a_1}x + {a_0} = \prod\limits_{i = 1}^n {({b_i}x + 1)}$.
+
+This algorithm is called Horner's Rule, which is previously used to efficiently evaluate n-degree polynomials. 
+The Horner's Rule can be used to compute the above coefficients. The detailed algorithm is shown in 
+Nigel P. Smart, Frederik Vercauteren. Fully Homomorphic Encryption with Relatively Small Key and Ciphertext Sizes. PKC 2010, pp. 420 - 443, 2010.
+
+### Access Control Mechanism using Boolean Formula
+
+Access control mechanism using Boolean formula is a primitive used in Attribute-based Encryption. 
+There are mainly two methods to implement boolean formula access control: access tree and linear secret sharing scheme (LSSS). 
+We separately implement the two methods in our toolkit. 
+
+- Access Tree: Vipul Goyal, Omkant Pandey, Amit Sahai, Brent Waters. Attribute-Based Encryption for Fine-Grained Access Control of Encrypted Data. CCS 2006, pp. 89-87, 2006.
+- LSSS: Allison Lewko, Brent Waters. Decentralizing Attribute-Based Encryption. EUROCRYPT 2011, pp. 568-588, 2011.
 
 ## Schemes
 
