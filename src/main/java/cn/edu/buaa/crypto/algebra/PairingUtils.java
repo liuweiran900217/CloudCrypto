@@ -1,42 +1,70 @@
-package cn.edu.buaa.crypto;
+package cn.edu.buaa.crypto.algebra;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
+import it.unisa.dia.gas.plaf.jpbc.pairing.a1.TypeA1CurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
+import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import org.bouncycastle.util.encoders.Hex;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Weiran Liu on 15-9-30.
+ * Created by Weiran Liu on 2016/8/24.
+ *
+ * Utilities for pairing-based cryptography.
  */
-
-public class Utils {
-    private static final int default_block_size = 1024;
-
-    public static PropertiesParameters GeneratePropertiesParameters(int rBitLength, int qBitLength) {
+public class PairingUtils {
+    /**
+     * Generate type A parameter for further used in paiaring-based cryptography.
+     * @param rBitLength Bit length for the group Z_r
+     * @param qBitLength Bit length for the group G and G_T
+     * @return Type A pairing parameters
+     */
+    public static PropertiesParameters GenerateTypeAParameters(int rBitLength, int qBitLength) {
         PropertiesParameters parameters;
         Pairing pairing;
+        Element g;
+        // Generate curve parameters
+        while (true) {
+            parameters = generate_type_a_curve_params(rBitLength, qBitLength);
+            pairing = PairingFactory.getPairing(parameters);
+            g = pairing.getG1().newRandomElement().getImmutable();
+            if (!pairing.pairing(g, g).isOne()) { break; }
+        }
+        return parameters;
+    }
+
+    public static PropertiesParameters GenerateTypeA1Parameters(int qBitLength) {
+        PropertiesParameters parameters;
+        Pairing pairing;
+        Element generator;
         Element g;
 
         // Generate curve parameters
         while (true) {
-            parameters = generateCurveParams(rBitLength, qBitLength);
+            parameters = generate_type_a1_curve_params(qBitLength);
             pairing = PairingFactory.getPairing(parameters);
-            g = pairing.getG1().newRandomElement().getImmutable();
-            if (!pairing.pairing(g, g).isOne()) { return parameters; }
+            generator = pairing.getG1().newRandomElement().getImmutable();
+            g = ElementUtils.getGenerator(pairing, generator, parameters, 0, 3).getImmutable();
+            if (!pairing.pairing(g, g).isOne()) { break; }
         }
+        return parameters;
     }
 
-    private static PropertiesParameters generateCurveParams(int rBitLength, int qBitLength) {
+    private static PropertiesParameters generate_type_a_curve_params(int rBitLength, int qBitLength) {
         PairingParametersGenerator parametersGenerator = new TypeACurveGenerator(rBitLength, qBitLength);
         return (PropertiesParameters) parametersGenerator.generate();
     }
 
+    private static PropertiesParameters generate_type_a1_curve_params(int qBitLength) {
+        PairingParametersGenerator parametersGenerator = new TypeA1CurveGenerator(3, qBitLength);
+        return (PropertiesParameters) parametersGenerator.generate();
+    }
 
     /**
      * A standard collision resistant hash function implementations used privately for Map.
@@ -123,7 +151,7 @@ public class Utils {
     public static Element[] MapToZr(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = Utils.MapToZr(pairing, message[i]);
+            elements[i] = PairingUtils.MapToZr(pairing, message[i]);
         }
         return elements;
     }
@@ -131,7 +159,7 @@ public class Utils {
     public static Element[] MapToFirstHalfZr(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = Utils.MapToFirstHalfZr(pairing, message[i]);
+            elements[i] = PairingUtils.MapToFirstHalfZr(pairing, message[i]);
         }
         return elements;
     }
@@ -145,7 +173,7 @@ public class Utils {
     public static Element[] MapToZr(Pairing pairing, String[] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = Utils.MapToZr(pairing, message[i]);
+            elements[i] = PairingUtils.MapToZr(pairing, message[i]);
         }
         return elements;
     }
@@ -153,7 +181,7 @@ public class Utils {
     public static Element[] MapToFirstHalfZr(Pairing pairing, String[] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = Utils.MapToFirstHalfZr(pairing, message[i]);
+            elements[i] = PairingUtils.MapToFirstHalfZr(pairing, message[i]);
         }
         return elements;
     }
@@ -179,7 +207,7 @@ public class Utils {
     public static Element[] MapToG1(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = Utils.MapToG1(pairing, message[i]);
+            elements[i] = PairingUtils.MapToG1(pairing, message[i]);
         }
         return elements;
     }
@@ -205,7 +233,7 @@ public class Utils {
     public static Element[] MapToG2(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = Utils.MapToG2(pairing, message[i]);
+            elements[i] = PairingUtils.MapToG2(pairing, message[i]);
         }
         return elements;
     }
@@ -231,7 +259,7 @@ public class Utils {
     public static Element[] MapToGT(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = Utils.MapToGT(pairing, message[i]);
+            elements[i] = PairingUtils.MapToGT(pairing, message[i]);
         }
         return elements;
     }
@@ -259,7 +287,7 @@ public class Utils {
             return false;
         }
         for (int i=0; i<thisElementArray.length; i++){
-            if (!(Utils.isEqualElement(thisElementArray[i], thatElementArray[i]))){
+            if (!(PairingUtils.isEqualElement(thisElementArray[i], thatElementArray[i]))){
                 return false;
             }
         }

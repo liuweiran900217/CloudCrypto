@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -71,35 +71,35 @@ public class RBACLLW15PublicKeyParameters extends PairingKeyParameters {
         if (anObject instanceof RBACLLW15PublicKeyParameters) {
             RBACLLW15PublicKeyParameters that = (RBACLLW15PublicKeyParameters)anObject;
             //Compare g
-            if (!Utils.isEqualElement(this.g, that.getG())) {
+            if (!PairingUtils.isEqualElement(this.g, that.getG())) {
                 return false;
             }
             //Compare g1
-            if (!Utils.isEqualElement(this.g1, that.getG1())) {
+            if (!PairingUtils.isEqualElement(this.g1, that.getG1())) {
                 return false;
             }
             //Compare g2
-            if (!Utils.isEqualElement(this.g2, that.getG2())) {
+            if (!PairingUtils.isEqualElement(this.g2, that.getG2())) {
                 return false;
             }
             //Compare g3
-            if (!Utils.isEqualElement(this.g3, that.getG3())) {
+            if (!PairingUtils.isEqualElement(this.g3, that.getG3())) {
                 return false;
             }
             //Compare gh
-            if (!Utils.isEqualElement(this.gh, that.getGh())) {
+            if (!PairingUtils.isEqualElement(this.gh, that.getGh())) {
                 return false;
             }
             //Compare u0
-            if (!Utils.isEqualElement(this.u0, that.getU0())) {
+            if (!PairingUtils.isEqualElement(this.u0, that.getU0())) {
                 return false;
             }
             //Compare uv
-            if (!Utils.isEqualElement(this.uv, that.getUv())) {
+            if (!PairingUtils.isEqualElement(this.uv, that.getUv())) {
                 return false;
             }
             //Compare u
-            if (!Utils.isEqualElementArray(this.u, that.getUs())) {
+            if (!PairingUtils.isEqualElementArray(this.u, that.getUs())) {
                 return false;
             }
             //Compare Pairing Parameters

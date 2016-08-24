@@ -6,11 +6,13 @@ import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 import cn.edu.buaa.crypto.access.lsss.lsw10.LSSSLW10Engine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
+import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 
 import java.util.Map;
 
@@ -62,9 +64,8 @@ public class PolicyParserTest {
 
     public PolicyParserTest() {
         this.accessControlEngine = LSSSLW10Engine.getInstance();
-        TypeACurveGenerator pg = new TypeACurveGenerator(160, 512);
-        PairingParameters typeAParams = pg.generate();
-        this.pairing = PairingFactory.getPairing(typeAParams);
+        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(160, 512);
+        this.pairing = PairingFactory.getPairing(parameters);
     }
 
     private void test_valid_access_policy(int testIndex, String accessPolicyString, final String[] attributeSet) {

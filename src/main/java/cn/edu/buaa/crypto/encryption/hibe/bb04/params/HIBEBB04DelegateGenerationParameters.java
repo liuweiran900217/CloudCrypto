@@ -9,6 +9,8 @@ import java.security.InvalidParameterException;
 
 /**
  * Created by Weiran Liu on 2015/10/5.
+ *
+ * Delegation generation parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04DelegateGenerationParameters extends KeyGenerationParameters {
     private HIBEBB04PublicKeyParameters publicKeyParameters;

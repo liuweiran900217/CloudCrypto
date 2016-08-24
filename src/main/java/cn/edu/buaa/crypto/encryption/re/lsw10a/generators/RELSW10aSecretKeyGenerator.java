@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
@@ -31,7 +31,7 @@ public class RELSW10aSecretKeyGenerator implements CipherParametersGenerator {
             RELSW10aPublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element elementId = Utils.MapToZr(pairing, parameters.getId()).getImmutable();
+            Element elementId = PairingUtils.MapToZr(pairing, parameters.getId()).getImmutable();
             Element t = pairing.getZr().newRandomElement().getImmutable();
 
             Element d0 = publicKeyParameters.getG().powZn(masterSecretKeyParameters.getAlpha())

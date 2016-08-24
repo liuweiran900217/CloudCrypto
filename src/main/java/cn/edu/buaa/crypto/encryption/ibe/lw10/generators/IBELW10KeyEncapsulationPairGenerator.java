@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10PublicKeyParameters;
@@ -29,7 +29,7 @@ public class IBELW10KeyEncapsulationPairGenerator  implements PairingKeyEncapsul
         IBELW10PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String id = this.params.getId();
-        Element elementId = Utils.MapToZr(pairing, id).getImmutable();
+        Element elementId = PairingUtils.MapToZr(pairing, id).getImmutable();
 
         Element s = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = publicKeyParameters.getEggAlpha().powZn(s).getImmutable();

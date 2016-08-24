@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -55,23 +55,23 @@ public class HIBBELLW14PublicKeyParameters extends PairingKeyParameters {
         if (anObject instanceof HIBBELLW14PublicKeyParameters) {
             HIBBELLW14PublicKeyParameters that = (HIBBELLW14PublicKeyParameters)anObject;
             //Compare g
-            if (!Utils.isEqualElement(this.g, that.getG())) {
+            if (!PairingUtils.isEqualElement(this.g, that.getG())) {
                 return false;
             }
             //Compare h
-            if (!Utils.isEqualElement(this.h, that.getH())) {
+            if (!PairingUtils.isEqualElement(this.h, that.getH())) {
                 return false;
             }
             //Compare u
-            if (!Utils.isEqualElementArray(this.u, that.getUs())) {
+            if (!PairingUtils.isEqualElementArray(this.u, that.getUs())) {
                 return false;
             }
             //Compare X3
-            if (!Utils.isEqualElement(this.X3, that.getX3())) {
+            if (!PairingUtils.isEqualElement(this.X3, that.getX3())) {
                 return false;
             }
             //Compare eggAlpha
-            if (!Utils.isEqualElement(this.eggAlpha, that.getEggAlpha())) {
+            if (!PairingUtils.isEqualElement(this.eggAlpha, that.getEggAlpha())) {
                 return false;
             }
             //Compare Pairing Parameters

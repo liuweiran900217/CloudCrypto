@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Public key parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04PublicKeyParameters extends PairingKeyParameters {
 
@@ -56,19 +58,19 @@ public class HIBEBB04PublicKeyParameters extends PairingKeyParameters {
                 return false;
             }
             //Compare g
-            if (!Utils.isEqualElement(this.g, that.getG())) {
+            if (!PairingUtils.isEqualElement(this.g, that.getG())) {
                 return false;
             }
             //Compare g1
-            if (!Utils.isEqualElement(this.g1, that.getG1())) {
+            if (!PairingUtils.isEqualElement(this.g1, that.getG1())) {
                 return false;
             }
             //Compare g2
-            if (!Utils.isEqualElement(this.g2, that.getG2())) {
+            if (!PairingUtils.isEqualElement(this.g2, that.getG2())) {
                 return false;
             }
             //Compare hs
-            if (!Utils.isEqualElementArray(this.hs, that.getHs())) {
+            if (!PairingUtils.isEqualElementArray(this.hs, that.getHs())) {
                 return false;
             }
             //Compare Pairing Parameters

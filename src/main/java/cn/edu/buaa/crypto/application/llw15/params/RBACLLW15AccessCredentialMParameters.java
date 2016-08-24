@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -81,27 +81,27 @@ public class RBACLLW15AccessCredentialMParameters extends PairingKeyParameters {
                 return false;
             }
             //Compare elementRoles
-            if (!Utils.isEqualElementArray(this.elementRoles, that.getElementRoles())) {
+            if (!PairingUtils.isEqualElementArray(this.elementRoles, that.getElementRoles())) {
                 return false;
             }
             //Compare a0
-            if (!Utils.isEqualElement(this.a0, that.getA0())) {
+            if (!PairingUtils.isEqualElement(this.a0, that.getA0())) {
                 return false;
             }
             //Compare a1
-            if (!Utils.isEqualElement(this.a1, that.getA1())) {
+            if (!PairingUtils.isEqualElement(this.a1, that.getA1())) {
                 return false;
             }
             //Compare a2
-            if (!Utils.isEqualElement(this.a2, that.getA2())) {
+            if (!PairingUtils.isEqualElement(this.a2, that.getA2())) {
                 return false;
             }
             //Compare bv
-            if (!Utils.isEqualElement(this.bv, that.getBv())) {
+            if (!PairingUtils.isEqualElement(this.bv, that.getBv())) {
                 return false;
             }
             //Compare bs
-            if (!Utils.isEqualElementArray(this.bs, that.getBs())) {
+            if (!PairingUtils.isEqualElementArray(this.bs, that.getBs())) {
                 return false;
             }
             //Compare Pairing Parameters

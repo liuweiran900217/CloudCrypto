@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -52,23 +52,23 @@ public class KPABERW13PublicKeyParameters extends PairingKeyParameters {
         if (anObject instanceof KPABERW13PublicKeyParameters) {
             KPABERW13PublicKeyParameters that = (KPABERW13PublicKeyParameters)anObject;
             //Compare g
-            if (!Utils.isEqualElement(this.g, that.getG())) {
+            if (!PairingUtils.isEqualElement(this.g, that.getG())) {
                 return false;
             }
             //Compare u
-            if (!Utils.isEqualElement(this.u, that.getU())) {
+            if (!PairingUtils.isEqualElement(this.u, that.getU())) {
                 return false;
             }
             //Compare h
-            if (!Utils.isEqualElement(this.h, that.getH())) {
+            if (!PairingUtils.isEqualElement(this.h, that.getH())) {
                 return false;
             }
             //Compare w
-            if (!Utils.isEqualElement(this.w, that.getW())) {
+            if (!PairingUtils.isEqualElement(this.w, that.getW())) {
                 return false;
             }
             //Compare eggAlpha
-            if (!Utils.isEqualElement(this.eggAlpha, that.getEggAlpha())) {
+            if (!PairingUtils.isEqualElement(this.eggAlpha, that.getEggAlpha())) {
                 return false;
             }
             //Compare Pairing Parameters

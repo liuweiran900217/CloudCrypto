@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10SecretKeyGenerationParameters;
@@ -30,7 +30,7 @@ public class IBELW10SecretKeyGenerator implements CipherParametersGenerator {
         IBELW10PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element elementId = Utils.MapToZr(pairing, parameters.getId()).getImmutable();
+        Element elementId = PairingUtils.MapToZr(pairing, parameters.getId()).getImmutable();
         Element Zr_R3 = pairing.getZr().newRandomElement().getImmutable();
         Element R3 = masterSecretKeyParameters.getG3Generator().powZn(Zr_R3).getImmutable();
         Element Zr_R3Prime = pairing.getZr().newRandomElement().getImmutable();

@@ -16,6 +16,6 @@ public class IBELW10EngineTest {
         PairingParameterXMLSerializer schemeXMLSerializer = IBELW10XMLSerializer.getInstance();
 
         IBEEngineTest engineTest = new IBEEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(-1, 512);
+        engineTest.processTest(-1, 256);
     }
 }

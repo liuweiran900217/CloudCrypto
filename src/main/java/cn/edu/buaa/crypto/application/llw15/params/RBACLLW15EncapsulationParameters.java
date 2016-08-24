@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -34,11 +34,11 @@ public class RBACLLW15EncapsulationParameters extends PairingCiphertextParameter
         if (anObject instanceof RBACLLW15EncapsulationParameters) {
             RBACLLW15EncapsulationParameters that = (RBACLLW15EncapsulationParameters) anObject;
             //Compare C0
-            if (!Utils.isEqualElement(this.C0, that.getC0())) {
+            if (!PairingUtils.isEqualElement(this.C0, that.getC0())) {
                 return false;
             }
             //Compare C1
-            if (!Utils.isEqualElement(this.C1, that.getC1())) {
+            if (!PairingUtils.isEqualElement(this.C1, that.getC1())) {
                 return false;
             }
             //Compare Pairing Parameters

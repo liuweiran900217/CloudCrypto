@@ -1,25 +1,22 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 16/8/23.
  *
  * Secret Key Parameters for Delerablée IBBE.
  */
-public class IBBESecretKeyParameters extends PairingKeyParameters {
+public class IBBEDel07SecretKeyParameters extends PairingKeyParameters {
     private final String id;
     private final Element elementId;
 
     private final Element secretKey;
 
-    public IBBESecretKeyParameters(PairingParameters pairingParameters, String id, Element elementId, Element secretKey) {
+    public IBBEDel07SecretKeyParameters(PairingParameters pairingParameters, String id, Element elementId, Element secretKey) {
         super(true, pairingParameters);
         this.secretKey = secretKey.getImmutable();
         this.id = id;
@@ -33,22 +30,22 @@ public class IBBESecretKeyParameters extends PairingKeyParameters {
     public Element getSecretKey() { return this.secretKey.duplicate(); }
 
     @Override
-    public boolean equals(Object anOjbect) {
-        if (this == anOjbect) {
+    public boolean equals(Object anObject) {
+        if (this == anObject) {
             return true;
         }
-        if (anOjbect instanceof IBBESecretKeyParameters) {
-            IBBESecretKeyParameters that = (IBBESecretKeyParameters)anOjbect;
+        if (anObject instanceof IBBEDel07SecretKeyParameters) {
+            IBBEDel07SecretKeyParameters that = (IBBEDel07SecretKeyParameters)anObject;
             //Compare id
-            if (this.id.equals(that.getId())) {
+            if (!this.id.equals(that.getId())) {
                 return false;
             }
             //Compare elementId
-            if (!Utils.isEqualElement(this.elementId, that.getElementId())) {
+            if (!PairingUtils.isEqualElement(this.elementId, that.getElementId())) {
                 return false;
             }
             //Compare secret key
-            if (!Utils.isEqualElement(this.secretKey, that.getSecretKey())) {
+            if (!PairingUtils.isEqualElement(this.secretKey, that.getSecretKey())) {
                 return false;
             }
             //Compare Pairing Parameters

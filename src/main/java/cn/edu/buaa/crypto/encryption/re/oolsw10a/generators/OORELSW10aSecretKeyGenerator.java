@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.OORELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aMasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aPublicKeyParameters;
@@ -32,7 +32,7 @@ public class OORELSW10aSecretKeyGenerator implements CipherParametersGenerator {
             OORELSW10aPublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element elementId = Utils.MapToFirstHalfZr(pairing, parameters.getId()).getImmutable();
+            Element elementId = PairingUtils.MapToFirstHalfZr(pairing, parameters.getId()).getImmutable();
             Element t = pairing.getZr().newRandomElement().getImmutable();
 
             Element d0 = publicKeyParameters.getG().powZn(masterSecretKeyParameters.getAlpha())

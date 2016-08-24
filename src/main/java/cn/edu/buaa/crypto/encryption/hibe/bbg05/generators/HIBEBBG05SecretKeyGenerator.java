@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.*;
 import it.unisa.dia.gas.jpbc.Element;
@@ -29,7 +29,7 @@ public class HIBEBBG05SecretKeyGenerator {
             assert(length <= publicKeyParameters.getMaxLength());
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementIds = Utils.MapToZr(pairing, parameters.getIds());
+            Element[] elementIds = PairingUtils.MapToZr(pairing, parameters.getIds());
             Element r = pairing.getZr().newRandomElement().getImmutable();
             Element a0 = publicKeyParameters.getG3().getImmutable();
             Element a1 = publicKeyParameters.getG().powZn(r).getImmutable();
@@ -62,7 +62,7 @@ public class HIBEBBG05SecretKeyGenerator {
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = new String[length];
             Element[] elementIds = new Element[length];
-            Element elementDelegateId = Utils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
+            Element elementDelegateId = PairingUtils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
             Element r = pairing.getZr().newRandomElement().getImmutable();
             Element a0 = publicKeyParameters.getG3().getImmutable();
             Element a1 = publicKeyParameters.getG().powZn(r).getImmutable();

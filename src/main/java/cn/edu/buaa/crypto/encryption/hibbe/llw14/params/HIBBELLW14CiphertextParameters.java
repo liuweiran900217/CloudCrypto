@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -30,11 +30,11 @@ public class HIBBELLW14CiphertextParameters extends PairingCiphertextParameters 
         if (anObject instanceof HIBBELLW14CiphertextParameters) {
             HIBBELLW14CiphertextParameters that = (HIBBELLW14CiphertextParameters)anObject;
             //Compare C0
-            if (!Utils.isEqualElement(this.C0, that.getC0())){
+            if (!PairingUtils.isEqualElement(this.C0, that.getC0())){
                 return false;
             }
             //Compare C1
-            if (!Utils.isEqualElement(this.C1, that.getC1())){
+            if (!PairingUtils.isEqualElement(this.C1, that.getC1())){
                 return false;
             }
             //Compare Pairing Parameters

@@ -14,6 +14,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.Document;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -188,6 +190,9 @@ public class OOREEngineTest {
 
         //Test Serialize & deserialize
         if (this.schemeXMLSerializer != null) {
+            File file = new File("serializations/re");
+            file.mkdir();
+
             //Serialize & deserialize public key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing public key");

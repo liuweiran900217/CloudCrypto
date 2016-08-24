@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.params;
 
-import cn.edu.buaa.crypto.Utils;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -69,15 +69,15 @@ public class KPABERW13SecretKeyParameters extends PairingKeyParameters {
         if (anOjbect instanceof KPABERW13SecretKeyParameters) {
             KPABERW13SecretKeyParameters that = (KPABERW13SecretKeyParameters)anOjbect;
             //Compare k0s
-            if (!Utils.isEqualElementArray(this.k0s, that.getK0s())) {
+            if (!PairingUtils.isEqualElementArray(this.k0s, that.getK0s())) {
                 return false;
             }
             //Compare k1s
-            if (!Utils.isEqualElementArray(this.k1s, that.getK1s())) {
+            if (!PairingUtils.isEqualElementArray(this.k1s, that.getK1s())) {
                 return false;
             }
             //Compare k2s
-            if (!Utils.isEqualElementArray(this.k2s, that.getK2s())) {
+            if (!PairingUtils.isEqualElementArray(this.k2s, that.getK2s())) {
                 return false;
             }
             //Compare AccessControlParameters

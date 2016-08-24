@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
@@ -27,7 +27,7 @@ public class HIBBELLW16KeyEncapsulationPairGenerator implements PairingKeyEncaps
         HIBBELLW16PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
-        Element[] elementIds = Utils.MapToZr(pairing, ids);
+        Element[] elementIds = PairingUtils.MapToZr(pairing, ids);
 
         Element beta = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = pairing.pairing(publicKeyParameters.getG1(), publicKeyParameters.getG2()).powZn(beta).getImmutable();

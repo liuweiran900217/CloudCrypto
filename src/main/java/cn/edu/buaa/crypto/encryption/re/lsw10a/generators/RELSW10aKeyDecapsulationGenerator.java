@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aDecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
@@ -29,10 +29,10 @@ public class RELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulatio
         RELSW10aSecretKeyParameters secretKeyParameters = this.params.getSecretKeyParameters();
         RELSW10aCiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIds = Utils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIds = PairingUtils.MapToZr(pairing, this.params.getIds());
 
         for (int i=0; i<elementIds.length; i++){
-            if (Utils.isEqualElement(secretKeyParameters.getElementId(), elementIds[i])) {
+            if (PairingUtils.isEqualElement(secretKeyParameters.getElementId(), elementIds[i])) {
                 throw new InvalidCipherTextException("identity associated with the secret key is in the revocation list of the ciphertext");
             }
         }

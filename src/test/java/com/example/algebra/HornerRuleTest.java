@@ -1,6 +1,7 @@
 package com.example.algebra;
 
 import cn.edu.buaa.crypto.algebra.HornerRule;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
@@ -15,25 +16,15 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
  */
 public class HornerRuleTest {
     public static void main(String[] args) {
-        PropertiesParameters parameters;
-        Pairing pairing;
-        Element g;
-        // Generate curve parameters
-        while (true) {
-            PairingParametersGenerator parametersGenerator = new TypeACurveGenerator(160, 256);
-            parameters = (PropertiesParameters) parametersGenerator.generate();
-            pairing = PairingFactory.getPairing(parameters);
-
-            g = pairing.getG1().newRandomElement().getImmutable();
-            if (!pairing.pairing(g, g).isOne()) { break; }
-        }
+        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(160, 256);
+        Pairing pairing = PairingFactory.getPairing(parameters);
 
         Element[] elementaryCoefficients = new Element[9];
         for (int i = 1; i < 10; i++) {
             elementaryCoefficients[i-1] = pairing.getZr().newElement(i);
         }
-        Element[] allCofficients = HornerRule.ComputeEfficients(pairing, elementaryCoefficients);
-        for (Element coefficient : allCofficients) {
+        Element[] allCoefficients = HornerRule.ComputeEfficients(pairing, elementaryCoefficients);
+        for (Element coefficient : allCoefficients) {
             System.out.println(coefficient);
         }
     }

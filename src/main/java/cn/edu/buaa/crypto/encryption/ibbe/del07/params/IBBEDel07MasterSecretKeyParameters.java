@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -10,12 +10,12 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
  *
  * Master Secret Key Parameters for Delerablée IBBE
  */
-public class IBBEMasterSecretKeyParameters extends PairingKeyParameters {
+public class IBBEDel07MasterSecretKeyParameters extends PairingKeyParameters {
 
     private final Element g;
     private final Element gamma;
 
-    public IBBEMasterSecretKeyParameters(PairingParameters pairingParameters, Element g, Element gamma) {
+    public IBBEDel07MasterSecretKeyParameters(PairingParameters pairingParameters, Element g, Element gamma) {
         super(true, pairingParameters);
         this.g = g.getImmutable();
         this.gamma = gamma.getImmutable();
@@ -32,14 +32,14 @@ public class IBBEMasterSecretKeyParameters extends PairingKeyParameters {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof IBBEMasterSecretKeyParameters) {
-            IBBEMasterSecretKeyParameters that = (IBBEMasterSecretKeyParameters)anObject;
+        if (anObject instanceof IBBEDel07MasterSecretKeyParameters) {
+            IBBEDel07MasterSecretKeyParameters that = (IBBEDel07MasterSecretKeyParameters)anObject;
             //compare g
-            if (!(Utils.isEqualElement(this.g, that.getG()))) {
+            if (!(PairingUtils.isEqualElement(this.g, that.getG()))) {
                 return false;
             }
             //compare gamma
-            if (!(Utils.isEqualElement(this.gamma, that.getGamma()))) {
+            if (!(PairingUtils.isEqualElement(this.gamma, that.getGamma()))) {
                 return false;
             }
             //Compare Pairing Parameters

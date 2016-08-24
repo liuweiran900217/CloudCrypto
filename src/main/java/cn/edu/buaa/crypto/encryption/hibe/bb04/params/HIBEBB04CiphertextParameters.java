@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Ciphertext Parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04CiphertextParameters extends PairingCiphertextParameters {
 
@@ -44,11 +46,11 @@ public class HIBEBB04CiphertextParameters extends PairingCiphertextParameters {
                 return false;
             }
             //Compare B
-            if (!Utils.isEqualElement(this.B, that.getB())){
+            if (!PairingUtils.isEqualElement(this.B, that.getB())){
                 return false;
             }
             //Compare Cs
-            if (!Utils.isEqualElementArray(this.Cs, that.getCs())){
+            if (!PairingUtils.isEqualElementArray(this.Cs, that.getCs())){
                 return false;
             }
             //Compare Pairing Parameters

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.schemes.kr00.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.CHKR00Engine;
@@ -43,7 +43,7 @@ public class CHKR00SecretKeyParameters extends ChameleonHashSecretKeyParameters 
         if (anObject instanceof CHKR00SecretKeyParameters) {
             CHKR00SecretKeyParameters that = (CHKR00SecretKeyParameters)anObject;
             //Compare x
-            if (!Utils.isEqualElement(this.x, that.getX())) {
+            if (!PairingUtils.isEqualElement(this.x, that.getX())) {
                 return false;
             }
             //Compare public key

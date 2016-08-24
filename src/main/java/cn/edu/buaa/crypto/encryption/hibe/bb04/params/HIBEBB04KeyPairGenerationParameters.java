@@ -7,6 +7,8 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Public key / master secret key parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04KeyPairGenerationParameters extends KeyGenerationParameters {
     private int maxDepth;

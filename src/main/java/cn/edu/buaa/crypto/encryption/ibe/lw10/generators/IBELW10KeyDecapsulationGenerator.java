@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10DecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10PublicKeyParameters;
@@ -31,7 +31,7 @@ public class IBELW10KeyDecapsulationGenerator implements PairingKeyDecapsulation
         IBELW10CiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element elementIdCT = Utils.MapToZr(pairing, this.params.getId());
+        Element elementIdCT = PairingUtils.MapToZr(pairing, this.params.getId());
 
         if (!secretKeyParameters.getElementId().equals(elementIdCT)){
             throw new InvalidCipherTextException("Secret Key identity vector does not match Ciphertext identity vector");

@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-10-1.
+ *
+ * Ciphertext generation parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04CiphertextGenerationParameters implements CipherParameters {
     private HIBEBB04PublicKeyParameters publicKeyParameters;

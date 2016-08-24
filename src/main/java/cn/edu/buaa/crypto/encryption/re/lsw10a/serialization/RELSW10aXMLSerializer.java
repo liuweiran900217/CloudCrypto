@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
@@ -257,7 +257,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
                 d2 = pairing.getG1().newElementFromBytes(Hex.decode(d2String)).getImmutable();
             }
         }
-        it.unisa.dia.gas.jpbc.Element elementId = Utils.MapToZr(pairing, id);
+        it.unisa.dia.gas.jpbc.Element elementId = PairingUtils.MapToZr(pairing, id);
         return new RELSW10aSecretKeyParameters(pairingParameters, id, elementId, d0, d1, d2);
     }
 

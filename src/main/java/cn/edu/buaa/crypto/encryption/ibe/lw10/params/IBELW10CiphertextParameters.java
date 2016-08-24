@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -32,11 +32,11 @@ public class IBELW10CiphertextParameters extends PairingCiphertextParameters {
         if (anObject instanceof IBELW10CiphertextParameters) {
             IBELW10CiphertextParameters that = (IBELW10CiphertextParameters)anObject;
             //Compare C1
-            if (!Utils.isEqualElement(this.C1, that.getC1())){
+            if (!PairingUtils.isEqualElement(this.C1, that.getC1())){
                 return false;
             }
             //Compare C2
-            if (!Utils.isEqualElement(this.C2, that.getC2())){
+            if (!PairingUtils.isEqualElement(this.C2, that.getC2())){
                 return false;
             }
             //Compare Pairing Parameters

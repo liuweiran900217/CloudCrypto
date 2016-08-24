@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashAsymmetricCipherKeyPair;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
@@ -36,7 +36,7 @@ public class OORELSW10aKeyEncapsulationPairGenerator implements PairingKeyEncaps
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         CHEngine chEngine = publicKeyParameters.getCHEngine();
         String[] ids = this.params.getIds();
-        Element[] elementIds = Utils.MapToFirstHalfZr(pairing, ids);
+        Element[] elementIds = PairingUtils.MapToFirstHalfZr(pairing, ids);
         if (this.params.isICiphertextGeneration()) {
             //Generate ciphertext with intermediate ciphertext
             try {
@@ -90,7 +90,7 @@ public class OORELSW10aKeyEncapsulationPairGenerator implements PairingKeyEncaps
                 byteArrayOutputStream.reset();
                 byteArrayOutputStream.write(chameleonHashResultParameters.getHashResult().toBytes());
                 byteArrayOutputStream.write(chameleonHashPublicKeyParameters.toBytes());
-                Element Iv = Utils.MapToSecondHalfZr(pairing, byteArrayOutputStream.toByteArray()).getImmutable();
+                Element Iv = PairingUtils.MapToSecondHalfZr(pairing, byteArrayOutputStream.toByteArray()).getImmutable();
                 byteArrayOutputStream.reset();
                 Element[] rs = chameleonHashResultParameters.getRs();
                 Element C0 = publicKeyParameters.getG().powZn(s).getImmutable();

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05DecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05PublicKeyParameters;
@@ -33,7 +33,7 @@ public class HIBEBBG05KeyDecapsulationGenerator implements PairingKeyDecapsulati
         int ciphertextLength = ciphertextParameters.getLength();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIdsCT = Utils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());
 
         if (ciphertextLength < secretKeyLength) {
             throw new InvalidCipherTextException("Secret Key length is longer than Ciphertext length");

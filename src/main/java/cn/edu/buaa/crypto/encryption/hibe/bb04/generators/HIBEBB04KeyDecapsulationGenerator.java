@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.*;
 import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -13,6 +13,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-10-1.
+ *
+ * Key decapsulation generator for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04KeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
     private HIBEBB04DecapsulationParameters params;
@@ -30,7 +32,7 @@ public class HIBEBB04KeyDecapsulationGenerator implements PairingKeyDecapsulatio
         int ciphertextLength = ciphertextParameters.getLength();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIdsCT = Utils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());
 
         if (ciphertextLength < secretKeyLength) {
             throw new InvalidCipherTextException("Secret Key length is longer than Ciphertext length");

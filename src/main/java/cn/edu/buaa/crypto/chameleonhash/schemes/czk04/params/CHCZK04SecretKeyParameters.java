@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.CHCZK04Engine;
@@ -44,7 +44,7 @@ public class CHCZK04SecretKeyParameters extends ChameleonHashSecretKeyParameters
         if (anObject instanceof CHCZK04SecretKeyParameters) {
             CHCZK04SecretKeyParameters that = (CHCZK04SecretKeyParameters)anObject;
             //Compare x
-            if (!Utils.isEqualElement(this.x, that.getX())) {
+            if (!PairingUtils.isEqualElement(this.x, that.getX())) {
                 return false;
             }
             //Compare public key

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
 import cn.edu.buaa.crypto.application.llw15.params.*;
 import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
@@ -356,8 +356,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
                 }
             }
         }
-        elementTime = Utils.MapToZr(pairing, time);
-        elementRoles = Utils.MapToZr(pairing, roles);
+        elementTime = PairingUtils.MapToZr(pairing, time);
+        elementRoles = PairingUtils.MapToZr(pairing, roles);
         return new RBACLLW15AccessCredentialMParameters(pairingParameters, roles, elementRoles, time, elementTime,
                 a0, a1, a2, bv, bs);
     }
@@ -405,7 +405,7 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
                 }
             }
         }
-        elementId = Utils.MapToZr(pairing, identity);
+        elementId = PairingUtils.MapToZr(pairing, identity);
         return new RBACLLW15AccessCredentialPParameters(pairingParameters, identity, elementId,
                 a0, a1, b0, bv, bs);
     }

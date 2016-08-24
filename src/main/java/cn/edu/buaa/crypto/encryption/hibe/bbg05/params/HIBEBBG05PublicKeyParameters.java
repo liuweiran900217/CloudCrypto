@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -59,23 +59,23 @@ public class HIBEBBG05PublicKeyParameters extends PairingKeyParameters {
                 return false;
             }
             //Compare g
-            if (!Utils.isEqualElement(this.g, that.getG())) {
+            if (!PairingUtils.isEqualElement(this.g, that.getG())) {
                 return false;
             }
             //Compare g1
-            if (!Utils.isEqualElement(this.g1, that.getG1())) {
+            if (!PairingUtils.isEqualElement(this.g1, that.getG1())) {
                 return false;
             }
             //Compare g2
-            if (!Utils.isEqualElement(this.g2, that.getG2())) {
+            if (!PairingUtils.isEqualElement(this.g2, that.getG2())) {
                 return false;
             }
             //Compare g3
-            if (!Utils.isEqualElement(this.g3, that.getG3())) {
+            if (!PairingUtils.isEqualElement(this.g3, that.getG3())) {
                 return false;
             }
             //Compare hs
-            if (!Utils.isEqualElementArray(this.hs, that.getHs())) {
+            if (!PairingUtils.isEqualElementArray(this.hs, that.getHs())) {
                 return false;
             }
             //Compare Pairing Parameters

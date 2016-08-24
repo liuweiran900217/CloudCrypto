@@ -1,21 +1,14 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
 import cn.edu.buaa.crypto.chameleonhash.CHEngineManager;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.CHCZK04Engine;
-import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params.CHCZK04PublicKeyParameters;
-import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params.CHCZK04SecretKeyParameters;
-import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.serialization.CHCZK04XMLSerializer;
 import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.CHKR00Engine;
-import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.params.CHKR00PublicKeyParameters;
-import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.params.CHKR00SecretKeyParameters;
-import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.serialization.CHKR00XMLSerializer;
-import cn.edu.buaa.crypto.chameleonhash.serialization.ChameleonHashXMLSerializer;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.OORELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.*;
 import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
@@ -384,7 +377,7 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
                 d2 = pairing.getG1().newElementFromBytes(Hex.decode(d2String)).getImmutable();
             }
         }
-        it.unisa.dia.gas.jpbc.Element elementId = Utils.MapToFirstHalfZr(pairing, id);
+        it.unisa.dia.gas.jpbc.Element elementId = PairingUtils.MapToFirstHalfZr(pairing, id);
         return new OORELSW10aSecretKeyParameters(pairingParameters, id, elementId, d0, d1, d2);
     }
 

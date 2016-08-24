@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -61,19 +61,19 @@ public class HIBBELLW16SecretKeyParameters extends PairingKeyParameters {
                 return false;
             }
             //Compare elementIds
-            if (!Utils.isEqualElementArray(this.elementIds, that.getElementIds())) {
+            if (!PairingUtils.isEqualElementArray(this.elementIds, that.getElementIds())) {
                 return false;
             }
             //Compare a0
-            if (!Utils.isEqualElement(this.a0, that.getA0())) {
+            if (!PairingUtils.isEqualElement(this.a0, that.getA0())) {
                 return false;
             }
             //Compare a1
-            if (!Utils.isEqualElement(this.a1, that.getA1())) {
+            if (!PairingUtils.isEqualElement(this.a1, that.getA1())) {
                 return false;
             }
             //Compare bs
-            if (!Utils.isEqualElementArray(this.bs, that.getBs())) {
+            if (!PairingUtils.isEqualElementArray(this.bs, that.getBs())) {
                 return false;
             }
             //Compare Pairing Parameters

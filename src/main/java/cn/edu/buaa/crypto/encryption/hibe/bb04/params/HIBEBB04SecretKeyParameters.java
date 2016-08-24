@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -50,12 +50,12 @@ public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
     public Element[] getDs() { return Arrays.copyOf(ds, ds.length); }
 
     @Override
-    public boolean equals(Object anOjbect) {
-        if (this == anOjbect) {
+    public boolean equals(Object anObject) {
+        if (this == anObject) {
             return true;
         }
-        if (anOjbect instanceof HIBEBB04SecretKeyParameters) {
-            HIBEBB04SecretKeyParameters that = (HIBEBB04SecretKeyParameters)anOjbect;
+        if (anObject instanceof HIBEBB04SecretKeyParameters) {
+            HIBEBB04SecretKeyParameters that = (HIBEBB04SecretKeyParameters)anObject;
             //Compare length
             if (this.getLength() != that.getLength()) {
                 return false;
@@ -65,15 +65,15 @@ public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
                 return false;
             }
             //Compare elementIds
-            if (!Utils.isEqualElementArray(this.elementIds, that.getElementIds())) {
+            if (!PairingUtils.isEqualElementArray(this.elementIds, that.getElementIds())) {
                 return false;
             }
             //Compare d0
-            if (!Utils.isEqualElement(this.d0, that.getD0())) {
+            if (!PairingUtils.isEqualElement(this.d0, that.getD0())) {
                 return false;
             }
             //Compare ds
-            if (!Utils.isEqualElementArray(this.ds, that.getDs())) {
+            if (!PairingUtils.isEqualElementArray(this.ds, that.getDs())) {
                 return false;
             }
             //Compare Pairing Parameters

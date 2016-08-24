@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.IBELW10Engine;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10MasterSecretKeyParameters;
@@ -231,7 +231,7 @@ public class IBELW10XMLSerializer implements PairingParameterXMLSerializer {
             } else if (node.getNodeName().equals(TAG_SK_ID)) {
                 //Set Id
                 id = node.getFirstChild().getNodeValue();
-                elementId = Utils.MapToZr(pairing, id);
+                elementId = PairingUtils.MapToZr(pairing, id);
             }
         }
         return new IBELW10SecretKeyParameters(pairingParameters, id, elementId, k1, k2);

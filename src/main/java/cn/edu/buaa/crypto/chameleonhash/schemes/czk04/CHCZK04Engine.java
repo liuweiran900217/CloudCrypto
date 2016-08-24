@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.schemes.czk04;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.*;
 import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.generators.CHCZK04KeyPairGenerator;
 import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params.*;
@@ -31,7 +31,7 @@ public class CHCZK04Engine implements CHEngine {
 
     public ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength) {
         CHCZK04KeyPairGenerator keyPairGenerator = new CHCZK04KeyPairGenerator();
-        keyPairGenerator.init(new CHCZK04KeyGenerationParameters(Utils.GeneratePropertiesParameters(rBitLength, qBitLength)));
+        keyPairGenerator.init(new CHCZK04KeyGenerationParameters(PairingUtils.GenerateTypeAParameters(rBitLength, qBitLength)));
         return keyPairGenerator.generateKeyPair();
     }
 
@@ -50,7 +50,7 @@ public class CHCZK04Engine implements CHEngine {
         }
         CHCZK04PublicKeyParameters publicKey = (CHCZK04PublicKeyParameters)publicKeyParameter;
         Pairing pairing = PairingFactory.getPairing(publicKey.getParameters());
-        Element m = Utils.MapToZr(pairing, message);
+        Element m = PairingUtils.MapToZr(pairing, message);
         Element a = pairing.getZr().newRandomElement().getImmutable();
         Element[] r = new Element[] {publicKey.getG().powZn(a), publicKey.getY().powZn(a), pairing.getGT().newRandomElement().getImmutable()};
         Element hashResult = publicKey.getG().mul(r[2]).powZn(m).mul(r[1]).getImmutable();
@@ -66,7 +66,7 @@ public class CHCZK04Engine implements CHEngine {
         }
         CHCZK04PublicKeyParameters publicKey = (CHCZK04PublicKeyParameters)publicKeyParameter;
         Pairing pairing = PairingFactory.getPairing(publicKey.getParameters());
-        Element m  = Utils.MapToZr(pairing, message);
+        Element m  = PairingUtils.MapToZr(pairing, message);
         Element hashResult = publicKey.getG().mul(r[2]).powZn(m).mul(r[1]).getImmutable();
         return new CHCZK04HashResultParameters(m, hashResult, r);
     }
@@ -83,7 +83,7 @@ public class CHCZK04Engine implements CHEngine {
         CHCZK04HashResultParameters hashResult = (CHCZK04HashResultParameters) hash;
         Pairing pairing = PairingFactory.getPairing(publicKey.getParameters());
         Element m = hashResult.getHashMessage().getImmutable();
-        Element mPrime = Utils.MapToZr(pairing, anMessage).getImmutable();
+        Element mPrime = PairingUtils.MapToZr(pairing, anMessage).getImmutable();
         Element[] r = hashResult.getRs();
         Element[] rPrime = new Element[] {
                 publicKey.getG().mul(r[2]).powZn(secretKey.getX().invert().mulZn(m.sub(mPrime))).mul(r[0]),

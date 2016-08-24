@@ -16,10 +16,12 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Weiran Liu on 15-10-1.
+ *
+ * Engine for Boneh-Boyen HIBE schene.
  */
 public class HIBEBB04Engine implements HIBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "BB04HIBE";
+    public static final String SCHEME_NAME = "Boneh-Boyen HIBE";
 
     public HIBEBB04Engine() {
 

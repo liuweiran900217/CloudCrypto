@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeyParameters;
@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-10-1.
+ *
+ * Encapsulation key / ciphertext pair generation generator for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04KeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
 
@@ -28,7 +30,7 @@ public class HIBEBB04KeyEncapsulationPairGenerator implements PairingKeyEncapsul
         HIBEBB04PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
-        Element[] elementIds = Utils.MapToZr(pairing, ids);
+        Element[] elementIds = PairingUtils.MapToZr(pairing, ids);
 
         Element s = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = pairing.pairing(publicKeyParameters.getG1(), publicKeyParameters.getG2()).powZn(s).getImmutable();

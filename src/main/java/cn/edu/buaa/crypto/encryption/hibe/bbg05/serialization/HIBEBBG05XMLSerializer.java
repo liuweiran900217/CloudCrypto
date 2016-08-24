@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05MasterSecretKeyParameters;
@@ -263,7 +263,7 @@ public class HIBEBBG05XMLSerializer implements PairingParameterXMLSerializer {
                 }
             }
         }
-        elementIds = Utils.MapToZr(pairing, ids);
+        elementIds = PairingUtils.MapToZr(pairing, ids);
         return new HIBEBBG05SecretKeyParameters(pairingParameters, ids, elementIds, a0, a1, bs);
     }
 

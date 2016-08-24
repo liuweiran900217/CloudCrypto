@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.*;
 import it.unisa.dia.gas.crypto.cipher.CipherParametersGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -9,10 +9,10 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
-import java.security.InvalidParameterException;
-
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Secret key generator for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
     private KeyGenerationParameters params;
@@ -31,7 +31,7 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             assert(length <= publicKeyParameters.getMaxLength());
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementIds = Utils.MapToZr(pairing, parameters.getIds());
+            Element[] elementIds = PairingUtils.MapToZr(pairing, parameters.getIds());
             Element[] rs = new Element[length];
             Element[] ds = new Element[length];
             Element d0 = pairing.getG1().newOneElement();
@@ -57,7 +57,7 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             Element[] elementIds = new Element[length];
             Element[] ds = new Element[length];
 
-            Element elementDelegateId = Utils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
+            Element elementDelegateId = PairingUtils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
             Element r_j = pairing.getZr().newRandomElement().getImmutable();
             Element d_j = publicKeyParameters.getG().powZn(r_j).getImmutable();
             Element d0 = secretKeyParameters.getD0();

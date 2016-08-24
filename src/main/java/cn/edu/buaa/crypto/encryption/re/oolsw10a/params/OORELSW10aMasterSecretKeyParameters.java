@@ -1,7 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.params;
 
-import cn.edu.buaa.crypto.Utils;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -34,13 +33,13 @@ public class OORELSW10aMasterSecretKeyParameters extends PairingKeyParameters {
         }
         if (anObject instanceof OORELSW10aMasterSecretKeyParameters) {
             OORELSW10aMasterSecretKeyParameters that = (OORELSW10aMasterSecretKeyParameters)anObject;
-            if (!(Utils.isEqualElement(this.alpha, that.getAlpha()))) {
+            if (!(PairingUtils.isEqualElement(this.alpha, that.getAlpha()))) {
                 return false;
             }
-            if (!(Utils.isEqualElement(this.b, that.getB()))) {
+            if (!(PairingUtils.isEqualElement(this.b, that.getB()))) {
                 return false;
             }
-            if (!(Utils.isEqualElement(this.h, that.getH()))) {
+            if (!(PairingUtils.isEqualElement(this.h, that.getH()))) {
                 return false;
             }
             //Compare Pairing Parameters

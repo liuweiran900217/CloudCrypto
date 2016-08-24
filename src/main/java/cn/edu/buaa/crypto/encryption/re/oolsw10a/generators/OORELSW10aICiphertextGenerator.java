@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashAsymmetricCipherKeyPair;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
@@ -45,7 +45,7 @@ public class OORELSW10aICiphertextGenerator implements PairingKeyEncapsulationPa
         Element s = sv.duplicate().getImmutable();
         try {
             for (int i=0; i<length; i++) {
-                Is[i] = Utils.MapToFirstHalfZr(pairing, pairing.getZr().newRandomElement().toBytes());
+                Is[i] = PairingUtils.MapToFirstHalfZr(pairing, pairing.getZr().newRandomElement().toBytes());
                 ss[i] = pairing.getZr().newRandomElement().getImmutable();
                 s = s.add(ss[i]).getImmutable();
                 byteArrayOutputStream.write(Is[i].toBytes());
@@ -57,7 +57,7 @@ public class OORELSW10aICiphertextGenerator implements PairingKeyEncapsulationPa
             byteArrayOutputStream.reset();
             byteArrayOutputStream.write(chameleonHashResultParameters.getHashResult().toBytes());
             byteArrayOutputStream.write(chameleonHashPublicKeyParameters.toBytes());
-            Element Iv = Utils.MapToSecondHalfZr(pairing, byteArrayOutputStream.toByteArray()).getImmutable();
+            Element Iv = PairingUtils.MapToSecondHalfZr(pairing, byteArrayOutputStream.toByteArray()).getImmutable();
             byteArrayOutputStream.close();
             Element[] rs = chameleonHashResultParameters.getRs();
             Element C0 = publicKeyParameters.getG().powZn(s).getImmutable();

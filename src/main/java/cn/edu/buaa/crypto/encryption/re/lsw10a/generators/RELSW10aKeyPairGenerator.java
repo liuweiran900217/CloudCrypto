@@ -1,14 +1,12 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aKeyPairGenerationParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
@@ -25,8 +23,9 @@ public class RELSW10aKeyPairGenerator implements AsymmetricCipherKeyPairGenerato
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = Utils.GeneratePropertiesParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
-        Pairing pairing =  PairingFactory.getPairing(parameters);
+        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
+        Pairing pairing = PairingFactory.getPairing(parameters);
+
         Element g = pairing.getG1().newRandomElement().getImmutable();
         Element alpha = pairing.getZr().newRandomElement().getImmutable();
         Element b = pairing.getZr().newRandomElement().getImmutable();

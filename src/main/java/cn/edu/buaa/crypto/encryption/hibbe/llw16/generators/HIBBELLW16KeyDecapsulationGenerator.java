@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16DecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
@@ -30,7 +30,7 @@ public class HIBBELLW16KeyDecapsulationGenerator implements PairingKeyDecapsulat
         HIBBELLW16CiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIdsCT = Utils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());
 
         for (int i=0; i<publicKeyParameters.getMaxUser(); i++){
             if (secretKeyParameters.getIdAt(i) != null &&

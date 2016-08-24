@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15EncapsulationGenParameters;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15EncapsulationParameters;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15PublicKeyParameters;
@@ -27,18 +27,18 @@ public class RBACLLW15KeyEncapsulationPairGenerator implements PairingKeyEncapsu
         RBACLLW15PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] roles = this.params.getRoles();
-        Element[] elementRoles = Utils.MapToZr(pairing, roles);
+        Element[] elementRoles = PairingUtils.MapToZr(pairing, roles);
         String time = this.params.getTime();
-        Element elementTime = Utils.MapToZr(pairing, time);
+        Element elementTime = PairingUtils.MapToZr(pairing, time);
         String identity = this.params.getId();
-        Element elementId = Utils.MapToZr(pairing, identity);
+        Element elementId = PairingUtils.MapToZr(pairing, identity);
 
         Element beta = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = pairing.pairing(publicKeyParameters.getG1(), publicKeyParameters.getG2()).powZn(beta).getImmutable();
         byte[] byteArraySessionKey = sessionKey.toBytes();
 
         Element C0 = publicKeyParameters.getG().powZn(beta).getImmutable();
-        Element w = Utils.MapToZr(pairing, C0.toBytes());
+        Element w = PairingUtils.MapToZr(pairing, C0.toBytes());
         Element C1 = publicKeyParameters.getG3().getImmutable();
         for (int i = 0; i < publicKeyParameters.getMaxRoleNumber(); i++) {
             if (roles[i] != null) {

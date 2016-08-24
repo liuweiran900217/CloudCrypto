@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14MasterSecretKeyParameters;
@@ -265,7 +265,7 @@ public class HIBBELLW14XMLSerializer implements PairingParameterXMLSerializer {
                 }
             }
         }
-        elementIds = Utils.MapToZr(pairing, ids);
+        elementIds = PairingUtils.MapToZr(pairing, ids);
         return new HIBBELLW14SecretKeyParameters(pairingParameters, ids, elementIds, a0, a1, bs);
     }
 

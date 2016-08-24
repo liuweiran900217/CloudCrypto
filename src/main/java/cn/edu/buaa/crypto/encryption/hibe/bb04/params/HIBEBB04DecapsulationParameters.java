@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-10-1.
+ *
+ * Delegation parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04DecapsulationParameters implements CipherParameters {
     private HIBEBB04PublicKeyParameters publicKeyParameters;

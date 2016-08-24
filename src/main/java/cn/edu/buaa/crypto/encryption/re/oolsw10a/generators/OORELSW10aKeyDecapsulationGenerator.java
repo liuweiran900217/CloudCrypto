@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aDecapsulationParameters;
@@ -32,11 +32,11 @@ public class OORELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulat
         OORELSW10aSecretKeyParameters secretKeyParameters = this.params.getSecretKeyParameters();
         OORELSW10aCiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIds = Utils.MapToFirstHalfZr(pairing, this.params.getIds());
+        Element[] elementIds = PairingUtils.MapToFirstHalfZr(pairing, this.params.getIds());
         Element[] recoverC2s = new Element[this.params.getLength()];
 
         for (int i=0; i<elementIds.length; i++){
-            if (Utils.isEqualElement(secretKeyParameters.getElementId(), elementIds[i])) {
+            if (PairingUtils.isEqualElement(secretKeyParameters.getElementId(), elementIds[i])) {
                 throw new InvalidCipherTextException("identity associated with the secret key is in the revocation list of the ciphertext");
             }
         }
@@ -63,7 +63,7 @@ public class OORELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulat
             }
             byteArrayOutputStream.write(chameleonHashResultParameters.getHashResult().toBytes());
             byteArrayOutputStream.write(ciphertextParameters.getChameleonHashPublicKeyParameters().toBytes());
-            Element Iv = Utils.MapToSecondHalfZr(pairing, byteArrayOutputStream.toByteArray()).getImmutable();
+            Element Iv = PairingUtils.MapToSecondHalfZr(pairing, byteArrayOutputStream.toByteArray()).getImmutable();
             byteArrayOutputStream.close();
 
             for (int i = 0; i < this.params.getLength(); i++) {
@@ -94,12 +94,12 @@ public class OORELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulat
             Element p3 = pairing.pairing(publicKeyParameters.getG(), mulTemp3).getImmutable();
             Element p4 = pairing.pairing(ciphertextParameters.getC0(), publicKeyParameters.getGb()).getImmutable();
             //Test Equality (5)
-            if (!Utils.isEqualElement(p0, p1)) {
+            if (!PairingUtils.isEqualElement(p0, p1)) {
                 System.out.println("Equality 5");
                 return null;
             }
             //Test Equality (3)
-            if (!Utils.isEqualElement(p3, p4)) {
+            if (!PairingUtils.isEqualElement(p3, p4)) {
                 return null;
             }
 

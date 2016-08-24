@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
@@ -115,12 +115,12 @@ public class OORELSW10aCiphertextParameters extends PairingCiphertextParameters 
             OORELSW10aCiphertextParameters that = (OORELSW10aCiphertextParameters) anObject;
             //Compare length
             if (this.length != that.getLength()) { return false; }
-            else if (!Utils.isEqualElement(this.C0, that.getC0())) { return false; }
-            else if (!Utils.isEqualElementArray(this.C1s, that.getC1s())) { return false; }
-            else if (!Utils.isEqualElementArray(this.C2s, that.getC2s())) { return false; }
-            else if (!Utils.isEqualElementArray(this.Imalls, that.getImalls())) { return false; }
-            else if (!Utils.isEqualElement(this.Cv1, that.getCv1())) { return false; }
-            else if (!Utils.isEqualElement(this.Cv2, that.getCv2())) { return false; }
+            else if (!PairingUtils.isEqualElement(this.C0, that.getC0())) { return false; }
+            else if (!PairingUtils.isEqualElementArray(this.C1s, that.getC1s())) { return false; }
+            else if (!PairingUtils.isEqualElementArray(this.C2s, that.getC2s())) { return false; }
+            else if (!PairingUtils.isEqualElementArray(this.Imalls, that.getImalls())) { return false; }
+            else if (!PairingUtils.isEqualElement(this.Cv1, that.getCv1())) { return false; }
+            else if (!PairingUtils.isEqualElement(this.Cv2, that.getCv2())) { return false; }
             else if (!this.chameleonHashPublicKeyParameters.equals(that.getChameleonHashPublicKeyParameters())) { return false; }
             else if (!this.chameleonHashResultParameters.equals(that.getChameleonHashResultParameters())) { return false; }
             //Compare Pairing Parameters

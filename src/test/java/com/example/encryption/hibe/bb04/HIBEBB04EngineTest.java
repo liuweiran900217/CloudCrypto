@@ -8,6 +8,8 @@ import com.example.encryption.hibe.HIBEEngineTest;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * 2004 Boneh-Boyen HIBBE engine test procedures
  */
 public class HIBEBB04EngineTest {
     public static void main(String[] args) {

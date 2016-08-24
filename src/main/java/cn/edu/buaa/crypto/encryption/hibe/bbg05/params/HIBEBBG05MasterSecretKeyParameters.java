@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -27,7 +27,7 @@ public class HIBEBBG05MasterSecretKeyParameters extends PairingKeyParameters {
         }
         if (anObject instanceof HIBEBBG05MasterSecretKeyParameters) {
             HIBEBBG05MasterSecretKeyParameters that = (HIBEBBG05MasterSecretKeyParameters)anObject;
-            if (!(Utils.isEqualElement(this.g2Alpha, that.getG2Alpha()))) {
+            if (!(PairingUtils.isEqualElement(this.g2Alpha, that.getG2Alpha()))) {
                 return false;
             }
             //Compare Pairing Parameters

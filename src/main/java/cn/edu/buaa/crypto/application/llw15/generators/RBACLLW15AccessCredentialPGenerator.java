@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.params.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -25,7 +25,7 @@ public class RBACLLW15AccessCredentialPGenerator {
         RBACLLW15MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element elementId = Utils.MapToZr(pairing, parameters.getId());
+        Element elementId = PairingUtils.MapToZr(pairing, parameters.getId());
         Element r = pairing.getZr().newRandomElement().getImmutable();
 
         Element a1 = publicKeyParameters.getG().powZn(r).getImmutable();

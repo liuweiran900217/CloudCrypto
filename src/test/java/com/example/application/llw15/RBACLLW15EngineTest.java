@@ -13,6 +13,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.Document;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -260,6 +262,9 @@ public class RBACLLW15EngineTest {
 
         //Test Serialize & deserialize
         if (this.schemeXMLSerializer != null) {
+            File file = new File("serializations/application/LLW15");
+            file.mkdir();
+
             //Serialize & deserialize public key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing public key");

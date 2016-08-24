@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -30,7 +30,7 @@ public class KPABERW13MasterSecretKeyParameters extends PairingKeyParameters {
         if (anObject instanceof KPABERW13MasterSecretKeyParameters) {
             KPABERW13MasterSecretKeyParameters that = (KPABERW13MasterSecretKeyParameters)anObject;
             //Compare alpha
-            if (!(Utils.isEqualElement(this.alpha, that.getAlpha()))) {
+            if (!(PairingUtils.isEqualElement(this.alpha, that.getAlpha()))) {
                 return false;
             }
             //Compare Pairing Parameters

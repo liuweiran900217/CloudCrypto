@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
@@ -101,27 +101,27 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
             //Compare length
             if (this.length != that.getLength()) {
                 return false;
-            } else if (!Utils.isEqualElement(this.C0, that.getC0())) {
+            } else if (!PairingUtils.isEqualElement(this.C0, that.getC0())) {
                 return false;
-            } else if (!Utils.isEqualElementArray(this.C1s, that.getC1s())) {
+            } else if (!PairingUtils.isEqualElementArray(this.C1s, that.getC1s())) {
                 return false;
-            } else if (!Utils.isEqualElementArray(this.C2s, that.getC2s())) {
+            } else if (!PairingUtils.isEqualElementArray(this.C2s, that.getC2s())) {
                 return false;
-            } else if (!Utils.isEqualElement(this.Cv1, that.getCv1())) {
+            } else if (!PairingUtils.isEqualElement(this.Cv1, that.getCv1())) {
                 return false;
-            } else if (!Utils.isEqualElement(this.Cv2, that.getCv2())) {
+            } else if (!PairingUtils.isEqualElement(this.Cv2, that.getCv2())) {
                 return false;
-            } else if (!Utils.isEqualElementArray(this.Is, that.getIs())) {
+            } else if (!PairingUtils.isEqualElementArray(this.Is, that.getIs())) {
                 return false;
-            } else if (!Utils.isEqualElement(this.Iv, that.getIv())) {
+            } else if (!PairingUtils.isEqualElement(this.Iv, that.getIv())) {
                 return false;
-            } else if (!Utils.isEqualElementArray(this.ss, that.getSs())) {
+            } else if (!PairingUtils.isEqualElementArray(this.ss, that.getSs())) {
                 return false;
-            } else if (!Utils.isEqualElement(this.sv, that.getSv())) {
+            } else if (!PairingUtils.isEqualElement(this.sv, that.getSv())) {
                 return false;
-            } else if (!Utils.isEqualElement(this.s, that.getS())) {
+            } else if (!PairingUtils.isEqualElement(this.s, that.getS())) {
                 return false;
-            } else if (!Utils.isEqualElement(this.sessionKey, that.getSessionKey())) {
+            } else if (!PairingUtils.isEqualElement(this.sessionKey, that.getSessionKey())) {
                 return false;
             } else if (!this.chameleonHashSecretKey.equals(that.getChameleonHashSecretKey())) {
                 return false;

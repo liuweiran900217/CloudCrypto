@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14KeyPairGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14PublicKeyParameters;
@@ -24,20 +25,11 @@ public class HIBBELLW14KeyPairGenerator {
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters;
-        Pairing pairing;
-        Element generator;
-        Element g;
+        PropertiesParameters parameters = PairingUtils.GenerateTypeA1Parameters(this.parameters.getQBitLength());
+        Pairing pairing = PairingFactory.getPairing(parameters);
+        Element generator = pairing.getG1().newRandomElement().getImmutable();
 
-        // Generate curve parameters
-        while (true) {
-            parameters = generateCurveParams();
-            pairing = PairingFactory.getPairing(parameters);
-            generator = pairing.getG1().newRandomElement().getImmutable();
-            g = ElementUtils.getGenerator(pairing, generator, parameters, 0, 3).getImmutable();
-            if (!pairing.pairing(g, g).isOne()) { break; }
-        }
-
+        Element g = ElementUtils.getGenerator(pairing, generator, parameters, 0, 3).getImmutable();
         Element alpha = pairing.getZr().newRandomElement().getImmutable();
         Element gAlpha = g.powZn(alpha).getImmutable();
         Element h = ElementUtils.getGenerator(pairing, generator, parameters, 0, 3).getImmutable();
@@ -55,10 +47,5 @@ public class HIBBELLW14KeyPairGenerator {
         return new AsymmetricCipherKeyPair(
                 new HIBBELLW14PublicKeyParameters(parameters, g, h, u, X3, eggAlpha),
                 new HIBBELLW14MasterSecretKeyParameters(parameters, gAlpha));
-    }
-
-    private PropertiesParameters generateCurveParams() {
-        PairingParametersGenerator parametersGenerator = new TypeA1CurveGenerator(3, parameters.getQBitLength());
-        return (PropertiesParameters) parametersGenerator.generate();
     }
 }

@@ -12,10 +12,14 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.Document;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * HIBBE engine test procedures. All instances should pass this unit test.
  */
 public class HIBBEEngineTest {
     private HIBBEEngine engine;
@@ -200,6 +204,9 @@ public class HIBBEEngineTest {
 
         //Test Serialize & deserialize
         if (this.schemeXMLSerializer != null) {
+            File file = new File("serializations/hibbe");
+            file.mkdir();
+
             //Serialize & deserialize public key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing public key");
@@ -215,7 +222,6 @@ public class HIBBEEngineTest {
             Document documentMasterKey = TestUtils.InputXMLDocument("serializations/hibbe/HIBBE_Master_Secret_Key.xml");
             CipherParameters anoMasterKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentMasterKey);
             assertEquals(masterKey, anoMasterKey);
-
 
             //Serialize & deserialize secret keys
             System.out.println("======================================");

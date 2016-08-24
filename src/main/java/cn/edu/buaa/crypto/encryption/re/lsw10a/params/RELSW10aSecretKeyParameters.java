@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -48,19 +48,19 @@ public class RELSW10aSecretKeyParameters extends PairingKeyParameters {
                 return false;
             }
             //Compare elementId
-            if (!Utils.isEqualElement(this.elementId, that.getElementId())) {
+            if (!PairingUtils.isEqualElement(this.elementId, that.getElementId())) {
                 return false;
             }
             //Compare d0
-            if (!Utils.isEqualElement(this.d0, that.getD0())) {
+            if (!PairingUtils.isEqualElement(this.d0, that.getD0())) {
                 return false;
             }
             //Compare d1
-            if (!Utils.isEqualElement(this.d1, that.getD1())) {
+            if (!PairingUtils.isEqualElement(this.d1, that.getD1())) {
                 return false;
             }
             //Compare d2
-            if (!Utils.isEqualElement(this.d2, that.getD2())) {
+            if (!PairingUtils.isEqualElement(this.d2, that.getD2())) {
                 return false;
             }
             //Compare Pairing Parameters

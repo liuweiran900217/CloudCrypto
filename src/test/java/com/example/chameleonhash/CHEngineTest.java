@@ -8,6 +8,8 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.w3c.dom.Document;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -67,6 +69,9 @@ public class CHEngineTest {
 
         //Test Serialize & deserialize
         if (this.chameleonHashXMLSerializer != null) {
+            File file = new File("serializations/chameleonhash");
+            file.mkdir();
+
             //Serialize & deserialize public key
             System.out.println("======================================");
             System.out.println("Test Serializing & deserializing public key");

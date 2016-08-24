@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.params.*;
 import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -27,9 +27,9 @@ public class RBACLLW15DecapsulationMGenerator implements PairingKeyDecapsulation
         RBACLLW15EncapsulationParameters ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementRolesCT = Utils.MapToZr(pairing, this.params.getRoles());
-        Element elementIdCT = Utils.MapToZr(pairing, this.params.getId());
-        Element elementTimeCT = Utils.MapToZr(pairing, this.params.getTime());
+        Element[] elementRolesCT = PairingUtils.MapToZr(pairing, this.params.getRoles());
+        Element elementIdCT = PairingUtils.MapToZr(pairing, this.params.getId());
+        Element elementTimeCT = PairingUtils.MapToZr(pairing, this.params.getTime());
 
         //Check time
         if (!secretKeyParameters.getTime().equals(this.params.getTime())) {
@@ -55,7 +55,7 @@ public class RBACLLW15DecapsulationMGenerator implements PairingKeyDecapsulation
             }
         }
         a0 = a0.mul(secretKeyParameters.getA2().powZn(elementIdCT)).getImmutable();
-        a0 = a0.mul(secretKeyParameters.getBv().powZn(Utils.MapToZr(pairing, C0.toBytes()))).getImmutable();
+        a0 = a0.mul(secretKeyParameters.getBv().powZn(PairingUtils.MapToZr(pairing, C0.toBytes()))).getImmutable();
 
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();

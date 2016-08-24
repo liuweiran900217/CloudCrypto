@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04MasterSecretKeyParameters;
@@ -21,6 +21,8 @@ import java.security.InvalidParameterException;
 
 /**
  * Created by Weiran Liu on 15-10-2.
+ *
+ * XML Serializer for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
     private static final String TAG_SCHEME_NAME = HIBEBB04Engine.SCHEME_NAME;
@@ -40,7 +42,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
     private static final String TAG_SK_DS = "ds";
     private static final String TAG_SK_DI = "di";
     private static final String TAG_SK_IDS = "Ids";
-    private static final String TAG_SK_IDI = "idi";
+    private static final String TAG_SK_IDI = "Idi";
 
     //Tags for ciphertexts
     private static final String TAG_CT_B = "B";
@@ -245,7 +247,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
                 }
             }
         }
-        elementIds = Utils.MapToZr(pairing, ids);
+        elementIds = PairingUtils.MapToZr(pairing, ids);
         return new HIBEBB04SecretKeyParameters(pairingParameters, ids, elementIds, d0, ds);
     }
 

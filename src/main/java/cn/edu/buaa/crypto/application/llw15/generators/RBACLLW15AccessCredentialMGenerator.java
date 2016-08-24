@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
 import cn.edu.buaa.crypto.application.llw15.params.*;
 import it.unisa.dia.gas.jpbc.Element;
@@ -27,8 +27,8 @@ public class RBACLLW15AccessCredentialMGenerator {
             RBACLLW15MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementRoles = Utils.MapToZr(pairing, parameters.getRoles());
-            Element elementTime = Utils.MapToZr(pairing, parameters.getTime());
+            Element[] elementRoles = PairingUtils.MapToZr(pairing, parameters.getRoles());
+            Element elementTime = PairingUtils.MapToZr(pairing, parameters.getTime());
             Element r = pairing.getZr().newRandomElement().getImmutable();
 
             Element a1 = publicKeyParameters.getG().powZn(r).getImmutable();
@@ -64,7 +64,7 @@ public class RBACLLW15AccessCredentialMGenerator {
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] roles = new String[publicKeyParameters.getMaxRoleNumber()];
             Element[] elementRoles = new Element[publicKeyParameters.getMaxRoleNumber()];
-            Element elementDelegateRole = Utils.MapToZr(pairing, parameters.getDelegateRole()).getImmutable();
+            Element elementDelegateRole = PairingUtils.MapToZr(pairing, parameters.getDelegateRole()).getImmutable();
 
             Element t = pairing.getZr().newRandomElement().getImmutable();
             Element a0 = publicKeyParameters.getG3().getImmutable();

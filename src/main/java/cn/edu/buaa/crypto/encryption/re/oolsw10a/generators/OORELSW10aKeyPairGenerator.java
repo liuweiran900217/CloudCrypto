@@ -1,10 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.generators;
 
-import cn.edu.buaa.crypto.Utils;
-import cn.edu.buaa.crypto.chameleonhash.CHEngine;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyPairGenerator;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aKeyPairGenerationParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aMasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aPublicKeyParameters;
@@ -27,8 +23,9 @@ public class OORELSW10aKeyPairGenerator implements AsymmetricCipherKeyPairGenera
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = Utils.GeneratePropertiesParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
-        Pairing pairing =  PairingFactory.getPairing(parameters);
+        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
+        Pairing pairing = PairingFactory.getPairing(parameters);
+
         Element g = pairing.getG1().newRandomElement().getImmutable();
         Element alpha = pairing.getZr().newRandomElement().getImmutable();
         Element b = pairing.getZr().newRandomElement().getImmutable();

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -34,11 +34,11 @@ public class IBELW10MasterSecretKeyParameters extends PairingKeyParameters {
         if (anObject instanceof IBELW10MasterSecretKeyParameters) {
             IBELW10MasterSecretKeyParameters that = (IBELW10MasterSecretKeyParameters)anObject;
             //Compare alpha
-            if (!(Utils.isEqualElement(this.alpha, that.getAlpha()))) {
+            if (!(PairingUtils.isEqualElement(this.alpha, that.getAlpha()))) {
                 return false;
             }
             //Compare g3Generator
-            if (!(Utils.isEqualElement(this.g3Generator, that.getG3Generator()))) {
+            if (!(PairingUtils.isEqualElement(this.g3Generator, that.getG3Generator()))) {
                 return false;
             }
             //Compare Pairing Parameters

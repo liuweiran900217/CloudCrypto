@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -38,11 +38,11 @@ public class HIBEBBG05CiphertextParameters extends PairingCiphertextParameters {
                 return false;
             }
             //Compare B
-            if (!Utils.isEqualElement(this.B, that.getB())){
+            if (!PairingUtils.isEqualElement(this.B, that.getB())){
                 return false;
             }
             //Compare C
-            if (!Utils.isEqualElement(this.C, that.getC())){
+            if (!PairingUtils.isEqualElement(this.C, that.getC())){
                 return false;
             }
             //Compare Pairing Parameters

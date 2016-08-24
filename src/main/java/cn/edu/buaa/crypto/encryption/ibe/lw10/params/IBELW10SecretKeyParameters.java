@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.params;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -47,15 +47,15 @@ public class IBELW10SecretKeyParameters extends PairingKeyParameters {
                 return false;
             }
             //Compare elementId
-            if (!Utils.isEqualElement(this.elementId, that.getElementId())) {
+            if (!PairingUtils.isEqualElement(this.elementId, that.getElementId())) {
                 return false;
             }
             //Compare k1
-            if (!Utils.isEqualElement(this.k1, that.getK1())) {
+            if (!PairingUtils.isEqualElement(this.k1, that.getK1())) {
                 return false;
             }
             //Compare k2
-            if (!Utils.isEqualElement(this.k2, that.getK2())) {
+            if (!PairingUtils.isEqualElement(this.k2, that.getK2())) {
                 return false;
             }
             //Compare Pairing Parameters

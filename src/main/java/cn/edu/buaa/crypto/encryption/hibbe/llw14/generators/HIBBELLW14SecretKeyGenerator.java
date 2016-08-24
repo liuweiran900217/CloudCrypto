@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
-import cn.edu.buaa.crypto.Utils;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.*;
 import it.unisa.dia.gas.jpbc.Element;
@@ -27,7 +27,7 @@ public class HIBBELLW14SecretKeyGenerator {
             HIBBELLW14MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementIds = Utils.MapToZr(pairing, parameters.getIds());
+            Element[] elementIds = PairingUtils.MapToZr(pairing, parameters.getIds());
             Element r = pairing.getZr().newRandomElement().getImmutable();
             Element a0_r = pairing.getZr().newRandomElement().getImmutable();
             Element a1_r = pairing.getZr().newRandomElement().getImmutable();
@@ -63,7 +63,7 @@ public class HIBBELLW14SecretKeyGenerator {
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = new String[publicKeyParameters.getMaxUser()];
             Element[] elementIds = new Element[publicKeyParameters.getMaxUser()];
-            Element elementDelegateId = Utils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
+            Element elementDelegateId = PairingUtils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
 
             Element a0_r = pairing.getZr().newRandomElement().getImmutable();
             Element a1_r = pairing.getZr().newRandomElement().getImmutable();
