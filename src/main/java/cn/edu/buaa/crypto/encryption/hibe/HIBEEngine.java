@@ -7,10 +7,13 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 2015/10/5.
+ *
+ * Hierarchical Identity-Based Encryption Engine.
+ * All instances should implement this Interface.
  */
 public interface HIBEEngine {
     // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    public static final int STENGTH = 12;
+    int STENGTH = 12;
 
     /**
      * Setup Algorithm for HIBE

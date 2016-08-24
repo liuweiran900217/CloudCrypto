@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Secret Key Parameters for Boneh-Boyen HIBE.
  */
 public class HIBEBB04SecretKeyParameters extends PairingKeyParameters {
 

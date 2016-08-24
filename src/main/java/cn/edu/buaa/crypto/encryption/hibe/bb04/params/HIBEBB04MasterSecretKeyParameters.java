@@ -8,6 +8,8 @@ import org.bouncycastle.util.encoders.Hex;
 
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Master Secret Key Parameters for Boneh-Boyen HIBE.
  */
 public class HIBEBB04MasterSecretKeyParameters extends PairingKeyParameters {
 
