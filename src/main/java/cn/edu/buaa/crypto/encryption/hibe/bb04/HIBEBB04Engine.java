@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class HIBEBB04Engine implements HIBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "Boneh-Boyen HIBE";
+    public static final String SCHEME_NAME = "BB04HIBE";
 
     public HIBEBB04Engine() {
 

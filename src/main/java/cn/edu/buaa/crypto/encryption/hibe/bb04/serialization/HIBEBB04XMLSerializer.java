@@ -170,30 +170,21 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         it.unisa.dia.gas.jpbc.Element g = null;
         it.unisa.dia.gas.jpbc.Element g1 = null;
         it.unisa.dia.gas.jpbc.Element g2 = null;
-        it.unisa.dia.gas.jpbc.Element[] hs = new it.unisa.dia.gas.jpbc.Element[maxLength];
+        it.unisa.dia.gas.jpbc.Element[] hs = null;
         for (int i=0; i<nodeList.getLength(); i++){
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_PK_G)) {
                 //Set g
-                String gString = node.getFirstChild().getNodeValue();
-                g = pairing.getG1().newElementFromBytes(Hex.decode(gString)).getImmutable();
+                g = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_G1)) {
                 //Set g1
-                String g1String = node.getFirstChild().getNodeValue();
-                g1 = pairing.getG1().newElementFromBytes(Hex.decode(g1String)).getImmutable();
+                g1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_G2)) {
                 //Set g2
-                String g2String = node.getFirstChild().getNodeValue();
-                g2 = pairing.getG1().newElementFromBytes(Hex.decode(g2String)).getImmutable();
+                g2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_HS)) {
                 //Set hs
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_PK_HI);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementHi = (Element)nodeHsList.item(j);
-                    int index = Integer.valueOf(elementHi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String hiString = elementHi.getFirstChild().getNodeValue();
-                    hs[index] = pairing.getG1().newElementFromBytes(Hex.decode(hiString)).getImmutable();
-                }
+                hs = SerializationUtils.GetElementArray(pairing, node, TAG_PK_HI, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new HIBEBB04PublicKeyParameters(pairingParameters, g, g1, g2, hs);
@@ -207,8 +198,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             //Set gaAlpha
             if (node.getNodeName().equals(TAG_MSK_G2ALPHA)) {
-                String g2AlphaString = node.getFirstChild().getNodeValue();
-                g2Alpha = pairing.getG1().newElementFromBytes(Hex.decode(g2AlphaString)).getImmutable();
+                g2Alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new HIBEBB04MasterSecretKeyParameters(pairingParameters, g2Alpha);
@@ -218,37 +208,23 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         int length = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
-        String[] ids = new String[length];
-        it.unisa.dia.gas.jpbc.Element[] elementIds = new it.unisa.dia.gas.jpbc.Element[length];
+        String[] ids = null;
         it.unisa.dia.gas.jpbc.Element d0 = null;
-        it.unisa.dia.gas.jpbc.Element[] ds = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] ds = null;
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_SK_D0)) {
                 //Set d0
-                String d0String = node.getFirstChild().getNodeValue();
-                d0 = pairing.getG1().newElementFromBytes(Hex.decode(d0String)).getImmutable();
+                d0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_DS)) {
                 //Set ds
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_SK_DI);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementDi = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementDi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String diString = elementDi.getFirstChild().getNodeValue();
-                    ds[index] = pairing.getG1().newElementFromBytes(Hex.decode(diString)).getImmutable();
-                }
+                ds = SerializationUtils.GetElementArray(pairing, node, TAG_SK_DI, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_IDS)) {
                 //Set Ids
-                NodeList nodeIdsList = ((Element) node).getElementsByTagName(TAG_SK_IDI);
-                for (int j=0; j<nodeIdsList.getLength(); j++) {
-                    Element elementIdi = (Element)nodeIdsList.item(j);
-                    int index = Integer.valueOf(elementIdi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    ids[index] = elementIdi.getFirstChild().getNodeValue();
-                }
+                ids = SerializationUtils.GetStringArray(node, TAG_SK_IDI);
             }
         }
-        elementIds = PairingUtils.MapToZr(pairing, ids);
-        return new HIBEBB04SecretKeyParameters(pairingParameters, ids, elementIds, d0, ds);
+        return new HIBEBB04SecretKeyParameters(pairingParameters, ids, PairingUtils.MapToZr(pairing, ids), d0, ds);
     }
 
     private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -256,22 +232,15 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         int length = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element B = null;
-        it.unisa.dia.gas.jpbc.Element[] Cs = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] Cs = null;
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_CT_B)) {
                 //Set B
-                String bString = node.getFirstChild().getNodeValue();
-                B = pairing.getG1().newElementFromBytes(Hex.decode(bString)).getImmutable();
+                B = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_CS)) {
                 //Set Cs
-                NodeList nodeCsList = ((Element) node).getElementsByTagName(TAG_CT_CI);
-                for (int j=0; j<nodeCsList.getLength(); j++) {
-                    Element elementCi = (Element) nodeCsList.item(j);
-                    int index = Integer.valueOf(elementCi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String ciString = elementCi.getFirstChild().getNodeValue();
-                    Cs[index] = pairing.getG1().newElementFromBytes(Hex.decode(ciString)).getImmutable();
-                }
+                Cs = SerializationUtils.GetElementArray(pairing, node, TAG_CT_CI, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new HIBEBB04CiphertextParameters(pairingParameters, length, B, Cs);

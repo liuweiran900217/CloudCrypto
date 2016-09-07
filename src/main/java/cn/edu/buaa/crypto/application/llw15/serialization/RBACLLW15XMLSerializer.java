@@ -305,10 +305,10 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         int maxRoleNumber = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
-        String[] roles = new String[maxRoleNumber];
+        String[] roles = null;
         it.unisa.dia.gas.jpbc.Element[] elementRoles;
         String time = null;
-        it.unisa.dia.gas.jpbc.Element elementTime = null;
+        it.unisa.dia.gas.jpbc.Element elementTime;
         it.unisa.dia.gas.jpbc.Element a0 = null;
         it.unisa.dia.gas.jpbc.Element a1 = null;
         it.unisa.dia.gas.jpbc.Element a2 = null;
@@ -346,14 +346,7 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
                 }
             } else if (node.getNodeName().equals(TAG_ACM_ROLES)) {
                 //Set roles
-                NodeList nodeIdsList = ((Element) node).getElementsByTagName(TAG_ACM_ROLEI);
-                for (int j=0; j<nodeIdsList.getLength(); j++) {
-                    Element elementIdi = (Element)nodeIdsList.item(j);
-                    int index = Integer.valueOf(elementIdi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    if (elementIdi.hasChildNodes()) {
-                        roles[index] = elementIdi.getFirstChild().getNodeValue();
-                    }
-                }
+                roles = SerializationUtils.GetStringArray(node, TAG_ACM_ROLEI);
             }
         }
         elementTime = PairingUtils.MapToZr(pairing, time);

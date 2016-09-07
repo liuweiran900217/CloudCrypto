@@ -6,18 +6,20 @@ import org.w3c.dom.*;
 
 /**
  * Created by Weiran Liu on 2016/4/8.
+ *
+ * Chameleon Hash Functions XML serializer.
  */
 public interface ChameleonHashXMLSerializer {
-    public static final String ATTRI_TYPE = "Type";
-    public static final String TYPE_PK = "PK";
-    public static final String TYPE_SK = "SK";
-    public static final String TYPE_CH = "CH";
-    public static final String TAG_HASH_HASH = "HASH";
-    public static final String TAG_HASH_RESULT = "HASH_RESULT";
-    public static final String TAG_HASH_RS = "RS";
-    public static final String TAG_HASH_RI = "RI";
-    public static final String ATTRI_INDEX = "Index";
-    public static final String ATTRI_LENGTH = "Length";
+    String ATTRI_TYPE = "Type";
+    String TYPE_PK = "PK";
+    String TYPE_SK = "SK";
+    String TYPE_CH = "CH";
+    String TAG_HASH_HASH = "HASH";
+    String TAG_HASH_RESULT = "HASH_RESULT";
+    String TAG_HASH_RS = "RS";
+    String TAG_HASH_RI = "RI";
+    String ATTRI_INDEX = "Index";
+    String ATTRI_LENGTH = "Length";
 
     public Document documentSerialization(ChameleonHashParameters chameleonHashParameters);
 

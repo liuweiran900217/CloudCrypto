@@ -255,12 +255,7 @@ public class HIBEBBG05XMLSerializer implements PairingParameterXMLSerializer {
                 }
             } else if (node.getNodeName().equals(TAG_SK_IDS)) {
                 //Set Ids
-                NodeList nodeIdsList = ((Element) node).getElementsByTagName(TAG_SK_IDI);
-                for (int j=0; j<nodeIdsList.getLength(); j++) {
-                    Element elementIdi = (Element)nodeIdsList.item(j);
-                    int index = Integer.valueOf(elementIdi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    ids[index] = elementIdi.getFirstChild().getNodeValue();
-                }
+                ids = SerializationUtils.GetStringArray(node, TAG_SK_IDI);
             }
         }
         elementIds = PairingUtils.MapToZr(pairing, ids);

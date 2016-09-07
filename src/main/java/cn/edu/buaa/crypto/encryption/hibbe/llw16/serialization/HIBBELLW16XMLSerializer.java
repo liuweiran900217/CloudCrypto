@@ -230,7 +230,7 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         int maxUser = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_MAX_USER));
         NodeList nodeList = schemeElement.getChildNodes();
-        String[] ids = new String[maxUser];
+        String[] ids = null;
         it.unisa.dia.gas.jpbc.Element[] elementIds;
         it.unisa.dia.gas.jpbc.Element a0 = null;
         it.unisa.dia.gas.jpbc.Element a1 = null;
@@ -256,14 +256,7 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
                 }
             } else if (node.getNodeName().equals(TAG_SK_IDS)) {
                 //Set Ids
-                NodeList nodeIdsList = ((Element) node).getElementsByTagName(TAG_SK_IDI);
-                for (int j=0; j<nodeIdsList.getLength(); j++) {
-                    Element elementIdi = (Element)nodeIdsList.item(j);
-                    int index = Integer.valueOf(elementIdi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    if (elementIdi.hasChildNodes()) {
-                        ids[index] = elementIdi.getFirstChild().getNodeValue();
-                    }
-                }
+                ids = SerializationUtils.GetStringArray(node, TAG_SK_IDI);
             }
         }
         elementIds = PairingUtils.MapToZr(pairing, ids);
