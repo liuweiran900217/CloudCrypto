@@ -186,24 +186,19 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_PK_G)) {
                 //Set g
-                String gString = node.getFirstChild().getNodeValue();
-                g = pairing.getG1().newElementFromBytes(Hex.decode(gString)).getImmutable();
+                g = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_Gb)) {
                 //Set gb
-                String gbString = node.getFirstChild().getNodeValue();
-                gb = pairing.getG1().newElementFromBytes(Hex.decode(gbString)).getImmutable();
+                gb = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_Gb2)) {
                 //Set gb2
-                String gb2String = node.getFirstChild().getNodeValue();
-                gb2 = pairing.getG1().newElementFromBytes(Hex.decode(gb2String)).getImmutable();
+                gb2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_Hb)) {
                 //Set hb
-                String hbString = node.getFirstChild().getNodeValue();
-                hb = pairing.getG1().newElementFromBytes(Hex.decode(hbString)).getImmutable();
+                hb = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }else if (node.getNodeName().equals(TAG_PK_EggAlpha)) {
                 //Set eggAlpha
-                String eggAlphaString = node.getFirstChild().getNodeValue();
-                eggAlpha = pairing.getG1().newElementFromBytes(Hex.decode(eggAlphaString)).getImmutable();
+                eggAlpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.GT);
             }
         }
         return new RELSW10aPublicKeyParameters(pairingParameters, g, gb, gb2, hb, eggAlpha);
@@ -217,16 +212,15 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         it.unisa.dia.gas.jpbc.Element h = null;
         for (int i=0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
-            //Set alpha
             if (node.getNodeName().equals(TAG_MSK_ALPHA)) {
-                String alphaString = node.getFirstChild().getNodeValue();
-                alpha = pairing.getZr().newElementFromBytes(Hex.decode(alphaString)).getImmutable();
+                //Set alpha
+                alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_MSK_B)) {
-                String bString = node.getFirstChild().getNodeValue();
-                b = pairing.getZr().newElementFromBytes(Hex.decode(bString)).getImmutable();
+                //Set b
+                b = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_MSK_H)) {
-                String hString = node.getFirstChild().getNodeValue();
-                h = pairing.getG1().newElementFromBytes(Hex.decode(hString)).getImmutable();
+                //Set h
+                h = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new RELSW10aMasterSecretKeyParameters(pairingParameters, alpha, b, h);
@@ -242,19 +236,16 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_SK_ID)) {
-                id = node.getFirstChild().getNodeValue();
+                id = SerializationUtils.GetString(node);
             } else if (node.getNodeName().equals(TAG_SK_D0)) {
                 //Set d0
-                String d0String = node.getFirstChild().getNodeValue();
-                d0 = pairing.getG1().newElementFromBytes(Hex.decode(d0String)).getImmutable();
+                d0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_D1)) {
                 //Set d1
-                String d1String = node.getFirstChild().getNodeValue();
-                d1 = pairing.getG1().newElementFromBytes(Hex.decode(d1String)).getImmutable();
+                d1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_D2)) {
                 //Set d2
-                String d2String = node.getFirstChild().getNodeValue();
-                d2 = pairing.getG1().newElementFromBytes(Hex.decode(d2String)).getImmutable();
+                d2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         it.unisa.dia.gas.jpbc.Element elementId = PairingUtils.MapToZr(pairing, id);
@@ -266,32 +257,19 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         int length = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element C0 = null;
-        it.unisa.dia.gas.jpbc.Element[] C1s = new it.unisa.dia.gas.jpbc.Element[length];
-        it.unisa.dia.gas.jpbc.Element[] C2s = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] C1s = null;
+        it.unisa.dia.gas.jpbc.Element[] C2s = null;
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_CT_C0)) {
                 //Set C0
-                String c0String = node.getFirstChild().getNodeValue();
-                C0 = pairing.getG1().newElementFromBytes(Hex.decode(c0String)).getImmutable();
+                C0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_C1S)) {
                 //Set C1s
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_CT_C1I);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementC1i = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementC1i.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String c1iString = elementC1i.getFirstChild().getNodeValue();
-                    C1s[index] = pairing.getG1().newElementFromBytes(Hex.decode(c1iString)).getImmutable();
-                }
+                C1s = SerializationUtils.GetElementArray(pairing, node, TAG_CT_C1I, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_C2S)) {
                 //Set C2s
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_CT_C2I);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementC2i = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementC2i.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String c2iString = elementC2i.getFirstChild().getNodeValue();
-                    C2s[index] = pairing.getG1().newElementFromBytes(Hex.decode(c2iString)).getImmutable();
-                }
+                C2s = SerializationUtils.GetElementArray(pairing, node, TAG_CT_C2I, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new RELSW10aCiphertextParameters(pairingParameters,length, C0, C1s, C2s);

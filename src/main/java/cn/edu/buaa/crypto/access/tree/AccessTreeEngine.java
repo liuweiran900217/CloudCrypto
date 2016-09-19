@@ -41,7 +41,7 @@ public class AccessTreeEngine implements AccessControlEngine {
     public AccessControlParameter generateAccessControl(int[][] accessPolicy, String[] rhos) throws UnsatisfiedAccessControlException {
         //init access tree
         AccessTreeNode accessTreeNode = AccessTreeNode.GenerateAccessTree(accessPolicy, rhos);
-        return new AccessControlParameter(accessTreeNode, rhos);
+        return new AccessControlParameter(accessTreeNode, accessPolicy, rhos);
     }
 
     public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {

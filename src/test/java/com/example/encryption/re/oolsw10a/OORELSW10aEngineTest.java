@@ -11,6 +11,9 @@ import com.example.encryption.re.OOREEngineTest;
 
 /**
  * Created by Weiran Liu on 2016/4/10.
+ *
+ * Online/offline version of Lewko-Sahai-Waters Revocation scheme test.
+ * The transformation follows by Liu-Liu-Wu.
  */
 public class OORELSW10aEngineTest {
     public static void main(String[] args) {
@@ -19,6 +22,6 @@ public class OORELSW10aEngineTest {
         PairingParameterXMLSerializer schemeXMLSerializer = OORELSW10aXMLSerializer.getInstance();
 
         OOREEngineTest engineTest = new OOREEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(160, 512);
+        engineTest.processTest(160, 256);
     }
 }

@@ -172,20 +172,16 @@ public class IBELW10XMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_PK_U)) {
                 //Set u
-                String uString = node.getFirstChild().getNodeValue();
-                u = pairing.getG1().newElementFromBytes(Hex.decode(uString)).getImmutable();
+                u = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_G)) {
                 //Set g
-                String gString = node.getFirstChild().getNodeValue();
-                g = pairing.getG1().newElementFromBytes(Hex.decode(gString)).getImmutable();
+                g = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_H)) {
                 //Set h
-                String hString = node.getFirstChild().getNodeValue();
-                h = pairing.getG1().newElementFromBytes(Hex.decode(hString)).getImmutable();
+                h = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_EggAlpha)) {
                 //Set eggAlpha
-                String eggAlphaString = node.getFirstChild().getNodeValue();
-                eggAlpha = pairing.getGT().newElementFromBytes(Hex.decode(eggAlphaString)).getImmutable();
+                eggAlpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.GT);
             }
         }
         return new IBELW10PublicKeyParameters(pairingParameters, u, g, h, eggAlpha);
@@ -200,12 +196,10 @@ public class IBELW10XMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_MSK_ALPHA)) {
                 //Set alpha
-                String alphaString = node.getFirstChild().getNodeValue();
-                alpha = pairing.getZr().newElementFromBytes(Hex.decode(alphaString)).getImmutable();
+                alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_MSK_G3Generator)) {
                 //Set g3Generator
-                String g3GeneratorString = node.getFirstChild().getNodeValue();
-                g3Generator = pairing.getG1().newElementFromBytes(Hex.decode(g3GeneratorString)).getImmutable();
+                g3Generator = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new IBELW10MasterSecretKeyParameters(pairingParameters, alpha, g3Generator);
@@ -222,15 +216,13 @@ public class IBELW10XMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_SK_K1)) {
                 //Set k1
-                String k1String = node.getFirstChild().getNodeValue();
-                k1 = pairing.getG1().newElementFromBytes(Hex.decode(k1String)).getImmutable();
+                k1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_K2)) {
                 //Set k2
-                String k2String = node.getFirstChild().getNodeValue();
-                k2 = pairing.getG1().newElementFromBytes(Hex.decode(k2String)).getImmutable();
+                k2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_ID)) {
                 //Set Id
-                id = node.getFirstChild().getNodeValue();
+                id = SerializationUtils.GetString(node);
                 elementId = PairingUtils.MapToZr(pairing, id);
             }
         }
@@ -246,12 +238,10 @@ public class IBELW10XMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_CT_C1)) {
                 //Set C1
-                String c1String = node.getFirstChild().getNodeValue();
-                C1 = pairing.getG1().newElementFromBytes(Hex.decode(c1String)).getImmutable();
+                C1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_C2)) {
                 //Set C2
-                String c2String = node.getFirstChild().getNodeValue();
-                C2 = pairing.getG1().newElementFromBytes(Hex.decode(c2String)).getImmutable();
+                C2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new IBELW10CiphertextParameters(pairingParameters, C1, C2);

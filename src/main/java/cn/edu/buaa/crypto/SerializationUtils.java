@@ -84,6 +84,10 @@ public class SerializationUtils {
         childElement.appendChild(childText);
     }
 
+    public static String GetString(Node node) {
+        return node.getFirstChild().getNodeValue();
+    }
+
     public static void SetStringArray(Document document, Element parentElement, String tag, String indexTag, String[] stringArray) {
         Element childElement = document.createElement(tag);
         parentElement.appendChild(childElement);

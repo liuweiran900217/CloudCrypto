@@ -19,7 +19,6 @@ public interface ChameleonHashXMLSerializer {
     String TAG_HASH_RS = "RS";
     String TAG_HASH_RI = "RI";
     String ATTRI_INDEX = "Index";
-    String ATTRI_LENGTH = "Length";
 
     public Document documentSerialization(ChameleonHashParameters chameleonHashParameters);
 

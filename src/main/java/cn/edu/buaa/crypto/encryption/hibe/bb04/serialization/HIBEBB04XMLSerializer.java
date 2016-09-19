@@ -165,7 +165,6 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
 
     private CipherParameters publicKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int maxLength = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element g = null;
         it.unisa.dia.gas.jpbc.Element g1 = null;
@@ -206,7 +205,6 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
 
     private CipherParameters secretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int length = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         String[] ids = null;
         it.unisa.dia.gas.jpbc.Element d0 = null;

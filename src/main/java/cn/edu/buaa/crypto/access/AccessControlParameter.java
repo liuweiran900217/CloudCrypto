@@ -7,12 +7,15 @@ import java.util.Arrays;
  */
 public class AccessControlParameter {
     //The Access Tree
-    protected AccessTreeNode rootAccessTreeNode;
+    protected final AccessTreeNode rootAccessTreeNode;
+    //The access policy represented by int array
+    protected final int[][] accessPolicy;
     //Rho map
-    protected String[] rhos;
+    protected final String[] rhos;
 
-    public AccessControlParameter(AccessTreeNode accessTreeNode, String[] rhos) {
+    public AccessControlParameter(AccessTreeNode accessTreeNode, int[][] accessPolicy, String[] rhos) {
         this.rootAccessTreeNode = accessTreeNode;
+        this.accessPolicy = accessPolicy;
         //Copy rhos
         this.rhos = new String[rhos.length];
         System.arraycopy(rhos, 0, this.rhos, 0, rhos.length);
@@ -21,6 +24,8 @@ public class AccessControlParameter {
     public String[] getRhos() {
         return this.rhos;
     }
+
+    public int[][] getAccessPolicy() { return this.accessPolicy; }
 
     public String[] minSatisfiedAttributeSet(String[] attributes) throws UnsatisfiedAccessControlException {
         if (!this.rootAccessTreeNode.isAccessControlSatisfied(attributes)) {
@@ -71,6 +76,15 @@ public class AccessControlParameter {
             //Compare rhos
             if (!Arrays.equals(this.rhos, that.getRhos())) {
                 return false;
+            }
+            //Compare access policy
+            if (this.accessPolicy.length != that.getAccessPolicy().length) {
+                return false;
+            }
+            for (int i = 0; i < this.accessPolicy.length; i++) {
+                if (!Arrays.equals(this.accessPolicy[i], that.getAccessPolicy()[i])) {
+                    return false;
+                }
             }
             //Compare AccessTreeNode
             return this.rootAccessTreeNode.equals(that.getRootAccessTreeNode());

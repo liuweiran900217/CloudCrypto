@@ -15,8 +15,8 @@ public class LSSSPolicyParameter extends AccessControlParameter {
     //number of columns
     private int column;
 
-    public LSSSPolicyParameter(AccessTreeNode rootAccessTreeNode, int[][] lsssMatrix, String[] rhos) {
-        super(rootAccessTreeNode, rhos);
+    public LSSSPolicyParameter(AccessTreeNode rootAccessTreeNode, int[][] accessPolicy, int[][] lsssMatrix, String[] rhos) {
+        super(rootAccessTreeNode, accessPolicy, rhos);
         this.row = lsssMatrix.length;
         this.column = lsssMatrix[0].length;
         this.lsssMatrix = new int[row][column];

@@ -208,14 +208,14 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             Element chameleonHashSecretKeyElement = ciphertextDocument.createElement(TAG_ICT_CH_SK);
             chameleonHashSecretKeyElement.setAttribute(ATTRI_CH_NAME, chameleonHashSecretKeyParameters.getCHEngineName());
             schemeElement.appendChild(chameleonHashSecretKeyElement);
-            ciphertextDocument = CHEngineManager.getChameleonHashXMLSerializer(chameleonHashSecretKeyParameters.getCHEngineName()).documentSerialization(
+            ciphertextDocument = CHEngineManager.GetChameleonHashXMLSerializer(chameleonHashSecretKeyParameters.getCHEngineName()).documentSerialization(
                     ciphertextDocument, chameleonHashSecretKeyElement, chameleonHashSecretKeyParameters);
             //Set Chameleon Hash Result
             ChameleonHashResultParameters chameleonHashResultParameters = ciphertextParameters.getChameleonHashResut();
             Element chameleonHashResultElement = ciphertextDocument.createElement(TAG_ICT_CH_RES);
             chameleonHashResultElement.setAttribute(ATTRI_CH_NAME, chameleonHashResultParameters.getCHEngineName());
             schemeElement.appendChild(chameleonHashResultElement);
-            ciphertextDocument = CHEngineManager.getChameleonHashXMLSerializer(chameleonHashResultParameters.getCHEngineName()).documentSerialization(
+            ciphertextDocument = CHEngineManager.GetChameleonHashXMLSerializer(chameleonHashResultParameters.getCHEngineName()).documentSerialization(
                     ciphertextDocument, chameleonHashResultElement, chameleonHashResultParameters);
             return ciphertextDocument;
         } catch (ParserConfigurationException e) {
@@ -248,14 +248,14 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             Element chameleonHashPublicKeyElement = ciphertextDocument.createElement(TAG_CT_CH_PK);
             chameleonHashPublicKeyElement.setAttribute(ATTRI_CH_NAME, chameleonHashPublicKeyParameters.getCHEngineName());
             schemeElement.appendChild(chameleonHashPublicKeyElement);
-            ciphertextDocument = CHEngineManager.getChameleonHashXMLSerializer(chameleonHashPublicKeyParameters.getCHEngineName()).documentSerialization(
+            ciphertextDocument = CHEngineManager.GetChameleonHashXMLSerializer(chameleonHashPublicKeyParameters.getCHEngineName()).documentSerialization(
                     ciphertextDocument, chameleonHashPublicKeyElement, chameleonHashPublicKeyParameters);
             //Set Chameleon Hash Result
             ChameleonHashResultParameters chameleonHashResultParameters = ciphertextParameters.getChameleonHashResultParameters();
             Element chameleonHashResultElement = ciphertextDocument.createElement(TAG_CT_CH_RES);
             chameleonHashResultElement.setAttribute(ATTRI_CH_NAME, chameleonHashResultParameters.getCHEngineName());
             schemeElement.appendChild(chameleonHashResultElement);
-            ciphertextDocument = CHEngineManager.getChameleonHashXMLSerializer(chameleonHashResultParameters.getCHEngineName()).documentSerialization(
+            ciphertextDocument = CHEngineManager.GetChameleonHashXMLSerializer(chameleonHashResultParameters.getCHEngineName()).documentSerialization(
                     ciphertextDocument, chameleonHashResultElement, chameleonHashResultParameters);
             return ciphertextDocument;
         } catch (ParserConfigurationException e) {
@@ -297,33 +297,21 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_PK_G)) {
                 //Set g
-                String gString = node.getFirstChild().getNodeValue();
-                g = pairing.getG1().newElementFromBytes(Hex.decode(gString)).getImmutable();
+                g = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_Gb)) {
                 //Set gb
-                String gbString = node.getFirstChild().getNodeValue();
-                gb = pairing.getG1().newElementFromBytes(Hex.decode(gbString)).getImmutable();
+                gb = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_Gb2)) {
                 //Set gb2
-                String gb2String = node.getFirstChild().getNodeValue();
-                gb2 = pairing.getG1().newElementFromBytes(Hex.decode(gb2String)).getImmutable();
+                gb2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_Hb)) {
                 //Set hb
-                String hbString = node.getFirstChild().getNodeValue();
-                hb = pairing.getG1().newElementFromBytes(Hex.decode(hbString)).getImmutable();
+                hb = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }else if (node.getNodeName().equals(TAG_PK_EggAlpha)) {
                 //Set eggAlpha
-                String eggAlphaString = node.getFirstChild().getNodeValue();
-                eggAlpha = pairing.getG1().newElementFromBytes(Hex.decode(eggAlphaString)).getImmutable();
+                eggAlpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.GT);
             } else if (node.getNodeName().equals(TAG_PK_CH)) {
-                chEngineName = node.getFirstChild().getNodeValue();
-                if (chEngineName.equals(CHKR00Engine.SCHEME_NAME)) {
-                    chEngine = new CHKR00Engine();
-                } else if (chEngineName.equals(CHCZK04Engine.SCHEME_NAME)) {
-                    chEngine = new CHCZK04Engine();
-                } else {
-                    throw new InvalidParameterException("Null Public Key Chameleon Hash Name, find " + chEngineName);
-                }
+                chEngine = CHEngineManager.GetChameleonHashEngine(SerializationUtils.GetString(node));
             }
         }
         return new OORELSW10aPublicKeyParameters(pairingParameters, g, gb, gb2, hb, eggAlpha, chEngine);
@@ -337,16 +325,13 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         it.unisa.dia.gas.jpbc.Element h = null;
         for (int i=0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
-            //Set alpha
             if (node.getNodeName().equals(TAG_MSK_ALPHA)) {
-                String alphaString = node.getFirstChild().getNodeValue();
-                alpha = pairing.getZr().newElementFromBytes(Hex.decode(alphaString)).getImmutable();
+                //Set alpha
+                alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_MSK_B)) {
-                String bString = node.getFirstChild().getNodeValue();
-                b = pairing.getZr().newElementFromBytes(Hex.decode(bString)).getImmutable();
+                b = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_MSK_H)) {
-                String hString = node.getFirstChild().getNodeValue();
-                h = pairing.getG1().newElementFromBytes(Hex.decode(hString)).getImmutable();
+                h = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new OORELSW10aMasterSecretKeyParameters(pairingParameters, alpha, b, h);
@@ -362,19 +347,16 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_SK_ID)) {
-                id = node.getFirstChild().getNodeValue();
+                id = SerializationUtils.GetString(node);
             } else if (node.getNodeName().equals(TAG_SK_D0)) {
                 //Set d0
-                String d0String = node.getFirstChild().getNodeValue();
-                d0 = pairing.getG1().newElementFromBytes(Hex.decode(d0String)).getImmutable();
+                d0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_D1)) {
                 //Set d1
-                String d1String = node.getFirstChild().getNodeValue();
-                d1 = pairing.getG1().newElementFromBytes(Hex.decode(d1String)).getImmutable();
+                d1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_SK_D2)) {
                 //Set d2
-                String d2String = node.getFirstChild().getNodeValue();
-                d2 = pairing.getG1().newElementFromBytes(Hex.decode(d2String)).getImmutable();
+                d2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         it.unisa.dia.gas.jpbc.Element elementId = PairingUtils.MapToFirstHalfZr(pairing, id);
@@ -387,13 +369,13 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element sessionKey = null;
         it.unisa.dia.gas.jpbc.Element C0 = null;
-        it.unisa.dia.gas.jpbc.Element[] C1s = new it.unisa.dia.gas.jpbc.Element[length];
-        it.unisa.dia.gas.jpbc.Element[] C2s = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] C1s = null;
+        it.unisa.dia.gas.jpbc.Element[] C2s = null;
         it.unisa.dia.gas.jpbc.Element Cv1 = null;
         it.unisa.dia.gas.jpbc.Element Cv2 = null;
-        it.unisa.dia.gas.jpbc.Element[] Is = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] Is = null;
         it.unisa.dia.gas.jpbc.Element Iv = null;
-        it.unisa.dia.gas.jpbc.Element[] ss = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] ss = null;
         it.unisa.dia.gas.jpbc.Element sv = null;
         it.unisa.dia.gas.jpbc.Element s = null;
         ChameleonHashSecretKeyParameters chameleonHashSecretKeyParameters = null;
@@ -402,76 +384,45 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_ICT_KEY)) {
                 //Set session key
-                String sessionKeyString = node.getFirstChild().getNodeValue();
-                sessionKey = pairing.getGT().newElementFromBytes(Hex.decode(sessionKeyString)).getImmutable();
+                sessionKey = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.GT);
             } else if (node.getNodeName().equals(TAG_ICT_C0)) {
                 //Set C0
-                String c0String = node.getFirstChild().getNodeValue();
-                C0 = pairing.getG1().newElementFromBytes(Hex.decode(c0String)).getImmutable();
+                C0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ICT_C1S)) {
                 //Set C1s
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_ICT_C1I);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementC1i = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementC1i.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String c1iString = elementC1i.getFirstChild().getNodeValue();
-                    C1s[index] = pairing.getG1().newElementFromBytes(Hex.decode(c1iString)).getImmutable();
-                }
+                C1s = SerializationUtils.GetElementArray(pairing, node, TAG_ICT_C1I, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ICT_C2S)) {
                 //Set C2s
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_ICT_C2I);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementC2i = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementC2i.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String c2iString = elementC2i.getFirstChild().getNodeValue();
-                    C2s[index] = pairing.getG1().newElementFromBytes(Hex.decode(c2iString)).getImmutable();
-                }
+                C2s = SerializationUtils.GetElementArray(pairing, node, TAG_ICT_C2I, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ICT_CV1)) {
                 //Set Cv1
-                String cv1String = node.getFirstChild().getNodeValue();
-                Cv1 = pairing.getG1().newElementFromBytes(Hex.decode(cv1String)).getImmutable();
+                Cv1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ICT_CV2)) {
-                //Set Cv1
-                String cv2String = node.getFirstChild().getNodeValue();
-                Cv2 = pairing.getG1().newElementFromBytes(Hex.decode(cv2String)).getImmutable();
+                //Set Cv2
+                Cv2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ICT_IS)) {
                 //Set Is
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_ICT_II);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementIi = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementIi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String iiString = elementIi.getFirstChild().getNodeValue();
-                    Is[index] = pairing.getZr().newElementFromBytes(Hex.decode(iiString)).getImmutable();
-                }
+                Is = SerializationUtils.GetElementArray(pairing, node, TAG_ICT_II, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_ICT_IV)) {
                 //Set Iv
-                String ivString = node.getFirstChild().getNodeValue();
-                Iv = pairing.getZr().newElementFromBytes(Hex.decode(ivString)).getImmutable();
+                Iv = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_ICT_SS)) {
                 //Set ss
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_ICT_SI);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementSi = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementSi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String siString = elementSi.getFirstChild().getNodeValue();
-                    ss[index] = pairing.getZr().newElementFromBytes(Hex.decode(siString)).getImmutable();
-                }
+                ss = SerializationUtils.GetElementArray(pairing, node, TAG_ICT_SI, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_ICT_SV)) {
                 //Set sv
-                String svString = node.getFirstChild().getNodeValue();
-                sv = pairing.getZr().newElementFromBytes(Hex.decode(svString)).getImmutable();
+                sv = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_ICT_S)) {
                 //Set s
-                String sString = node.getFirstChild().getNodeValue();
-                s = pairing.getZr().newElementFromBytes(Hex.decode(sString)).getImmutable();
+                s = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_ICT_CH_SK)) {
                 String chEngineName = ((Element)node).getAttribute(ATTRI_CH_NAME);
                 chameleonHashSecretKeyParameters = (ChameleonHashSecretKeyParameters) CHEngineManager.
-                        getChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element)node);
+                        GetChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element)node);
             } else if (node.getNodeName().equals(TAG_ICT_CH_RES)) {
                 String chEngineName = ((Element) node).getAttribute(ATTRI_CH_NAME);
                 chameleonHashResultParameters = (ChameleonHashResultParameters) CHEngineManager.
-                        getChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element) node);
+                        GetChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element) node);
             }
         }
         return new OORELSW10aICiphertextParameters(pairingParameters, length,
@@ -483,62 +434,41 @@ public class OORELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         int length = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element C0 = null;
-        it.unisa.dia.gas.jpbc.Element[] C1s = new it.unisa.dia.gas.jpbc.Element[length];
-        it.unisa.dia.gas.jpbc.Element[] C2s = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] C1s = null;
+        it.unisa.dia.gas.jpbc.Element[] C2s = null;
         it.unisa.dia.gas.jpbc.Element Cv1 = null;
         it.unisa.dia.gas.jpbc.Element Cv2 = null;
-        it.unisa.dia.gas.jpbc.Element[] Imalls = new it.unisa.dia.gas.jpbc.Element[length];
+        it.unisa.dia.gas.jpbc.Element[] Imalls = null;
         ChameleonHashPublicKeyParameters chameleonHashPublicKeyParameters = null;
         ChameleonHashResultParameters chameleonHashResultParameters = null;
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_CT_C0)) {
                 //Set C0
-                String c0String = node.getFirstChild().getNodeValue();
-                C0 = pairing.getG1().newElementFromBytes(Hex.decode(c0String)).getImmutable();
+                C0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_C1S)) {
                 //Set C1s
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_CT_C1I);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementC1i = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementC1i.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String c1iString = elementC1i.getFirstChild().getNodeValue();
-                    C1s[index] = pairing.getG1().newElementFromBytes(Hex.decode(c1iString)).getImmutable();
-                }
+                C1s = SerializationUtils.GetElementArray(pairing, node, TAG_CT_C1I, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_C2S)) {
                 //Set C2s
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_CT_C2I);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementC2i = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementC2i.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String c2iString = elementC2i.getFirstChild().getNodeValue();
-                    C2s[index] = pairing.getG1().newElementFromBytes(Hex.decode(c2iString)).getImmutable();
-                }
+                C2s = SerializationUtils.GetElementArray(pairing, node, TAG_CT_C2I, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_CV1)) {
                 //Set Cv1
-                String cv1String = node.getFirstChild().getNodeValue();
-                Cv1 = pairing.getG1().newElementFromBytes(Hex.decode(cv1String)).getImmutable();
+                Cv1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_CV2)) {
                 //Set Cv2
-                String cv1String = node.getFirstChild().getNodeValue();
-                Cv2 = pairing.getG1().newElementFromBytes(Hex.decode(cv1String)).getImmutable();
+                Cv2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_CT_IMALLS)) {
                 //Set Imalls
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_CT_IMALLI);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementC1i = (Element) nodeHsList.item(j);
-                    int index = Integer.valueOf(elementC1i.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String imalliString = elementC1i.getFirstChild().getNodeValue();
-                    Imalls[index] = pairing.getZr().newElementFromBytes(Hex.decode(imalliString)).getImmutable();
-                }
+                Imalls = SerializationUtils.GetElementArray(pairing, node, TAG_CT_IMALLI, SerializationUtils.PairingGroupType.Zr);
             } else if (node.getNodeName().equals(TAG_CT_CH_PK)) {
             String chEngineName = ((Element)node).getAttribute(ATTRI_CH_NAME);
             chameleonHashPublicKeyParameters = (ChameleonHashPublicKeyParameters) CHEngineManager.
-                    getChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element)node);
+                    GetChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element)node);
             } else if (node.getNodeName().equals(TAG_CT_CH_RES)) {
                 String chEngineName = ((Element) node).getAttribute(ATTRI_CH_NAME);
                 chameleonHashResultParameters = (ChameleonHashResultParameters) CHEngineManager.
-                    getChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element) node);
+                    GetChameleonHashXMLSerializer(chEngineName).documentDeserialization(pairingParameters, document, (Element) node);
             }
         }
         return new OORELSW10aCiphertextParameters(pairingParameters ,length, C0, C1s, C2s, Imalls, Cv1, Cv2,

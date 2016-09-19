@@ -8,6 +8,8 @@ import com.example.encryption.re.REEngineTest;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Sahai-Waters Revocation scheme test.
  */
 public class RELSW10aEngineTest {
     public static void main(String[] args) {
@@ -15,6 +17,6 @@ public class RELSW10aEngineTest {
         PairingParameterXMLSerializer schemeXMLSerializer = RELSW10aXMLSerializer.getInstance();
 
         REEngineTest engineTest = new REEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(160, 512);
+        engineTest.processTest(160, 256);
     }
 }

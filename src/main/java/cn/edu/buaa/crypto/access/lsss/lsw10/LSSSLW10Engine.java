@@ -160,7 +160,7 @@ public class LSSSLW10Engine extends LSSSPolicyEngine {
                 i += 1;
             }
         }
-        LSSSPolicyParameter lsssPolicyParameter = new LSSSPolicyParameter(rootAccessTreeNode, lsssMatrix, rhosParameter);
+        LSSSPolicyParameter lsssPolicyParameter = new LSSSPolicyParameter(rootAccessTreeNode, accessPolicy, lsssMatrix, rhosParameter);
 //        System.out.println(lsssPolicyParameter);
         return lsssPolicyParameter;
     }

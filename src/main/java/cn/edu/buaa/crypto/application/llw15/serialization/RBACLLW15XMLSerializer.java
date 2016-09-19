@@ -241,46 +241,33 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
         it.unisa.dia.gas.jpbc.Element gh = null;
         it.unisa.dia.gas.jpbc.Element u0 = null;
         it.unisa.dia.gas.jpbc.Element uv = null;
-        it.unisa.dia.gas.jpbc.Element[] us = new it.unisa.dia.gas.jpbc.Element[maxRoleNumber];
+        it.unisa.dia.gas.jpbc.Element[] us = null;
         for (int i=0; i<nodeList.getLength(); i++){
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_PK_G)) {
                 //Set g
-                String gString = node.getFirstChild().getNodeValue();
-                g = pairing.getG1().newElementFromBytes(Hex.decode(gString)).getImmutable();
+               g = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_G1)) {
                 //Set g1
-                String g1String = node.getFirstChild().getNodeValue();
-                g1 = pairing.getG1().newElementFromBytes(Hex.decode(g1String)).getImmutable();
+                g1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_G2)) {
                 //Set g2
-                String g2String = node.getFirstChild().getNodeValue();
-                g2 = pairing.getG1().newElementFromBytes(Hex.decode(g2String)).getImmutable();
+                g2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_G3)) {
                 //Set g3
-                String g3String = node.getFirstChild().getNodeValue();
-                g3 = pairing.getG1().newElementFromBytes(Hex.decode(g3String)).getImmutable();
+                g3 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_GH)) {
                 //Set gh
-                String ghString = node.getFirstChild().getNodeValue();
-                gh = pairing.getG1().newElementFromBytes(Hex.decode(ghString)).getImmutable();
+                gh = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_U0)) {
                 //Set u0
-                String u0String = node.getFirstChild().getNodeValue();
-                u0 = pairing.getG1().newElementFromBytes(Hex.decode(u0String)).getImmutable();
+                u0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_UV)) {
                 //Set uv
-                String uvString = node.getFirstChild().getNodeValue();
-                uv = pairing.getG1().newElementFromBytes(Hex.decode(uvString)).getImmutable();
+                uv = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_PK_US)) {
                 //Set us
-                NodeList nodeHsList = ((Element) node).getElementsByTagName(TAG_PK_UI);
-                for (int j=0; j<nodeHsList.getLength(); j++) {
-                    Element elementUi = (Element)nodeHsList.item(j);
-                    int index = Integer.valueOf(elementUi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String uiString = elementUi.getFirstChild().getNodeValue();
-                    us[index] = pairing.getG1().newElementFromBytes(Hex.decode(uiString)).getImmutable();
-                }
+                us = SerializationUtils.GetElementArray(pairing, node, TAG_PK_UI, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new RBACLLW15PublicKeyParameters(pairingParameters, g, g1, g2, g3, gh, u0, uv, us);
@@ -295,7 +282,7 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
             //Set g2Alpha
             if (node.getNodeName().equals(TAG_MSK_G2ALPHA)) {
                 String g2AlphaString = node.getFirstChild().getNodeValue();
-                g2Alpha = pairing.getG1().newElementFromBytes(Hex.decode(g2AlphaString)).getImmutable();
+                g2Alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new RBACLLW15MasterSecretKeyParameters(pairingParameters, g2Alpha);
@@ -313,37 +300,27 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
         it.unisa.dia.gas.jpbc.Element a1 = null;
         it.unisa.dia.gas.jpbc.Element a2 = null;
         it.unisa.dia.gas.jpbc.Element bv = null;
-        it.unisa.dia.gas.jpbc.Element[] bs = new it.unisa.dia.gas.jpbc.Element[maxRoleNumber];
+        it.unisa.dia.gas.jpbc.Element[] bs = null;
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_ACM_A0)) {
                 //Set a0
-                String a0String = node.getFirstChild().getNodeValue();
-                a0 = pairing.getG1().newElementFromBytes(Hex.decode(a0String)).getImmutable();
+                a0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACM_A1)) {
                 //Set a1
-                String a1String = node.getFirstChild().getNodeValue();
-                a1 = pairing.getG1().newElementFromBytes(Hex.decode(a1String)).getImmutable();
+                a1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACM_A2)) {
                 //Set a2
-                String a2String = node.getFirstChild().getNodeValue();
-                a2 = pairing.getG1().newElementFromBytes(Hex.decode(a2String)).getImmutable();
+                a2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACM_BV)) {
                 //Set bv
-                String bvString = node.getFirstChild().getNodeValue();
-                bv = pairing.getG1().newElementFromBytes(Hex.decode(bvString)).getImmutable();
+                bv = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACM_TIME)) {
                 //Set time
                 time = node.getFirstChild().getNodeValue();
             } else if (node.getNodeName().equals(TAG_ACM_BS)) {
                 //Set bs
-                NodeList nodeBsList = ((Element) node).getElementsByTagName(TAG_ACM_BI);
-                for (int j=0; j<nodeBsList.getLength(); j++) {
-                    Element elementBi = (Element) nodeBsList.item(j);
-                    int index = Integer.valueOf(elementBi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String biString = elementBi.getFirstChild().getNodeValue();
-                    bs[index] = pairing.getG1().newElementFromBytes(Hex.decode(biString)).getImmutable();
-                }
+                bs = SerializationUtils.GetElementArray(pairing, node, TAG_ACM_BI, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACM_ROLES)) {
                 //Set roles
                 roles = SerializationUtils.GetStringArray(node, TAG_ACM_ROLEI);
@@ -365,37 +342,27 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
         it.unisa.dia.gas.jpbc.Element a1 = null;
         it.unisa.dia.gas.jpbc.Element b0 = null;
         it.unisa.dia.gas.jpbc.Element bv = null;
-        it.unisa.dia.gas.jpbc.Element[] bs = new it.unisa.dia.gas.jpbc.Element[maxRoleNumber];
+        it.unisa.dia.gas.jpbc.Element[] bs = null;
         for (int i=0; i<nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_ACP_A0)) {
                 //Set a0
-                String a0String = node.getFirstChild().getNodeValue();
-                a0 = pairing.getG1().newElementFromBytes(Hex.decode(a0String)).getImmutable();
+                a0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACP_A1)) {
                 //Set a1
-                String a1String = node.getFirstChild().getNodeValue();
-                a1 = pairing.getG1().newElementFromBytes(Hex.decode(a1String)).getImmutable();
+                a1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACP_B0)) {
                 //Set b0
-                String b0String = node.getFirstChild().getNodeValue();
-                b0 = pairing.getG1().newElementFromBytes(Hex.decode(b0String)).getImmutable();
+                b0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACP_BV)) {
                 //Set bv
-                String bvString = node.getFirstChild().getNodeValue();
-                bv = pairing.getG1().newElementFromBytes(Hex.decode(bvString)).getImmutable();
+                bv = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ACP_ID)) {
                 //Set identity
                 identity = node.getFirstChild().getNodeValue();
             } else if (node.getNodeName().equals(TAG_ACM_BS)) {
                 //Set bs
-                NodeList nodeBsList = ((Element) node).getElementsByTagName(TAG_ACM_BI);
-                for (int j=0; j<nodeBsList.getLength(); j++) {
-                    Element elementBi = (Element) nodeBsList.item(j);
-                    int index = Integer.valueOf(elementBi.getAttribute(PairingParameterXMLSerializer.ATTRI_INDEX));
-                    String biString = elementBi.getFirstChild().getNodeValue();
-                    bs[index] = pairing.getG1().newElementFromBytes(Hex.decode(biString)).getImmutable();
-                }
+                bs = SerializationUtils.GetElementArray(pairing, node, TAG_ACM_BI, SerializationUtils.PairingGroupType.G1);
             }
         }
         elementId = PairingUtils.MapToZr(pairing, identity);
@@ -412,12 +379,10 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             if (node.getNodeName().equals(TAG_ENC_C0)) {
                 //Set C0
-                String c0String = node.getFirstChild().getNodeValue();
-                C0 = pairing.getG1().newElementFromBytes(Hex.decode(c0String)).getImmutable();
+                C0 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             } else if (node.getNodeName().equals(TAG_ENC_C1)) {
                 //Set C1
-                String c1String = node.getFirstChild().getNodeValue();
-                C1 = pairing.getG1().newElementFromBytes(Hex.decode(c1String)).getImmutable();
+                C1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
         return new RBACLLW15EncapsulationParameters(pairingParameters, C0, C1);
