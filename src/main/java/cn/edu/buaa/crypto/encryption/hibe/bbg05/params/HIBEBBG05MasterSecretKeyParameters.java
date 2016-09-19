@@ -7,6 +7,8 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Master Secret Key Paramaters for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05MasterSecretKeyParameters extends PairingKeyParameters {
     private Element g2Alpha;

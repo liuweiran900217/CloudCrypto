@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Public Key parameters for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05PublicKeyParameters extends PairingKeyParameters {
     private final int maxLength;

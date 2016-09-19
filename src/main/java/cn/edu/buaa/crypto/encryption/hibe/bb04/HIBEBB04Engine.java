@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Weiran Liu on 15-10-1.
  *
- * Engine for Boneh-Boyen HIBE schene.
+ * Engine for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04Engine implements HIBEEngine {
     //Scheme name, used for exceptions
