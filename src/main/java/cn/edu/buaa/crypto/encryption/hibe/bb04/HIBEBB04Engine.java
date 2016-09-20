@@ -23,7 +23,16 @@ public class HIBEBB04Engine implements HIBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "BB04HIBE";
 
-    public HIBEBB04Engine() {
+    private static HIBEBB04Engine engine;
+
+    public static HIBEBB04Engine getInstance() {
+        if (engine == null) {
+            engine = new HIBEBB04Engine();
+        }
+        return engine;
+    }
+
+    private HIBEBB04Engine() {
 
     }
 

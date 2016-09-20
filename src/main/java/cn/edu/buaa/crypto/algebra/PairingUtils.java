@@ -19,6 +19,9 @@ import java.security.NoSuchAlgorithmException;
  * Utilities for pairing-based cryptography.
  */
 public class PairingUtils {
+    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
+    public static final int STENGTH = 12;
+
     /**
      * Generate type A parameter for further used in paiaring-based cryptography.
      * @param rBitLength Bit length for the group Z_r

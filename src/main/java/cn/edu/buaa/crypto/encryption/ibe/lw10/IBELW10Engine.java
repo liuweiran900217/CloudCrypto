@@ -13,13 +13,23 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 16/5/6.
- * Modified by Weiran Liu on 16/5/16.
+ *
+ * Lewko-Waters IBE engine.
  */
 public class IBELW10Engine implements IBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "LW10IBE";
 
-    public IBELW10Engine() {
+    private static IBELW10Engine engine;
+
+    public static IBELW10Engine getInstance() {
+        if (engine == null) {
+            engine = new IBELW10Engine();
+        }
+        return engine;
+    }
+
+    private IBELW10Engine() {
 
     }
 

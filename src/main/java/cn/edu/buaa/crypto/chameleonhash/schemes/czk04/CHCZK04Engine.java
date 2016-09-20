@@ -29,6 +29,19 @@ public class CHCZK04Engine implements CHEngine {
         return SCHEME_NAME;
     }
 
+    private static CHCZK04Engine engine;
+
+    public static CHCZK04Engine getInstance() {
+        if (engine == null) {
+            engine = new CHCZK04Engine();
+        }
+        return engine;
+    }
+
+    private CHCZK04Engine() {
+
+    }
+
     public ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength) {
         CHCZK04KeyPairGenerator keyPairGenerator = new CHCZK04KeyPairGenerator();
         keyPairGenerator.init(new CHCZK04KeyGenerationParameters(PairingUtils.GenerateTypeAParameters(rBitLength, qBitLength)));

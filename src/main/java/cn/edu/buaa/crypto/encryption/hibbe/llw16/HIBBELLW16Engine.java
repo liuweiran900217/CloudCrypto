@@ -13,12 +13,23 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 16/5/17.
+ *
+ * Liu-Liu-Wu HIBBE engine published in 2016.
  */
 public class HIBBELLW16Engine implements HIBBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "LLW16HIBBE";
 
-    public HIBBELLW16Engine() {
+    private static HIBBELLW16Engine engine;
+
+    public static HIBBELLW16Engine getInstance() {
+        if (engine == null) {
+            engine = new HIBBELLW16Engine();
+        }
+        return engine;
+    }
+
+    private HIBBELLW16Engine() {
 
     }
 

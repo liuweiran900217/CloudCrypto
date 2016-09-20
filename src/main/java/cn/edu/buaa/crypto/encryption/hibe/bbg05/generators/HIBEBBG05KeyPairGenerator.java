@@ -13,6 +13,8 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Public Key / Master Secret Key pair generator for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05KeyPairGenerator {
     private HIBEBBG05KeyPairGenerationParameters parameters;

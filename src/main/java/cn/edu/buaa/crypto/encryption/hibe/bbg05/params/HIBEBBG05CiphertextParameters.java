@@ -7,6 +7,8 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Ciphertext parameters for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05CiphertextParameters extends PairingCiphertextParameters {
     private final int length;

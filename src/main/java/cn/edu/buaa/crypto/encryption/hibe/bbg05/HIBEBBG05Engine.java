@@ -13,12 +13,23 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Boneh-Boyen-Goh HIBE engine.
  */
 public class HIBEBBG05Engine implements HIBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "BBG05HIBE";
 
-    public HIBEBBG05Engine() {
+    private static HIBEBBG05Engine engine;
+
+    public static HIBEBBG05Engine getInstance() {
+        if (engine == null) {
+            engine = new HIBEBBG05Engine();
+        }
+        return engine;
+    }
+
+    private HIBEBBG05Engine() {
 
     }
 

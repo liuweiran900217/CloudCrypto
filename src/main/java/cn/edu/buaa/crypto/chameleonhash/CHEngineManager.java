@@ -16,9 +16,9 @@ import java.security.InvalidParameterException;
 public class CHEngineManager {
     public static CHEngine GetChameleonHashEngine(String name) {
         if (name.equals(CHKR00Engine.SCHEME_NAME)) {
-            return new CHKR00Engine();
+            return CHKR00Engine.getInstance();
         } else if (name.equals(CHCZK04Engine.SCHEME_NAME)) {
-            return new CHCZK04Engine();
+            return CHCZK04Engine.getInstance();
         } else {
             throw new InvalidParameterException("Cannot find Chameleon hash engine: " + name);
         }

@@ -20,7 +20,16 @@ public class IBBEDel07Engine implements IBBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Del07-IBBE";
 
-    public IBBEDel07Engine() {
+    private static IBBEDel07Engine engine;
+
+    public static IBBEDel07Engine getInstance() {
+        if (engine == null) {
+            engine = new IBBEDel07Engine();
+        }
+        return engine;
+    }
+
+    private IBBEDel07Engine() {
 
     }
 

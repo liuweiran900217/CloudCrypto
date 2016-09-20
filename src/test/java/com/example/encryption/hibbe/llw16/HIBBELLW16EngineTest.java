@@ -8,10 +8,12 @@ import com.example.encryption.hibbe.HIBBEEngineTest;
 
 /**
  * Created by Weiran Liu on 2016/5/17.
+ *
+ * Liu-Liu-Wu 2016 HIBBE engine.
  */
 public class HIBBELLW16EngineTest {
     public static void main(String[] args) {
-        HIBBEEngine engine = new HIBBELLW16Engine();
+        HIBBEEngine engine = HIBBELLW16Engine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = HIBBELLW16XMLSerializer.getInstance();
 
         HIBBEEngineTest engineTest = new HIBBEEngineTest(engine, schemeXMLSerializer);

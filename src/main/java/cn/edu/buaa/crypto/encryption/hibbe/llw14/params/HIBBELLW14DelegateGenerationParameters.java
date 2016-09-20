@@ -1,11 +1,14 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * Secret Key Delegation parameters for Liu-Liu-Wu HIBBE published in 2016.
  */
 public class HIBBELLW14DelegateGenerationParameters extends KeyGenerationParameters {
     private HIBBELLW14PublicKeyParameters publicKeyParameters;
@@ -17,7 +20,7 @@ public class HIBBELLW14DelegateGenerationParameters extends KeyGenerationParamet
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             int index, String id) {
-        super(null, HIBBEEngine.STENGTH);
+        super(null, PairingUtils.STENGTH);
         this.publicKeyParameters = (HIBBELLW14PublicKeyParameters)publicKeyParameters;
         this.secretKeyParameters = (HIBBELLW14SecretKeyParameters)secretKeyParameters;
         assert(this.secretKeyParameters.getIdAt(index) == null);

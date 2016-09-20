@@ -7,10 +7,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * Generic HIBE Engine.
  */
 public interface HIBBEEngine {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    public static final int STENGTH = 12;
 
     /**
      * Setup Algorithm for HIBBE

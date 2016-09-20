@@ -17,8 +17,7 @@ import com.example.encryption.re.OOREEngineTest;
  */
 public class OORELSW10aEngineTest {
     public static void main(String[] args) {
-        CHEngine chEngine = new CHKR00Engine();
-        OOREEngine engine = new OORELSW10aEngine(chEngine);
+        OOREEngine engine = OORELSW10aEngine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = OORELSW10aXMLSerializer.getInstance();
 
         OOREEngineTest engineTest = new OOREEngineTest(engine, schemeXMLSerializer);

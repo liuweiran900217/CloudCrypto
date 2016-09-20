@@ -13,7 +13,7 @@ import com.example.encryption.re.REEngineTest;
  */
 public class RELSW10aEngineTest {
     public static void main(String[] args) {
-        REEngine engine = new RELSW10aEngine();
+        REEngine engine = RELSW10aEngine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = RELSW10aXMLSerializer.getInstance();
 
         REEngineTest engineTest = new REEngineTest(engine, schemeXMLSerializer);

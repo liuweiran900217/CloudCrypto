@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a;
 
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
+import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.CHKR00Engine;
 import cn.edu.buaa.crypto.encryption.re.OOREEngine;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.generators.*;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.*;
@@ -12,19 +13,35 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 2016/4/10.
+ *
+ * Lewko-Sahai-Waters Online/Offline Revocation Encryption engine.
  */
 public class OORELSW10aEngine implements OOREEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "OOLSW10aRE";
-    private CHEngine chEngine;
 
-    public OORELSW10aEngine(CHEngine chEngine) {
-        this.chEngine = chEngine;
+    private static final CHEngine default_ch_engine = CHKR00Engine.getInstance();
+    private static OORELSW10aEngine engine;
+    private CHEngine chEngineInstance = default_ch_engine;
+
+    public static OORELSW10aEngine getInstance() {
+        if (engine == null) {
+            engine = new OORELSW10aEngine();
+        }
+        return engine;
+    }
+
+    private OORELSW10aEngine() {
+
+    }
+
+    public void setCHEngine(CHEngine chEngine) {
+        this.chEngineInstance = chEngine;
     }
 
     public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength) {
         OORELSW10aKeyPairGenerator keyPairGenerator = new OORELSW10aKeyPairGenerator();
-        keyPairGenerator.init(new OORELSW10aKeyPairGenerationParameters(rBitLength, qBitLength, chEngine));
+        keyPairGenerator.init(new OORELSW10aKeyPairGenerationParameters(rBitLength, qBitLength, chEngineInstance));
 
         return keyPairGenerator.generateKeyPair();
     }

@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Ciphertext Encapsulation generator for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05KeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
     private HIBEBBG05CiphertextGenerationParameters params;

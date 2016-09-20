@@ -9,11 +9,11 @@ import com.example.encryption.ibbe.IBBEEngineTest;
 /**
  * Created by Weiran Liu on 2016/8/24.
  *
- * 2007 Delerablée IBBE engine test procedures
+ * Delerablée IBBE engine test.
  */
 public class IBBEDel07EngineTest {
     public static void main(String[] args) {
-        IBBEEngine engine = new IBBEDel07Engine();
+        IBBEEngine engine = IBBEDel07Engine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = IBBEDel07XMLSerializer.getInstance();
 
         IBBEEngineTest engineTest = new IBBEEngineTest(engine, schemeXMLSerializer);

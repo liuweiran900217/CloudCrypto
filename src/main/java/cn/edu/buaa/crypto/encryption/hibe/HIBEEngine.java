@@ -12,9 +12,6 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * All instances should implement this Interface.
  */
 public interface HIBEEngine {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    int STENGTH = 12;
-
     /**
      * Setup Algorithm for HIBE
      * @param rBitLength Zr Bit Length, ignore if the scheme is based on composite-order bilinear groups

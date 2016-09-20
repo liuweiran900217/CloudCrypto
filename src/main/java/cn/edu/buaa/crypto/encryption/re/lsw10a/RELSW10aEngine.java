@@ -13,12 +13,23 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Sahai-Waters Revocation Encryption engine.
  */
 public class RELSW10aEngine implements REEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "LSW10aRE";
 
-    public RELSW10aEngine() {
+    private static RELSW10aEngine engine;
+
+    public static RELSW10aEngine getInstance() {
+        if (engine == null) {
+            engine = new RELSW10aEngine();
+        }
+        return engine;
+    }
+
+    private RELSW10aEngine() {
 
     }
 

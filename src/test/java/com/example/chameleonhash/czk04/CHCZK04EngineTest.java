@@ -8,10 +8,12 @@ import com.example.chameleonhash.CHEngineTest;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Chen-Zhang-Kim Chameleon hash engine test.
  */
 public class CHCZK04EngineTest {
     public static void main(String[] args) {
-        CHEngine engine = new CHCZK04Engine();
+        CHEngine engine = CHCZK04Engine.getInstance();
         ChameleonHashXMLSerializer chameleonHashXMLSerializer = CHCZK04XMLSerializer.getInstance();
 
         CHEngineTest engineTest = new CHEngineTest(engine, chameleonHashXMLSerializer);

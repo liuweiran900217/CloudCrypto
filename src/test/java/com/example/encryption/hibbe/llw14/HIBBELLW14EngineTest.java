@@ -9,11 +9,11 @@ import com.example.encryption.hibbe.HIBBEEngineTest;
 /**
  * Created by Weiran Liu on 2016/5/16.
  *
- * 2014 Liu-Liu-Wu HIBBE engine test procedures
+ * 2014 Liu-Liu-Wu HIBBE engine test.
  */
 public class HIBBELLW14EngineTest {
     public static void main(String[] args) {
-        HIBBEEngine engine = new HIBBELLW14Engine();
+        HIBBEEngine engine = HIBBELLW14Engine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = HIBBELLW14XMLSerializer.getInstance();
 
         HIBBEEngineTest engineTest = new HIBBEEngineTest(engine, schemeXMLSerializer);

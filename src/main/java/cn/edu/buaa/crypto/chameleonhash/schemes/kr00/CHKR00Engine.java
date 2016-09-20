@@ -18,6 +18,8 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 /**
  * Created by Weiran Liu on 2016/4/5.
+ *
+ * Katz-Rabin Chameleon hash engine.
  */
 public class CHKR00Engine implements CHEngine {
     //Scheme name, used for exceptions
@@ -25,6 +27,19 @@ public class CHKR00Engine implements CHEngine {
 
     public String getName() {
         return SCHEME_NAME;
+    }
+
+    private static CHKR00Engine engine;
+
+    public static CHKR00Engine getInstance() {
+        if (engine == null) {
+            engine = new CHKR00Engine();
+        }
+        return engine;
+    }
+
+    private CHKR00Engine() {
+
     }
 
     public ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength) {

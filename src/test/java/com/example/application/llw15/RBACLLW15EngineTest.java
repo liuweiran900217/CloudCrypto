@@ -20,6 +20,8 @@ import static org.junit.Assert.assertFalse;
 
 /**
  * Created by Weiran Liu on 16/6/19.
+ *
+ * Liu-Liu-Wu EHR role-based access control engine test.
  */
 public class RBACLLW15EngineTest {
     private RBACLLW15Engine engine;
@@ -327,7 +329,7 @@ public class RBACLLW15EngineTest {
     }
 
     public static void main(String[] args) {
-        RBACLLW15Engine engine = new RBACLLW15Engine();
+        RBACLLW15Engine engine = RBACLLW15Engine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = RBACLLW15XMLSerializer.getInstance();
 
         RBACLLW15EngineTest engineTest = new RBACLLW15EngineTest(engine, schemeXMLSerializer);

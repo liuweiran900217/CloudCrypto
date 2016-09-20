@@ -1,7 +1,9 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe;
 
+import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
+import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
@@ -14,8 +16,12 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * All CP-ABE scheme should implement this engine.
  */
 public abstract class CPABEEngine {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    private static final int STENGTH = 12;
+    private static final AccessControlEngine default_access_control_engine = AccessTreeEngine.getInstance();
+    protected AccessControlEngine accessControlEngineInstance = default_access_control_engine;
+
+    public void setAccessControlEngine(AccessControlEngine accessControlEngine) {
+        this.accessControlEngineInstance = accessControlEngine;
+    }
 
     /**
      * Setup Algorithm for CP-ABE

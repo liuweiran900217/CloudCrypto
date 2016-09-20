@@ -7,6 +7,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 2016/4/5.
+ *
+ * Generic Online/Offline Revocation Encryption engine.
  */
 public interface OOREEngine extends REEngine {
     /**

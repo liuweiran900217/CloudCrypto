@@ -8,10 +8,12 @@ import com.example.encryption.hibe.HIBEEngineTest;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Boneh-Boyen-Goh HIBE engine.
  */
 public class HIBEBBG05EngineTest {
     public static void main(String[] args) {
-        HIBEEngine engine = new HIBEBBG05Engine();
+        HIBEEngine engine = HIBEBBG05Engine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = HIBEBBG05XMLSerializer.getInstance();
 
         HIBEEngineTest engineTest = new HIBEEngineTest(engine, schemeXMLSerializer);

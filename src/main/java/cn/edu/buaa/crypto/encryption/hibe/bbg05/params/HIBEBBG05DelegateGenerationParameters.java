@@ -1,12 +1,13 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Secret Key Delegation generation parameters for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05DelegateGenerationParameters extends KeyGenerationParameters {
     private HIBEBBG05PublicKeyParameters publicKeyParameters;
@@ -17,7 +18,7 @@ public class HIBEBBG05DelegateGenerationParameters extends KeyGenerationParamete
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String id) {
-        super(null, HIBEEngine.STENGTH);
+        super(null, PairingUtils.STENGTH);
         this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
         this.secretKeyParameters = (HIBEBBG05SecretKeyParameters)secretKeyParameters;
         this.delegateId = id;

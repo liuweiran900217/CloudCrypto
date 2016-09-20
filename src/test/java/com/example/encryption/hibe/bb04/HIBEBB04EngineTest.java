@@ -9,11 +9,11 @@ import com.example.encryption.hibe.HIBEEngineTest;
 /**
  * Created by Weiran Liu on 2015/11/3.
  *
- * 2004 Boneh-Boyen HIBBE engine test procedures
+ * Boneh-Boyen HIBBE engine test.
  */
 public class HIBEBB04EngineTest {
     public static void main(String[] args) {
-        HIBEEngine engine = new HIBEBB04Engine();
+        HIBEEngine engine = HIBEBB04Engine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = HIBEBB04XMLSerializer.getInstance();
 
         HIBEEngineTest engineTest = new HIBEEngineTest(engine, schemeXMLSerializer);

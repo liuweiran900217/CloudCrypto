@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Key Decapsulation parameters for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05DecapsulationParameters implements CipherParameters {
     private HIBEBBG05PublicKeyParameters publicKeyParameters;

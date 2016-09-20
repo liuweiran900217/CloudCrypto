@@ -1,7 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -9,6 +8,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
+ *
+ * Secret Key Generation parameters for Boneh-Boyen-Goh HIBBE.
  */
 public class HIBEBBG05SecretKeyGenerationParameters extends KeyGenerationParameters {
     private HIBEBBG05MasterSecretKeyParameters masterSecretKeyParameters;
@@ -19,7 +20,7 @@ public class HIBEBBG05SecretKeyGenerationParameters extends KeyGenerationParamet
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
-        super(null, HIBEEngine.STENGTH);
+        super(null, PairingUtils.STENGTH);
         this.masterSecretKeyParameters = (HIBEBBG05MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
         this.ids = Arrays.copyOf(ids, ids.length);

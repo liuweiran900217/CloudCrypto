@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
+import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04KeyPairGenerator;
@@ -16,7 +17,7 @@ public class HIBEBB04KeyPairGenerationParameters extends KeyGenerationParameters
     private int qBitLength;
 
     public HIBEBB04KeyPairGenerationParameters(int rBitLength, int qBitLength, int maxDepth) {
-        super(null, HIBEEngine.STENGTH);
+        super(null, PairingUtils.STENGTH);
 
         this.maxDepth = maxDepth;
         this.rBitLength = rBitLength;

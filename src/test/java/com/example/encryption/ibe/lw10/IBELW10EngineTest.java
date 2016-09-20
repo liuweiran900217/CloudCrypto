@@ -8,11 +8,12 @@ import com.example.encryption.ibe.IBEEngineTest;
 
 /**
  * Created by Weiran Liu on 16/5/7.
- * Modified by Weiran Liu on 16/5/16.
+ *
+ * Lewko-Sahai-Waters Online/Offline Revocation Encryption engine test.
  */
 public class IBELW10EngineTest {
     public static void main(String[] args) {
-        IBEEngine engine = new IBELW10Engine();
+        IBEEngine engine = IBELW10Engine.getInstance();
         PairingParameterXMLSerializer schemeXMLSerializer = IBELW10XMLSerializer.getInstance();
 
         IBEEngineTest engineTest = new IBEEngineTest(engine, schemeXMLSerializer);

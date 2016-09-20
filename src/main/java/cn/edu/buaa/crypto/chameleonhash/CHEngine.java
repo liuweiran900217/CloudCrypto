@@ -9,20 +9,19 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Generic Chameleon Hash Engine.
  */
 public interface CHEngine {
-    //Default strengh, useless in pairing-based cryptography
-    int STRENGTH = 12;
+    String getName();
 
-    public String getName();
+    ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength);
 
-    public ChameleonHashAsymmetricCipherKeyPair keyGen(int rBitLength, int qBitLength);
+    ChameleonHashAsymmetricCipherKeyPair keyGen(PairingParameters pairingParameters);
 
-    public ChameleonHashAsymmetricCipherKeyPair keyGen(PairingParameters pairingParameters);
+    ChameleonHashResultParameters chameleonHash(ChameleonHashPublicKeyParameters publicKeyParameter, byte[] message);
 
-    public ChameleonHashResultParameters chameleonHash(ChameleonHashPublicKeyParameters publicKeyParameter, byte[] message);
+    ChameleonHashResultParameters chameleonHash(ChameleonHashPublicKeyParameters publicKeyParameter, byte[] message, Element... r);
 
-    public ChameleonHashResultParameters chameleonHash(ChameleonHashPublicKeyParameters publicKeyParameter, byte[] message, Element... r);
-
-    public ChameleonHashResultParameters collision(ChameleonHashSecretKeyParameters secretKeyParameters, ChameleonHashResultParameters hashParameters, byte[] anMessage);
+    ChameleonHashResultParameters collision(ChameleonHashSecretKeyParameters secretKeyParameters, ChameleonHashResultParameters hashParameters, byte[] anMessage);
 }

@@ -9,14 +9,23 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
  * Created by Weiran Liu on 16/5/17.
+ *
+ * Liu-Liu-Wu EHR role-based access control engine.
  */
 public class RBACLLW15Engine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "LLW15-RBAC";
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    public static final int STENGTH = 12;
 
-    public RBACLLW15Engine() {
+    private static RBACLLW15Engine engine;
+
+    public static RBACLLW15Engine getInstance() {
+        if (engine == null) {
+            engine = new RBACLLW15Engine();
+        }
+        return engine;
+    }
+
+    private RBACLLW15Engine() {
 
     }
 
