@@ -1,5 +1,9 @@
 package com.example;
 
+import edu.princeton.cs.algs4.Out;
+import it.unisa.dia.gas.jpbc.Pairing;
+import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -16,6 +20,8 @@ import java.io.IOException;
 
 /**
  * Created by Weiran Liu on 2015/10/5.
+ *
+ * Utilities used in Unit Test
  */
 public class TestUtils {
     public static void OutputXMLDocument(String name, Document document) {
@@ -45,5 +51,15 @@ public class TestUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void OutputPairingParameters(PairingParameters pairingParameters, String path) {
+        Out out = new Out(path);
+        out.println(pairingParameters);
+    }
+
+    public static Pairing InputPairingParameters(String path) {
+        Pairing pairing = PairingFactory.getPairing(path);
+        return pairing;
     }
 }
