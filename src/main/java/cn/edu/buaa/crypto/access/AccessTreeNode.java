@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.access;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,11 +9,11 @@ import java.util.Map;
  */
 public class AccessTreeNode {
     private static int numberOfLeafNodes = 0;
-    public static AccessTreeNode GenerateAccessTree(final int[][] accessPolicy, final String[] rhos) throws UnsatisfiedAccessControlException {
+    public static AccessTreeNode GenerateAccessTree(final int[][] accessPolicy, final String[] rhos) {
         Map<String, String> collisionMap = new HashMap<String, String>();
         for (int i = 0; i < rhos.length; i++) {
             if (collisionMap.containsKey(rhos[i])) {
-                throw new UnsatisfiedAccessControlException("Invalid access policy, rhos containing identical string: " + rhos[i]);
+                throw new InvalidParameterException("Invalid access policy, rhos containing identical string: " + rhos[i]);
             } else {
                 collisionMap.put(rhos[i], rhos[i]);
             }
@@ -20,7 +21,7 @@ public class AccessTreeNode {
         numberOfLeafNodes = 0;
         AccessTreeNode rootAccessTreeNode = new AccessTreeNode(accessPolicy, 0, rhos);
         if (numberOfLeafNodes != rhos.length) {
-            throw new UnsatisfiedAccessControlException("Invalid access policy, number of leaf nodes " + numberOfLeafNodes
+            throw new InvalidParameterException("Invalid access policy, number of leaf nodes " + numberOfLeafNodes
                     + " does not match number of rhos " + rhos.length);
         }
         return rootAccessTreeNode;
@@ -40,10 +41,10 @@ public class AccessTreeNode {
         this.attribute = rho;
     }
 
-    private AccessTreeNode(final int[][] accessPolicy, final int i, final String[] rhos) throws UnsatisfiedAccessControlException {
+    private AccessTreeNode(final int[][] accessPolicy, final int i, final String[] rhos) {
         int[] accessPolicyNode = accessPolicy[i];
         if (accessPolicyNode[0] < accessPolicyNode[1]) {
-            throw new UnsatisfiedAccessControlException("Invalid access policy, n < t in the threahold gate " + i);
+            throw new InvalidParameterException("Invalid access policy, n < t in the threahold gate " + i);
         }
         this.childNodes = new AccessTreeNode[accessPolicyNode[0]];
         this.t = accessPolicyNode[1];
@@ -58,7 +59,7 @@ public class AccessTreeNode {
                 numberOfLeafNodes++;
                 this.childNodes[k] = new AccessTreeNode(accessPolicyNode[j], rhos[-accessPolicyNode[j] - 1]);
             } else {
-                throw new UnsatisfiedAccessControlException("Invalid access policy, containing access node with index 0");
+                throw new InvalidParameterException("Invalid access policy, containing access node with index 0");
             }
             k++;
         }

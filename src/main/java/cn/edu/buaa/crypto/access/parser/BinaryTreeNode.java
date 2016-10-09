@@ -97,7 +97,7 @@ public class BinaryTreeNode {
         }
     }
 
-    public static BinaryTreeNode ReconstructBinaryTreeNode(int[][] accessPolicy, String[] rhos) throws UnsatisfiedAccessControlException {
+    public static BinaryTreeNode ReconstructBinaryTreeNode(int[][] accessPolicy, String[] rhos) {
         BinaryTreeNode[] binaryNonleafTreeNodes = new BinaryTreeNode[accessPolicy.length];
         for (int i = 0; i < accessPolicy.length; i++) {
             binaryNonleafTreeNodes[i] = new BinaryTreeNode();

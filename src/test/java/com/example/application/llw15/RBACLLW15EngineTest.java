@@ -1,6 +1,7 @@
 package com.example.application.llw15;
 
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
+import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15IntermediateParameters;
 import cn.edu.buaa.crypto.application.llw15.serialization.RBACLLW15XMLSerializer;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
@@ -262,6 +263,130 @@ public class RBACLLW15EngineTest {
         System.out.println("======================================");
         System.out.println("HIBBE Engine tests passed.");
 
+        //ACGenM using intermediate parameters
+        CipherParameters acMT4IntermediateParameters = engine.IntermediateGen(publicKey);
+        acMT4 = engine.ACGenM(publicKey, masterKey, acMT4IntermediateParameters, role4, timeT);
+        CipherParameters acMT46IntermediateParameters = engine.IntermediateGen(publicKey);
+        acMT46 = engine.ACGenM(publicKey, masterKey, acMT46IntermediateParameters, role46, timeT);
+        CipherParameters acMT467IntermediateParameters = engine.IntermediateGen(publicKey);
+        acMT467 = engine.ACGenM(publicKey, masterKey, acMT467IntermediateParameters, role467, timeT);
+
+        // ACGenP for Patients with intermediate parameters
+        CipherParameters acPTIntermediateParameters = engine.IntermediateGen(publicKey);
+        acPT = engine.ACGenP(publicKey, masterKey, acPTIntermediateParameters, idT);
+
+        // Encryption with intermediate parameters
+        CipherParameters encapsulationPair3467IntermediateParameters = engine.IntermediateGen(publicKey);
+        encapsulationPair13467 = engine.EHREnc(publicKey, encapsulationPair3467IntermediateParameters, idT, roles13467, timeT);
+        encapsulation13467 = encapsulationPair13467.getCiphertext();
+        sessionKey13467 = encapsulationPair13467.getSessionKey();
+        stringSessionKey13467 = new String(Hex.encode(sessionKey13467));
+
+        // Correct Decapsulation with intermediate parameters
+        System.out.println("========================================");
+        System.out.println("Test decapsulation with correct access credential, time, and identity, " +
+                "parameters are generated using intermediate parameters");
+        try {
+            //Decapsulate using medical staff access credential 4 with true time
+            System.out.println("Test decapsulating using medical staff access credential 4 with true time, " +
+                    "parameters are generated using intermediate parameters");
+            String sessionKey =  new String(Hex.encode(engine.EHRDecMWithAudit(publicKey, idT, roles13467, timeT, encapsulation13467, acMT4)));
+            assertEquals(stringSessionKey13467, sessionKey);
+            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
+        } catch (InvalidCipherTextException e) {
+            //Bugs if getting there
+            e.printStackTrace();
+            System.exit(1);
+        }
+        try {
+            //Decapsulate using medical staff access credential 46 with true time
+            System.out.println("Test decapsulating using medical staff access credential 46 with true time, " +
+                    "parameters are generated using intermediate parameters");
+            String sessionKey =  new String(Hex.encode(engine.EHRDecMWithAudit(publicKey, idT, roles13467, timeT, encapsulation13467, acMT46)));
+            assertEquals(stringSessionKey13467, sessionKey);
+            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
+        } catch (InvalidCipherTextException e) {
+            //Bugs if getting there
+            e.printStackTrace();
+            System.exit(1);
+        }
+        try {
+            //Decapsulate using medical staff access credential 467 with true time
+            System.out.println("Test decapsulating using medical staff access credential 467 with true time, " +
+                    "parameters are generated using intermediate parameters");
+            String sessionKey =  new String(Hex.encode(engine.EHRDecMWithAudit(publicKey, idT, roles13467, timeT, encapsulation13467, acMT467)));
+            assertEquals(stringSessionKey13467, sessionKey);
+            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
+        } catch (InvalidCipherTextException e) {
+            //Bugs if getting there
+            e.printStackTrace();
+            System.exit(1);
+        }
+        try {
+            //Decapsulate using correct patient access credential
+            System.out.println("Test decapsulating using correct patient access credential, " +
+                    "parameters are generated using intermediate parameters");
+            String sessionKey =  new String(Hex.encode(engine.EHRDecPWithAudit(publicKey, idT, roles13467, timeT, encapsulation13467, acPT)));
+            assertEquals(stringSessionKey13467, sessionKey);
+            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
+        } catch (InvalidCipherTextException e) {
+            //Bugs if getting there
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        //Delegate & Correct Decapsulate
+        System.out.println("======================================");
+        System.out.println("Test delegating and correct decapsulating, " +
+                "parameters are generated using intermediate parameters");
+        try {
+            //Delegate medical staff access credential 46 using ac4 and decapsulating
+            System.out.println("Test delegating medical staff access credential 46 using ac4 and decapsulating, " +
+                    "parameters are generated using intermediate parameters");
+            CipherParameters acMT45DelegateIntermediateParameters = engine.IntermediateGen(publicKey);
+            String sessionKey = new String(Hex.encode(engine.EHRDecMWithAudit(
+                    publicKey, idT, roles13467, timeT, encapsulation13467, engine.ACDeleM(publicKey, acMT4, acMT45DelegateIntermediateParameters, 5, "Role_6")
+            )));
+            assertEquals(stringSessionKey13467, sessionKey);
+            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
+        } catch (InvalidCipherTextException e) {
+            //Bugs if getting there
+            e.printStackTrace();
+            System.exit(1);
+        }
+        try {
+            //Delegate medical staff access credential 467 using ac46 and decapsulating
+            System.out.println("Test delegating medical staff access credential 467 using ac46 and decapsulating," +
+                    "parameters are generated using intermediate parameters");
+            CipherParameters acMT46DelegateIntermediateParameters = engine.IntermediateGen(publicKey);
+            String sessionKey = new String(Hex.encode(engine.EHRDecMWithAudit(
+                    publicKey, idT, roles13467, timeT, encapsulation13467, engine.ACDeleM(publicKey, acMT4, acMT46DelegateIntermediateParameters, 6, "Role_7")
+            )));
+            assertEquals(stringSessionKey13467, sessionKey);
+            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
+        } catch (InvalidCipherTextException e) {
+            //Bugs if getting there
+            e.printStackTrace();
+            System.exit(1);
+        }
+        try {
+            //Delegate medical staff access credential 467 using ac4 and decapsulating
+            System.out.println("Test delegating medical staff access credential 467 using ac4 and decapsulating, " +
+                    "parameters are generated using intermediate parameters");
+            String sessionKey = new String(Hex.encode(engine.EHRDecMWithAudit(
+                    publicKey, idT, roles13467, timeT, encapsulation13467, engine.ACDeleM(publicKey,
+                            engine.ACDeleM(publicKey, acMT4, 5, "Role_6"), 6, "Role_7")
+            )));
+            assertEquals(stringSessionKey13467, sessionKey);
+            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
+        } catch (InvalidCipherTextException e) {
+            //Bugs if getting there
+            e.printStackTrace();
+            System.exit(1);
+        }
+        System.out.println("======================================");
+        System.out.println("HIBBE Engine tests passed.");
+
         //Test Serialize & deserialize
         if (this.schemeXMLSerializer != null) {
             File file = new File("serializations/application/LLW15");
@@ -322,6 +447,8 @@ public class RBACLLW15EngineTest {
             Document documentEncapsulation13467 = TestUtils.InputXMLDocument("serializations/application/LLW15/RBAC_Encapsulation_13467.xml");
             CipherParameters anEncapsulation13467 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentEncapsulation13467);
             assertEquals(encapsulation13467, anEncapsulation13467);
+
+            //TODO Serialize & deserialize intermediate parameters
 
             System.out.println("======================================");
             System.out.println("Serialize & deserialize tests passed.");

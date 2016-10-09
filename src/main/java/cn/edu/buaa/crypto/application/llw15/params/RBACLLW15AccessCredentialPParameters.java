@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 16/5/18.
+ *
+ * Liu-Liu-Wu role-based access control patient access credential parameters
  */
 public class RBACLLW15AccessCredentialPParameters extends PairingKeyParameters {
     private final String id;

@@ -48,7 +48,7 @@ public class LSSSLW10Engine extends LSSSPolicyEngine {
         return false;
     }
 
-    public AccessControlParameter generateAccessControl(int[][] accessPolicy, String[] rhos) throws UnsatisfiedAccessControlException {
+    public AccessControlParameter generateAccessControl(int[][] accessPolicy, String[] rhos) {
         //init access tree
         AccessTreeNode rootAccessTreeNode = AccessTreeNode.GenerateAccessTree(accessPolicy, rhos);
         //reconstruct binary tree node

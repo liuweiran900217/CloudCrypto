@@ -38,13 +38,13 @@ public class AccessTreeEngine implements AccessControlEngine {
         return true;
     }
 
-    public AccessControlParameter generateAccessControl(int[][] accessPolicy, String[] rhos) throws UnsatisfiedAccessControlException {
+    public AccessControlParameter generateAccessControl(int[][] accessPolicy, String[] rhos) {
         //init access tree
         AccessTreeNode accessTreeNode = AccessTreeNode.GenerateAccessTree(accessPolicy, rhos);
         return new AccessControlParameter(accessTreeNode, accessPolicy, rhos);
     }
 
-    public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
+    public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) {
         Map<String, Element> sharedElementsMap = new HashMap<String, Element>();
         access_tree_node_secret_sharing(pairing, secret, accessControlParameter.getRootAccessTreeNode(), sharedElementsMap);
         return sharedElementsMap;

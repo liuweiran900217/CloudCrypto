@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 16/5/18.
+ *
+ * Liu-Liu-Wu role-based access control medical staff access credential parameters.
  */
 public class RBACLLW15AccessCredentialMParameters extends PairingKeyParameters {
     private final String[] roles;

@@ -23,6 +23,8 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/4/10.
+ *
+ * Lewko-Sahai-Waters Online.Offline revocable encryption key encapsulation pair generator.
  */
 public class OORELSW10aKeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
     private OORELSW10aCiphertextGenerationParameters params;
@@ -92,7 +94,6 @@ public class OORELSW10aKeyEncapsulationPairGenerator implements PairingKeyEncaps
                 byteArrayOutputStream.write(chameleonHashPublicKeyParameters.toBytes());
                 Element Iv = PairingUtils.MapToSecondHalfZr(pairing, byteArrayOutputStream.toByteArray()).getImmutable();
                 byteArrayOutputStream.reset();
-                Element[] rs = chameleonHashResultParameters.getRs();
                 Element C0 = publicKeyParameters.getG().powZn(s).getImmutable();
                 for (int i = 0; i < this.params.getLength(); i++) {
                     C1s[i] = publicKeyParameters.getGb().powZn(ss[i]).getImmutable();

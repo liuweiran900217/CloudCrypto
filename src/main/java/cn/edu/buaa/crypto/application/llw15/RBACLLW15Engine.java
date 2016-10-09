@@ -29,6 +29,14 @@ public class RBACLLW15Engine {
 
     }
 
+
+    /**
+     * Setup algorithm
+     * @param rBitLength Order of Z_r bit length
+     * @param qBitLength Order of G/G_T bit length
+     * @param maxRoleNumber maximal number of atom roles
+     * @return public key / master secret key pairs
+     */
     public AsymmetricCipherKeyPair Setup(int rBitLength, int qBitLength, int maxRoleNumber) {
         RBACLLW15KeyPairGenerator keyPairGenerator = new RBACLLW15KeyPairGenerator();
         keyPairGenerator.init(new RBACLLW15KeyPairGenerationParameters(rBitLength, qBitLength, maxRoleNumber));
@@ -36,7 +44,94 @@ public class RBACLLW15Engine {
         return keyPairGenerator.generateKeyPair();
     }
 
+    /**
+     * Intermediate parameter generation lagorithm
+     * @param publicKey public key
+     * @return intermediate parameters
+     */
+    public CipherParameters IntermediateGen(CipherParameters publicKey) {
+        if (!(publicKey instanceof RBACLLW15PublicKeyParameters)) {
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + RBACLLW15PublicKeyParameters.class.getName());
+        }
+        RBACLLW15IntermediateGenerator intermediateGenerator = new RBACLLW15IntermediateGenerator();
+        intermediateGenerator.init(new RBACLLW15IntermediateGenParameters(publicKey));
+        return intermediateGenerator.generateIntermadiateParameters();
+    }
+
+    /**
+     * Patient access credential generation algorithm
+     * @param publicKey public key
+     * @param masterKey master secret key
+     * @param id patient's id
+     * @return access credential for the patient associated with id
+     */
+    public CipherParameters ACGenP(CipherParameters publicKey, CipherParameters masterKey, String id) {
+        isValidACGenParameters(publicKey, masterKey);
+        RBACLLW15AccessCredentialPGenerator secretKeyGenerator = new RBACLLW15AccessCredentialPGenerator();
+        secretKeyGenerator.init(new RBACLLW15AccessCredentialPGenParameters(
+                publicKey, masterKey, id));
+
+        return secretKeyGenerator.generateKey();
+    }
+
+    /**
+     * Patient access credential generation algorithm using intermediate parameters
+     * @param publicKey public key
+     * @param masterKey master secret key
+     * @param intermediateParameters intermediate parameters
+     * @param id patient's id
+     * @return access credential for the patient associated with id
+     */
+    public CipherParameters ACGenP(CipherParameters publicKey, CipherParameters masterKey,
+                                   CipherParameters intermediateParameters, String id) {
+        isValidACGenParameters(publicKey, masterKey);
+        RBACLLW15AccessCredentialPGenerator secretKeyGenerator = new RBACLLW15AccessCredentialPGenerator();
+        secretKeyGenerator.init(new RBACLLW15AccessCredentialPGenParameters(
+                publicKey, masterKey, intermediateParameters, id));
+
+        return secretKeyGenerator.generateKey();
+    }
+
+    /**
+     * Medical staff access credential generation algorithm
+     * @param publicKey public key
+     * @param masterKey master secret key
+     * @param roles role vectors
+     * @param time valid time
+     * @return access credential for the medical staff associated with roles
+     */
     public CipherParameters ACGenM(CipherParameters publicKey, CipherParameters masterKey, String[] roles, String time) {
+        isValidACGenParameters(publicKey, masterKey);
+        RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
+        secretKeyGenerator.init(new RBACLLW15AccessCredentialMGenParameters(
+                publicKey, masterKey, roles, time));
+
+        return secretKeyGenerator.generateKey();
+    }
+
+    /**
+     * Medical staff access credential generation algorithm using intermediate parameters
+     * @param publicKey public key
+     * @param masterKey master secret key
+     * @param intermediateParameters intermediate parameters
+     * @param roles role vectors
+     * @param time valid time
+     * @return access credential for the medical staff associated with roles
+     */
+    public CipherParameters ACGenM(CipherParameters publicKey, CipherParameters masterKey,
+                                   CipherParameters intermediateParameters, String[] roles, String time) {
+        isValidACGenParameters(publicKey, masterKey);
+        RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
+        secretKeyGenerator.init(new RBACLLW15AccessCredentialMGenParameters(
+                publicKey, masterKey, intermediateParameters, roles, time));
+
+        return secretKeyGenerator.generateKey();
+    }
+
+    private void isValidACGenParameters(CipherParameters publicKey, CipherParameters masterKey) {
         if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -49,14 +144,45 @@ public class RBACLLW15Engine {
                             + masterKey.getClass().getName() + ", require"
                             + RBACLLW15MasterSecretKeyParameters.class.getName());
         }
+    }
+
+    /**
+     * Medical staff access credential delegation algorithm
+     * @param publicKey public key
+     * @param accessCredentialM parent medical staff access credential
+     * @param index delegated role index
+     * @param role delegated role
+     * @return access credential for the medical staff associated with delegated role
+     */
+    public CipherParameters ACDeleM(CipherParameters publicKey, CipherParameters accessCredentialM, int index, String role) {
+        isValidACDeleMParameters(publicKey, accessCredentialM);
         RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
-        secretKeyGenerator.init(new RBACLLW15AccessCredentialMGenParameters(
-                publicKey, masterKey, roles, time));
+        secretKeyGenerator.init(new RBACLLW15AccessCredentialMDeleParameters(
+                publicKey, accessCredentialM, index, role));
 
         return secretKeyGenerator.generateKey();
     }
 
-    public CipherParameters ACDeleM(CipherParameters publicKey, CipherParameters accessCredentialM, int index, String role) {
+    /**
+     * Medical staff access credential delegation algorithm using intermediate parameters
+     * @param publicKey public key
+     * @param accessCredentialM parent medical staff access credential
+     * @param intermediateParameters intermediate parameters
+     * @param index delegated role index
+     * @param role delegated role
+     * @return access credential for the medical staff associated with delegated role
+     */
+    public CipherParameters ACDeleM(CipherParameters publicKey, CipherParameters accessCredentialM,
+                                    CipherParameters intermediateParameters, int index, String role) {
+        isValidACDeleMParameters(publicKey, accessCredentialM);
+        RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
+        secretKeyGenerator.init(new RBACLLW15AccessCredentialMDeleParameters(
+                publicKey, accessCredentialM, intermediateParameters, index, role));
+
+        return secretKeyGenerator.generateKey();
+    }
+
+    private void isValidACDeleMParameters(CipherParameters publicKey, CipherParameters accessCredentialM) {
         if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -69,40 +195,18 @@ public class RBACLLW15Engine {
                             + accessCredentialM.getClass().getName() + ", require"
                             + RBACLLW15AccessCredentialMParameters.class.getName());
         }
-        RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
-        secretKeyGenerator.init(new RBACLLW15AccessCredentialMDeleParameters(
-                publicKey, accessCredentialM, index, role));
-
-        return secretKeyGenerator.generateKey();
     }
 
-    public CipherParameters ACGenP(CipherParameters publicKey, CipherParameters masterKey, String id) {
-        if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeyParameters.class.getName());
-        }
-        if (!(masterKey instanceof RBACLLW15MasterSecretKeyParameters)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + RBACLLW15MasterSecretKeyParameters.class.getName());
-        }
-        RBACLLW15AccessCredentialPGenerator secretKeyGenerator = new RBACLLW15AccessCredentialPGenerator();
-        secretKeyGenerator.init(new RBACLLW15AccessCredentialPGenParameters(
-                publicKey, masterKey, id));
-
-        return secretKeyGenerator.generateKey();
-    }
-
-    public PairingKeyEncapsulationPair EHREnc(CipherParameters publicKey, String id, String[] roles, String time){
-        if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeyParameters.class.getName());
-        }
+    /**
+     * key encapsulation algorithm
+     * @param publicKey public key
+     * @param id patient's id
+     * @param roles associated roles
+     * @param time valid time
+     * @return ciphertext / sesscion key pair
+     */
+    public PairingKeyEncapsulationPair EHREnc(CipherParameters publicKey, String id, String[] roles, String time) {
+        isValidKeyEncapsulationParameters(publicKey);
         RBACLLW15KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new RBACLLW15KeyEncapsulationPairGenerator();
         keyEncapsulationPairGenerator.init(new RBACLLW15EncapsulationGenParameters(
                 publicKey, id, roles, time));
@@ -110,6 +214,43 @@ public class RBACLLW15Engine {
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
+    /**
+     * key encapsulation algorithm using intermediate parameters
+     * @param publicKey public key
+     * @param intermediateParameters intermediate parameters
+     * @param id patient's id
+     * @param roles associated roles
+     * @param time valid time
+     * @return ciphertext / session key pair
+     */
+    public PairingKeyEncapsulationPair EHREnc(CipherParameters publicKey, CipherParameters intermediateParameters,
+                                              String id, String[] roles, String time) {
+        isValidKeyEncapsulationParameters(publicKey);
+        RBACLLW15KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new RBACLLW15KeyEncapsulationPairGenerator();
+        keyEncapsulationPairGenerator.init(new RBACLLW15EncapsulationGenParameters(
+                publicKey, intermediateParameters, id, roles, time));
+
+        return keyEncapsulationPairGenerator.generateEncryptionPair();
+    }
+
+    private void isValidKeyEncapsulationParameters(CipherParameters publicKey) {
+        if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + RBACLLW15PublicKeyParameters.class.getName());
+        }
+    }
+
+    /**
+     * EHR encapsulation audit algorithm
+     * @param publicKey public key
+     * @param id patient's id
+     * @param roles associated roles
+     * @param time valid time
+     * @param encapsulation ciphertext
+     * @return true if valid, false if invalid
+     */
     public boolean EHRAudit(CipherParameters publicKey, String id, String[] roles, String time, CipherParameters encapsulation) {
         if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
             throw new IllegalArgumentException
@@ -129,9 +270,49 @@ public class RBACLLW15Engine {
         return encapsulationAudit.audit();
     }
 
+    /**
+     * EHR medical staff decapsulation algorithm without encapsulation audit procedure
+     * @param publicKey public key
+     * @param id patient's id
+     * @param roles associated roles
+     * @param time valid time
+     * @param encapsulation ciphertext
+     * @param accessCredentialM medical staff access credential
+     * @return decapsulated session key
+     */
     public byte[] EHRDecM (
             CipherParameters publicKey, String id, String[] roles, String time,
             CipherParameters encapsulation, CipherParameters accessCredentialM) throws InvalidCipherTextException {
+        isValidAccessCredentialMDecapsulationParameters(publicKey, encapsulation, accessCredentialM);
+        RBACLLW15DecapsulationMGenerator keyDecapsulationGenerator = new RBACLLW15DecapsulationMGenerator();
+        keyDecapsulationGenerator.init(new RBACLLW15DecapsulationMParameters(
+                publicKey, accessCredentialM, id, roles, time, encapsulation));
+        return keyDecapsulationGenerator.recoverKey();
+    }
+
+    /**
+     * EHR medical staff decapsulation algorithm with encapsulation audit procedure
+     * @param publicKey public key
+     * @param id patient's id
+     * @param roles associated roles
+     * @param time valid time
+     * @param encapsulation ciphertext
+     * @param accessCredentialM medical staff access credential
+     * @return decapsulated session key
+     * @throws InvalidCipherTextException if EHR encapsulation is invalid
+     */
+    public byte[] EHRDecMWithAudit (
+            CipherParameters publicKey, String id, String[] roles, String time,
+            CipherParameters encapsulation, CipherParameters accessCredentialM) throws InvalidCipherTextException {
+        isValidAccessCredentialMDecapsulationParameters(publicKey, encapsulation, accessCredentialM);
+        if (!EHRAudit(publicKey, id, roles, time, encapsulation)) {
+            throw new InvalidCipherTextException("Encapsulation is invalid due to EHRAudit");
+        }
+        return EHRDecM(publicKey, id, roles, time, encapsulation, accessCredentialM);
+    }
+
+    private void isValidAccessCredentialMDecapsulationParameters(
+            CipherParameters publicKey, CipherParameters encapsulation, CipherParameters accessCredentialM) {
         if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -150,19 +331,52 @@ public class RBACLLW15Engine {
                             + encapsulation.getClass().getName() + ", require "
                             + RBACLLW15EncapsulationParameters.class.getName());
         }
-        if (!EHRAudit(publicKey, id, roles, time, encapsulation)) {
-            throw new InvalidCipherTextException("Encapsulation is invalid due to EHRAudit");
-        } else {
-            RBACLLW15DecapsulationMGenerator keyDecapsulationGenerator = new RBACLLW15DecapsulationMGenerator();
-            keyDecapsulationGenerator.init(new RBACLLW15DecapsulationMParameters(
-                    publicKey, accessCredentialM, id, roles, time, encapsulation));
-            return keyDecapsulationGenerator.recoverKey();
-        }
     }
 
+    /**
+     * EHR patient decapsulation algorithm without encapsulation audit procedure
+     * @param publicKey public key
+     * @param id patient's id
+     * @param roles assocciated roles
+     * @param time valid time
+     * @param encapsulation ciphertext
+     * @param accessCredentialP patient access credential
+     * @return decapsulated session key
+     * @throws InvalidCipherTextException
+     */
     public byte[] EHRDecP (
             CipherParameters publicKey, String id, String[] roles, String time,
             CipherParameters encapsulation, CipherParameters accessCredentialP) throws InvalidCipherTextException {
+        isValidAccessCredentialPDecapsulationParameters(publicKey, encapsulation, accessCredentialP);
+        RBACLLW15DecapsulationPGenerator keyDecapsulationGenerator = new RBACLLW15DecapsulationPGenerator();
+        keyDecapsulationGenerator.init(new RBACLLW15DecapsulationPParameters(
+                publicKey, accessCredentialP, id, roles, time, encapsulation));
+        return keyDecapsulationGenerator.recoverKey();
+    }
+
+    /**
+     * EHR patient decapsulation algorithm with encapsulation audit procedure
+     * @param publicKey public key
+     * @param id patient's id
+     * @param roles assocciated roles
+     * @param time valid time
+     * @param encapsulation ciphertext
+     * @param accessCredentialP patient access credential
+     * @return decapsulated session key
+     * @throws InvalidCipherTextException
+     */
+    public byte[] EHRDecPWithAudit (
+            CipherParameters publicKey, String id, String[] roles, String time,
+            CipherParameters encapsulation, CipherParameters accessCredentialP) throws InvalidCipherTextException {
+        isValidAccessCredentialPDecapsulationParameters(publicKey, encapsulation, accessCredentialP);
+        if (!EHRAudit(publicKey, id, roles, time, encapsulation)) {
+            throw new InvalidCipherTextException("Encapsulation is invalid due to EHRAudit");
+        }
+        return EHRDecP(publicKey, id, roles, time, encapsulation, accessCredentialP);
+    }
+
+    private void isValidAccessCredentialPDecapsulationParameters(
+            CipherParameters publicKey, CipherParameters encapsulation, CipherParameters accessCredentialP) {
         if (!(publicKey instanceof RBACLLW15PublicKeyParameters)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -180,14 +394,6 @@ public class RBACLLW15Engine {
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + encapsulation.getClass().getName() + ", require "
                             + RBACLLW15EncapsulationParameters.class.getName());
-        }
-        if (!EHRAudit(publicKey, id, roles, time, encapsulation)) {
-            throw new InvalidCipherTextException("Encapsulation is invalid due to EHRAudit");
-        } else {
-            RBACLLW15DecapsulationPGenerator keyDecapsulationGenerator = new RBACLLW15DecapsulationPGenerator();
-            keyDecapsulationGenerator.init(new RBACLLW15DecapsulationPParameters(
-                    publicKey, accessCredentialP, id, roles, time, encapsulation));
-            return keyDecapsulationGenerator.recoverKey();
         }
     }
 }

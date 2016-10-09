@@ -70,6 +70,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private static final String TAG_ENC_C0 = "C0";
     private static final String TAG_ENC_C1 = "C1";
 
+
+
     private static final RBACLLW15XMLSerializer INSTANCE = new RBACLLW15XMLSerializer();
 
     private RBACLLW15XMLSerializer() { }

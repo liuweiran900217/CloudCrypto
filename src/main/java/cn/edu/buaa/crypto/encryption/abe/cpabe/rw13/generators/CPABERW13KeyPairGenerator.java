@@ -36,7 +36,7 @@ public class CPABERW13KeyPairGenerator {
         Element eggAlpha = pairing.pairing(g, g).powZn(alpha).getImmutable();
 
         return new AsymmetricCipherKeyPair(
-                new CPABERW13PublicKeyParameters(parameters, g, u, h, w, v, eggAlpha),
+                new CPABERW13PublicKeyParameters(parameters, g, u, h, w, v, eggAlpha, this.parameters.getAccessControlEngine()),
                 new CPABERW13MasterSecretKeyParameters(parameters, alpha));
     }
 }

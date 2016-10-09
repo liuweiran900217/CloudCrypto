@@ -12,12 +12,12 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 public class RBACLLW15AccessCredentialMDeleParameters extends KeyGenerationParameters {
     private RBACLLW15PublicKeyParameters publicKeyParameters;
     private RBACLLW15AccessCredentialMParameters accessCredentialMParameters;
+    private RBACLLW15IntermediateParameters intermediateParameters;
     private int index;
     private String delegateRole;
 
     public RBACLLW15AccessCredentialMDeleParameters(
-            CipherParameters publicKeyParameters,
-            CipherParameters accessCredentialMParameters,
+            CipherParameters publicKeyParameters, CipherParameters accessCredentialMParameters,
             int index, String role) {
         super(null, PairingUtils.STENGTH);
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
@@ -25,6 +25,21 @@ public class RBACLLW15AccessCredentialMDeleParameters extends KeyGenerationParam
         assert(this.accessCredentialMParameters.getRoleAt(index) == null);
         this.index = index;
         this.delegateRole = role;
+        //do not use indermerdiate parameters
+        this.intermediateParameters = null;
+    }
+
+    public RBACLLW15AccessCredentialMDeleParameters(
+            CipherParameters publicKeyParameters, CipherParameters accessCredentialMParameters,
+            CipherParameters intermediateParameters, int index, String role) {
+        super(null, PairingUtils.STENGTH);
+        this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
+        this.accessCredentialMParameters = (RBACLLW15AccessCredentialMParameters)accessCredentialMParameters;
+        assert(this.accessCredentialMParameters.getRoleAt(index) == null);
+        this.index = index;
+        this.delegateRole = role;
+        //use indermerdiate parameters
+        this.intermediateParameters = (RBACLLW15IntermediateParameters)intermediateParameters;
     }
 
     public RBACLLW15PublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
@@ -34,5 +49,13 @@ public class RBACLLW15AccessCredentialMDeleParameters extends KeyGenerationParam
     public int getIndex() { return this.index; }
 
     public String getDelegateRole() { return this.delegateRole; }
+
+    public boolean isIntermediateGeneration() {
+        return (this.intermediateParameters != null);
+    }
+
+    public RBACLLW15IntermediateParameters getIntermediateParameters() {
+        return this.intermediateParameters;
+    }
 
 }

@@ -6,7 +6,9 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 
 /**
- * Created by liuweiran on 16/5/18.
+ * Created by Weiran Liu on 16/5/18.
+ *
+ * Liu-Liu-Wu role-based access control key encapsulation parameters.
  */
 public class RBACLLW15EncapsulationParameters extends PairingCiphertextParameters {
     private final Element C0;

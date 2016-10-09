@@ -7,6 +7,7 @@ import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +19,9 @@ import java.util.Map;
  * I create this abstract engine to cover all the same codes.
  */
 public abstract class LSSSPolicyEngine implements AccessControlEngine {
-    public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
+    public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) {
         if (!(accessControlParameter instanceof LSSSPolicyParameter)) {
-            throw new UnsatisfiedAccessControlException("Invalid LSSSPolicy Parameter, find " + accessControlParameter.getClass().getName());
+            throw new InvalidParameterException("Invalid LSSSPolicy Parameter, find " + accessControlParameter.getClass().getName());
         }
         LSSSPolicyParameter lsssPolicyParameter = (LSSSPolicyParameter)accessControlParameter;
         int row = lsssPolicyParameter.getRow();
