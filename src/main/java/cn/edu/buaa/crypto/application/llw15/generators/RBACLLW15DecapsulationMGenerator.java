@@ -9,10 +9,10 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 16/6/19.
+ *
+ * Liu-Liu-Wu role-based access control medical staff key decapsulation generator.
  */
 public class RBACLLW15DecapsulationMGenerator implements PairingKeyDecapsulationGenerator {
     private RBACLLW15DecapsulationMParameters params;
@@ -29,7 +29,6 @@ public class RBACLLW15DecapsulationMGenerator implements PairingKeyDecapsulation
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementRolesCT = PairingUtils.MapToZr(pairing, this.params.getRoles());
         Element elementIdCT = PairingUtils.MapToZr(pairing, this.params.getId());
-        Element elementTimeCT = PairingUtils.MapToZr(pairing, this.params.getTime());
 
         //Check time
         if (!secretKeyParameters.getTime().equals(this.params.getTime())) {
@@ -60,7 +59,6 @@ public class RBACLLW15DecapsulationMGenerator implements PairingKeyDecapsulation
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();
         Element sessionKey = temp0.div(temp1).getImmutable();
-        byte[] byteArraySessionKey = sessionKey.toBytes();
-        return Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length);
+        return sessionKey.toBytes();
     }
 }

@@ -9,7 +9,6 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,6 +20,8 @@ import java.security.InvalidParameterException;
 
 /**
  * Created by Weiran Liu on 16/6/20.
+ *
+ * Liu-Liu-Wu role-based access conrol scheme XML serializer.
  */
 public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private static final String TAG_SCHEME_NAME = RBACLLW15Engine.SCHEME_NAME;
@@ -31,6 +32,7 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private static final String TYPE_ACM = "ACM";
     private static final String TYPE_ACP = "ACP";
     private static final String TYPE_ENC = "ENC";
+    private static final String TYPE_IMP = "IMP";
 
     //Tags for public key
     private static final String TAG_PK_G = "G";
@@ -70,7 +72,15 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private static final String TAG_ENC_C0 = "C0";
     private static final String TAG_ENC_C1 = "C1";
 
-
+    //Tags for intermediate parameters
+    private static final String TAG_IMP_r = "r";
+    private static final String TAG_IMP_G3_r = "G3_r";
+    private static final String TAG_IMP_Gh_r = "Gh_r";
+    private static final String TAG_IMP_G_r = "G_r";
+    private static final String TAG_IMP_U0_r = "U0_r";
+    private static final String TAG_IMP_Uv_r = "Uv_r";
+    private static final String TAG_IMP_Us_r = "Us_r";
+    private static final String TAG_IMP_Ui_r = "Ui_r";
 
     private static final RBACLLW15XMLSerializer INSTANCE = new RBACLLW15XMLSerializer();
 
@@ -91,6 +101,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
             return getInstance().accessCredentialPParametersSerialization((RBACLLW15AccessCredentialPParameters) cipherParameters);
         } else if (cipherParameters instanceof RBACLLW15EncapsulationParameters) {
             return getInstance().encapsulationParametersSerialization((RBACLLW15EncapsulationParameters) cipherParameters);
+        } else if (cipherParameters instanceof  RBACLLW15IntermediateParameters) {
+            return getInstance().intermediateParametersSerialization((RBACLLW15IntermediateParameters) cipherParameters);
         } else {
             throw new InvalidParameterException("Invalid CipherParameter Instance of " + RBACLLW15Engine.SCHEME_NAME
                     + " Scheme, find" + cipherParameters.getClass().getName());
@@ -100,8 +112,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private Document publicKeyParametersSerialization(RBACLLW15PublicKeyParameters publicKeyParameters){
         try {
             Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = publicKeyParametersDocument.createElement(this.TAG_SCHEME_NAME);
-            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, this.TYPE_PK);
+            Element schemeElement = publicKeyParametersDocument.createElement(TAG_SCHEME_NAME);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, TYPE_PK);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH, Integer.toString(publicKeyParameters.getMaxRoleNumber()));
             publicKeyParametersDocument.appendChild(schemeElement);
             //Set g
@@ -130,7 +142,7 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private Document masterSecretKeyParametersSerialization(RBACLLW15MasterSecretKeyParameters masterSecretKeyParameters) {
         try {
             Document masterSecretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = masterSecretKeyDocument.createElement(this.TAG_SCHEME_NAME);
+            Element schemeElement = masterSecretKeyDocument.createElement(TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_MSK);
             masterSecretKeyDocument.appendChild(schemeElement);
             //Set g2Alpha
@@ -145,8 +157,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private Document accessCredentialMParametersSerialization(RBACLLW15AccessCredentialMParameters accessCredentialMParameters){
         try {
             Document accessCredentialMDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = accessCredentialMDocument.createElement(this.TAG_SCHEME_NAME);
-            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, this.TYPE_ACM);
+            Element schemeElement = accessCredentialMDocument.createElement(TAG_SCHEME_NAME);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, TYPE_ACM);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH, Integer.toString(accessCredentialMParameters.getBs().length));
             accessCredentialMDocument.appendChild(schemeElement);
             //Set Roles
@@ -173,8 +185,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private Document accessCredentialPParametersSerialization(RBACLLW15AccessCredentialPParameters accessCredentialPParameters){
         try {
             Document accessCredentialPDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = accessCredentialPDocument.createElement(this.TAG_SCHEME_NAME);
-            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, this.TYPE_ACP);
+            Element schemeElement = accessCredentialPDocument.createElement(TAG_SCHEME_NAME);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, TYPE_ACP);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH, Integer.toString(accessCredentialPParameters.getBsPrime().length));
             accessCredentialPDocument.appendChild(schemeElement);
             //Set Identity
@@ -199,8 +211,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
     private Document encapsulationParametersSerialization(RBACLLW15EncapsulationParameters encapsulationParameters){
         try {
             Document encapsulationDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = encapsulationDocument.createElement(this.TAG_SCHEME_NAME);
-            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, this.TYPE_ENC);
+            Element schemeElement = encapsulationDocument.createElement(TAG_SCHEME_NAME);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, TYPE_ENC);
             encapsulationDocument.appendChild(schemeElement);
             //Set C0
             SerializationUtils.SetElement(encapsulationDocument, schemeElement, TAG_ENC_C0, encapsulationParameters.getC0());
@@ -213,19 +225,49 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
         }
     }
 
+    private Document intermediateParametersSerialization(RBACLLW15IntermediateParameters intermediateParameters) {
+        try {
+            Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element schemeElement = publicKeyParametersDocument.createElement(TAG_SCHEME_NAME);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, TYPE_IMP);
+            schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH, Integer.toString(intermediateParameters.get_U_s_r().length));
+            publicKeyParametersDocument.appendChild(schemeElement);
+            //Set g_r
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_IMP_r, intermediateParameters.get_r());
+            //Set g_3_r
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_IMP_G3_r, intermediateParameters.get_G_3_r());
+            //Set g_h_r
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_IMP_Gh_r, intermediateParameters.get_G_h_r());
+            //Set g_r
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_IMP_G_r, intermediateParameters.get_G_r());
+            //Set u_0_r
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_IMP_U0_r, intermediateParameters.get_U_0_r());
+            //Set u_v_r
+            SerializationUtils.SetElement(publicKeyParametersDocument, schemeElement, TAG_IMP_Uv_r, intermediateParameters.get_U_v_r());
+            //Set u
+            SerializationUtils.SetElementArray(publicKeyParametersDocument, schemeElement, TAG_IMP_Us_r, TAG_IMP_Ui_r, intermediateParameters.get_U_s_r());
+            return publicKeyParametersDocument;
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public CipherParameters documentDeserialization(PairingParameters pairingParameters, Document document) {
         Element schemeElement = document.getDocumentElement();
         String cipherParameterType = schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_TYPE);
-        if (cipherParameterType.equals(this.TYPE_PK)){
+        if (cipherParameterType.equals(TYPE_PK)){
             return getInstance().publicKeyParametersDeserialization(pairingParameters, schemeElement);
-        } else if (cipherParameterType.equals(this.TYPE_MSK)){
+        } else if (cipherParameterType.equals(TYPE_MSK)){
             return getInstance().masterSecretKeyParametersDeserialization(pairingParameters, schemeElement);
-        } else if (cipherParameterType.equals(this.TYPE_ACM)) {
+        } else if (cipherParameterType.equals(TYPE_ACM)) {
             return getInstance().accessCredentialMParametersDeserialization(pairingParameters, schemeElement);
-        } else if (cipherParameterType.equals(this.TYPE_ACP)) {
+        } else if (cipherParameterType.equals(TYPE_ACP)) {
             return getInstance().accessCredentialPParametersDeserialization(pairingParameters, schemeElement);
-        } else if (cipherParameterType.equals(this.TYPE_ENC)) {
+        } else if (cipherParameterType.equals(TYPE_ENC)) {
             return getInstance().encapsulationParametersDeserialization(pairingParameters, schemeElement);
+        } else if (cipherParameterType.equals(TYPE_IMP)) {
+            return getInstance().intermediateParametersDeserialization(pairingParameters, schemeElement);
         } else {
             throw new InvalidParameterException("Illegal " + RBACLLW15XMLSerializer.TAG_SCHEME_NAME +
                     " Document Type, find " + cipherParameterType);
@@ -234,7 +276,6 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
 
     private CipherParameters publicKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int maxRoleNumber = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element g = null;
         it.unisa.dia.gas.jpbc.Element g1 = null;
@@ -283,7 +324,6 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
             Node node = nodeList.item(i);
             //Set g2Alpha
             if (node.getNodeName().equals(TAG_MSK_G2ALPHA)) {
-                String g2AlphaString = node.getFirstChild().getNodeValue();
                 g2Alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
@@ -292,7 +332,6 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
 
     private CipherParameters accessCredentialMParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int maxRoleNumber = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         String[] roles = null;
         it.unisa.dia.gas.jpbc.Element[] elementRoles;
@@ -336,10 +375,8 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
 
     private CipherParameters accessCredentialPParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int maxRoleNumber = Integer.valueOf(schemeElement.getAttribute(PairingParameterXMLSerializer.ATTRI_MAX_LENGTH));
         NodeList nodeList = schemeElement.getChildNodes();
         String identity = null;
-        it.unisa.dia.gas.jpbc.Element elementId = null;
         it.unisa.dia.gas.jpbc.Element a0 = null;
         it.unisa.dia.gas.jpbc.Element a1 = null;
         it.unisa.dia.gas.jpbc.Element b0 = null;
@@ -367,7 +404,7 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
                 bs = SerializationUtils.GetElementArray(pairing, node, TAG_ACM_BI, SerializationUtils.PairingGroupType.G1);
             }
         }
-        elementId = PairingUtils.MapToZr(pairing, identity);
+        it.unisa.dia.gas.jpbc.Element elementId = PairingUtils.MapToZr(pairing, identity);
         return new RBACLLW15AccessCredentialPParameters(pairingParameters, identity, elementId,
                 a0, a1, b0, bv, bs);
     }
@@ -388,5 +425,43 @@ public class RBACLLW15XMLSerializer  implements PairingParameterXMLSerializer {
             }
         }
         return new RBACLLW15EncapsulationParameters(pairingParameters, C0, C1);
+    }
+
+    private CipherParameters intermediateParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
+        Pairing pairing = PairingFactory.getPairing(pairingParameters);
+        NodeList nodeList = schemeElement.getChildNodes();
+        it.unisa.dia.gas.jpbc.Element r = null;
+        it.unisa.dia.gas.jpbc.Element g_3_r = null;
+        it.unisa.dia.gas.jpbc.Element g_h_r = null;
+        it.unisa.dia.gas.jpbc.Element g_r = null;
+        it.unisa.dia.gas.jpbc.Element u_0_r = null;
+        it.unisa.dia.gas.jpbc.Element u_v_r = null;
+        it.unisa.dia.gas.jpbc.Element[] u_s_r = null;
+        for (int i=0; i<nodeList.getLength(); i++){
+            Node node = nodeList.item(i);
+            if (node.getNodeName().equals(TAG_IMP_r)) {
+                //Set r
+                r = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
+            } else if (node.getNodeName().equals(TAG_IMP_G3_r)) {
+                //Set g_3_r
+                g_3_r = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
+            } else if (node.getNodeName().equals(TAG_IMP_Gh_r)) {
+                //Set g_h_r
+                g_h_r = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
+            } else if (node.getNodeName().equals(TAG_IMP_G_r)) {
+                //Set g_r
+                g_r = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
+            } else if (node.getNodeName().equals(TAG_IMP_U0_r)) {
+                //Set u_0_r
+                u_0_r = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
+            } else if (node.getNodeName().equals(TAG_IMP_Uv_r)) {
+                //Set u_v_r
+                u_v_r = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
+            } else if (node.getNodeName().equals(TAG_IMP_Us_r)) {
+                //Set us
+                u_s_r = SerializationUtils.GetElementArray(pairing, node, TAG_IMP_Ui_r, SerializationUtils.PairingGroupType.G1);
+            }
+        }
+        return new RBACLLW15IntermediateParameters(r, g_3_r, g_h_r, g_r, u_0_r, u_v_r, u_s_r);
     }
 }

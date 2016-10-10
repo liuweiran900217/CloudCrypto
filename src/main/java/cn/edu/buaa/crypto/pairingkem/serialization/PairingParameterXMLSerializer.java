@@ -22,6 +22,6 @@ public interface PairingParameterXMLSerializer {
     String TYPE_ISK = "ISK";
     String TYPE_ICT = "ICT";
 
-    public Document documentSerialization(CipherParameters cipherParameters);
-    public CipherParameters documentDeserialization(PairingParameters pairingParameters, Document document);
+    Document documentSerialization(CipherParameters cipherParameters);
+    CipherParameters documentDeserialization(PairingParameters pairingParameters, Document document);
 }

@@ -1,7 +1,6 @@
 package com.example.application.llw15;
 
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
-import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15IntermediateParameters;
 import cn.edu.buaa.crypto.application.llw15.serialization.RBACLLW15XMLSerializer;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
@@ -28,7 +27,7 @@ public class RBACLLW15EngineTest {
     private RBACLLW15Engine engine;
     private PairingParameterXMLSerializer schemeXMLSerializer;
 
-    public RBACLLW15EngineTest(RBACLLW15Engine engine, PairingParameterXMLSerializer schemeXMLSerializer) {
+    private RBACLLW15EngineTest(RBACLLW15Engine engine, PairingParameterXMLSerializer schemeXMLSerializer) {
         this.engine = engine;
         this.schemeXMLSerializer = schemeXMLSerializer;
     }
@@ -390,7 +389,11 @@ public class RBACLLW15EngineTest {
         //Test Serialize & deserialize
         if (this.schemeXMLSerializer != null) {
             File file = new File("serializations/application/LLW15");
-            file.mkdir();
+            if (!file.exists()) {
+                if (!file.mkdir()) {
+                    throw new RuntimeException("Cannot create folders for testing serialization");
+                }
+            }
 
             //Serialize & deserialize public key
             System.out.println("======================================");
@@ -448,7 +451,15 @@ public class RBACLLW15EngineTest {
             CipherParameters anEncapsulation13467 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentEncapsulation13467);
             assertEquals(encapsulation13467, anEncapsulation13467);
 
-            //TODO Serialize & deserialize intermediate parameters
+            //Serialize & deserialize intermediate parameters
+            CipherParameters intermediateParameters = engine.IntermediateGen(publicKey);
+            System.out.println("======================================");
+            System.out.println("Test Serializing & deserializing intermediate parameters");
+            TestUtils.OutputXMLDocument("serializations/application/LLW15/RBAC_Intermediate.xml",
+                    schemeXMLSerializer.documentSerialization(intermediateParameters));
+            Document documentIntermediate = TestUtils.InputXMLDocument("serializations/application/LLW15/RBAC_Intermediate.xml");
+            CipherParameters anIntermediate = schemeXMLSerializer.documentDeserialization(pairingParameters, documentIntermediate);
+            assertEquals(intermediateParameters, anIntermediate);
 
             System.out.println("======================================");
             System.out.println("Serialize & deserialize tests passed.");
