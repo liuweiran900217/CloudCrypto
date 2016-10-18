@@ -5,6 +5,8 @@ import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 
 /**
  * Created by Weiran Liu on 15-10-2.
+ *
+ * Generic pairing key parameters.
  */
 public class PairingKeyParameters extends AsymmetricKeyParameter {
     private PairingParameters parameters;

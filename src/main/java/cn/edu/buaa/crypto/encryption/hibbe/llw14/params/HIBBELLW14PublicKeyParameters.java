@@ -6,10 +6,10 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * Liu-Liu-Wu composite-order HIBBE public key parameters.
  */
 public class HIBBELLW14PublicKeyParameters extends PairingKeyParameters {
 
@@ -35,7 +35,7 @@ public class HIBBELLW14PublicKeyParameters extends PairingKeyParameters {
 
     public Element getH() { return this.h.duplicate(); }
 
-    public Element[] getUs() { return Arrays.copyOf(this.u, this.u.length); }
+    public Element[] getUs() { return this.u; }
 
     public Element getUsAt(int index) {
         return this.u[index].duplicate();

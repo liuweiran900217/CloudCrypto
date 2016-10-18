@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw16.params;
+package cn.edu.buaa.crypto.encryption.hibbe.llw16a.params;
 
 import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
@@ -10,8 +10,10 @@ import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/5/17.
+ *
+ * Liu-Liu-Wu prime-order HIBBE secret key parameters.
  */
-public class HIBBELLW16SecretKeyParameters extends PairingKeyParameters {
+public class HIBBELLW16aSecretKeyParameters extends PairingKeyParameters {
     private final String[] ids;
     private final Element[] elementIds;
 
@@ -20,8 +22,8 @@ public class HIBBELLW16SecretKeyParameters extends PairingKeyParameters {
     private final Element[] bs;
 
 
-    public HIBBELLW16SecretKeyParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds,
-                                         Element a0, Element a1, Element[] bs) {
+    public HIBBELLW16aSecretKeyParameters(PairingParameters pairingParameters, String[] ids, Element[] elementIds,
+                                          Element a0, Element a1, Element[] bs) {
         super(true, pairingParameters);
 
         this.a0 = a0.getImmutable();
@@ -35,11 +37,11 @@ public class HIBBELLW16SecretKeyParameters extends PairingKeyParameters {
 
     public String getIdAt(int index) { return this.ids[index]; }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public Element getElementIdAt(int index) { return this.elementIds[index].duplicate(); }
 
-    public Element[] getElementIds() { return Arrays.copyOf(elementIds, elementIds.length); }
+    public Element[] getElementIds() { return this.elementIds; }
 
     public Element getA0() { return this.a0.duplicate(); }
 
@@ -47,15 +49,15 @@ public class HIBBELLW16SecretKeyParameters extends PairingKeyParameters {
 
     public Element getBsAt(int index) { return this.bs[index].duplicate(); }
 
-    public Element[] getBs() { return Arrays.copyOf(bs, bs.length); }
+    public Element[] getBs() { return this.bs; }
 
     @Override
     public boolean equals(Object anOjbect) {
         if (this == anOjbect) {
             return true;
         }
-        if (anOjbect instanceof HIBBELLW16SecretKeyParameters) {
-            HIBBELLW16SecretKeyParameters that = (HIBBELLW16SecretKeyParameters)anOjbect;
+        if (anOjbect instanceof HIBBELLW16aSecretKeyParameters) {
+            HIBBELLW16aSecretKeyParameters that = (HIBBELLW16aSecretKeyParameters)anOjbect;
             //Compare ids
             if (!Arrays.equals(this.ids, that.getIds())) {
                 return false;

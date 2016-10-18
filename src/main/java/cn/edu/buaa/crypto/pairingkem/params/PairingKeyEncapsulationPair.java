@@ -2,6 +2,8 @@ package cn.edu.buaa.crypto.pairingkem.params;
 
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Generic pairing-based key encapsulation ciphertext / session key encapsulation pair.
  */
 public class PairingKeyEncapsulationPair {
     private byte[] sessionKey;

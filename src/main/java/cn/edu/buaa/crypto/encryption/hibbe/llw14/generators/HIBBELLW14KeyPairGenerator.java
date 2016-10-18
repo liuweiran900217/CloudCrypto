@@ -12,12 +12,15 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.a1.TypeA1CurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * Liu-Liu-Wu composite-order HIBBE public key / master secret key generator.
  */
-public class HIBBELLW14KeyPairGenerator {
+public class HIBBELLW14KeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
     private HIBBELLW14KeyPairGenerationParameters parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {

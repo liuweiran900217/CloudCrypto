@@ -9,6 +9,7 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -16,7 +17,7 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Public Key / Master Secret Key pair generator for Boneh-Boyen-Goh HIBE.
  */
-public class HIBEBBG05KeyPairGenerator {
+public class HIBEBBG05KeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
     private HIBEBBG05KeyPairGenerationParameters parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {

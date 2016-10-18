@@ -1,9 +1,9 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw16.generators;
+package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
 import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aCiphertextGenerationParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aCiphertextParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aPublicKeyParameters;
 import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
@@ -11,20 +11,20 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/5/17.
+ *
+ * Liu-Liu-Wu prime-order HIBBE session key encapsulation generator.
  */
-public class HIBBELLW16KeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
-    private HIBBELLW16CiphertextGenerationParameters params;
+public class HIBBELLW16aKeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
+    private HIBBELLW16aCiphertextGenerationParameters params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW16CiphertextGenerationParameters)params;
+        this.params = (HIBBELLW16aCiphertextGenerationParameters)params;
     }
 
     public PairingKeyEncapsulationPair generateEncryptionPair() {
-        HIBBELLW16PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
+        HIBBELLW16aPublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
         Element[] elementIds = PairingUtils.MapToZr(pairing, ids);
@@ -42,7 +42,7 @@ public class HIBBELLW16KeyEncapsulationPairGenerator implements PairingKeyEncaps
         }
         C1 = C1.powZn(beta).getImmutable();
         return new PairingKeyEncapsulationPair(
-                Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
-                new HIBBELLW16CiphertextParameters(publicKeyParameters.getParameters(), C0, C1));
+                byteArraySessionKey,
+                new HIBBELLW16aCiphertextParameters(publicKeyParameters.getParameters(), C0, C1));
     }
 }

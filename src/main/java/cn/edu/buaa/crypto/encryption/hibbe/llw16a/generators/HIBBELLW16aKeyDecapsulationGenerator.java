@@ -1,10 +1,10 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw16.generators;
+package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
 import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16DecapsulationParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16SecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aCiphertextParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aDecapsulationParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aPublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aSecretKeyParameters;
 import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -12,22 +12,22 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/5/17.
+ *
+ * Liu-Liu-Wu prime-order HIBBE session key decapsulation generator.
  */
-public class HIBBELLW16KeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
-    private HIBBELLW16DecapsulationParameters params;
+public class HIBBELLW16aKeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
+    private HIBBELLW16aDecapsulationParameters params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW16DecapsulationParameters)params;
+        this.params = (HIBBELLW16aDecapsulationParameters)params;
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
-        HIBBELLW16PublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
-        HIBBELLW16SecretKeyParameters secretKeyParameters = this.params.getSecretKeyParameters();
-        HIBBELLW16CiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
+        HIBBELLW16aPublicKeyParameters publicKeyParameters = this.params.getPublicKeyParameters();
+        HIBBELLW16aSecretKeyParameters secretKeyParameters = this.params.getSecretKeyParameters();
+        HIBBELLW16aCiphertextParameters ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());
@@ -52,7 +52,6 @@ public class HIBBELLW16KeyDecapsulationGenerator implements PairingKeyDecapsulat
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();
         Element sessionKey = temp0.div(temp1).getImmutable();
-        byte[] byteArraySessionKey = sessionKey.toBytes();
-        return Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length);
+        return sessionKey.toBytes();
     }
 }

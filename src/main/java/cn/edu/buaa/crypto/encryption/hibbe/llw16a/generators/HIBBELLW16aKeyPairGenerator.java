@@ -1,24 +1,27 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw16.generators;
+package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
 import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aKeyPairGenerationParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aMasterSecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aPublicKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2016/5/17.
+ *
+ * Liu-Liu-Wu prime-order HIBBE ciphertext / session key pair generator.
  */
-public class HIBBELLW16KeyPairGenerator {
-    private HIBBELLW16KeyPairGenerationParameters parameters;
+public class HIBBELLW16aKeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
+    private HIBBELLW16aKeyPairGenerationParameters parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (HIBBELLW16KeyPairGenerationParameters)keyGenerationParameters;
+        this.parameters = (HIBBELLW16aKeyPairGenerationParameters)keyGenerationParameters;
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
@@ -37,7 +40,7 @@ public class HIBBELLW16KeyPairGenerator {
         }
 
         return new AsymmetricCipherKeyPair(
-                new HIBBELLW16PublicKeyParameters(parameters, g, g1, g2, g3, u),
-                new HIBBELLW16MasterSecretKeyParameters(parameters, g2Alpha));
+                new HIBBELLW16aPublicKeyParameters(parameters, g, g1, g2, g3, u),
+                new HIBBELLW16aMasterSecretKeyParameters(parameters, g2Alpha));
     }
 }

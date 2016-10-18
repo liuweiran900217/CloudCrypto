@@ -1,18 +1,17 @@
-package cn.edu.buaa.crypto.encryption.hibbe.llw16.serialization;
+package cn.edu.buaa.crypto.encryption.hibbe.llw16a.serialization;
 
 import cn.edu.buaa.crypto.SerializationUtils;
 import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.HIBBELLW16Engine;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16CiphertextParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16PublicKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16.params.HIBBELLW16SecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.HIBBELLW16Engine;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aCiphertextParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aMasterSecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aPublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aSecretKeyParameters;
 import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -24,8 +23,10 @@ import java.security.InvalidParameterException;
 
 /**
  * Created by Weiran Liu on 2016/5/17.
+ *
+ * Liu-Liu-Wu prime-order HIBBE XML serializer.
  */
-public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
+public class HIBBELLW16aXMLSerializer implements PairingParameterXMLSerializer {
     private static final String TAG_SCHEME_NAME = HIBBELLW16Engine.SCHEME_NAME;
 
     //Tags for public key
@@ -52,33 +53,33 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
     private static final String TAG_CT_C0 = "C0";
     private static final String TAG_CT_C1 = "C1";
 
-    private static final HIBBELLW16XMLSerializer INSTANCE = new HIBBELLW16XMLSerializer();
+    private static final HIBBELLW16aXMLSerializer INSTANCE = new HIBBELLW16aXMLSerializer();
 
-    private HIBBELLW16XMLSerializer() { }
+    private HIBBELLW16aXMLSerializer() { }
 
-    public static HIBBELLW16XMLSerializer getInstance(){
+    public static HIBBELLW16aXMLSerializer getInstance(){
         return INSTANCE;
     }
 
     public Document documentSerialization(CipherParameters cipherParameters) {
-        if (cipherParameters instanceof HIBBELLW16PublicKeyParameters) {
-            return getInstance().publicKeyParametersSerialization((HIBBELLW16PublicKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof HIBBELLW16MasterSecretKeyParameters) {
-            return getInstance().masterSecretKeyParametersSerialization((HIBBELLW16MasterSecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof HIBBELLW16SecretKeyParameters) {
-            return getInstance().secretKeyParametersSerialization((HIBBELLW16SecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof HIBBELLW16CiphertextParameters) {
-            return getInstance().ciphertextParametersSerialization((HIBBELLW16CiphertextParameters) cipherParameters);
+        if (cipherParameters instanceof HIBBELLW16aPublicKeyParameters) {
+            return getInstance().publicKeyParametersSerialization((HIBBELLW16aPublicKeyParameters) cipherParameters);
+        } else if (cipherParameters instanceof HIBBELLW16aMasterSecretKeyParameters) {
+            return getInstance().masterSecretKeyParametersSerialization((HIBBELLW16aMasterSecretKeyParameters) cipherParameters);
+        } else if (cipherParameters instanceof HIBBELLW16aSecretKeyParameters) {
+            return getInstance().secretKeyParametersSerialization((HIBBELLW16aSecretKeyParameters) cipherParameters);
+        } else if (cipherParameters instanceof HIBBELLW16aCiphertextParameters) {
+            return getInstance().ciphertextParametersSerialization((HIBBELLW16aCiphertextParameters) cipherParameters);
         } else {
             throw new InvalidParameterException("Invalid CipherParameter Instance of " + HIBBELLW16Engine.SCHEME_NAME
                     + " Scheme, find" + cipherParameters.getClass().getName());
         }
     }
 
-    private Document publicKeyParametersSerialization(HIBBELLW16PublicKeyParameters publicKeyParameters){
+    private Document publicKeyParametersSerialization(HIBBELLW16aPublicKeyParameters publicKeyParameters){
         try {
             Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = publicKeyParametersDocument.createElement(HIBBELLW16XMLSerializer.TAG_SCHEME_NAME);
+            Element schemeElement = publicKeyParametersDocument.createElement(HIBBELLW16aXMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_PK);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_USER, Integer.toString(publicKeyParameters.getMaxUser()));
             publicKeyParametersDocument.appendChild(schemeElement);
@@ -99,10 +100,10 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document masterSecretKeyParametersSerialization(HIBBELLW16MasterSecretKeyParameters masterSecretKeyParameters) {
+    private Document masterSecretKeyParametersSerialization(HIBBELLW16aMasterSecretKeyParameters masterSecretKeyParameters) {
         try {
             Document masterSecretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = masterSecretKeyDocument.createElement(HIBBELLW16XMLSerializer.TAG_SCHEME_NAME);
+            Element schemeElement = masterSecretKeyDocument.createElement(HIBBELLW16aXMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_MSK);
             masterSecretKeyDocument.appendChild(schemeElement);
             //Set g2Alpha
@@ -114,10 +115,10 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document secretKeyParametersSerialization(HIBBELLW16SecretKeyParameters secretKeyParameters){
+    private Document secretKeyParametersSerialization(HIBBELLW16aSecretKeyParameters secretKeyParameters){
         try {
             Document secretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = secretKeyDocument.createElement(HIBBELLW16XMLSerializer.TAG_SCHEME_NAME);
+            Element schemeElement = secretKeyDocument.createElement(HIBBELLW16aXMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_SK);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_MAX_USER, Integer.toString(secretKeyParameters.getBs().length));
             secretKeyDocument.appendChild(schemeElement);
@@ -136,10 +137,10 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document ciphertextParametersSerialization(HIBBELLW16CiphertextParameters ciphertextParameters){
+    private Document ciphertextParametersSerialization(HIBBELLW16aCiphertextParameters ciphertextParameters){
         try {
             Document ciphertextDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = ciphertextDocument.createElement(HIBBELLW16XMLSerializer.TAG_SCHEME_NAME);
+            Element schemeElement = ciphertextDocument.createElement(HIBBELLW16aXMLSerializer.TAG_SCHEME_NAME);
             schemeElement.setAttribute(PairingParameterXMLSerializer.ATTRI_TYPE, PairingParameterXMLSerializer.TYPE_CT);
             ciphertextDocument.appendChild(schemeElement);
             //Set C0
@@ -197,7 +198,7 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
                 us = SerializationUtils.GetElementArray(pairing, node, TAG_PK_UI, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new HIBBELLW16PublicKeyParameters(pairingParameters, g, g1, g2, g3, us);
+        return new HIBBELLW16aPublicKeyParameters(pairingParameters, g, g1, g2, g3, us);
     }
 
     private CipherParameters masterSecretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement){
@@ -211,7 +212,7 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
                 g2Alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new HIBBELLW16MasterSecretKeyParameters(pairingParameters, g2Alpha);
+        return new HIBBELLW16aMasterSecretKeyParameters(pairingParameters, g2Alpha);
     }
 
     private CipherParameters secretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -239,7 +240,7 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
             }
         }
         elementIds = PairingUtils.MapToZr(pairing, ids);
-        return new HIBBELLW16SecretKeyParameters(pairingParameters, ids, elementIds, a0, a1, bs);
+        return new HIBBELLW16aSecretKeyParameters(pairingParameters, ids, elementIds, a0, a1, bs);
     }
 
     private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -257,6 +258,6 @@ public class HIBBELLW16XMLSerializer implements PairingParameterXMLSerializer {
                 C1 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new HIBBELLW16CiphertextParameters(pairingParameters, C0, C1);
+        return new HIBBELLW16aCiphertextParameters(pairingParameters, C0, C1);
     }
 }

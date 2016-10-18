@@ -7,6 +7,8 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * Liu-Liu-Wu composite-order HIBBE ciphertext parameters.
  */
 public class HIBBELLW14CiphertextParameters extends PairingCiphertextParameters {
     private final Element C0;

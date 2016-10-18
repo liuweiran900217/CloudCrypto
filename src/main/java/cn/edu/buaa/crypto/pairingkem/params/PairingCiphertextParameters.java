@@ -5,6 +5,8 @@ import org.bouncycastle.crypto.CipherParameters;
 
 /**
  * Created by Weiran Liu on 15-9-30.
+ *
+ * Generic pairing-based ciphertext parameters.
  */
 public class PairingCiphertextParameters implements CipherParameters {
 
