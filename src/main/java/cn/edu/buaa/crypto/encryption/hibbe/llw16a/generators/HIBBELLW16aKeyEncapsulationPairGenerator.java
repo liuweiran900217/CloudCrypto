@@ -1,11 +1,11 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aCiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.HIBBELLW16aPublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

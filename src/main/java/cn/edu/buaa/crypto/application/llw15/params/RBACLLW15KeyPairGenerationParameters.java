@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -11,20 +11,16 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  */
 public class RBACLLW15KeyPairGenerationParameters extends KeyGenerationParameters {
     private int maxRoleNumber;
-    private int rBitLength;
-    private int qBitLength;
+    private PairingParameters pairingParameters;
 
-    public RBACLLW15KeyPairGenerationParameters(int rBitLength, int qBitLength, int maxRoleNumber) {
-        super(null, PairingUtils.STENGTH);
+    public RBACLLW15KeyPairGenerationParameters(PairingParameters pairingParameters, int maxRoleNumber) {
+        super(null, PairingParametersGenerationParameters.STENGTH);
 
-        this.rBitLength = rBitLength;
-        this.qBitLength = qBitLength;
+        this.pairingParameters = pairingParameters;
         this.maxRoleNumber = maxRoleNumber;
     }
 
-    public int getRBitLength() { return this.rBitLength; }
-
-    public int getQBitLength() { return this.qBitLength; }
+    public PairingParameters getPairingParameters() { return this.pairingParameters; }
 
     public int getMaxRoleNumber() { return this.maxRoleNumber; }
 }

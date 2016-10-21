@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.params;
 
 import cn.edu.buaa.crypto.access.AccessControlParameter;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
@@ -38,7 +38,7 @@ public class KPABERW13SecretKeyParameters extends PairingKeyParameters {
     }
 
     public Element[] getK0s() {
-        return Arrays.copyOf(this.k0s, this.k0s.length);
+        return this.k0s;
     }
 
     public Element getK0At(int index) {
@@ -46,7 +46,7 @@ public class KPABERW13SecretKeyParameters extends PairingKeyParameters {
     }
 
     public Element[] getK1s() {
-        return Arrays.copyOf(this.k1s, this.k1s.length);
+        return this.k1s;
     }
 
     public Element getK1At(int index) {
@@ -54,7 +54,7 @@ public class KPABERW13SecretKeyParameters extends PairingKeyParameters {
     }
 
     public Element[] getK2s() {
-        return Arrays.copyOf(this.k2s, this.k2s.length);
+        return this.k2s;
     }
 
     public Element getK2At(int index) {

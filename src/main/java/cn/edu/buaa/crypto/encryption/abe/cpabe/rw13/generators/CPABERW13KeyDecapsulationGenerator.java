@@ -7,14 +7,13 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13CiphertextPa
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13DecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13SecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -54,8 +53,7 @@ public class CPABERW13KeyDecapsulationGenerator implements PairingKeyDecapsulati
                 }
             }
             Element sessionKey = pairing.pairing(ciphertextParameters.getC0(), secretKeyParameters.getK0()).mul(temp.invert()).getImmutable();
-            byte[] byteArraySessionKey = sessionKey.toBytes();
-            return Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length);
+            return sessionKey.toBytes();
         } catch (UnsatisfiedAccessControlException e) {
             throw new InvalidCipherTextException("Attribute set does not satisfy the access policy");
         }

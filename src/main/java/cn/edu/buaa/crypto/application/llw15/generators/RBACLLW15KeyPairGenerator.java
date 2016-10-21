@@ -1,18 +1,19 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15KeyPairGenerationParameters;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15PublicKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 16/6/19.
+ *
+ * Liu-Liu-Wu role-based access control key pair generator.
  */
 public class RBACLLW15KeyPairGenerator {
     private RBACLLW15KeyPairGenerationParameters parameters;
@@ -22,7 +23,7 @@ public class RBACLLW15KeyPairGenerator {
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
+        PairingParameters parameters = this.parameters.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
 
         Element g = pairing.getG1().newRandomElement().getImmutable();

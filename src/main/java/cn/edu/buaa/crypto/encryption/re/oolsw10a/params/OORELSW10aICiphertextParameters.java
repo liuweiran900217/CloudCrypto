@@ -1,17 +1,17 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
+import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/4/7.
+ *
+ * Online/Offline Lewko-Sahai-Waters intermediate ciphertext parameters.
  */
 public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters {
     private final int length;
@@ -55,11 +55,11 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
 
     public Element getC0() { return this.C0.duplicate(); }
 
-    public Element[] getC1s() { return Arrays.copyOf(this.C1s, this.C1s.length); }
+    public Element[] getC1s() { return this.C1s; }
 
     public Element getC1At(int index) { return this.C1s[index].duplicate(); }
 
-    public Element[] getC2s() { return Arrays.copyOf(this.C2s, this.C2s.length); }
+    public Element[] getC2s() { return this.C2s; }
 
     public Element getC2At(int index) { return this.C2s[index].duplicate(); }
 
@@ -67,13 +67,13 @@ public class OORELSW10aICiphertextParameters extends PairingCiphertextParameters
 
     public Element getCv2() { return this.Cv2.duplicate(); }
 
-    public Element[] getIs() { return Arrays.copyOf(this.Is, this.Is.length); }
+    public Element[] getIs() { return this.Is; }
 
     public Element getIAt(int index) { return this.Is[index].duplicate(); }
 
     public Element getIv() { return this.Iv.duplicate(); }
 
-    public Element[] getSs() { return Arrays.copyOf(this.ss, this.ss.length); }
+    public Element[] getSs() { return this.ss; }
 
     public Element getSsAt(int index) { return this.ss[index].duplicate(); }
 

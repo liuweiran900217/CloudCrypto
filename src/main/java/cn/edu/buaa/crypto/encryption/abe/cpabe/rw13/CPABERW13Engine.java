@@ -6,7 +6,7 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13KeyEncap
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.*;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;

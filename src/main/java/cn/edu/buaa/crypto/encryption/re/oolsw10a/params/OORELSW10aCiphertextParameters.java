@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
+import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;

@@ -1,7 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.chameleonhash.CHEngine;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -14,7 +13,7 @@ public class CHCZK04KeyGenerationParameters extends KeyGenerationParameters {
     private PairingParameters pairingParameters;
 
     public CHCZK04KeyGenerationParameters(PairingParameters pairingParameters) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.pairingParameters = pairingParameters;
     }
 

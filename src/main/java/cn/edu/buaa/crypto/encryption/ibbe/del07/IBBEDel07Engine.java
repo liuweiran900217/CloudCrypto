@@ -6,7 +6,7 @@ import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyEncapsula
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.params.*;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;

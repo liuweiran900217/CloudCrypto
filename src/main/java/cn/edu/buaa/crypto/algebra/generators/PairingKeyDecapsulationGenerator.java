@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.pairingkem.generators;
+package cn.edu.buaa.crypto.algebra.generators;
 
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;

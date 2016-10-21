@@ -3,7 +3,7 @@ package com.example.encryption.re.lsw10a;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serialization.RELSW10aXMLSerializer;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.encryption.re.REEngineTest;
 
 /**

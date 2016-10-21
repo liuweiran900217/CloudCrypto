@@ -1,6 +1,5 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**

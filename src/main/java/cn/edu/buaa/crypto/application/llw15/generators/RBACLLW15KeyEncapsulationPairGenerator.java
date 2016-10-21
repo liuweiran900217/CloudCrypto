@@ -1,18 +1,16 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15EncapsulationGenParameters;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15EncapsulationParameters;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15IntermediateParameters;
 import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15PublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 16/6/19.
@@ -55,7 +53,7 @@ public class RBACLLW15KeyEncapsulationPairGenerator implements PairingKeyEncapsu
             C1 = C1.mul(publicKeyParameters.getUv().powZn(w)).getImmutable();
             C1 = C1.powZn(beta).getImmutable();
             return new PairingKeyEncapsulationPair(
-                    Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
+                    byteArraySessionKey,
                     new RBACLLW15EncapsulationParameters(publicKeyParameters.getParameters(), C0, C1));
         } else {
             //encapsulate key using intermediate parameters
@@ -76,7 +74,7 @@ public class RBACLLW15KeyEncapsulationPairGenerator implements PairingKeyEncapsu
             C1 = C1.mul(intermediateParameters.get_G_h_r().powZn(elementId)).getImmutable();
             C1 = C1.mul(intermediateParameters.get_U_v_r().powZn(w)).getImmutable();
             return new PairingKeyEncapsulationPair(
-                    Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
+                    byteArraySessionKey,
                     new RBACLLW15EncapsulationParameters(publicKeyParameters.getParameters(), C0, C1));
         }
     }

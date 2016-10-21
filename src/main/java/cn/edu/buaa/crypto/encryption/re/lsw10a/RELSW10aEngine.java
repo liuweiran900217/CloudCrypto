@@ -6,7 +6,7 @@ import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyEncapsulati
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aSecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.*;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;

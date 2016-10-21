@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
@@ -47,13 +47,13 @@ public class CPABERW13SecretKeyParameters extends PairingKeyParameters {
 
     public String getAttributeAt(int index) { return this.attributes[index]; }
 
-    public String[] getAttributes() { return Arrays.copyOf(this.attributes, this.attributes.length); }
+    public String[] getAttributes() { return this.attributes; }
 
     public Element getElementAttributeAt(int index) { return this.elementAttributes[index].duplicate(); }
 
     public int getIndexWithAttribute(String attribute) { return this.attributesMap.get(attribute); }
 
-    public Element[] getElementAttributes() { return Arrays.copyOf(this.elementAttributes, this.elementAttributes.length); }
+    public Element[] getElementAttributes() { return this.elementAttributes; }
 
     public Element getK0() { return this.k0.duplicate(); }
 
@@ -61,11 +61,11 @@ public class CPABERW13SecretKeyParameters extends PairingKeyParameters {
 
     public Element getK2At(int index) { return this.k2s[index].duplicate(); }
 
-    public Element[] getK2s() { return Arrays.copyOf(this.k2s, this.k2s.length); }
+    public Element[] getK2s() { return this.k2s; }
 
     public Element getK3At(int index) { return this.k3s[index].duplicate(); }
 
-    public Element[] getK3s() { return Arrays.copyOf(this.k3s, this.k3s.length); }
+    public Element[] getK3s() { return this.k3s; }
 
     @Override
     public boolean equals(Object anOjbect) {

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.*;
 import it.unisa.dia.gas.jpbc.Element;

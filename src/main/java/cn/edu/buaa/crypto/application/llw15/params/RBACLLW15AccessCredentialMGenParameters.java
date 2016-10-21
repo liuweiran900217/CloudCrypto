@@ -1,10 +1,8 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 16/5/18.
@@ -22,11 +20,13 @@ public class RBACLLW15AccessCredentialMGenParameters extends KeyGenerationParame
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] roles, String time) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
         assert(roles.length == this.publicKeyParameters.getMaxRoleNumber());
-        this.roles = Arrays.copyOf(roles, roles.length);
+        this.roles = new String[roles.length];
+        System.arraycopy(roles, 0, this.roles, 0, this.roles.length);
+        this.roles = roles;
         this.time = time;
         //do not use intermediate parameters
         this.intermediateParameters = null;
@@ -35,11 +35,11 @@ public class RBACLLW15AccessCredentialMGenParameters extends KeyGenerationParame
     public RBACLLW15AccessCredentialMGenParameters(
             CipherParameters publicKeyParameters, CipherParameters masterSecretKeyParameters,
             CipherParameters intermediateParameters, String[] roles, String time) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
         assert(roles.length == this.publicKeyParameters.getMaxRoleNumber());
-        this.roles = Arrays.copyOf(roles, roles.length);
+        this.roles = roles;
         this.time = time;
         //use intermediate parameters
         this.intermediateParameters = (RBACLLW15IntermediateParameters)intermediateParameters;
@@ -54,7 +54,7 @@ public class RBACLLW15AccessCredentialMGenParameters extends KeyGenerationParame
     }
 
     public String[] getRoles() {
-        return Arrays.copyOf(roles, roles.length);
+        return roles;
     }
 
     public String getTime() { return this.time; }

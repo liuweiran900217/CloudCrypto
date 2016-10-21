@@ -2,7 +2,8 @@ package cn.edu.buaa.crypto.application.llw15;
 
 import cn.edu.buaa.crypto.application.llw15.generators.*;
 import cn.edu.buaa.crypto.application.llw15.params.*;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -32,14 +33,13 @@ public class RBACLLW15Engine {
 
     /**
      * Setup algorithm
-     * @param rBitLength Order of Z_r bit length
-     * @param qBitLength Order of G/G_T bit length
+     * @param pairingParameters the base pairing groups.
      * @param maxRoleNumber maximal number of atom roles
      * @return public key / master secret key pairs
      */
-    public AsymmetricCipherKeyPair Setup(int rBitLength, int qBitLength, int maxRoleNumber) {
+    public AsymmetricCipherKeyPair Setup(PairingParameters pairingParameters, int maxRoleNumber) {
         RBACLLW15KeyPairGenerator keyPairGenerator = new RBACLLW15KeyPairGenerator();
-        keyPairGenerator.init(new RBACLLW15KeyPairGenerationParameters(rBitLength, qBitLength, maxRoleNumber));
+        keyPairGenerator.init(new RBACLLW15KeyPairGenerationParameters(pairingParameters, maxRoleNumber));
 
         return keyPairGenerator.generateKeyPair();
     }

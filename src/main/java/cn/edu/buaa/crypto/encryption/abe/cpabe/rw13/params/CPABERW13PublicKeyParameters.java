@@ -1,13 +1,10 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/9/19.

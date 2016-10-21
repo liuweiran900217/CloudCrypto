@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.algebra;
+package cn.edu.buaa.crypto.algebra.algorithms;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;

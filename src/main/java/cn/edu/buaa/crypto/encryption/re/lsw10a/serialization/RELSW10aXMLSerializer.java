@@ -1,18 +1,17 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.serialization;
 
-import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.SerializationUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aSecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;

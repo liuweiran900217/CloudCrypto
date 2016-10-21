@@ -1,6 +1,6 @@
-package cn.edu.buaa.crypto.pairingkem.generators;
+package cn.edu.buaa.crypto.algebra.generators;
 
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**

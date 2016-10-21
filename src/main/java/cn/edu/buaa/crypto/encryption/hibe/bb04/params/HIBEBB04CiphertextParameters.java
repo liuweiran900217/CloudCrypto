@@ -1,12 +1,10 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-9-30.
@@ -32,7 +30,7 @@ public class HIBEBB04CiphertextParameters extends PairingCiphertextParameters {
 
     public Element getCsAt(int index) { return this.Cs[index].duplicate(); }
 
-    public Element[] getCs() { return Arrays.copyOf(Cs, Cs.length); }
+    public Element[] getCs() { return this.Cs; }
 
     @Override
     public boolean equals(Object anObject) {

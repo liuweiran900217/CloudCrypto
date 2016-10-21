@@ -5,12 +5,10 @@ import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 
 import java.util.Map;

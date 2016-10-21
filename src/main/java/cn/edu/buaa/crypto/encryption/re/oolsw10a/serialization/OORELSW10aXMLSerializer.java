@@ -1,22 +1,19 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.serialization;
 
-import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.SerializationUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
 import cn.edu.buaa.crypto.chameleonhash.CHEngineManager;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
-import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.CHCZK04Engine;
-import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.CHKR00Engine;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.OORELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.*;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

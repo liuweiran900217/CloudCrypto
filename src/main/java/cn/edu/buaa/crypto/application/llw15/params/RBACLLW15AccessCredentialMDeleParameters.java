@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -19,7 +19,7 @@ public class RBACLLW15AccessCredentialMDeleParameters extends KeyGenerationParam
     public RBACLLW15AccessCredentialMDeleParameters(
             CipherParameters publicKeyParameters, CipherParameters accessCredentialMParameters,
             int index, String role) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
         this.accessCredentialMParameters = (RBACLLW15AccessCredentialMParameters)accessCredentialMParameters;
         assert(this.accessCredentialMParameters.getRoleAt(index) == null);
@@ -32,7 +32,7 @@ public class RBACLLW15AccessCredentialMDeleParameters extends KeyGenerationParam
     public RBACLLW15AccessCredentialMDeleParameters(
             CipherParameters publicKeyParameters, CipherParameters accessCredentialMParameters,
             CipherParameters intermediateParameters, int index, String role) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
         this.accessCredentialMParameters = (RBACLLW15AccessCredentialMParameters)accessCredentialMParameters;
         assert(this.accessCredentialMParameters.getRoleAt(index) == null);

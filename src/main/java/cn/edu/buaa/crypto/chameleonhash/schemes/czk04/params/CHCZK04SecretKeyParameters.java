@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashSecretKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.CHCZK04Engine;

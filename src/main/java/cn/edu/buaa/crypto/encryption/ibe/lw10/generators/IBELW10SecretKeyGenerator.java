@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10SecretKeyGenerationParameters;

@@ -1,21 +1,18 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10PublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.util.Arrays;
-
 /**
- * Created by Weiran Liu on 16/5/7.
- * Modified by Weiran Liu on 16/5/16.
+ * Lewko-Waters IBE ciphertext / session key pair generator.
  */
 public class IBELW10KeyEncapsulationPairGenerator  implements PairingKeyEncapsulationPairGenerator {
 
@@ -39,7 +36,7 @@ public class IBELW10KeyEncapsulationPairGenerator  implements PairingKeyEncapsul
         Element C2 = publicKeyParameters.getG().powZn(s).getImmutable();
 
         return new PairingKeyEncapsulationPair(
-                Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
+                byteArraySessionKey,
                 new IBELW10CiphertextParameters(publicKeyParameters.getParameters(), C1, C2));
     }
 }

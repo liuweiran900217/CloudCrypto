@@ -6,7 +6,7 @@ import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aKeyEncap
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aSecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.params.*;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;

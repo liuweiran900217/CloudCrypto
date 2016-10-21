@@ -1,12 +1,10 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/9/20.
@@ -36,15 +34,15 @@ public class CPABERW13CiphertextParameters extends PairingCiphertextParameters {
 
     public Element getC1At(int index) { return this.C1s[index].duplicate(); }
 
-    public Element[] getC1s() { return Arrays.copyOf(this.C1s, this.C1s.length); }
+    public Element[] getC1s() { return this.C1s; }
 
     public Element getC2At(int index) { return this.C2s[index].duplicate(); }
 
-    public Element[] getC2s() { return Arrays.copyOf(this.C2s, this.C2s.length); }
+    public Element[] getC2s() { return this.C2s; }
 
     public Element getC3At(int index) { return this.C3s[index].duplicate(); }
 
-    public Element[] getC3s() { return Arrays.copyOf(this.C3s, this.C3s.length); }
+    public Element[] getC3s() { return this.C3s; }
 
     @Override
     public boolean equals(Object anObject) {

@@ -1,11 +1,15 @@
 package com.example.signature.pks;
 
-import cn.edu.buaa.crypto.signature.pks.PairingBasedDigestSigner;
-import cn.edu.buaa.crypto.signature.pks.PairingSignKeyPairGenerationParameters;
+import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.signature.pks.PairingDigestSigner;
+import cn.edu.buaa.crypto.signature.pks.bb04.BB04SignKeyPairGenerationParameters;
 import cn.edu.buaa.crypto.signature.pks.bb04.BB04SignKeyPairGenerator;
 import cn.edu.buaa.crypto.signature.pks.bb04.BB04Signer;
-import cn.edu.buaa.crypto.signature.pks.bls01.BLS01Signer;
+import cn.edu.buaa.crypto.signature.pks.bls01.BLS01SignKeyPairGenerationParameters;
 import cn.edu.buaa.crypto.signature.pks.bls01.BLS01SignKeyPairGenerator;
+import cn.edu.buaa.crypto.signature.pks.bls01.BLS01Signer;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
@@ -52,9 +56,27 @@ public class PKSSignerTest {
     }
 
     public static void main(String[] args) {
+        PairingParametersGenerationParameters pairingParametersGenerationParameters =
+                new PairingParametersGenerationParameters(
+                        PairingParametersGenerationParameters.PairingType.TYPE_A,
+                        PairingParametersGenerationParameters.DEFAULT_R_BIT_LENGTH,
+                        PairingParametersGenerationParameters.DEFAULT_Q_BIT_LENGTH);
+        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
+        pairingParametersGenerator.init(pairingParametersGenerationParameters);
+        PairingParameters pairingParameters = pairingParametersGenerator.generateParameters();
+
+        //test Boneh-Boyen signature.
+        System.out.println("Test Boneh-Boyen signature.");
         AsymmetricCipherKeyPairGenerator signKeyPairGenerator = new BB04SignKeyPairGenerator();
-        signKeyPairGenerator.init(new PairingSignKeyPairGenerationParameters(160, 256));
-        Signer signer = new PairingBasedDigestSigner(new BB04Signer(), new SHA256Digest());
+        signKeyPairGenerator.init(new BB04SignKeyPairGenerationParameters(pairingParameters));
+        Signer signer = new PairingDigestSigner(new BB04Signer(), new SHA256Digest());
+        new PKSSignerTest(signKeyPairGenerator, signer).processTest();
+
+        //test Boneh-Lynn-Shacham signature.
+        System.out.println("Test Boneh-Lynn-Shacham signature.");
+        signKeyPairGenerator = new BLS01SignKeyPairGenerator();
+        signKeyPairGenerator.init(new BLS01SignKeyPairGenerationParameters(pairingParameters));
+        signer = new PairingDigestSigner(new BLS01Signer(), new SHA256Digest());
         new PKSSignerTest(signKeyPairGenerator, signer).processTest();
     }
 }

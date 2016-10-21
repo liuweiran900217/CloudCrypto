@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashAsymmetricCipherKeyPair;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
@@ -10,8 +10,8 @@ import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aCiphertextGene
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aICiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aPublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -19,7 +19,6 @@ import org.bouncycastle.crypto.CipherParameters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/4/10.
@@ -118,7 +117,7 @@ public class OORELSW10aKeyEncapsulationPairGenerator implements PairingKeyEncaps
                 byteArrayOutputStream.close();
 
                 return new PairingKeyEncapsulationPair(
-                        Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
+                        byteArraySessionKey,
                         new OORELSW10aCiphertextParameters(publicKeyParameters.getParameters(), this.params.getLength(),
                                 C0, C1s, C2s, Cv1, Cv2,
                                 chameleonHashPublicKeyParameters, chameleonHashResultParameters)

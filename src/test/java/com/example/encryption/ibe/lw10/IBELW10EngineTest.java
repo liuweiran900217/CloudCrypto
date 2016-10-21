@@ -3,7 +3,7 @@ package com.example.encryption.ibe.lw10;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.IBELW10Engine;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serialization.IBELW10XMLSerializer;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.encryption.ibe.IBEEngineTest;
 
 /**

@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.application.qlw17;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 

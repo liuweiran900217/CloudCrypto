@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -19,7 +19,7 @@ public class RBACLLW15AccessCredentialPGenParameters extends KeyGenerationParame
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String id) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
         this.id = id;
@@ -31,7 +31,7 @@ public class RBACLLW15AccessCredentialPGenParameters extends KeyGenerationParame
                                                    CipherParameters masterSecretKeyParameters,
                                                    CipherParameters intermediateParameters,
                                                    String id) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeyParameters)publicKeyParameters;
         this.id = id;

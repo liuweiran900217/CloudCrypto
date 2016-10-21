@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -16,7 +16,7 @@ public class CPABERW13KeyPairGenerationParameters extends KeyGenerationParameter
     private int qBitLength;
 
     public CPABERW13KeyPairGenerationParameters(int rBitLength, int qBitLength, AccessControlEngine accessControlEngine) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
 
         this.rBitLength = rBitLength;
         this.qBitLength = qBitLength;

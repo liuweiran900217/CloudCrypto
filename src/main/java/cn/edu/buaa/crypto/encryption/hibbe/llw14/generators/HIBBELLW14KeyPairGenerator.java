@@ -1,14 +1,12 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14KeyPairGenerationParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14PublicKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.a1.TypeA1CurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;

@@ -1,9 +1,12 @@
 package com.example.application.llw15;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.utils.Timer;
 import edu.princeton.cs.algs4.Out;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -16,9 +19,6 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 public class RBACLLW15PerformanceTest {
     //file path for performance test result
     private static final String path = "benchmarks/application/LLW15/benchmark.txt";
-    private static final int r_bit_length = 160;
-    //the q bit length is chosen according to the reviewer #2 from The Computer Journal.
-    private static final int q_bit_length = 512;
     //the test round is chosen according to the full version of our paper.
     private static final int test_round = 100;
     //the maximal depth of roles is chosen according to the full version of our paper.
@@ -67,11 +67,13 @@ public class RBACLLW15PerformanceTest {
     private double[][] timeEHRDecapsulationM = new double[maximal_depth][maximal_roles];
 
     private RBACLLW15Engine engine;
+    private PairingParameters pairingParameters;
 
     private Out out;
 
-    private RBACLLW15PerformanceTest(RBACLLW15Engine engine) {
+    private RBACLLW15PerformanceTest(PairingParameters pairingParameters, RBACLLW15Engine engine) {
         this.engine = engine;
+        this.pairingParameters = pairingParameters;
         out = new Out(path);
 
         //create role vectors for medical staff
@@ -200,7 +202,7 @@ public class RBACLLW15PerformanceTest {
         System.out.print("Setup; ");
         out.print("Setup : ");
         timer.start(0);
-        AsymmetricCipherKeyPair keyPair = engine.Setup(r_bit_length, q_bit_length, maximal_roles);
+        AsymmetricCipherKeyPair keyPair = engine.Setup(pairingParameters, maximal_roles);
         temperTime = timer.stop(0);
         out.print("\t" + temperTime);
         this.timeSetep += temperTime;
@@ -364,6 +366,15 @@ public class RBACLLW15PerformanceTest {
     }
 
     public static void main(String[] args) {
-        new RBACLLW15PerformanceTest(RBACLLW15Engine.getInstance()).performanceTest();
+        final int r_bit_length = 160;
+        //the q bit length is chosen according to the reviewer #2 from The Computer Journal.
+        final int q_bit_length = 512;
+
+        PairingParametersGenerationParameters pairingParametersGenerationParameters =
+                new PairingParametersGenerationParameters(PairingParametersGenerationParameters.PairingType.TYPE_A, r_bit_length, q_bit_length);
+        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
+        pairingParametersGenerator.init(pairingParametersGenerationParameters);
+        PairingParameters pairingParameters = pairingParametersGenerator.generateParameters();
+        new RBACLLW15PerformanceTest(pairingParameters, RBACLLW15Engine.getInstance()).performanceTest();
     }
 }

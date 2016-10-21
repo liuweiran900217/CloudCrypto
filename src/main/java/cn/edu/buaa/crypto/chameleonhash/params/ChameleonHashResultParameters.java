@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 

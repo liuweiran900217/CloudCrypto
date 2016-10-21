@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.pairingkem.params;
+package cn.edu.buaa.crypto.algebra.params;
 
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;

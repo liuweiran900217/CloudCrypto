@@ -1,21 +1,21 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14DecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14SecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * Liu-Liu-Wu prime-order HIBBE session key decapsulation generator.
  */
 public class HIBBELLW14KeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
     private HIBBELLW14DecapsulationParameters params;
@@ -52,7 +52,6 @@ public class HIBBELLW14KeyDecapsulationGenerator implements PairingKeyDecapsulat
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();
         Element sessionKey = temp0.div(temp1).getImmutable();
-        byte[] byteArraySessionKey = sessionKey.toBytes();
-        return Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length);
+        return sessionKey.toBytes();
     }
 }

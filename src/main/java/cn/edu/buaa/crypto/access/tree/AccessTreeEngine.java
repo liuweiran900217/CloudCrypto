@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.AccessTreeNode;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
-import cn.edu.buaa.crypto.algebra.LagrangePolynomial;
+import cn.edu.buaa.crypto.algebra.algorithms.LagrangePolynomial;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 
@@ -31,7 +31,7 @@ public class AccessTreeEngine implements AccessControlEngine {
     }
 
     public String getEngineName() {
-        return this.SCHEME_NAME;
+        return SCHEME_NAME;
     }
 
     public boolean isSupportThresholdGate() {
@@ -67,11 +67,11 @@ public class AccessTreeEngine implements AccessControlEngine {
     public Map<String, Element> reconstructOmegas(Pairing pairing, String[] attributes, AccessControlParameter accessControlParameter)
             throws UnsatisfiedAccessControlException {
         Map<String, String> collisionMap = new HashMap<String, String>();
-        for (int i = 0; i < attributes.length; i++) {
-            if (collisionMap.containsKey(attributes[i])) {
-                throw new UnsatisfiedAccessControlException("Invalid attribute set, containing identical attribute: " + attributes[i]);
+        for (String attribute : attributes) {
+            if (collisionMap.containsKey(attribute)) {
+                throw new UnsatisfiedAccessControlException("Invalid attribute set, containing identical attribute: " + attribute);
             } else {
-                collisionMap.put(attributes[i], attributes[i]);
+                collisionMap.put(attribute, attribute);
             }
         }
         SatisfiedAccessTreeNode satisfiedAccessTreeNode = SatisfiedAccessTreeNode.GetSatisfiedAccessTreeNode(pairing, accessControlParameter.getRootAccessTreeNode());
@@ -83,7 +83,7 @@ public class AccessTreeEngine implements AccessControlEngine {
         private final SatisfiedAccessTreeNode parentNode;
         private final SatisfiedAccessTreeNode[] childNodes;
         private final int index;
-        private final int label;
+
         private final int t;
         private final int n;
         private final boolean isLeafNode;
@@ -91,11 +91,11 @@ public class AccessTreeEngine implements AccessControlEngine {
         private int[] satisfiedIndex;
         private boolean isSatisfied;
 
-        public static SatisfiedAccessTreeNode GetSatisfiedAccessTreeNode(Pairing pairing, AccessTreeNode rootAccessTreeNode) {
+        static SatisfiedAccessTreeNode GetSatisfiedAccessTreeNode(Pairing pairing, AccessTreeNode rootAccessTreeNode) {
             return new SatisfiedAccessTreeNode(pairing, null, 0, rootAccessTreeNode);
         }
 
-        public static Map<String, Element> CalCoefficient(SatisfiedAccessTreeNode rootSatisfiedAccessTreeNode, String[] attributes) throws UnsatisfiedAccessControlException {
+        static Map<String, Element> CalCoefficient(SatisfiedAccessTreeNode rootSatisfiedAccessTreeNode, String[] attributes) throws UnsatisfiedAccessControlException {
             if (!rootSatisfiedAccessTreeNode.isAccessControlSatisfied(attributes)) {
                 throw new UnsatisfiedAccessControlException("Give attribute set does not satisfy access policy");
             } else {
@@ -109,14 +109,12 @@ public class AccessTreeEngine implements AccessControlEngine {
             this.pairing = pairing;
             this.parentNode = parentSatisfiedAccessTreeNode;
             this.index = index;
-            this.label = accessTreeNode.getLabel();
             if (accessTreeNode.isLeafNode()) {
                 this.childNodes = null;
                 this.t = 0;
                 this.n = 0;
                 this.attribute = accessTreeNode.getAttribute();
                 this.isLeafNode = true;
-                return;
             } else {
                 this.t = accessTreeNode.getT();
                 this.n = accessTreeNode.getN();
@@ -151,8 +149,8 @@ public class AccessTreeEngine implements AccessControlEngine {
 //                System.out.println("Node " + this.label + " has satisfied child nodes " + satisfiedChildNumber);
                 this.isSatisfied = (satisfiedChildNumber >= t);
             } else {
-                for (int i = 0; i < attributes.length; i++) {
-                    if (this.attribute.equals(attributes[i])) {
+                for (String attribute1 : attributes) {
+                    if (this.attribute.equals(attribute1)) {
                         this.isSatisfied = true;
                     }
                 }
@@ -162,9 +160,9 @@ public class AccessTreeEngine implements AccessControlEngine {
 
         private void calcCoefficients(Map<String, Element> coefficientElementsMap) {
             if (!this.isLeafNode && this.isSatisfied) {
-                for (int i = 0; i < this.childNodes.length; i++) {
-                    if (this.childNodes[i].isSatisfied) {
-                        this.childNodes[i].calcCoefficients(coefficientElementsMap);
+                for (SatisfiedAccessTreeNode childNode : this.childNodes) {
+                    if (childNode.isSatisfied) {
+                        childNode.calcCoefficients(coefficientElementsMap);
                     }
                 }
             } else {
@@ -174,9 +172,8 @@ public class AccessTreeEngine implements AccessControlEngine {
                 SatisfiedAccessTreeNode currentNode = this;
                 Element coefficientElement =  pairing.getZr().newOneElement().getImmutable();
                 while (currentNode.parentNode != null) {
-                    int currentIndex = currentNode.index;
                     currentNode = currentNode.parentNode;
-                    coefficientElement = coefficientElement.mulZn(LagrangePolynomial.calCoef(pairing, currentNode.satisfiedIndex, currentIndex)).getImmutable();
+                    coefficientElement = coefficientElement.mulZn(LagrangePolynomial.calCoef(pairing, currentNode.satisfiedIndex, currentNode.index)).getImmutable();
                 }
                 coefficientElementsMap.put(this.attribute, coefficientElement);
             }

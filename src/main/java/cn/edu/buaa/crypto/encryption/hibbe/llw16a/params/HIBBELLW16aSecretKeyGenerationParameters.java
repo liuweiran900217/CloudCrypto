@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -18,7 +18,7 @@ public class HIBBELLW16aSecretKeyGenerationParameters extends KeyGenerationParam
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.masterSecretKeyParameters = (HIBBELLW16aMasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (HIBBELLW16aPublicKeyParameters)publicKeyParameters;
         assert(ids.length == this.publicKeyParameters.getMaxUser());

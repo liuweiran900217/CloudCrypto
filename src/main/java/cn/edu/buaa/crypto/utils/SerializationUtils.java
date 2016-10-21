@@ -1,6 +1,6 @@
-package cn.edu.buaa.crypto;
+package cn.edu.buaa.crypto.utils;
 
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.*;
 import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.*;

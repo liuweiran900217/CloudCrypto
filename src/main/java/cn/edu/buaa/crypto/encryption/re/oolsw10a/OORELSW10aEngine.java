@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a;
 
 import cn.edu.buaa.crypto.chameleonhash.CHEngine;
-import cn.edu.buaa.crypto.chameleonhash.schemes.kr00.CHKR00Engine;
+import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.CHCZK04Engine;
 import cn.edu.buaa.crypto.encryption.re.OOREEngine;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.generators.*;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.*;
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -20,7 +20,7 @@ public class OORELSW10aEngine implements OOREEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "OOLSW10aRE";
 
-    private static final CHEngine default_ch_engine = CHKR00Engine.getInstance();
+    private static final CHEngine default_ch_engine = CHCZK04Engine.getInstance();
     private static OORELSW10aEngine engine;
     private CHEngine chEngineInstance = default_ch_engine;
 

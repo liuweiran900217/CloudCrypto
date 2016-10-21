@@ -1,12 +1,10 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 16/5/18.
@@ -33,7 +31,7 @@ public class RBACLLW15AccessCredentialPParameters extends PairingKeyParameters {
         this.b0Prime = b0Prime.getImmutable();
         this.bvPrime = bvPrime.getImmutable();
         this.bsPrime = ElementUtils.cloneImmutable(bsPrime);
-        this.id = new String(id);
+        this.id = id;
         this.elementId = elementId.getImmutable();
     }
 
@@ -51,7 +49,7 @@ public class RBACLLW15AccessCredentialPParameters extends PairingKeyParameters {
 
     public Element getBsPrimeAt(int index) { return this.bsPrime[index].duplicate(); }
 
-    public Element[] getBsPrime() { return Arrays.copyOf(bsPrime, bsPrime.length); }
+    public Element[] getBsPrime() { return this.bsPrime; }
 
     @Override
     public boolean equals(Object anOjbect) {

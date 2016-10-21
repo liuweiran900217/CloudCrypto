@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.encryption.re.oolsw10a.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aDecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aPublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.oolsw10a.params.OORELSW10aSecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -15,10 +15,11 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/4/10.
+ *
+ *
  */
 public class OORELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
     private OORELSW10aDecapsulationParameters params;
@@ -112,8 +113,7 @@ public class OORELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulat
             }
             Element sessionKey = pairing.pairing(ciphertextParameters.getC0(), secretKeyParameters.getD0())
                     .mul(pairing.pairing(secretKeyParameters.getD1(), C1).mul(pairing.pairing(secretKeyParameters.getD2(), C2)).invert()).getImmutable();
-            byte[] byteArraySessionKey = sessionKey.toBytes();
-            return Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length);
+            return sessionKey.toBytes();
         } catch (IOException e) {
             e.printStackTrace();
             return null;

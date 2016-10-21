@@ -5,10 +5,14 @@ import cn.edu.buaa.crypto.chameleonhash.params.*;
 import cn.edu.buaa.crypto.chameleonhash.serialization.ChameleonHashXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
+import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.field.z.SymmetricZrElement;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.w3c.dom.Document;
 
 import java.io.File;
+import java.math.BigInteger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,6 +69,7 @@ public class CHEngineTest {
         Element[] rCollision = hash1CollisionParameters.getRs();
         ChameleonHashResultParameters hash1CollisionParametersPrime = this.engine.chameleonHash(publicKey, message2.getBytes(), rCollision);
         assertEquals(hash1Parameters.getHashResult(), hash1CollisionParametersPrime.getHashResult());
+        BigInteger bigInteger = hash1Parameters.getHashResult().toBigInteger();
         System.out.println("Expect:" + hash1Parameters.getHashResult() + "\nActual:" +  hash1CollisionParametersPrime.getHashResult());
 
         //Test Serialize & deserialize

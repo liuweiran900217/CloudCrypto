@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.schemes.czk04.serialization;
 
-import cn.edu.buaa.crypto.SerializationUtils;
+import cn.edu.buaa.crypto.utils.SerializationUtils;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashPublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.params.ChameleonHashResultParameters;
@@ -10,12 +10,9 @@ import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params.CHCZK04HashResultPa
 import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params.CHCZK04PublicKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.schemes.czk04.params.CHCZK04SecretKeyParameters;
 import cn.edu.buaa.crypto.chameleonhash.serialization.ChameleonHashXMLSerializer;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.serialization.RELSW10aXMLSerializer;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.util.encoders.Hex;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,6 +21,8 @@ import java.security.InvalidParameterException;
 
 /**
  * Created by Weiran Liu on 2016/4/8.
+ *
+ * Chen-Zhang-Kim chameleon hash XML serializer.
  */
 public class CHCZK04XMLSerializer implements ChameleonHashXMLSerializer {
     private static final String TAG_SCHEME_NAME = CHCZK04Engine.SCHEME_NAME;
@@ -45,7 +44,7 @@ public class CHCZK04XMLSerializer implements ChameleonHashXMLSerializer {
     public Document documentSerialization(ChameleonHashParameters chameleonHashParameters) {
         try {
             Document chameleonHashDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Element schemeElement = chameleonHashDocument.createElement(this.TAG_SCHEME_NAME);
+            Element schemeElement = chameleonHashDocument.createElement(TAG_SCHEME_NAME);
             chameleonHashDocument.appendChild(schemeElement);
             return this.documentSerialization(chameleonHashDocument, schemeElement, chameleonHashParameters);
         } catch (ParserConfigurationException e) {
@@ -71,17 +70,17 @@ public class CHCZK04XMLSerializer implements ChameleonHashXMLSerializer {
     private void publicKeyParametersSerialization(Document document, Element rootElement, CHCZK04PublicKeyParameters publicKeyParameters) {
         rootElement.setAttribute(ChameleonHashXMLSerializer.ATTRI_TYPE, ChameleonHashXMLSerializer.TYPE_PK);
         //Set G
-        SerializationUtils.SetElement(document, rootElement, this.TAG_PK_G, publicKeyParameters.getG());
+        SerializationUtils.SetElement(document, rootElement, TAG_PK_G, publicKeyParameters.getG());
         //Set Y
-        SerializationUtils.SetElement(document, rootElement, this.TAG_PK_Y, publicKeyParameters.getY());
+        SerializationUtils.SetElement(document, rootElement, TAG_PK_Y, publicKeyParameters.getY());
     }
 
     private void secretKeyParametersSerialization(Document document, Element rootElement, CHCZK04SecretKeyParameters secretKeyParameters) {
         rootElement.setAttribute(ChameleonHashXMLSerializer.ATTRI_TYPE, ChameleonHashXMLSerializer.TYPE_SK);
         //Set x
-        SerializationUtils.SetElement(document, rootElement, this.TAG_SK_x, secretKeyParameters.getX());
+        SerializationUtils.SetElement(document, rootElement, TAG_SK_x, secretKeyParameters.getX());
         //Set PublicKey
-        Element publicKeyElement = document.createElement(this.TAG_SK_PK);
+        Element publicKeyElement = document.createElement(TAG_SK_PK);
         rootElement.appendChild(publicKeyElement);
         CHCZK04PublicKeyParameters publicKeyParameters = (CHCZK04PublicKeyParameters)secretKeyParameters.getPublicKeyParameters();
         publicKeyParametersSerialization(document, publicKeyElement, publicKeyParameters);
@@ -157,7 +156,6 @@ public class CHCZK04XMLSerializer implements ChameleonHashXMLSerializer {
 
     private ChameleonHashResultParameters hashResultParametersDeserialization(PairingParameters pairingParameters, Element rootElement) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
-        int rLength = 3;
         NodeList nodeList = rootElement.getChildNodes();
         it.unisa.dia.gas.jpbc.Element hash = null;
         it.unisa.dia.gas.jpbc.Element hashResult = null;

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13MasterSecretKeyParameters;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13PublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13SecretKeyGenerationParameters;

@@ -3,7 +3,7 @@ package com.example.encryption.ibbe.del07;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.IBBEDel07Engine;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serialization.IBBEDel07XMLSerializer;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.encryption.ibbe.IBBEEngineTest;
 
 /**

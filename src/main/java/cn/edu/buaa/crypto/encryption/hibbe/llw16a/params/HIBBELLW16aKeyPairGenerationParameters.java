@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -14,7 +14,7 @@ public class HIBBELLW16aKeyPairGenerationParameters extends KeyGenerationParamet
     private int qBitLength;
 
     public HIBBELLW16aKeyPairGenerationParameters(int rBitLength, int qBitLength, int maxUser) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
 
         this.rBitLength = rBitLength;
         this.qBitLength = qBitLength;

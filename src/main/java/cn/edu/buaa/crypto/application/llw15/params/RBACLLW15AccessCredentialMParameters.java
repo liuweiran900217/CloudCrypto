@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
@@ -43,13 +43,13 @@ public class RBACLLW15AccessCredentialMParameters extends PairingKeyParameters {
         System.arraycopy(roles, 0, this.roles, 0, this.roles.length);
         this.elementRoles = ElementUtils.cloneImmutable(elementRoles);
 
-        this.time = new String(time);
+        this.time = time;
         this.elementTime = elementTime.getImmutable();
     }
 
     public String getRoleAt(int index) { return this.roles[index]; }
 
-    public String[] getRoles() { return Arrays.copyOf(roles, roles.length); }
+    public String[] getRoles() { return this.roles; }
 
     public String getTime() { return this.time; }
 
@@ -57,7 +57,7 @@ public class RBACLLW15AccessCredentialMParameters extends PairingKeyParameters {
 
     public Element getElementTime() { return this.elementTime.duplicate(); }
 
-    public Element[] getElementRoles() { return Arrays.copyOf(elementRoles, elementRoles.length); }
+    public Element[] getElementRoles() { return this.elementRoles; }
 
     public Element getA0() { return this.a0.duplicate(); }
 
@@ -69,7 +69,7 @@ public class RBACLLW15AccessCredentialMParameters extends PairingKeyParameters {
 
     public Element getBsAt(int index) { return this.bs[index].duplicate(); }
 
-    public Element[] getBs() { return Arrays.copyOf(bs, bs.length); }
+    public Element[] getBs() { return this.bs; }
 
     @Override
     public boolean equals(Object anOjbect) {

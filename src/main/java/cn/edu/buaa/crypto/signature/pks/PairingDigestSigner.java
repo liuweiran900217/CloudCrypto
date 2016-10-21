@@ -13,12 +13,12 @@ import java.io.IOException;
  *
  * Pairing-based digital signature.
  */
-public class PairingBasedDigestSigner implements Signer {
+public class PairingDigestSigner implements Signer {
     private final Digest digest;
     private final PairingSigner pairingSigner;
     private boolean forSigning;
 
-    public PairingBasedDigestSigner(PairingSigner signer, Digest digest)
+    public PairingDigestSigner(PairingSigner signer, Digest digest)
     {
         this.digest = digest;
         this.pairingSigner = signer;
@@ -64,7 +64,7 @@ public class PairingBasedDigestSigner implements Signer {
     {
         if (!forSigning)
         {
-            throw new IllegalStateException("PairingBasedDigestSigner not initialised for signature generation.");
+            throw new IllegalStateException("PairingDigestSigner not initialised for signature generation.");
         }
 
         byte[] hash = new byte[digest.getDigestSize()];
@@ -81,7 +81,7 @@ public class PairingBasedDigestSigner implements Signer {
 
     public boolean verifySignature(byte[] signature) {
         if (forSigning) {
-            throw new IllegalStateException("PairingBasedDigestSigner not initialised for verification");
+            throw new IllegalStateException("PairingDigestSigner not initialised for verification");
         }
 
         byte[] hash = new byte[digest.getDigestSize()];

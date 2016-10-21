@@ -1,10 +1,10 @@
 package cn.edu.buaa.crypto.application.llw15.serialization;
 
-import cn.edu.buaa.crypto.SerializationUtils;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.SerializationUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
 import cn.edu.buaa.crypto.application.llw15.params.*;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

@@ -1,21 +1,21 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aDecapsulationParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aSecretKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyDecapsulationGenerator;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Sahai-Waters revocation encryption session key decapsulation generator.
  */
 public class RELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulationGenerator {
     private RELSW10aDecapsulationParameters params;
@@ -31,8 +31,8 @@ public class RELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulatio
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIds = PairingUtils.MapToZr(pairing, this.params.getIds());
 
-        for (int i=0; i<elementIds.length; i++){
-            if (PairingUtils.isEqualElement(secretKeyParameters.getElementId(), elementIds[i])) {
+        for (Element elementId : elementIds) {
+            if (PairingUtils.isEqualElement(secretKeyParameters.getElementId(), elementId)) {
                 throw new InvalidCipherTextException("identity associated with the secret key is in the revocation list of the ciphertext");
             }
         }
@@ -46,7 +46,6 @@ public class RELSW10aKeyDecapsulationGenerator implements PairingKeyDecapsulatio
         }
         Element sessionKey = pairing.pairing(ciphertextParameters.getC0(), secretKeyParameters.getD0())
                 .mul(pairing.pairing(secretKeyParameters.getD1(), C1).mul(pairing.pairing(secretKeyParameters.getD2(), C2)).invert()).getImmutable();
-        byte[] byteArraySessionKey = sessionKey.toBytes();
-        return Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length);
+        return sessionKey.toBytes();
     }
 }

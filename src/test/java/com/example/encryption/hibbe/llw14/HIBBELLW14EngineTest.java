@@ -3,7 +3,7 @@ package com.example.encryption.hibbe.llw14;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serialization.HIBBELLW14XMLSerializer;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.encryption.hibbe.HIBBEEngineTest;
 
 /**

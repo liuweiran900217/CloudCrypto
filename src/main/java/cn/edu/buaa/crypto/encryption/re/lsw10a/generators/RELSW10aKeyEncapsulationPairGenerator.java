@@ -1,20 +1,20 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Sahai-Waters revocation encryption ciphertext / session key encapsulation pair generator.
  */
 public class RELSW10aKeyEncapsulationPairGenerator implements PairingKeyEncapsulationPairGenerator {
     private RELSW10aCiphertextGenerationParameters params;
@@ -47,7 +47,7 @@ public class RELSW10aKeyEncapsulationPairGenerator implements PairingKeyEncapsul
         }
 
         return new PairingKeyEncapsulationPair(
-                Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
+                byteArraySessionKey,
                 new RELSW10aCiphertextParameters(publicKeyParameters.getParameters(), this.params.getLength(), C0, C1s, C2s)
         );
     }

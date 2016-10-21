@@ -1,12 +1,9 @@
 package cn.edu.buaa.crypto.application.llw15.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import org.bouncycastle.crypto.CipherParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/10/8.
@@ -47,7 +44,7 @@ public class RBACLLW15IntermediateParameters implements CipherParameters {
 
     public Element get_U_s_r_at(int index) { return this.u_s_r[index]; }
 
-    public Element[] get_U_s_r() { return Arrays.copyOf(u_s_r, u_s_r.length); }
+    public Element[] get_U_s_r() { return this.u_s_r; }
 
     @Override
     public boolean equals(Object anOjbect) {

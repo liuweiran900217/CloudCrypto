@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe;
 
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -19,7 +19,7 @@ public interface HIBEEngine {
      * @param maxDepth maximal depth of hierarchy, ignore if the scheme is unbounded
      * @return public key / master secret key pair of the scheme
      */
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength, int maxDepth);
+    AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength, int maxDepth);
 
     /**
      * Secret Key Generation Algorithm for HIBE
@@ -28,7 +28,7 @@ public interface HIBEEngine {
      * @param ids associated identity vector
      * @return secret key associated with the identity vector ids
      */
-    public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String... ids);
+    CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String... ids);
 
     /**
      * Secret Key Delegation Algorithm for HIBE
@@ -37,7 +37,7 @@ public interface HIBEEngine {
      * @param id delegated identity
      * @return secret key associated with the identity vector (ids, id)
      */
-    public CipherParameters delegate(CipherParameters publicKey, CipherParameters secretKey, String id);
+    CipherParameters delegate(CipherParameters publicKey, CipherParameters secretKey, String id);
 
     /**
      * Key Encapsulation Algorithm for HIBE
@@ -45,7 +45,7 @@ public interface HIBEEngine {
      * @param ids an identity vector
      * @return session key / ciphertext pair associated with the identity vector ids
      */
-    public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids);
+    PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids);
 
     /**
      * Key Decapsulation Algorithm for HIBE
@@ -56,7 +56,7 @@ public interface HIBEEngine {
      * @return the decapsulated session key
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public byte[] decapsulation (
+    byte[] decapsulation (
             CipherParameters publicKey,
             CipherParameters secretKey,
             String[] ids,

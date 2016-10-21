@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.pairingkem.serialization;
+package cn.edu.buaa.crypto.algebra;
 
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.CipherParameters;

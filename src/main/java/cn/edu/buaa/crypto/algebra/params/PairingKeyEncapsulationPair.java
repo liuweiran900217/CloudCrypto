@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.pairingkem.params;
+package cn.edu.buaa.crypto.algebra.params;
 
 /**
  * Created by Weiran Liu on 15-9-30.

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -18,7 +18,7 @@ public class HIBEBB04DelegateGenerationParameters extends KeyGenerationParameter
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String id) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
         this.secretKeyParameters = (HIBEBB04SecretKeyParameters)secretKeyParameters;
         this.delegateId = id;

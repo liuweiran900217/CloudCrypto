@@ -1,9 +1,9 @@
 package com.example.encryption.ibbe;
 
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;

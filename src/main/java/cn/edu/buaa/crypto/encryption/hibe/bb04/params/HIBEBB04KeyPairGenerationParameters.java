@@ -1,9 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04KeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -17,7 +14,7 @@ public class HIBEBB04KeyPairGenerationParameters extends KeyGenerationParameters
     private int qBitLength;
 
     public HIBEBB04KeyPairGenerationParameters(int rBitLength, int qBitLength, int maxDepth) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
 
         this.maxDepth = maxDepth;
         this.rBitLength = rBitLength;

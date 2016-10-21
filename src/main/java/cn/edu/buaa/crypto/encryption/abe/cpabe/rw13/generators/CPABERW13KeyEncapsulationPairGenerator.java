@@ -2,18 +2,17 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13PublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -57,7 +56,7 @@ public class CPABERW13KeyEncapsulationPairGenerator  implements PairingKeyEncaps
         }
 
         return new PairingKeyEncapsulationPair(
-                Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
+                byteArraySessionKey,
                 new CPABERW13CiphertextParameters(publicKeyParameters.getParameters(), C0, C1s, C2s, C3s));
     }
 }

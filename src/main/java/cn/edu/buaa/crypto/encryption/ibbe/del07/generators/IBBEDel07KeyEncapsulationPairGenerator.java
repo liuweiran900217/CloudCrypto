@@ -1,19 +1,16 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
-import cn.edu.buaa.crypto.algebra.HornerRule;
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07CiphertextGenerationParameters;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07CiphertextParameters;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.generators.PairingKeyEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.crypto.InvalidCipherTextException;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/8/24.
@@ -56,7 +53,7 @@ public class IBBEDel07KeyEncapsulationPairGenerator implements PairingKeyEncapsu
         C2 = C2.powZn(k).getImmutable();
 
         return new PairingKeyEncapsulationPair(
-                Arrays.copyOf(byteArraySessionKey, byteArraySessionKey.length),
+                byteArraySessionKey,
                 new IBBEDel07CiphertextParameters(publicKeyParameters.getParameters(), C1, C2));
     }
 }

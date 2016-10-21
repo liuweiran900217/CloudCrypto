@@ -1,10 +1,11 @@
 package com.example.application.llw15;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
 import cn.edu.buaa.crypto.application.llw15.serialization.RBACLLW15XMLSerializer;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyEncapsulationPair;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
@@ -33,11 +34,15 @@ public class RBACLLW15EngineTest {
     }
 
     public void processTest(int rBitLength, int qBitLength) {
+        PairingParametersGenerationParameters pairingParametersGenerationParameters =
+                new PairingParametersGenerationParameters(PairingParametersGenerationParameters.PairingType.TYPE_A, rBitLength, qBitLength);
+        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
+        pairingParametersGenerator.init(pairingParametersGenerationParameters);
+        PairingParameters pairingParameters = pairingParametersGenerator.generateParameters();
         // Setup
-        AsymmetricCipherKeyPair keyPair = engine.Setup(rBitLength, qBitLength, 8);
+        AsymmetricCipherKeyPair keyPair = engine.Setup(pairingParameters, 8);
         CipherParameters publicKey = keyPair.getPublic();
         CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeyParameters)publicKey).getParameters();
 
         // Access Credential Generation for Medical Staff
         String[] role4    =    {null,      null,   null,       "Role_4",   null,       null,       null,       null};

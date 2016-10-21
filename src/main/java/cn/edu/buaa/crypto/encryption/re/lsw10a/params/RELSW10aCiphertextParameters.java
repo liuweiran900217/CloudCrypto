@@ -1,15 +1,15 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingCiphertextParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Sahai-Waters reovcation encryption ciphertext parameters.
  */
 public class RELSW10aCiphertextParameters extends PairingCiphertextParameters {
     private final int length;
@@ -31,11 +31,11 @@ public class RELSW10aCiphertextParameters extends PairingCiphertextParameters {
 
     public Element getC1sAt(int index) { return this.C1s[index].duplicate(); }
 
-    public Element[] getC1s() { return Arrays.copyOf(C1s, C1s.length); }
+    public Element[] getC1s() { return this.C1s; }
 
     public Element getC2sAt(int index) { return this.C2s[index].duplicate(); }
 
-    public Element[] getC2s() { return Arrays.copyOf(C2s, C2s.length); }
+    public Element[] getC2s() { return this.C2s; }
 
     @Override
     public boolean equals(Object anObject) {

@@ -1,10 +1,8 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
@@ -20,11 +18,12 @@ public class HIBBELLW14SecretKeyGenerationParameters extends KeyGenerationParame
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.masterSecretKeyParameters = (HIBBELLW14MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (HIBBELLW14PublicKeyParameters)publicKeyParameters;
         assert(ids.length == this.publicKeyParameters.getMaxUser());
-        this.ids = Arrays.copyOf(ids, ids.length);
+        this.ids = new String[ids.length];
+        System.arraycopy(ids, 0, this.ids, 0, this.ids.length);
     }
 
     public HIBBELLW14MasterSecretKeyParameters getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
@@ -36,6 +35,6 @@ public class HIBBELLW14SecretKeyGenerationParameters extends KeyGenerationParame
     }
 
     public String[] getIds() {
-        return Arrays.copyOf(ids, ids.length);
+        return this.ids;
     }
 }

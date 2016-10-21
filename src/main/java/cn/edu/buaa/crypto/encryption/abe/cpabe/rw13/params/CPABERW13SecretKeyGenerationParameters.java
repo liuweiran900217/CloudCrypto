@@ -1,10 +1,8 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/9/20.
@@ -20,10 +18,11 @@ public class CPABERW13SecretKeyGenerationParameters extends KeyGenerationParamet
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] attributes) {
-        super(null, PairingUtils.STENGTH);
+        super(null, PairingParametersGenerationParameters.STENGTH);
         this.masterSecretKeyParameters = (CPABERW13MasterSecretKeyParameters)masterSecretKeyParameters;
         this.publicKeyParameters = (CPABERW13PublicKeyParameters)publicKeyParameters;
-        this.attributes = Arrays.copyOf(attributes, attributes.length);
+        this.attributes = new String[attributes.length];
+        System.arraycopy(attributes, 0, this.attributes, 0, this.attributes.length);
     }
 
     public CPABERW13MasterSecretKeyParameters getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
@@ -35,7 +34,7 @@ public class CPABERW13SecretKeyGenerationParameters extends KeyGenerationParamet
     }
 
     public String[] getAttributes() {
-        return Arrays.copyOf(attributes, attributes.length);
+        return this.attributes;
     }
 
     public int getLength() {

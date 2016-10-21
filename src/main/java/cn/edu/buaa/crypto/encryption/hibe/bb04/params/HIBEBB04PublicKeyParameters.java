@@ -1,12 +1,10 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.algebra.PairingUtils;
-import cn.edu.buaa.crypto.pairingkem.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-9-30.
@@ -38,7 +36,7 @@ public class HIBEBB04PublicKeyParameters extends PairingKeyParameters {
 
     public Element getG2() { return this.g2.duplicate(); }
 
-    public Element[] getHs() { return Arrays.copyOf(this.hs, this.hs.length); }
+    public Element[] getHs() { return this.hs; }
 
     public Element getHsAt(int index) {
         return this.hs[index].duplicate();

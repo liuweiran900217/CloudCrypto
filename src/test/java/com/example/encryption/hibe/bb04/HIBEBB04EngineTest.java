@@ -3,7 +3,7 @@ package com.example.encryption.hibe.bb04;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serialization.HIBEBB04XMLSerializer;
-import cn.edu.buaa.crypto.pairingkem.serialization.PairingParameterXMLSerializer;
+import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.encryption.hibe.HIBEEngineTest;
 
 /**
