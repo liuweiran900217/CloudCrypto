@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.params;
 
 import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -10,16 +11,15 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  */
 public class HIBBELLW14KeyPairGenerationParameters extends KeyGenerationParameters {
     private int maxUser;
-    private int qBitLength;
+    private PairingParameters pairingParameters;
 
-    public HIBBELLW14KeyPairGenerationParameters(int qBitLength, int maxUser) {
+    public HIBBELLW14KeyPairGenerationParameters(PairingParameters pairingParameters, int maxUser) {
         super(null, PairingParametersGenerationParameters.STENGTH);
-
-        this.qBitLength = qBitLength;
+        this.pairingParameters = pairingParameters;
         this.maxUser = maxUser;
     }
 
-    public int getQBitLength() { return this.qBitLength; }
+    public PairingParameters getPairingParameters() { return this.pairingParameters; }
 
     public int getMaxUser() { return this.maxUser; }
 }

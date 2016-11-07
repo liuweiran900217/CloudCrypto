@@ -7,6 +7,7 @@ import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14KeyPairGen
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.*;
 import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -33,9 +34,9 @@ public class HIBBELLW14Engine implements HIBBEEngine {
 
     }
 
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength, int maxUser) {
+    public AsymmetricCipherKeyPair setup(PairingParameters pairingParameters, int maxUser) {
         HIBBELLW14KeyPairGenerator keyPairGenerator = new HIBBELLW14KeyPairGenerator();
-        keyPairGenerator.init(new HIBBELLW14KeyPairGenerationParameters(qBitLength, maxUser));
+        keyPairGenerator.init(new HIBBELLW14KeyPairGenerationParameters(pairingParameters, maxUser));
 
         return keyPairGenerator.generateKeyPair();
     }

@@ -30,12 +30,11 @@ public class HIBBEEngineTest {
         this.schemeXMLSerializer = schemeXMLSerializer;
     }
 
-    public void processTest(int rBitLength, int qBitLength) {
+    public void processTest(PairingParameters pairingParameters) {
         // Setup
-        AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength, 8);
+        AsymmetricCipherKeyPair keyPair = engine.setup(pairingParameters, 8);
         CipherParameters publicKey = keyPair.getPublic();
         CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeyParameters)publicKey).getParameters();
 
         // KeyGen
         String[] id4    = {null,    null,   null,   "ID_4", null,   null,   null,   null};

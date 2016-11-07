@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe;
 
 import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -14,12 +15,11 @@ public interface HIBBEEngine {
 
     /**
      * Setup Algorithm for HIBBE
-     * @param rBitLength Zr Bit Length, ignore if the scheme is based on composite-order bilinear groups
-     * @param qBitLength q Bit Length
+     * @param pairingParameters PairingParameters
      * @param maxUser maximal size of users, ignore if the scheme is unbounded
      * @return public key / master secret key pair of the scheme
      */
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength, int maxUser);
+    public AsymmetricCipherKeyPair setup(PairingParameters pairingParameters, int maxUser);
 
         /**
          * Secret Key Generation Algorithm for HIBBE

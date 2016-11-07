@@ -26,7 +26,7 @@ public class HIBBELLW14KeyPairGenerator implements AsymmetricCipherKeyPairGenera
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = PairingUtils.GenerateTypeA1Parameters(this.parameters.getQBitLength());
+        PropertiesParameters parameters = (PropertiesParameters) this.parameters.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
         Element generator = pairing.getG1().newRandomElement().getImmutable();
 
