@@ -21,13 +21,14 @@ public class HIBBEPerformanceTest {
     //file path for performance test result
     private static final String default_path = "benchmarks/encryption/hibbe/";
     //the test round is chosen according to the full version of our paper.
-    private static final int test_round = 25;
+    private int test_round = 25;
     //the maximal depth of roles is chosen according to the full version of our paper.
     private static final int maximal_depth = 10;
     //the maximal number of role index is chosen
     private static final int maximal_users = 100;
 
-    private final int qBitLength;
+    private int qBitLength = 512;
+    private int rBitLength = 160;
     //setup time
     private double timeSetep;
 
@@ -52,10 +53,8 @@ public class HIBBEPerformanceTest {
 
     private Out out;
 
-    private HIBBEPerformanceTest(int qBitLength, HIBBEEngine engine, String name) {
+    public HIBBEPerformanceTest(HIBBEEngine engine, String name) {
         this.engine = engine;
-        this.qBitLength = qBitLength;
-
         out = new Out(default_path + name);
 
         //create identity vectors
@@ -87,7 +86,19 @@ public class HIBBEPerformanceTest {
 //        }
     }
 
-    private void performanceTest() {
+    public void setTestRound(int round) {
+        this.test_round = round;
+    }
+
+    public void setRBitLength(int rBitLength) {
+        this.rBitLength = rBitLength;
+    }
+
+    public void setQBitLength(int qBitLength) {
+        this.qBitLength = qBitLength;
+    }
+
+    public void performanceTest() {
         for (int i = 0; i < test_round; i++) {
             System.out.println("Test round: " + (i+1));
             out.println("Test round: " + (i+1));
@@ -132,11 +143,13 @@ public class HIBBEPerformanceTest {
     }
 
     private void test_one_round() {
-        PairingParametersGenerationParameters pairingParametersGenerationParameters =
-                new PairingParametersGenerationParameters(3, qBitLength);
-        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
-        pairingParametersGenerator.init(pairingParametersGenerationParameters);
-        this.pairingParameters = pairingParametersGenerator.generateParameters();
+        if (this.engine instanceof HIBBELLW14Engine) {
+            PairingParametersGenerationParameters pairingParametersGenerationParameters =
+                    new PairingParametersGenerationParameters(3, qBitLength);
+            PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
+            pairingParametersGenerator.init(pairingParametersGenerationParameters);
+            this.pairingParameters = pairingParametersGenerator.generateParameters();
+        }
 
         double temperTime;
         Timer timer = new Timer(maximal_users);
@@ -213,12 +226,5 @@ public class HIBBEPerformanceTest {
         }
         out.println();
         System.out.println();
-    }
-
-    public static void main(String[] args) {
-        //the q bit length is chosen according to the reviewer #2 from The Computer Journal.
-        final int q_bit_length = 512;
-
-        new HIBBEPerformanceTest(q_bit_length, HIBBELLW14Engine.getInstance(), "HIBBE-LLW14.txt").performanceTest();
     }
 }
