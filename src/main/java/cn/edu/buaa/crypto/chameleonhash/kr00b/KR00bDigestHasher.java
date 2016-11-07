@@ -58,7 +58,7 @@ public class KR00bDigestHasher implements ChameleonHasher {
         digest.update(input, inOff, length);
     }
 
-    public byte[] computeHash() throws CryptoException, DataLengthException {
+    public byte[][] computeHash() throws CryptoException, DataLengthException {
         if (forCollisionFind) {
             throw new IllegalStateException("KR00bDigestHasher not initialised for hash computing");
         }
@@ -68,37 +68,48 @@ public class KR00bDigestHasher implements ChameleonHasher {
 
         BigInteger[] cHashResult = kr00bHasher.computeHash(hash);
         try {
-            return derEncode(cHashResult[0], cHashResult[1], cHashResult[2]);
+            return new byte[][] {
+                    encodeChameleonHashResult(cHashResult[0]),
+                    encodeAuxiliaryParameters(cHashResult[1], cHashResult[2]),
+            };
         } catch (IOException e) {
             throw new IllegalStateException("unable to encode chameleon hash for m");
         }
     }
 
-    public byte[] computeHash(byte[] cHashResult) throws CryptoException, DataLengthException {
+    public byte[][] computeHash(byte[] cHashResult, byte[] auxiliaryParameters) throws CryptoException, DataLengthException {
         if (forCollisionFind) {
             throw new IllegalStateException("KR00bDigestHasher not initialised for hash computing");
         }
         byte[] hash = new byte[digest.getDigestSize()];
         digest.doFinal(hash, 0);
 
-        BigInteger[] cHash;
+        BigInteger preCHash;
+        BigInteger preHash;
+        BigInteger preR;
         try {
-            cHash = derDecode(cHashResult);
+            preCHash = decodeChameleonHashResult(cHashResult);
+            BigInteger[] auxiliaryParams = decodeAuxiliaryParameters(auxiliaryParameters);
+            preHash = auxiliaryParams[0];
+            preR = auxiliaryParams[1];
         } catch (IOException e) {
             throw new IllegalStateException("unable to decode chameleon hash for m");
         }
-        BigInteger[] cHashPrime = kr00bHasher.computeHash(hash, cHash[2]);
-        if (!cHashPrime[1].equals(cHash[1])) {
+        BigInteger[] cHashPrime = kr00bHasher.computeHash(hash, preR);
+        if (!cHashPrime[0].equals(preCHash) || !cHashPrime[1].equals(preHash)) {
             throw new IllegalStateException("the input r is not used previously to compute chameleon hash m");
         }
         try {
-            return derEncode(cHashPrime[0], cHashPrime[1], cHashPrime[2]);
+            return new byte[][] {
+                    encodeChameleonHashResult(cHashPrime[0]),
+                    encodeAuxiliaryParameters(cHashPrime[1], cHashPrime[2]),
+            };
         } catch (IOException e) {
             throw new IllegalStateException("unable to encode chameleon hash for m");
         }
     }
 
-    public byte[] findCollision(byte[] chameleonHashResult) {
+    public byte[][] findCollision(byte[] chameleonHashResult, byte[] auxiliaryParameters) {
         if (!forCollisionFind) {
             throw new IllegalStateException("KR00DigestHasher not initialised for collision finding.");
         }
@@ -106,16 +117,24 @@ public class KR00bDigestHasher implements ChameleonHasher {
         byte[] mPrime = new byte[digest.getDigestSize()];
         digest.doFinal(mPrime, 0);
 
-        BigInteger[] cHash;
+        BigInteger preCHash;
+        BigInteger preHash;
+        BigInteger preR;
         try {
-            cHash = derDecode(chameleonHashResult);
+            preCHash = decodeChameleonHashResult(chameleonHashResult);
+            BigInteger[] auxiliaryParams = decodeAuxiliaryParameters(auxiliaryParameters);
+            preHash = auxiliaryParams[0];
+            preR = auxiliaryParams[1];
         } catch (IOException e) {
             throw new IllegalStateException("unable to decode chameleon hash for m");
         }
 
-        BigInteger[] cHashPrime = kr00bHasher.findCollision(mPrime, cHash[1], cHash[0], cHash[2]);
+        BigInteger[] cHashPrime = kr00bHasher.findCollision(mPrime, preHash, preCHash, preR);
         try {
-            return derEncode(cHashPrime[0], cHashPrime[1], cHashPrime[2]);
+            return new byte[][] {
+                    encodeChameleonHashResult(cHashPrime[0]),
+                    encodeAuxiliaryParameters(cHashPrime[1], cHashPrime[2]),
+            };
         } catch (IOException e) {
             throw new IllegalStateException("unable to encode chameleon hash for m'");
         }
@@ -126,33 +145,31 @@ public class KR00bDigestHasher implements ChameleonHasher {
         digest.reset();
     }
 
-    public boolean isEqualHash(byte[] cHashResult, byte[] anCHashResult) {
-        BigInteger[] cHash1, cHash2;
-        try {
-            cHash1 = derDecode(cHashResult);
-            cHash2 = derDecode(anCHashResult);
-        } catch (IOException e) {
-            throw new IllegalStateException("unable to decode chameleon hash for m");
-        }
-        return cHash1[0].equals(cHash2[0]);
-    }
-
-    private byte[] derEncode(BigInteger cHashResult, BigInteger hashResult, BigInteger r) throws IOException {
+    private byte[] encodeChameleonHashResult(BigInteger cHashResult) throws IOException {
         ASN1EncodableVector v = new ASN1EncodableVector();
         v.add(new ASN1Integer(cHashResult));
+        return new DERSequence(v).getEncoded(ASN1Encoding.DER);
+    }
+
+    private byte[] encodeAuxiliaryParameters(BigInteger hashResult, BigInteger r) throws IOException {
+        ASN1EncodableVector v = new ASN1EncodableVector();
         v.add(new ASN1Integer(hashResult));
         v.add(new ASN1Integer(r));
 
         return new DERSequence(v).getEncoded(ASN1Encoding.DER);
     }
 
-    private BigInteger[] derDecode(byte[] encoding) throws IOException {
+    private BigInteger decodeChameleonHashResult(byte[] encoding) throws IOException {
+        ASN1Sequence s = (ASN1Sequence)ASN1Primitive.fromByteArray(encoding);
+        return ((ASN1Integer)s.getObjectAt(0)).getValue();
+    }
+
+    private BigInteger[] decodeAuxiliaryParameters(byte[] encoding) throws IOException {
         ASN1Sequence s = (ASN1Sequence)ASN1Primitive.fromByteArray(encoding);
         return new BigInteger[]
                 {
                         ((ASN1Integer)s.getObjectAt(0)).getValue(),
                         ((ASN1Integer)s.getObjectAt(1)).getValue(),
-                        ((ASN1Integer)s.getObjectAt(2)).getValue(),
                 };
     }
 }

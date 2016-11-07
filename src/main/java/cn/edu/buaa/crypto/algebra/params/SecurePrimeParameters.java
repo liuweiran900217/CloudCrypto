@@ -1,5 +1,7 @@
 package cn.edu.buaa.crypto.algebra.params;
 
+import org.bouncycastle.crypto.CipherParameters;
+
 import java.math.BigInteger;
 
 /**
@@ -7,7 +9,7 @@ import java.math.BigInteger;
  *
  * Secure prime parameters {p, q: p = 2q + 1}
  */
-public class SecurePrimeParameters {
+public class SecurePrimeParameters implements CipherParameters {
     private static final BigInteger TWO = BigInteger.valueOf(2);
 
     public static final SecurePrimeParameters RFC3526_1536BIT_MODP_GROUP = new SecurePrimeParameters(

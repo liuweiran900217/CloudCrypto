@@ -9,10 +9,10 @@ import java.math.BigInteger;
  *
  * Krawczyk-Rabin public key parameters
  */
-public class DLogKR00BPublicKeyParameters extends DLogKR00bKeyParameters {
+class DLogKR00bPublicKeyParameters extends DLogKR00bKeyParameters {
     private BigInteger y;
 
-    public DLogKR00BPublicKeyParameters(BigInteger y, SecurePrimeParameters params) {
+    DLogKR00bPublicKeyParameters(BigInteger y, SecurePrimeParameters params) {
         super(false, params);
         this.y = y;
     }

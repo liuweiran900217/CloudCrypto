@@ -13,7 +13,7 @@ import java.security.SecureRandom;
  * Krawczyk-Rabin Chameleon hash scheme
  */
 public class DLogKR00bHasher implements KR00b {
-    private DLogKR00bKeyParameters key;
+    protected DLogKR00bKeyParameters key;
     private SecureRandom random;
 
     /**
@@ -25,9 +25,9 @@ public class DLogKR00bHasher implements KR00b {
 
     public void init(boolean forCollisionFind, CipherParameters param) {
         if (forCollisionFind) {
-            this.key = (DLogKR00BSecretKeyParameters)param;
+            this.key = (DLogKR00bSecretKeyParameters)param;
         } else {
-            this.key = (DLogKR00BPublicKeyParameters)param;
+            this.key = (DLogKR00bPublicKeyParameters)param;
         }
         this.random = new SecureRandom();
     }
@@ -37,7 +37,7 @@ public class DLogKR00bHasher implements KR00b {
         BigInteger p = this.key.getParameters().getP();
         BigInteger g = this.key.getParameters().getG();
         BigInteger m = calculateE(q, message);
-        BigInteger y = ((DLogKR00BPublicKeyParameters)this.key).getY();
+        BigInteger y = ((DLogKR00bPublicKeyParameters)this.key).getY();
 
         int qBitLength = q.bitLength();
         BigInteger r;
@@ -56,7 +56,7 @@ public class DLogKR00bHasher implements KR00b {
         BigInteger p = this.key.getParameters().getP();
         BigInteger g = this.key.getParameters().getG();
         BigInteger m = calculateE(q, message);
-        BigInteger y = ((DLogKR00BPublicKeyParameters)this.key).getY();
+        BigInteger y = ((DLogKR00bPublicKeyParameters)this.key).getY();
 
         BigInteger hash = g.modPow(m, p).multiply(y.modPow(r, p)).mod(p);
         return new BigInteger[]{ hash, m, r };
@@ -66,7 +66,7 @@ public class DLogKR00bHasher implements KR00b {
         SecurePrimeParameters params = key.getParameters();
         BigInteger q = params.getQ();
         BigInteger mPrime = calculateE(q, messagePrime);
-        BigInteger x = ((DLogKR00BSecretKeyParameters)key).getX();
+        BigInteger x = ((DLogKR00bSecretKeyParameters)key).getX();
 
         BigInteger rPrime = x.modInverse(q).multiply(message.subtract(mPrime).mod(q)).mod(q).add(r).mod(q);
 

@@ -31,8 +31,8 @@ public class DLogKR00bKeyPairGenerator implements AsymmetricCipherKeyPairGenerat
         BigInteger y = calculatePublicKey(securePrimeParameters.getP(), securePrimeParameters.getG(), x);
 
         return new AsymmetricCipherKeyPair(
-                new DLogKR00BPublicKeyParameters(y, securePrimeParameters),
-                new DLogKR00BSecretKeyParameters(x, securePrimeParameters));
+                new DLogKR00bPublicKeyParameters(y, securePrimeParameters),
+                new DLogKR00bSecretKeyParameters(x, securePrimeParameters));
     }
 
     private static BigInteger generatePrivateKey(BigInteger q, SecureRandom random) {

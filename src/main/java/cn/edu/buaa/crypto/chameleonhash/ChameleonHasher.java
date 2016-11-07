@@ -4,6 +4,7 @@ import it.unisa.dia.gas.jpbc.Element;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.CryptoException;
 import org.bouncycastle.crypto.DataLengthException;
+import org.bouncycastle.crypto.Digest;
 
 import java.io.IOException;
 
@@ -13,7 +14,6 @@ import java.io.IOException;
  * Chameleon hash scheme interface
  */
 public interface ChameleonHasher {
-
     /**
      * Initialise the chameleon hasher for finding a collision or computing a hash result.
      *
@@ -35,24 +35,18 @@ public interface ChameleonHasher {
     /**
      * compute the chameleon hash for the message we've been loaded with using the key we were initialised with.
      */
-    byte[] computeHash() throws CryptoException, DataLengthException;
+    byte[][] computeHash() throws CryptoException, DataLengthException;
 
     /**
      * compute the chameleon hash for the message we've been loaded with using the key we were initialised with,
      * and the chameleon hash result (with randomness r) that were previously used to compute.
      */
-    byte[] computeHash(byte[] cHashResult) throws CryptoException, DataLengthException;
+    byte[][] computeHash(byte[] cHashResult, byte[] auxiliaryParameters) throws CryptoException, DataLengthException;
 
-    /**
-     * return true if the internal state represents the signature described
-     * in the passed in array.
-     */
-    byte[] findCollision(byte[] cHashResult);
+    byte[][] findCollision(byte[] cHashResult, byte[] auxiliaryParameters);
 
     /**
      * reset the internal state
      */
     void reset();
-
-    boolean isEqualHash(byte[] cHashResult, byte[] anCHashResult);
 }
