@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
-import cn.edu.buaa.crypto.algebra.params.SecurePrimeParameters;
+import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00b;
 import org.bouncycastle.crypto.CipherParameters;
 
@@ -63,7 +63,7 @@ public class DLogKR00bHasher implements KR00b {
     }
 
     public BigInteger[] findCollision(byte[] messagePrime, BigInteger message, BigInteger hash, BigInteger r) {
-        SecurePrimeParameters params = key.getParameters();
+        SecurePrimeSerParameter params = key.getParameters();
         BigInteger q = params.getQ();
         BigInteger mPrime = calculateE(q, messagePrime);
         BigInteger x = ((DLogKR00bSecretKeyParameters)key).getX();

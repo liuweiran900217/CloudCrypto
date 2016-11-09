@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
-import cn.edu.buaa.crypto.algebra.params.SecurePrimeParameters;
+import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 
 /**
@@ -8,15 +8,15 @@ import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
  *
  * Krawczyk-Rabin Chameleon hash key parameters
  */
-public class DLogKR00bKeyParameters extends AsymmetricKeyParameter {
-    private SecurePrimeParameters params;
+class DLogKR00bKeyParameters extends AsymmetricKeyParameter {
+    private SecurePrimeSerParameter params;
 
-    public DLogKR00bKeyParameters(boolean isPrivate, SecurePrimeParameters params) {
+    DLogKR00bKeyParameters(boolean isPrivate, SecurePrimeSerParameter params) {
         super(isPrivate);
         this.params = params;
     }
 
-    public SecurePrimeParameters getParameters() {
+    public SecurePrimeSerParameter getParameters() {
         return params;
     }
 }

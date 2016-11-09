@@ -2,30 +2,27 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.security.InvalidParameterException;
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 15-10-1.
  *
  * Ciphertext generation parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04CiphertextGenerationParameters implements CipherParameters {
-    private HIBEBB04PublicKeyParameters publicKeyParameters;
+    private HIBEBB04PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
     public HIBEBB04CiphertextGenerationParameters(
             CipherParameters publicKeyParameters, String[] ids) {
-        this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
+        this.publicKeyParameters = (HIBEBB04PublicKeySerParameter)publicKeyParameters;
         assert(ids.length <= this.publicKeyParameters.getMaxLength());
-        this.ids = Arrays.copyOf(ids, ids.length);
+        this.ids = ids;
     }
 
-    public HIBEBB04PublicKeyParameters getPublicKeyParameters() {
+    public HIBEBB04PublicKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public String getIdAt(int index) { return ids[index]; }
 

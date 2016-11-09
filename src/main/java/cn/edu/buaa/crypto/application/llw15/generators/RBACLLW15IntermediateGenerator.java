@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15IntermediateGenParameters;
-import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15IntermediateParameters;
-import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15PublicKeyParameters;
+import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15IntermediateGenParameter;
+import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15IntermediateSerParameter;
+import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -13,14 +13,14 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
  * Liu-Liu-Wu role-based access control intermediate generator.
  */
 public class RBACLLW15IntermediateGenerator {
-    private RBACLLW15IntermediateGenParameters params;
+    private RBACLLW15IntermediateGenParameter params;
 
-    public void init(RBACLLW15IntermediateGenParameters intermediateGenParameters) {
+    public void init(RBACLLW15IntermediateGenParameter intermediateGenParameters) {
         this.params = intermediateGenParameters;
     }
 
-    public RBACLLW15IntermediateParameters generateIntermadiateParameters() {
-        RBACLLW15PublicKeyParameters publicKeyParameters = params.getPublicKeyParameters();
+    public RBACLLW15IntermediateSerParameter generateIntermadiateParameters() {
+        RBACLLW15PublicKeySerParameter publicKeyParameters = params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element r = pairing.getZr().newRandomElement().getImmutable();
 
@@ -34,6 +34,6 @@ public class RBACLLW15IntermediateGenerator {
             u_s_r[i] = publicKeyParameters.getUsAt(i).powZn(r).getImmutable();
         }
 
-        return new RBACLLW15IntermediateParameters(r, g_3_r, g_h_r, g_r, u_0_r, u_v_r, u_s_r);
+        return new RBACLLW15IntermediateSerParameter(publicKeyParameters.getParameters(), r, g_3_r, g_h_r, g_r, u_0_r, u_v_r, u_s_r);
     }
 }

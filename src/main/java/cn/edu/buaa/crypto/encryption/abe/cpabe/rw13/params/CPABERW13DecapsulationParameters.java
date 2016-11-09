@@ -10,11 +10,11 @@ import java.util.Arrays;
  * Key Decapsulation parameters for Rouselakis-Waters CP-ABE.
  */
 public class CPABERW13DecapsulationParameters implements CipherParameters {
-    private CPABERW13PublicKeyParameters publicKeyParameters;
-    private CPABERW13SecretKeyParameters secretKeyParameters;
+    private CPABERW13PublicKeySerParameter publicKeyParameters;
+    private CPABERW13SecretKeySerParameter secretKeyParameters;
     private int[][] accessPolicy;
     private String[] rhos;
-    private CPABERW13CiphertextParameters ciphertextParameters;
+    private CPABERW13CipherSerParameter ciphertextParameters;
 
     public CPABERW13DecapsulationParameters(
             CipherParameters publicKeyParameters,
@@ -22,28 +22,28 @@ public class CPABERW13DecapsulationParameters implements CipherParameters {
             int[][] accessPolicy,
             String[] rhos,
             CipherParameters ciphertextParameters) {
-        this.publicKeyParameters = (CPABERW13PublicKeyParameters)publicKeyParameters;
-        this.secretKeyParameters = (CPABERW13SecretKeyParameters)secretKeyParameters;
+        this.publicKeyParameters = (CPABERW13PublicKeySerParameter)publicKeyParameters;
+        this.secretKeyParameters = (CPABERW13SecretKeySerParameter)secretKeyParameters;
         this.accessPolicy = accessPolicy;
-        this.rhos = Arrays.copyOf(rhos, rhos.length);
-        this.ciphertextParameters = (CPABERW13CiphertextParameters)ciphertextParameters;
+        this.rhos = rhos;
+        this.ciphertextParameters = (CPABERW13CipherSerParameter)ciphertextParameters;
     }
 
-    public CPABERW13PublicKeyParameters getPublicKeyParameters() {
+    public CPABERW13PublicKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public CPABERW13SecretKeyParameters getSecretKeyParameters() {
+    public CPABERW13SecretKeySerParameter getSecretKeyParameters() {
         return this.secretKeyParameters;
     }
 
-    public CPABERW13CiphertextParameters getCiphertextParameters() {
+    public CPABERW13CipherSerParameter getCiphertextParameters() {
         return this.ciphertextParameters;
     }
 
     public int getLength() { return this.rhos.length; }
 
-    public String[] getRhos() { return Arrays.copyOf(rhos, rhos.length); }
+    public String[] getRhos() { return this.rhos; }
 
     public String getRhoAt(int index) { return this.rhos[index]; }
 

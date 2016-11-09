@@ -1,11 +1,13 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15AccessCredentialPGenParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.application.llw15.params.*;
+import cn.edu.buaa.crypto.application.llw15.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -13,17 +15,17 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu role-based access control patient access credential generator.
  */
-public class RBACLLW15AccessCredentialPGenerator {
+public class RBACLLW15AccessCredentialPGenerator implements AsymmetricKeySerParametersGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public CipherParameters generateKey() {
-        RBACLLW15AccessCredentialPGenParameters parameters = (RBACLLW15AccessCredentialPGenParameters) params;
-        RBACLLW15PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-        RBACLLW15MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+    public AsymmetricKeySerParameter generateKey() {
+        RBACLLW15AccessCredentialPGenParameter parameters = (RBACLLW15AccessCredentialPGenParameter) params;
+        RBACLLW15PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+        RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element elementId = PairingUtils.MapToZr(pairing, parameters.getId());
@@ -43,11 +45,11 @@ public class RBACLLW15AccessCredentialPGenerator {
                 //Set h[i] to be h_i^r
                 bs[i] = publicKeyParameters.getUsAt(i).powZn(r).getImmutable();
             }
-            return new RBACLLW15AccessCredentialPParameters(publicKeyParameters.getParameters(),
+            return new RBACLLW15AccessCredentialPSerParameter(publicKeyParameters.getParameters(),
                     parameters.getId(), elementId, a0, a1, b0, bv, bs);
         } else {
             //generate patient access control using intermediate
-            RBACLLW15IntermediateParameters intermediateParameters = parameters.getIntermediateParameters();
+            RBACLLW15IntermediateSerParameter intermediateParameters = parameters.getIntermediateParameters();
             Element a0 = intermediateParameters.get_G_h_r().powZn(elementId)
                     .mul(intermediateParameters.get_G_3_r())
                     .mul(masterSecretKeyParameters.getG2Alpha()).getImmutable();
@@ -58,7 +60,7 @@ public class RBACLLW15AccessCredentialPGenerator {
             for (int i = 0; i < bs.length; i++) {
                 bs[i] = intermediateParameters.get_U_s_r_at(i).getImmutable();
             }
-            return new RBACLLW15AccessCredentialPParameters(publicKeyParameters.getParameters(),
+            return new RBACLLW15AccessCredentialPSerParameter(publicKeyParameters.getParameters(),
                     parameters.getId(), elementId, a0, a1, b0, bv, bs);
         }
     }

@@ -6,22 +6,24 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Waters revocation encryption secret key generation parameter.
  */
 public class RELSW10aSecretKeyGenerationParameters extends KeyGenerationParameters {
-    private RELSW10aMasterSecretKeyParameters masterSecretKeyParameters;
-    private RELSW10aPublicKeyParameters publicKeyParameters;
+    private RELSW10AMasterSecretKeySerParameter masterSecretKeyParameters;
+    private RELSW10APublicKeySerParameter publicKeyParameters;
     private String id;
 
     public RELSW10aSecretKeyGenerationParameters(CipherParameters publicKeyParameters, CipherParameters masterSecretKeyParameters, String id) {
         super(null, REEngine.STENGTH);
-        this.masterSecretKeyParameters = (RELSW10aMasterSecretKeyParameters)masterSecretKeyParameters;
-        this.publicKeyParameters = (RELSW10aPublicKeyParameters)publicKeyParameters;
-        this.id = new String(id);
+        this.masterSecretKeyParameters = (RELSW10AMasterSecretKeySerParameter)masterSecretKeyParameters;
+        this.publicKeyParameters = (RELSW10APublicKeySerParameter)publicKeyParameters;
+        this.id = id;
     }
 
-    public RELSW10aMasterSecretKeyParameters getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
+    public RELSW10AMasterSecretKeySerParameter getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
 
-    public RELSW10aPublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
+    public RELSW10APublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }
 
-    public String getId() { return new String(this.id); }
+    public String getId() { return this.id; }
 }

@@ -11,20 +11,20 @@ import java.util.Arrays;
  * Key Decapsulation parameters for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05DecapsulationParameters implements CipherParameters {
-    private HIBEBBG05PublicKeyParameters publicKeyParameters;
-    private HIBEBBG05SecretKeyParameters secretKeyParameters;
+    private HIBEBBG05PublicKeySerParameter publicKeyParameters;
+    private HIBEBBG05SecretKeySerParameter secretKeyParameters;
     private String[] ids;
-    private HIBEBBG05CiphertextParameters ciphertextParameters;
+    private HIBEBBG05CipherSerParameter ciphertextParameters;
 
     public HIBEBBG05DecapsulationParameters(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String[] ids,
             CipherParameters ciphertextParameters) {
-        this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
-        this.secretKeyParameters = (HIBEBBG05SecretKeyParameters)secretKeyParameters;
-        this.ids = Arrays.copyOf(ids, ids.length);
-        this.ciphertextParameters = (HIBEBBG05CiphertextParameters)ciphertextParameters;
+        this.publicKeyParameters = (HIBEBBG05PublicKeySerParameter)publicKeyParameters;
+        this.secretKeyParameters = (HIBEBBG05SecretKeySerParameter)secretKeyParameters;
+        this.ids = ids;
+        this.ciphertextParameters = (HIBEBBG05CipherSerParameter)ciphertextParameters;
         if (this.ciphertextParameters.getLength() != ids.length) {
             throw new IllegalArgumentException
                     ("Length of " + HIBEBBG05Engine.SCHEME_NAME
@@ -34,21 +34,21 @@ public class HIBEBBG05DecapsulationParameters implements CipherParameters {
         }
     }
 
-    public HIBEBBG05PublicKeyParameters getPublicKeyParameters() {
+    public HIBEBBG05PublicKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public HIBEBBG05SecretKeyParameters getSecretKeyParameters() {
+    public HIBEBBG05SecretKeySerParameter getSecretKeyParameters() {
         return this.secretKeyParameters;
     }
 
-    public HIBEBBG05CiphertextParameters getCiphertextParameters() {
+    public HIBEBBG05CipherSerParameter getCiphertextParameters() {
         return this.ciphertextParameters;
     }
 
     public int getLength() { return this.ids.length; }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public String getIdsAt(int index) { return this.ids[index]; }
 }

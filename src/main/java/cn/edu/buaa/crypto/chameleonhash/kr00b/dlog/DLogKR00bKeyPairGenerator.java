@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
-import cn.edu.buaa.crypto.algebra.params.SecurePrimeParameters;
+import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
@@ -25,14 +25,14 @@ public class DLogKR00bKeyPairGenerator implements AsymmetricCipherKeyPairGenerat
     }
 
     public AsymmetricCipherKeyPair generateKeyPair() {
-        SecurePrimeParameters securePrimeParameters = param.getParameters();
+        SecurePrimeSerParameter securePrimeSerParameter = param.getParameters();
 
-        BigInteger x = generatePrivateKey(securePrimeParameters.getQ(), param.getRandom());
-        BigInteger y = calculatePublicKey(securePrimeParameters.getP(), securePrimeParameters.getG(), x);
+        BigInteger x = generatePrivateKey(securePrimeSerParameter.getQ(), param.getRandom());
+        BigInteger y = calculatePublicKey(securePrimeSerParameter.getP(), securePrimeSerParameter.getG(), x);
 
         return new AsymmetricCipherKeyPair(
-                new DLogKR00bPublicKeyParameters(y, securePrimeParameters),
-                new DLogKR00bSecretKeyParameters(x, securePrimeParameters));
+                new DLogKR00bPublicKeyParameters(y, securePrimeSerParameter),
+                new DLogKR00bSecretKeyParameters(x, securePrimeSerParameter));
     }
 
     private static BigInteger generatePrivateKey(BigInteger q, SecureRandom random) {

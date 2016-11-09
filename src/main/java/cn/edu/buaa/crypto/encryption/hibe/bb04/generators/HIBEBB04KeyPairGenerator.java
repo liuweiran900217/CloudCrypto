@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -40,7 +40,7 @@ public class HIBEBB04KeyPairGenerator implements AsymmetricCipherKeyPairGenerato
         }
 
         return new AsymmetricCipherKeyPair(
-                new HIBEBB04PublicKeyParameters(parameters, g, g1, g2, h),
-                new HIBEBB04MasterSecretKeyParameters(parameters, g2Alpha));
+                new HIBEBB04PublicKeySerParameter(parameters, g, g1, g2, h),
+                new HIBEBB04MasterSecretKeySerParameter(parameters, g2Alpha));
     }
 }

@@ -25,8 +25,8 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
         if (params instanceof HIBEBB04SecretKeyGenerationParameters) {
             HIBEBB04SecretKeyGenerationParameters parameters = (HIBEBB04SecretKeyGenerationParameters)params;
 
-            HIBEBB04MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
-            HIBEBB04PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
+            HIBEBB04MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            HIBEBB04PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
             int length = parameters.getLength();
             assert(length <= publicKeyParameters.getMaxLength());
 
@@ -43,12 +43,12 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
                 d0 = d0.mul(publicKeyParameters.getG1().powZn(elementIds[i]).mul(publicKeyParameters.getHsAt(i)).powZn(rs[i])).getImmutable();
             }
 
-            return new HIBEBB04SecretKeyParameters(publicKeyParameters.getParameters(), parameters.getIds(), elementIds, d0, ds);
+            return new HIBEBB04SecretKeySerParameter(publicKeyParameters.getParameters(), parameters.getIds(), elementIds, d0, ds);
         } else if (params instanceof HIBEBB04DelegateGenerationParameters)  {
             HIBEBB04DelegateGenerationParameters parameters = (HIBEBB04DelegateGenerationParameters)params;
 
-            HIBEBB04PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBEBB04SecretKeyParameters secretKeyParameters = parameters.getSecretKeyParameters();
+            HIBEBB04PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+            HIBEBB04SecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
             int length = secretKeyParameters.getLength() + 1;
             assert(length <= publicKeyParameters.getMaxLength());
 
@@ -71,7 +71,7 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             elementIds[length - 1] = elementDelegateId;
             ds[length - 1] = d_j;
 
-            return new HIBEBB04SecretKeyParameters(publicKeyParameters.getParameters(), ids, elementIds, d0, ds);
+            return new HIBEBB04SecretKeySerParameter(publicKeyParameters.getParameters(), ids, elementIds, d0, ds);
         } else {
             throw new IllegalArgumentException
                     ("Invalid KeyGenerationParameters for HIBEBB04Engine Secret Key Generatation, find "

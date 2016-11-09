@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.rw13;
 
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -30,7 +30,7 @@ public class KPABERW13Engine extends KPABEEngine {
     }
 
     @Override
-    public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String[] attributeSet) {
+    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String[] attributeSet) {
         return null;
     }
 

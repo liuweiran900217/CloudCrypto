@@ -3,10 +3,10 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.serialization;
 import cn.edu.buaa.crypto.utils.SerializationUtils;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.IBBEDel07Engine;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07CiphertextParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeyParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07SecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07SecretKeySerParameter;
 import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -56,21 +56,21 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
     }
 
     public Document documentSerialization(CipherParameters cipherParameters) {
-        if (cipherParameters instanceof IBBEDel07PublicKeyParameters) {
-            return getInstance().publicKeyParametersSerialization((IBBEDel07PublicKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof IBBEDel07MasterSecretKeyParameters) {
-            return getInstance().masterSecretKeyParametersSerialization((IBBEDel07MasterSecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof IBBEDel07SecretKeyParameters) {
-            return getInstance().secretKeyParametersSerialization((IBBEDel07SecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof IBBEDel07CiphertextParameters) {
-            return getInstance().ciphertextParametersSerialization((IBBEDel07CiphertextParameters) cipherParameters);
+        if (cipherParameters instanceof IBBEDel07PublicKeySerParameter) {
+            return getInstance().publicKeyParametersSerialization((IBBEDel07PublicKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof IBBEDel07MasterSecretKeySerParameter) {
+            return getInstance().masterSecretKeyParametersSerialization((IBBEDel07MasterSecretKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof IBBEDel07SecretKeySerParameter) {
+            return getInstance().secretKeyParametersSerialization((IBBEDel07SecretKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof IBBEDel07CipherSerParameter) {
+            return getInstance().ciphertextParametersSerialization((IBBEDel07CipherSerParameter) cipherParameters);
         } else {
             throw new InvalidParameterException("Invalid CipherParameter Instance of " + TAG_SCHEME_NAME +
                     " Scheme, find" + cipherParameters.getClass().getName());
         }
     }
 
-    private Document publicKeyParametersSerialization(IBBEDel07PublicKeyParameters publicKeyParameters){
+    private Document publicKeyParametersSerialization(IBBEDel07PublicKeySerParameter publicKeyParameters){
         try {
             Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = publicKeyParametersDocument.createElement(IBBEDel07XMLSerializer.TAG_SCHEME_NAME);
@@ -90,7 +90,7 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document masterSecretKeyParametersSerialization(IBBEDel07MasterSecretKeyParameters masterSecretKeyParameters) {
+    private Document masterSecretKeyParametersSerialization(IBBEDel07MasterSecretKeySerParameter masterSecretKeyParameters) {
         try {
             Document masterSecretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = masterSecretKeyDocument.createElement(IBBEDel07XMLSerializer.TAG_SCHEME_NAME);
@@ -107,7 +107,7 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document secretKeyParametersSerialization(IBBEDel07SecretKeyParameters secretKeyParameters){
+    private Document secretKeyParametersSerialization(IBBEDel07SecretKeySerParameter secretKeyParameters){
         try {
             Document secretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = secretKeyDocument.createElement(IBBEDel07XMLSerializer.TAG_SCHEME_NAME);
@@ -124,7 +124,7 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document ciphertextParametersSerialization(IBBEDel07CiphertextParameters ciphertextParameters){
+    private Document ciphertextParametersSerialization(IBBEDel07CipherSerParameter ciphertextParameters){
         try {
             Document ciphertextDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = ciphertextDocument.createElement(IBBEDel07XMLSerializer.TAG_SCHEME_NAME);
@@ -176,7 +176,7 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
                 hs = SerializationUtils.GetElementArray(pairing, node, TAG_PK_HI, SerializationUtils.PairingGroupType.G2);
             }
         }
-        return new IBBEDel07PublicKeyParameters(pairingParameters, w, v, hs);
+        return new IBBEDel07PublicKeySerParameter(pairingParameters, w, v, hs);
     }
 
     private CipherParameters masterSecretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement){
@@ -194,7 +194,7 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
                 gamma = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.Zr);
             }
         }
-        return new IBBEDel07MasterSecretKeyParameters(pairingParameters, g, gamma);
+        return new IBBEDel07MasterSecretKeySerParameter(pairingParameters, g, gamma);
     }
 
     private CipherParameters secretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -213,7 +213,7 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
             }
         }
         it.unisa.dia.gas.jpbc.Element elementId = PairingUtils.MapToZr(pairing, id);
-        return new IBBEDel07SecretKeyParameters(pairingParameters, id, elementId, sk);
+        return new IBBEDel07SecretKeySerParameter(pairingParameters, id, elementId, sk);
     }
 
     private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -231,6 +231,6 @@ public class IBBEDel07XMLSerializer implements PairingParameterXMLSerializer {
                 C2 = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new IBBEDel07CiphertextParameters(pairingParameters, C1, C2);
+        return new IBBEDel07CipherSerParameter(pairingParameters, C1, C2);
     }
 }

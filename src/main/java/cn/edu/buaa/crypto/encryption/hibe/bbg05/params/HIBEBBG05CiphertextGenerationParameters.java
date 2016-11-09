@@ -10,21 +10,21 @@ import java.util.Arrays;
  * Ciphertext Generation parameters for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05CiphertextGenerationParameters implements CipherParameters {
-    private HIBEBBG05PublicKeyParameters publicKeyParameters;
+    private HIBEBBG05PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
     public HIBEBBG05CiphertextGenerationParameters(
             CipherParameters publicKeyParameters, String[] ids) {
-        this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
+        this.publicKeyParameters = (HIBEBBG05PublicKeySerParameter)publicKeyParameters;
         assert(ids.length <= this.publicKeyParameters.getMaxLength());
-        this.ids = Arrays.copyOf(ids, ids.length);
+        this.ids = ids;
     }
 
-    public HIBEBBG05PublicKeyParameters getPublicKeyParameters() {
+    public HIBEBBG05PublicKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public String getIdAt(int index) { return ids[index]; }
 

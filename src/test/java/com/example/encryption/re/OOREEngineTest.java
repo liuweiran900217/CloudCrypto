@@ -1,9 +1,9 @@
 package com.example.encryption.re;
 
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.re.OOREEngine;
-import cn.edu.buaa.crypto.algebra.params.PairingCiphertextParameters;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -34,7 +34,7 @@ public class OOREEngineTest {
         AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength);
         CipherParameters publicKey = keyPair.getPublic();
         CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeyParameters)publicKey).getParameters();
+        PairingParameters pairingParameters = ((PairingKeySerParameter)publicKey).getParameters();
 
         // KeyGen
         String id = "Identity";
@@ -45,28 +45,28 @@ public class OOREEngineTest {
 
         // Regular Encryption
         String[] rids1 = new String[]{rid, "Id_1"};
-        PairingKeyEncapsulationPair ciphertextPairRids1 = engine.encapsulation(publicKey, rids1);
+        PairingKeyEncapsulationSerPair ciphertextPairRids1 = engine.encapsulation(publicKey, rids1);
         CipherParameters ciphertextRids1 = ciphertextPairRids1.getCiphertext();
         byte[] sessionKeyRids1 = ciphertextPairRids1.getSessionKey();
         String stringSessionKeyRids1 = new String(Hex.encode(sessionKeyRids1));
 
         String[] rids2 = new String[]{"Id_1", "Id_2", "Id_3", "Id_4", "Id_5", "Id_6", "Id_7", "Id_8", "Id_9", rid};
-        PairingKeyEncapsulationPair ciphertextPairRids2 = engine.encapsulation(publicKey, rids2);
+        PairingKeyEncapsulationSerPair ciphertextPairRids2 = engine.encapsulation(publicKey, rids2);
         CipherParameters ciphertextRids2 = ciphertextPairRids2.getCiphertext();
         byte[] sessionKeyRids2 = ciphertextPairRids2.getSessionKey();
         String stringSessionKeyRids2 = new String(Hex.encode(sessionKeyRids2));
 
         //Online/Offline Encryption
-        PairingKeyEncapsulationPair iCiphertextPairRids1 = engine.offlineEncapsulation(publicKey, rids1.length);
-        PairingCiphertextParameters iCiphertextRids1 = iCiphertextPairRids1.getCiphertext();
-        PairingKeyEncapsulationPair ooCiphertextPairRids1 = engine.onlineEncapsulation(publicKey, iCiphertextRids1, rids1);
+        PairingKeyEncapsulationSerPair iCiphertextPairRids1 = engine.offlineEncapsulation(publicKey, rids1.length);
+        PairingCipherSerParameter iCiphertextRids1 = iCiphertextPairRids1.getCiphertext();
+        PairingKeyEncapsulationSerPair ooCiphertextPairRids1 = engine.onlineEncapsulation(publicKey, iCiphertextRids1, rids1);
         CipherParameters ooCiphertextRids1 = ooCiphertextPairRids1.getCiphertext();
         byte[] ooSessionKeyRids1 = ooCiphertextPairRids1.getSessionKey();
         String stringOOSessionKeyRids1 = new String(Hex.encode(ooSessionKeyRids1));
 
-        PairingKeyEncapsulationPair iCiphertextPairRids2 = engine.offlineEncapsulation(publicKey, rids2.length);
-        PairingCiphertextParameters iCiphertextRids2 = iCiphertextPairRids2.getCiphertext();
-        PairingKeyEncapsulationPair ooCiphertextPairRids2 = engine.onlineEncapsulation(publicKey, iCiphertextRids2, rids2);
+        PairingKeyEncapsulationSerPair iCiphertextPairRids2 = engine.offlineEncapsulation(publicKey, rids2.length);
+        PairingCipherSerParameter iCiphertextRids2 = iCiphertextPairRids2.getCiphertext();
+        PairingKeyEncapsulationSerPair ooCiphertextPairRids2 = engine.onlineEncapsulation(publicKey, iCiphertextRids2, rids2);
         CipherParameters ooCiphertextRids2 = ooCiphertextPairRids2.getCiphertext();
         byte[] ooSessionKeyRids2 = ooCiphertextPairRids2.getSessionKey();
         String stringOOSessionKeyRids2 = new String(Hex.encode(ooSessionKeyRids2));

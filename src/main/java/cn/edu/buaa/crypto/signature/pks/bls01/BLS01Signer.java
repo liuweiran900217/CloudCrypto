@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.signature.pks.bls01;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.signature.pks.PairingSigner;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * Boneh-Lynn-Shacham short signature scheme.
  */
 public class BLS01Signer implements PairingSigner {
-    private PairingKeyParameters pairingKeyParameters;
+    private PairingKeySerParameter pairingKeySerParameter;
 
     public BLS01Signer() {
 
@@ -27,16 +27,16 @@ public class BLS01Signer implements PairingSigner {
 
     public void init(boolean forSigning, CipherParameters param) {
         if (forSigning) {
-            this.pairingKeyParameters = (BLS01SignSecretKeyParameters) param;
+            this.pairingKeySerParameter = (BLS01SignSecretKeySerParameter) param;
         } else {
-            this.pairingKeyParameters = (BLS01SignPublicKeyParameters) param;
+            this.pairingKeySerParameter = (BLS01SignPublicKeySerParameter) param;
         }
     }
 
     public Element[] generateSignature(byte[] message) {
-        PairingParameters params = this.pairingKeyParameters.getParameters();
+        PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
-        BLS01SignSecretKeyParameters secretKeyParameters = (BLS01SignSecretKeyParameters) this.pairingKeyParameters;
+        BLS01SignSecretKeySerParameter secretKeyParameters = (BLS01SignSecretKeySerParameter) this.pairingKeySerParameter;
         Element x = secretKeyParameters.getX();
 
         Element m = PairingUtils.MapToG2(pairing, message);
@@ -46,9 +46,9 @@ public class BLS01Signer implements PairingSigner {
     }
 
     public boolean verifySignature(byte[] message, Element... signature) {
-        PairingParameters params = this.pairingKeyParameters.getParameters();
+        PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
-        BLS01SignPublicKeyParameters publicKeyParameters = (BLS01SignPublicKeyParameters) this.pairingKeyParameters;
+        BLS01SignPublicKeySerParameter publicKeyParameters = (BLS01SignPublicKeySerParameter) this.pairingKeySerParameter;
         Element m = PairingUtils.MapToG2(pairing, message);
         Element g = publicKeyParameters.getG();
         Element v = publicKeyParameters.getV();
@@ -68,7 +68,7 @@ public class BLS01Signer implements PairingSigner {
 
     public Element[] derDecode(byte[] encoding) throws IOException {
         ASN1Sequence s = (ASN1Sequence) ASN1Primitive.fromByteArray(encoding);
-        PairingParameters params = this.pairingKeyParameters.getParameters();
+        PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
 
         return new Element[]{

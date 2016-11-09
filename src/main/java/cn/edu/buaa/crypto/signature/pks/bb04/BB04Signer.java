@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.signature.pks.bb04;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.signature.pks.PairingSigner;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * Boneh-Boyen short signatures.
  */
 public class BB04Signer implements PairingSigner {
-    private PairingKeyParameters pairingKeyParameters;
+    private PairingKeySerParameter pairingKeySerParameter;
 
     public BB04Signer() {
 
@@ -27,16 +27,16 @@ public class BB04Signer implements PairingSigner {
 
     public void init(boolean forSigning, CipherParameters param) {
         if (forSigning) {
-            this.pairingKeyParameters = (BB04SignSecretKeyParameters)param;
+            this.pairingKeySerParameter = (BB04SignSecretKeySerParameter)param;
         } else {
-            this.pairingKeyParameters = (BB04SignPublicKeyParameters)param;
+            this.pairingKeySerParameter = (BB04SignPublicKeySerParameter)param;
         }
     }
 
     public Element[] generateSignature(byte[] message) {
-        PairingParameters params = this.pairingKeyParameters.getParameters();
+        PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
-        BB04SignSecretKeyParameters secretKeyParameters = (BB04SignSecretKeyParameters)this.pairingKeyParameters;
+        BB04SignSecretKeySerParameter secretKeyParameters = (BB04SignSecretKeySerParameter)this.pairingKeySerParameter;
         Element x = secretKeyParameters.getX();
         Element y = secretKeyParameters.getY();
         Element g1 = secretKeyParameters.getPublicKeyParameters().getG1();
@@ -49,9 +49,9 @@ public class BB04Signer implements PairingSigner {
     }
 
     public boolean verifySignature(byte[] message, Element... signature) {
-        PairingParameters params = this.pairingKeyParameters.getParameters();
+        PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
-        BB04SignPublicKeyParameters publicKeyParameters = (BB04SignPublicKeyParameters)this.pairingKeyParameters;
+        BB04SignPublicKeySerParameter publicKeyParameters = (BB04SignPublicKeySerParameter)this.pairingKeySerParameter;
         Element m = PairingUtils.MapToZr(pairing, message);
         Element g1 = publicKeyParameters.getG1();
         Element g2 = publicKeyParameters.getG2();
@@ -75,7 +75,7 @@ public class BB04Signer implements PairingSigner {
 
     public Element[] derDecode(byte[] encoding) throws IOException {
         ASN1Sequence s = (ASN1Sequence)ASN1Primitive.fromByteArray(encoding);
-        PairingParameters params = this.pairingKeyParameters.getParameters();
+        PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
 
         return new Element[] {

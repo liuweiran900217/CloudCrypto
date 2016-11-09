@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -11,8 +11,8 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  */
 public class HIBEBB04SecretKeyGenerationParameters extends KeyGenerationParameters {
 
-    private HIBEBB04MasterSecretKeyParameters masterSecretKeyParameters;
-    private HIBEBB04PublicKeyParameters publicKeyParameters;
+    private HIBEBB04MasterSecretKeySerParameter masterSecretKeyParameters;
+    private HIBEBB04PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
     public HIBEBB04SecretKeyGenerationParameters(
@@ -20,15 +20,15 @@ public class HIBEBB04SecretKeyGenerationParameters extends KeyGenerationParamete
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
         super(null, PairingParametersGenerationParameters.STENGTH);
-        this.masterSecretKeyParameters = (HIBEBB04MasterSecretKeyParameters)masterSecretKeyParameters;
-        this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
+        this.masterSecretKeyParameters = (HIBEBB04MasterSecretKeySerParameter)masterSecretKeyParameters;
+        this.publicKeyParameters = (HIBEBB04PublicKeySerParameter)publicKeyParameters;
         this.ids = new String[ids.length];
         System.arraycopy(ids, 0, this.ids, 0, this.ids.length);
     }
 
-    public HIBEBB04MasterSecretKeyParameters getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
+    public HIBEBB04MasterSecretKeySerParameter getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
 
-    public HIBEBB04PublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
+    public HIBEBB04PublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }
 
     public String getIdAt(int index) {
         return ids[index];

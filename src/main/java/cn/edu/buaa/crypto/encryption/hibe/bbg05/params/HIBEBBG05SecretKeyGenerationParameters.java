@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -10,8 +10,8 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Secret Key Generation parameters for Boneh-Boyen-Goh HIBBE.
  */
 public class HIBEBBG05SecretKeyGenerationParameters extends KeyGenerationParameters {
-    private HIBEBBG05MasterSecretKeyParameters masterSecretKeyParameters;
-    private HIBEBBG05PublicKeyParameters publicKeyParameters;
+    private HIBEBBG05MasterSecretKeySerParameter masterSecretKeyParameters;
+    private HIBEBBG05PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
     public HIBEBBG05SecretKeyGenerationParameters(
@@ -19,15 +19,15 @@ public class HIBEBBG05SecretKeyGenerationParameters extends KeyGenerationParamet
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
         super(null, PairingParametersGenerationParameters.STENGTH);
-        this.masterSecretKeyParameters = (HIBEBBG05MasterSecretKeyParameters)masterSecretKeyParameters;
-        this.publicKeyParameters = (HIBEBBG05PublicKeyParameters)publicKeyParameters;
+        this.masterSecretKeyParameters = (HIBEBBG05MasterSecretKeySerParameter)masterSecretKeyParameters;
+        this.publicKeyParameters = (HIBEBBG05PublicKeySerParameter)publicKeyParameters;
         this.ids = new String[ids.length];
         System.arraycopy(ids, 0, this.ids, 0, this.ids.length);
     }
 
-    public HIBEBBG05MasterSecretKeyParameters getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
+    public HIBEBBG05MasterSecretKeySerParameter getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
 
-    public HIBEBBG05PublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
+    public HIBEBBG05PublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }
 
     public String getIdAt(int index) {
         return ids[index];

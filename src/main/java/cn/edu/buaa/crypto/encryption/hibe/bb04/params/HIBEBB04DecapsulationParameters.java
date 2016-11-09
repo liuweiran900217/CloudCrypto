@@ -3,7 +3,6 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 
 /**
@@ -12,20 +11,20 @@ import java.util.Arrays;
  * Delegation parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04DecapsulationParameters implements CipherParameters {
-    private HIBEBB04PublicKeyParameters publicKeyParameters;
-    private HIBEBB04SecretKeyParameters secretKeyParameters;
+    private HIBEBB04PublicKeySerParameter publicKeyParameters;
+    private HIBEBB04SecretKeySerParameter secretKeyParameters;
     private String[] ids;
-    private HIBEBB04CiphertextParameters ciphertextParameters;
+    private HIBEBB04CipherSerParameter ciphertextParameters;
 
     public HIBEBB04DecapsulationParameters(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String[] ids,
             CipherParameters ciphertextParameters) {
-        this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
-        this.secretKeyParameters = (HIBEBB04SecretKeyParameters)secretKeyParameters;
-        this.ids = Arrays.copyOf(ids, ids.length);
-        this.ciphertextParameters = (HIBEBB04CiphertextParameters)ciphertextParameters;
+        this.publicKeyParameters = (HIBEBB04PublicKeySerParameter)publicKeyParameters;
+        this.secretKeyParameters = (HIBEBB04SecretKeySerParameter)secretKeyParameters;
+        this.ids = ids;
+        this.ciphertextParameters = (HIBEBB04CipherSerParameter)ciphertextParameters;
         if (this.ciphertextParameters.getLength() != ids.length) {
             throw new IllegalArgumentException
                     ("Length of " + HIBEBB04Engine.SCHEME_NAME
@@ -35,21 +34,21 @@ public class HIBEBB04DecapsulationParameters implements CipherParameters {
         }
     }
 
-    public HIBEBB04PublicKeyParameters getPublicKeyParameters() {
+    public HIBEBB04PublicKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public HIBEBB04SecretKeyParameters getSecretKeyParameters() {
+    public HIBEBB04SecretKeySerParameter getSecretKeyParameters() {
         return this.secretKeyParameters;
     }
 
-    public HIBEBB04CiphertextParameters getCiphertextParameters() {
+    public HIBEBB04CipherSerParameter getCiphertextParameters() {
         return this.ciphertextParameters;
     }
 
     public int getLength() { return this.ids.length; }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public String getIdsAt(int index) { return this.ids[index]; }
 }

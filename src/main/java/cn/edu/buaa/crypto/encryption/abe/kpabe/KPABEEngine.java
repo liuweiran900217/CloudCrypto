@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.abe.kpabe;
 
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -55,7 +55,7 @@ public abstract class KPABEEngine {
      * @param attributeSet associated attribute set
      * @return session key / ciphertext pair associated with the attribute set
      */
-    public abstract PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String[] attributeSet);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String[] attributeSet);
 
     /**
      * Key Decapsulation Algorithm for KP-ABE

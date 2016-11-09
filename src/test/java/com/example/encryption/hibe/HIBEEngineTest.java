@@ -1,8 +1,8 @@
 package com.example.encryption.hibe;
 
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -35,7 +35,7 @@ public class HIBEEngineTest {
         AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength, maxDepth);
         CipherParameters publicKey = keyPair.getPublic();
         CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeyParameters)publicKey).getParameters();
+        PairingParameters pairingParameters = ((PairingKeySerParameter)publicKey).getParameters();
 
         // KeyGen
         String[] ids = {"ID_1", "ID_2", "ID_3"};
@@ -50,19 +50,19 @@ public class HIBEEngineTest {
 
         // Encryption
         String[] ids0 = new String[]{ids[0]};
-        PairingKeyEncapsulationPair ciphertextPair0 = engine.encapsulation(publicKey, ids[0]);
+        PairingKeyEncapsulationSerPair ciphertextPair0 = engine.encapsulation(publicKey, ids[0]);
         CipherParameters ciphertext0 = ciphertextPair0.getCiphertext();
         byte[] sessionKey0 = ciphertextPair0.getSessionKey();
         String stringSessionKey0 = new String(Hex.encode(sessionKey0));
 
         String[] ids01 = new String[]{ids[0], ids[1]};
-        PairingKeyEncapsulationPair ciphertextPair01 = engine.encapsulation(publicKey, ids[0], ids[1]);
+        PairingKeyEncapsulationSerPair ciphertextPair01 = engine.encapsulation(publicKey, ids[0], ids[1]);
         CipherParameters ciphertext01 = ciphertextPair01.getCiphertext();
         byte[] sessionKey01 = ciphertextPair01.getSessionKey();
         String stringSessionKey01 = new String(Hex.encode(sessionKey01));
 
         String[] ids012 = new String[]{ids[0], ids[1], ids[2]};
-        PairingKeyEncapsulationPair ciphertextPair012 = engine.encapsulation(publicKey, ids[0], ids[1], ids[2]);
+        PairingKeyEncapsulationSerPair ciphertextPair012 = engine.encapsulation(publicKey, ids[0], ids[1], ids[2]);
         CipherParameters ciphertext012 = ciphertextPair012.getCiphertext();
         byte[] sessionKey012 = ciphertextPair012.getSessionKey();
         String stringSessionKey012 = new String(Hex.encode(sessionKey012));

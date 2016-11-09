@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibbe;
 
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -39,7 +39,7 @@ public interface IBBEEngine {
      * @param ids a broadcast identity set
      * @return session key / ciphertext pair associated with the broadcast identity set ids
      */
-    public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids);
+    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids);
 
     /**
      * Key Decapsulation Algorithm for IBBE

@@ -10,20 +10,20 @@ import java.util.Arrays;
  * Ciphertext generation parameters for Delerablée IBBE scheme.
  */
 public class IBBEDel07CiphertextGenerationParameters  implements CipherParameters {
-    private IBBEDel07PublicKeyParameters publicKeyParameters;
+    private IBBEDel07PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
     public IBBEDel07CiphertextGenerationParameters(CipherParameters publicKeyParameters, String[] ids) {
-        this.publicKeyParameters = (IBBEDel07PublicKeyParameters)publicKeyParameters;
+        this.publicKeyParameters = (IBBEDel07PublicKeySerParameter)publicKeyParameters;
         assert(ids.length <= this.publicKeyParameters.getMaxBroadcastReceiver());
-        this.ids = Arrays.copyOf(ids, ids.length);
+        this.ids = ids;
     }
 
-    public IBBEDel07PublicKeyParameters getPublicKeyParameters() {
+    public IBBEDel07PublicKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public String getIdAt(int index) { return ids[index]; }
 

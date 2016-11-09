@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.signature.pks.bls01;
 
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 

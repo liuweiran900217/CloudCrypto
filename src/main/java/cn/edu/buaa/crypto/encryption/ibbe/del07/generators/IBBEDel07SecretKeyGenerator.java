@@ -1,10 +1,10 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07SecretKeyGenerationParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07SecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07SecretKeySerParameter;
 import it.unisa.dia.gas.crypto.cipher.CipherParametersGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -25,14 +25,14 @@ public class IBBEDel07SecretKeyGenerator implements CipherParametersGenerator {
     }
 
     public CipherParameters generateKey() {
-        IBBEDel07MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
-        IBBEDel07PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
+        IBBEDel07MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+        IBBEDel07PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element elementId = PairingUtils.MapToZr(pairing, parameters.getId());
 
         Element secretKey = masterSecretKeyParameters.getG().powZn(masterSecretKeyParameters.getGamma().add(elementId).invert()).getImmutable();
 
-        return new IBBEDel07SecretKeyParameters(publicKeyParameters.getParameters(), parameters.getId(), elementId, secretKey);
+        return new IBBEDel07SecretKeySerParameter(publicKeyParameters.getParameters(), parameters.getId(), elementId, secretKey);
     }
 }

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**

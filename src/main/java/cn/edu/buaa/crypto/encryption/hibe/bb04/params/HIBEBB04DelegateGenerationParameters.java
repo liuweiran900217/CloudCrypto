@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -10,8 +10,8 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Delegation generation parameters for Boneh-Boyen HIBE scheme.
  */
 public class HIBEBB04DelegateGenerationParameters extends KeyGenerationParameters {
-    private HIBEBB04PublicKeyParameters publicKeyParameters;
-    private HIBEBB04SecretKeyParameters secretKeyParameters;
+    private HIBEBB04PublicKeySerParameter publicKeyParameters;
+    private HIBEBB04SecretKeySerParameter secretKeyParameters;
     private String delegateId;
 
     public HIBEBB04DelegateGenerationParameters(
@@ -19,14 +19,14 @@ public class HIBEBB04DelegateGenerationParameters extends KeyGenerationParameter
             CipherParameters secretKeyParameters,
             String id) {
         super(null, PairingParametersGenerationParameters.STENGTH);
-        this.publicKeyParameters = (HIBEBB04PublicKeyParameters)publicKeyParameters;
-        this.secretKeyParameters = (HIBEBB04SecretKeyParameters)secretKeyParameters;
+        this.publicKeyParameters = (HIBEBB04PublicKeySerParameter)publicKeyParameters;
+        this.secretKeyParameters = (HIBEBB04SecretKeySerParameter)secretKeyParameters;
         this.delegateId = id;
     }
 
-    public HIBEBB04PublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
+    public HIBEBB04PublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }
 
-    public HIBEBB04SecretKeyParameters getSecretKeyParameters() { return this.secretKeyParameters; }
+    public HIBEBB04SecretKeySerParameter getSecretKeyParameters() { return this.secretKeyParameters; }
 
     public String getDelegateId() { return this.delegateId; }
 }

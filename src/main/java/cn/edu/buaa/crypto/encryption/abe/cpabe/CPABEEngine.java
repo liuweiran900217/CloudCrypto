@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -47,7 +47,7 @@ public abstract class CPABEEngine {
      * @return session key / ciphertext pair associated with the access policy
      * @throws PolicySyntaxException  if error occurs when parsing the access policy string
      */
-    public PairingKeyEncapsulationPair encryption(CipherParameters publicKey, String accessPolicy) throws PolicySyntaxException {
+    public PairingKeyEncapsulationSerPair encryption(CipherParameters publicKey, String accessPolicy) throws PolicySyntaxException {
         int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
         String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
         return encapsulation(publicKey, accessPolicyIntArrays, rhos);
@@ -60,7 +60,7 @@ public abstract class CPABEEngine {
      * @param rhos associated rhos, given by string array
      * @return session key / ciphertext pair associated with the attribute set
      */
-    public abstract PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, int[][] accessPolicyIntArrays, String[] rhos);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, int[][] accessPolicyIntArrays, String[] rhos);
 
     /**
      * Key Decapsulation Algorithm for CP-ABE

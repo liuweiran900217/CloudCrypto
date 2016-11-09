@@ -1,16 +1,15 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
-import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.HIBBELLW14PublicKeyParameters;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14KeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -18,14 +17,14 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu composite-order HIBBE public key / master secret key generator.
  */
-public class HIBBELLW14KeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
-    private HIBBELLW14KeyPairGenerationParameters parameters;
+public class HIBBELLW14KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+    private HIBBELLW14KeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (HIBBELLW14KeyPairGenerationParameters)keyGenerationParameters;
+        this.parameters = (HIBBELLW14KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricCipherKeyPair generateKeyPair() {
+    public AsymmetricKeySerPair generateKeyPair() {
         PropertiesParameters parameters = (PropertiesParameters) this.parameters.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
         Element generator = pairing.getG1().newRandomElement().getImmutable();
@@ -45,8 +44,8 @@ public class HIBBELLW14KeyPairGenerator implements AsymmetricCipherKeyPairGenera
         parameters.remove("n0");
         parameters.remove("n1");
         parameters.remove("n2");
-        return new AsymmetricCipherKeyPair(
-                new HIBBELLW14PublicKeyParameters(parameters, g, h, u, X3, eggAlpha),
-                new HIBBELLW14MasterSecretKeyParameters(parameters, gAlpha));
+        return new AsymmetricKeySerPair(
+                new HIBBELLW14PublicKeySerParameter(parameters, g, h, u, X3, eggAlpha),
+                new HIBBELLW14MasterSecretKeySerParameter(parameters, gAlpha));
     }
 }

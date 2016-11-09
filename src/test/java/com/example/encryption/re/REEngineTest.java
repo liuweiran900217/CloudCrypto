@@ -1,8 +1,8 @@
 package com.example.encryption.re;
 
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -18,6 +18,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Revocation encryption engine test.
  */
 public class REEngineTest {
     private REEngine engine;
@@ -33,7 +35,7 @@ public class REEngineTest {
         AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength);
         CipherParameters publicKey = keyPair.getPublic();
         CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeyParameters)publicKey).getParameters();
+        PairingParameters pairingParameters = ((PairingKeySerParameter)publicKey).getParameters();
 
         // KeyGen
         String id = "Identity";
@@ -44,13 +46,13 @@ public class REEngineTest {
 
         // Encryption
         String[] rids1 = new String[]{rid, "Id_1"};
-        PairingKeyEncapsulationPair ciphertextPairRids1 = engine.encapsulation(publicKey, rids1);
+        PairingKeyEncapsulationSerPair ciphertextPairRids1 = engine.encapsulation(publicKey, rids1);
         CipherParameters ciphertextRids1 = ciphertextPairRids1.getCiphertext();
         byte[] sessionKeyRids1 = ciphertextPairRids1.getSessionKey();
         String stringSessionKeyRids1 = new String(Hex.encode(sessionKeyRids1));
 
         String[] rids2 = new String[]{"Id_1", "Id_2", "Id_3", "Id_4", "Id_5", "Id_6", "Id_7", "Id_8", "Id_9", rid};
-        PairingKeyEncapsulationPair ciphertextPairRids2 = engine.encapsulation(publicKey, rids2);
+        PairingKeyEncapsulationSerPair ciphertextPairRids2 = engine.encapsulation(publicKey, rids2);
         CipherParameters ciphertextRids2 = ciphertextPairRids2.getCiphertext();
         byte[] sessionKeyRids2 = ciphertextPairRids2.getSessionKey();
         String stringSessionKeyRids2 = new String(Hex.encode(sessionKeyRids2));

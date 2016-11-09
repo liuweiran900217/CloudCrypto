@@ -1,30 +1,35 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14DelegateGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14SecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.params.*;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
+ *
+ * Liu-Liu-Wu composite-order HIBBE secret key generator.
  */
-public class HIBBELLW14SecretKeyGenerator {
+public class HIBBELLW14SecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public CipherParameters generateKey() {
-        if (params instanceof HIBBELLW14SecretKeyGenerationParameters) {
-            HIBBELLW14SecretKeyGenerationParameters parameters = (HIBBELLW14SecretKeyGenerationParameters)params;
+    public AsymmetricKeySerParameter generateKey() {
+        if (params instanceof HIBBELLW14SecretKeyGenerationParameter) {
+            HIBBELLW14SecretKeyGenerationParameter parameters = (HIBBELLW14SecretKeyGenerationParameter)params;
 
-            HIBBELLW14PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBBELLW14MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            HIBBELLW14PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+            HIBBELLW14MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             Element[] elementIds = PairingUtils.MapToZr(pairing, parameters.getIds());
@@ -52,13 +57,13 @@ public class HIBBELLW14SecretKeyGenerator {
             //raise a0 to the power of r and then multiple it by gAlpha
             a0 = a0.powZn(r).mul(masterSecretKeyParameters.getGAlpha()).mul(publicKeyParameters.getX3().powZn(a0_r)).getImmutable();
 
-            return new HIBBELLW14SecretKeyParameters(publicKeyParameters.getParameters(),
+            return new HIBBELLW14SecretKeySerParameter(publicKeyParameters.getParameters(),
                     parameters.getIds(), elementIds, a0, a1, bs);
-        } else if (params instanceof HIBBELLW14DelegateGenerationParameters)  {
-            HIBBELLW14DelegateGenerationParameters parameters = (HIBBELLW14DelegateGenerationParameters)params;
+        } else if (params instanceof HIBBELLW14DelegateGenerationParameter)  {
+            HIBBELLW14DelegateGenerationParameter parameters = (HIBBELLW14DelegateGenerationParameter)params;
 
-            HIBBELLW14PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBBELLW14SecretKeyParameters secretKeyParameters = parameters.getSecretKeyParameters();
+            HIBBELLW14PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+            HIBBELLW14SecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = new String[publicKeyParameters.getMaxUser()];
@@ -101,15 +106,15 @@ public class HIBBELLW14SecretKeyGenerator {
             //Compute the result of a1
             a1 = a1.mul(secretKeyParameters.getA1()).mul(publicKeyParameters.getX3().powZn(a1_r)).getImmutable();
 
-            return new HIBBELLW14SecretKeyParameters(publicKeyParameters.getParameters(),
+            return new HIBBELLW14SecretKeySerParameter(publicKeyParameters.getParameters(),
                     ids, elementIds, a0, a1, bs);
         } else {
             throw new IllegalArgumentException
                     ("Invalid KeyGenerationParameters for " + HIBBELLW14Engine.SCHEME_NAME
                             + " Secret Key Generatation, find "
                             + params.getClass().getName() + ", require "
-                            + HIBBELLW14SecretKeyGenerationParameters.class.getName() + " or "
-                            + HIBBELLW14DelegateGenerationParameters.class.getName());
+                            + HIBBELLW14SecretKeyGenerationParameter.class.getName() + " or "
+                            + HIBBELLW14DelegateGenerationParameter.class.getName());
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.signature.pks;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import cn.edu.buaa.crypto.signature.pks.PairingDigestSigner;
 import cn.edu.buaa.crypto.signature.pks.bb04.BB04SignKeyPairGenerationParameters;
 import cn.edu.buaa.crypto.signature.pks.bb04.BB04SignKeyPairGenerator;

@@ -12,6 +12,7 @@ import org.bouncycastle.util.encoders.Hex;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/8/24.
@@ -19,6 +20,10 @@ import java.security.NoSuchAlgorithmException;
  * Utilities for pairing-based cryptography.
  */
 public class PairingUtils {
+    public enum PairingGroupType {
+        Zr, G1, G2, GT,
+    }
+
     /**
      * Generate type A parameter for further used in paiaring-based cryptography.
      * @param rBitLength Bit length for the group Z_r
@@ -292,5 +297,55 @@ public class PairingUtils {
             }
         }
         return true;
+    }
+
+    public static boolean isEqualByteArrays(final byte[][] thisByteArrays, final byte[][] thatByteArrays) {
+        if (thisByteArrays == thatByteArrays) {
+            return true;
+        }
+        if (thisByteArrays.length != thatByteArrays.length) {
+            return false;
+        }
+        for (int i=0; i<thisByteArrays.length; i++){
+            if (!(Arrays.equals(thisByteArrays[i], thatByteArrays[i]))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static byte[][] GetElementArrayBytes(Element[] elementArray) {
+        byte[][] byteArrays = new byte[elementArray.length][];
+        for (int i = 0; i < byteArrays.length; i++) {
+            if (elementArray[i] == null) {
+                byteArrays[i] = null;
+                continue;
+            }
+            byteArrays[i] = elementArray[i].toBytes();
+        }
+        return byteArrays;
+    }
+
+    public static Element[] GetElementArrayFromBytes(Pairing pairing, byte[][] byteArrays, PairingGroupType groupType) {
+        Element[] elementArray = new Element[byteArrays.length];
+        for (int i = 0; i < elementArray.length; i++) {
+            if (byteArrays[i] == null) {
+                elementArray[i] = null;
+                continue;
+            }
+            switch (groupType) {
+                case Zr: elementArray[i] = pairing.getZr().newElementFromBytes(byteArrays[i]);
+                    break;
+                case G1: elementArray[i] = pairing.getG1().newElementFromBytes(byteArrays[i]);
+                    break;
+                case G2: elementArray[i] = pairing.getG2().newElementFromBytes(byteArrays[i]);
+                    break;
+                case GT: elementArray[i] = pairing.getGT().newElementFromBytes(byteArrays[i]);
+                    break;
+                default:
+                    throw new RuntimeException("Invalid pairing group type.");
+            }
+        }
+        return elementArray;
     }
 }

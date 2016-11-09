@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07;
 
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyDecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07DecapsulationGenerator;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07EncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.params.*;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -41,17 +41,17 @@ public class IBBEDel07Engine implements IBBEEngine {
     }
 
     public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String id) {
-        if (!(publicKey instanceof IBBEDel07PublicKeyParameters)){
+        if (!(publicKey instanceof IBBEDel07PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + IBBEDel07PublicKeyParameters.class.getName());
+                            + IBBEDel07PublicKeySerParameter.class.getName());
         }
-        if (!(masterKey instanceof IBBEDel07MasterSecretKeyParameters)) {
+        if (!(masterKey instanceof IBBEDel07MasterSecretKeySerParameter)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + masterKey.getClass().getName() + ", require"
-                            + IBBEDel07MasterSecretKeyParameters.class.getName());
+                            + IBBEDel07MasterSecretKeySerParameter.class.getName());
         }
         IBBEDel07SecretKeyGenerator secretKeyGenerator = new IBBEDel07SecretKeyGenerator();
         secretKeyGenerator.init(new IBBEDel07SecretKeyGenerationParameters(
@@ -60,14 +60,14 @@ public class IBBEDel07Engine implements IBBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids) {
-        if (!(publicKey instanceof IBBEDel07PublicKeyParameters)){
+    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids) {
+        if (!(publicKey instanceof IBBEDel07PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + IBBEDel07PublicKeyParameters.class.getName());
+                            + IBBEDel07PublicKeySerParameter.class.getName());
         }
-        IBBEDel07KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new IBBEDel07KeyEncapsulationPairGenerator();
+        IBBEDel07EncapsulationPairGenerator keyEncapsulationPairGenerator = new IBBEDel07EncapsulationPairGenerator();
         keyEncapsulationPairGenerator.init(new IBBEDel07CiphertextGenerationParameters(
                 publicKey, ids));
 
@@ -75,25 +75,25 @@ public class IBBEDel07Engine implements IBBEEngine {
     }
 
     public byte[] decapsulation(CipherParameters publicKey, CipherParameters secretKey, String[] ids, CipherParameters ciphertext) throws InvalidCipherTextException {
-        if (!(publicKey instanceof IBBEDel07PublicKeyParameters)){
+        if (!(publicKey instanceof IBBEDel07PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + IBBEDel07PublicKeyParameters.class.getName());
+                            + IBBEDel07PublicKeySerParameter.class.getName());
         }
-        if (!(secretKey instanceof IBBEDel07SecretKeyParameters)){
+        if (!(secretKey instanceof IBBEDel07SecretKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require "
-                            + IBBEDel07SecretKeyParameters.class.getName());
+                            + IBBEDel07SecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof IBBEDel07CiphertextParameters)){
+        if (!(ciphertext instanceof IBBEDel07CipherSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + IBBEDel07CiphertextParameters.class.getName());
+                            + IBBEDel07CipherSerParameter.class.getName());
         }
-        IBBEDel07KeyDecapsulationGenerator keyDecapsulationGenerator = new IBBEDel07KeyDecapsulationGenerator();
+        IBBEDel07DecapsulationGenerator keyDecapsulationGenerator = new IBBEDel07DecapsulationGenerator();
         keyDecapsulationGenerator.init(new IBBEDel07DecapsulationParameters(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();

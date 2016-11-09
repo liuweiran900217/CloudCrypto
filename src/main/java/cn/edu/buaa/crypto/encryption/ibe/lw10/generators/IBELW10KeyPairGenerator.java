@@ -1,31 +1,30 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.params.IBELW10PublicKeyParameters;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10KeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 16/5/7.
  * Modified by Weiran Liu on 16/5/16.
  */
-public class IBELW10KeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
-    private IBELW10KeyPairGenerationParameters parameters;
+public class IBELW10KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+    private IBELW10KeyPairGenerationParameter params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (IBELW10KeyPairGenerationParameters)keyGenerationParameters;
+        this.params = (IBELW10KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = PairingUtils.GenerateTypeA1Parameters(this.parameters.getQBitLength());
+    public AsymmetricKeySerPair generateKeyPair() {
+        PropertiesParameters parameters = (PropertiesParameters) this.params.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
         Element generator = pairing.getG1().newRandomElement().getImmutable();
 
@@ -40,8 +39,8 @@ public class IBELW10KeyPairGenerator implements AsymmetricCipherKeyPairGenerator
         parameters.remove("n0");
         parameters.remove("n1");
         parameters.remove("n2");
-        return new AsymmetricCipherKeyPair(
-                new IBELW10PublicKeyParameters(parameters, u, g, h, eggAlpha),
-                new IBELW10MasterSecretKeyParameters(parameters, alpha, g3Generator));
+        return new AsymmetricKeySerPair(
+                new IBELW10PublicKeySerParameter(parameters, u, g, h, eggAlpha),
+                new IBELW10MasterSecretKeySerParameter(parameters, alpha, g3Generator));
     }
 }

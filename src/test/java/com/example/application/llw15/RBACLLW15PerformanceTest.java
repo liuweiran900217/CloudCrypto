@@ -1,14 +1,16 @@
 package com.example.application.llw15;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import cn.edu.buaa.crypto.utils.Timer;
+import com.example.TestUtils;
 import edu.princeton.cs.algs4.Out;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -202,20 +204,20 @@ public class RBACLLW15PerformanceTest {
         System.out.print("Setup; ");
         out.print("Setup : ");
         timer.start(0);
-        AsymmetricCipherKeyPair keyPair = engine.Setup(pairingParameters, maximal_roles);
+        AsymmetricKeySerPair keyPair = engine.Setup(pairingParameters, maximal_roles);
         temperTime = timer.stop(0);
         out.print("\t" + temperTime);
         this.timeSetep += temperTime;
         out.println();
 
-        CipherParameters publicKey = keyPair.getPublic();
-        CipherParameters masterKey = keyPair.getPrivate();
+        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
 
         System.out.print("ACGenP; ");
         out.print("ACGenP: ");
         //test patient access credential Generation performance
         timer.start(0);
-        CipherParameters accessCredentialPatient = engine.ACGenP(publicKey, masterKey, patientId);
+        AsymmetricKeySerParameter accessCredentialPatient = engine.ACGenP(publicKey, masterKey, patientId);
         temperTime = timer.stop(0);
         out.print("\t" + temperTime);
         this.timeAccessCredentialGenP += temperTime;
@@ -223,7 +225,7 @@ public class RBACLLW15PerformanceTest {
 
         System.out.print("FACGenP; ");
         out.print("FACGenP: ");
-        CipherParameters intermediateParametersAccessCredentialPaitent = engine.IntermediateGen(publicKey);
+        PairingCipherSerParameter intermediateParametersAccessCredentialPaitent = engine.IntermediateGen(publicKey);
         timer.start(0);
         accessCredentialPatient = engine.ACGenP(publicKey, masterKey, intermediateParametersAccessCredentialPaitent, patientId);
         temperTime = timer.stop(0);
@@ -234,8 +236,8 @@ public class RBACLLW15PerformanceTest {
         System.out.print("ACGenM; ");
         out.print("ACGenM: ");
         //test medical staff access credential generation performance
-        CipherParameters[] accessCredentialMedicalStaff = new CipherParameters[maximal_depth];
-        CipherParameters[] accessCredentialMedicalStaffIntermediateParameters = new CipherParameters[maximal_depth];
+        AsymmetricKeySerParameter[] accessCredentialMedicalStaff = new AsymmetricKeySerParameter[maximal_depth];
+        PairingCipherSerParameter[] accessCredentialMedicalStaffIntermediateParameters = new PairingCipherSerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth; i++) {
             timer.start(i);
             accessCredentialMedicalStaff[i] = engine.ACGenM(publicKey, masterKey, medicalStaffRoleVectors[i], timeT);
@@ -261,8 +263,8 @@ public class RBACLLW15PerformanceTest {
         System.out.print("ACDeleM; ");
         out.print("ACDeleM: ");
         //test medical staff access credential delegation performance
-        CipherParameters[] accessCredentialDelegateMedicalStaff = new CipherParameters[maximal_depth];
-        CipherParameters[] accessCredentialDelegateMedicalStaffIntermediateParameters = new CipherParameters[maximal_depth];
+        AsymmetricKeySerParameter[] accessCredentialDelegateMedicalStaff = new AsymmetricKeySerParameter[maximal_depth];
+        PairingCipherSerParameter[] accessCredentialDelegateMedicalStaffIntermediateParameters = new PairingCipherSerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth - 1; i++) {
             timer.start(i + 1);
             accessCredentialDelegateMedicalStaff[i + 1] = engine.ACDeleM(publicKey, accessCredentialMedicalStaff[i], i + 1, "Delegate");
@@ -288,11 +290,11 @@ public class RBACLLW15PerformanceTest {
         System.out.print("EHREnc; ");
         out.print("EHREnc: ");
         //test key encapsulation performance
-        CipherParameters[] encapsulations = new CipherParameters[maximal_roles];
-        CipherParameters[] encapsulationsIntermedicateParameters = new CipherParameters[maximal_roles];
+        PairingCipherSerParameter[] encapsulations = new PairingCipherSerParameter[maximal_roles];
+        PairingCipherSerParameter[] encapsulationsIntermedicateParameters = new PairingCipherSerParameter[maximal_roles];
         for (int i = 0; i < maximal_roles; i++) {
             timer.start(i);
-            PairingKeyEncapsulationPair encapsulationPair = engine.EHREnc(publicKey, patientId, encapsulationRoleVectorSets[i], timeT);
+            PairingKeyEncapsulationSerPair encapsulationPair = engine.EHREnc(publicKey, patientId, encapsulationRoleVectorSets[i], timeT);
             encapsulations[i] = encapsulationPair.getCiphertext();
             temperTime = timer.stop(i);
             out.print("\t" + temperTime);
@@ -305,7 +307,7 @@ public class RBACLLW15PerformanceTest {
         for (int i = 0; i < maximal_roles; i++) {
             encapsulationsIntermedicateParameters[i] = engine.IntermediateGen(publicKey);
             timer.start(i);
-            PairingKeyEncapsulationPair encapsulationPair = engine.EHREnc(publicKey, encapsulationsIntermedicateParameters[i],
+            PairingKeyEncapsulationSerPair encapsulationPair = engine.EHREnc(publicKey, encapsulationsIntermedicateParameters[i],
                     patientId, encapsulationRoleVectorSets[i], timeT);
             encapsulations[i] = encapsulationPair.getCiphertext();
             temperTime = timer.stop(i);
@@ -366,12 +368,9 @@ public class RBACLLW15PerformanceTest {
     }
 
     public static void main(String[] args) {
-        final int r_bit_length = 160;
-        //the q bit length is chosen according to the reviewer #2 from The Computer Journal.
-        final int q_bit_length = 512;
-
         PairingParametersGenerationParameters pairingParametersGenerationParameters =
-                new PairingParametersGenerationParameters(PairingParametersGenerationParameters.PairingType.TYPE_A, r_bit_length, q_bit_length);
+                new PairingParametersGenerationParameters(PairingParametersGenerationParameters.PairingType.TYPE_A,
+                        TestUtils.R_BIT_LENGTH, TestUtils.Q_BIT_LENGTH);
         PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
         pairingParametersGenerator.init(pairingParametersGenerationParameters);
         PairingParameters pairingParameters = pairingParametersGenerator.generateParameters();

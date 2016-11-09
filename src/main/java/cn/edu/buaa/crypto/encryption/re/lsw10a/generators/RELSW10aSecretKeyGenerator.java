@@ -2,10 +2,10 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10AMasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10APublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aSecretKeyGenerationParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aSecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10ASecretKeySerParameter;
 import it.unisa.dia.gas.crypto.cipher.CipherParametersGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -27,8 +27,8 @@ public class RELSW10aSecretKeyGenerator implements CipherParametersGenerator {
     public CipherParameters generateKey() {
         if (keyGenerationParameters instanceof RELSW10aSecretKeyGenerationParameters) {
             RELSW10aSecretKeyGenerationParameters parameters = (RELSW10aSecretKeyGenerationParameters)keyGenerationParameters;
-            RELSW10aMasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
-            RELSW10aPublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
+            RELSW10AMasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            RELSW10APublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             Element elementId = PairingUtils.MapToZr(pairing, parameters.getId()).getImmutable();
@@ -38,7 +38,7 @@ public class RELSW10aSecretKeyGenerator implements CipherParametersGenerator {
                     .mul(publicKeyParameters.getGb2().powZn(t)).getImmutable();
             Element d1 = publicKeyParameters.getGb().powZn(elementId).mul(masterSecretKeyParameters.getH()).powZn(t).getImmutable();
             Element d2 = publicKeyParameters.getG().powZn(t.negate()).getImmutable();
-            return new RELSW10aSecretKeyParameters(publicKeyParameters.getParameters(), parameters.getId(), elementId, d0, d1, d2);
+            return new RELSW10ASecretKeySerParameter(publicKeyParameters.getParameters(), parameters.getId(), elementId, d0, d1, d2);
 
         } else {
             throw new IllegalArgumentException

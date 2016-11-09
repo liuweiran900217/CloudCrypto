@@ -25,8 +25,8 @@ public class HIBEBBG05SecretKeyGenerator {
         if (params instanceof HIBEBBG05SecretKeyGenerationParameters) {
             HIBEBBG05SecretKeyGenerationParameters parameters = (HIBEBBG05SecretKeyGenerationParameters)params;
 
-            HIBEBBG05PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBEBBG05MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            HIBEBBG05PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+            HIBEBBG05MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
             int length = parameters.getLength();
             assert(length <= publicKeyParameters.getMaxLength());
 
@@ -51,13 +51,13 @@ public class HIBEBBG05SecretKeyGenerator {
             //raise a0 to the power of r and then multiple it by g2Alpha
             a0 = a0.powZn(r).mul(masterSecretKeyParameters.getG2Alpha()).getImmutable();
 
-            return new HIBEBBG05SecretKeyParameters(publicKeyParameters.getParameters(),
+            return new HIBEBBG05SecretKeySerParameter(publicKeyParameters.getParameters(),
                     parameters.getIds(), elementIds, a0, a1, hs);
         } else if (params instanceof HIBEBBG05DelegateGenerationParameters)  {
             HIBEBBG05DelegateGenerationParameters parameters = (HIBEBBG05DelegateGenerationParameters)params;
 
-            HIBEBBG05PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBEBBG05SecretKeyParameters secretKeyParameters = parameters.getSecretKeyParameters();
+            HIBEBBG05PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+            HIBEBBG05SecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
             int length = secretKeyParameters.getLength() + 1;
             assert(length <= publicKeyParameters.getMaxLength());
 
@@ -96,7 +96,7 @@ public class HIBEBBG05SecretKeyGenerator {
                             .mul(publicKeyParameters.getHsAt(i).powZn(r)).getImmutable();
                 }
             }
-            return new HIBEBBG05SecretKeyParameters(publicKeyParameters.getParameters(),
+            return new HIBEBBG05SecretKeySerParameter(publicKeyParameters.getParameters(),
                     ids, elementIds, a0, a1, hs);
         } else {
             throw new IllegalArgumentException

@@ -1,12 +1,15 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15AccessCredentialMDeleParameter;
+import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15AccessCredentialMGenParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
-import cn.edu.buaa.crypto.application.llw15.params.*;
+import cn.edu.buaa.crypto.application.llw15.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -14,19 +17,19 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu role-based access control medial staff access credential generator.
  */
-public class RBACLLW15AccessCredentialMGenerator {
+public class RBACLLW15AccessCredentialMGenerator implements AsymmetricKeySerParametersGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public CipherParameters generateKey() {
-        if (params instanceof RBACLLW15AccessCredentialMGenParameters) {
-            RBACLLW15AccessCredentialMGenParameters parameters = (RBACLLW15AccessCredentialMGenParameters)params;
+    public AsymmetricKeySerParameter generateKey() {
+        if (params instanceof RBACLLW15AccessCredentialMGenParameter) {
+            RBACLLW15AccessCredentialMGenParameter parameters = (RBACLLW15AccessCredentialMGenParameter)params;
 
-            RBACLLW15PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            RBACLLW15MasterSecretKeyParameters masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            RBACLLW15PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+            RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             Element[] elementRoles = PairingUtils.MapToZr(pairing, parameters.getRoles());
@@ -57,11 +60,11 @@ public class RBACLLW15AccessCredentialMGenerator {
                 //raise a0 to the power of r and then multiple it by gAlpha
                 a0 = a0.powZn(r).mul(masterSecretKeyParameters.getG2Alpha()).getImmutable();
 
-                return new RBACLLW15AccessCredentialMParameters(publicKeyParameters.getParameters(),
+                return new RBACLLW15AccessCredentialMSerParameter(publicKeyParameters.getParameters(),
                         parameters.getRoles(), elementRoles, parameters.getTime(), elementTime, a0, a1, a2, bv, bs);
             } else {
                 //generate medical staff access credential using intermediate parameters
-                RBACLLW15IntermediateParameters intermediateParameters = parameters.getIntermediateParameters();
+                RBACLLW15IntermediateSerParameter intermediateParameters = parameters.getIntermediateParameters();
 
                 Element a1 = intermediateParameters.get_G_r().getImmutable();
                 Element a0 = masterSecretKeyParameters.getG2Alpha()
@@ -80,15 +83,15 @@ public class RBACLLW15AccessCredentialMGenerator {
                 }
                 a0 = a0.mul(intermediateParameters.get_U_0_r().powZn(elementTime)).getImmutable();
 
-                return new RBACLLW15AccessCredentialMParameters(publicKeyParameters.getParameters(),
+                return new RBACLLW15AccessCredentialMSerParameter(publicKeyParameters.getParameters(),
                         parameters.getRoles(), elementRoles, parameters.getTime(), elementTime, a0, a1, a2, bv, bs);
             }
 
-        } else if (params instanceof RBACLLW15AccessCredentialMDeleParameters)  {
-            RBACLLW15AccessCredentialMDeleParameters parameters = (RBACLLW15AccessCredentialMDeleParameters)params;
+        } else if (params instanceof RBACLLW15AccessCredentialMDeleParameter)  {
+            RBACLLW15AccessCredentialMDeleParameter parameters = (RBACLLW15AccessCredentialMDeleParameter)params;
 
-            RBACLLW15PublicKeyParameters publicKeyParameters = parameters.getPublicKeyParameters();
-            RBACLLW15AccessCredentialMParameters secretKeyParameters = parameters.getAccessCredentialMParameters();
+            RBACLLW15PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+            RBACLLW15AccessCredentialMSerParameter secretKeyParameters = parameters.getAccessCredentialMParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] roles = new String[publicKeyParameters.getMaxRoleNumber()];
@@ -128,12 +131,12 @@ public class RBACLLW15AccessCredentialMGenerator {
                         .powZn(t).mul(secretKeyParameters.getA0())
                         .mul(secretKeyParameters.getBsAt(parameters.getIndex()).powZn(elementRoles[parameters.getIndex()])).getImmutable();
 
-                return new RBACLLW15AccessCredentialMParameters(publicKeyParameters.getParameters(),
+                return new RBACLLW15AccessCredentialMSerParameter(publicKeyParameters.getParameters(),
                         roles, elementRoles, secretKeyParameters.getTime(), secretKeyParameters.getElementTime(),
                         a0, a1, a2, bv, bs);
             } else {
                 //generate medical staff access credential using intermediate parameters
-                RBACLLW15IntermediateParameters intermediateParameters = parameters.getIntermediateParameters();
+                RBACLLW15IntermediateSerParameter intermediateParameters = parameters.getIntermediateParameters();
                 Element a0 = intermediateParameters.get_G_3_r().getImmutable();
                 Element a1 = secretKeyParameters.getA1().mul(intermediateParameters.get_G_r()).getImmutable();
                 Element a2 = secretKeyParameters.getA2().mul(intermediateParameters.get_G_h_r()).getImmutable();
@@ -164,7 +167,7 @@ public class RBACLLW15AccessCredentialMGenerator {
                         .mul(secretKeyParameters.getA0())
                         .mul(secretKeyParameters.getBsAt(parameters.getIndex()).powZn(elementRoles[parameters.getIndex()])).getImmutable();
 
-                return new RBACLLW15AccessCredentialMParameters(publicKeyParameters.getParameters(),
+                return new RBACLLW15AccessCredentialMSerParameter(publicKeyParameters.getParameters(),
                         roles, elementRoles, secretKeyParameters.getTime(), secretKeyParameters.getElementTime(),
                         a0, a1, a2, bv, bs);
             }
@@ -173,8 +176,8 @@ public class RBACLLW15AccessCredentialMGenerator {
                     ("Invalid KeyGenerationParameters for " + RBACLLW15Engine.SCHEME_NAME
                             + " Secret Key Generatation, find "
                             + params.getClass().getName() + ", require "
-                            + RBACLLW15AccessCredentialMGenParameters.class.getName() + " or "
-                            + RBACLLW15AccessCredentialMDeleParameters.class.getName());
+                            + RBACLLW15AccessCredentialMGenParameter.class.getName() + " or "
+                            + RBACLLW15AccessCredentialMDeleParameter.class.getName());
         }
     }
 }

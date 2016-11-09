@@ -28,10 +28,10 @@ public class BB04SignKeyPairGenerator implements AsymmetricCipherKeyPairGenerato
         Element g2 = pairing.getG2().newRandomElement().getImmutable();
         Element u = g2.powZn(x).getImmutable();
         Element v = g2.powZn(y).getImmutable();
-        BB04SignPublicKeyParameters publicKeyParameters = new BB04SignPublicKeyParameters(param.getPairingParameters(), g1, g2, u, v);
+        BB04SignPublicKeySerParameter publicKeyParameters = new BB04SignPublicKeySerParameter(param.getPairingParameters(), g1, g2, u, v);
 
         return new AsymmetricCipherKeyPair(
                 publicKeyParameters,
-                new BB04SignSecretKeyParameters(param.getPairingParameters(), publicKeyParameters, x, y));
+                new BB04SignSecretKeySerParameter(param.getPairingParameters(), publicKeyParameters, x, y));
     }
 }

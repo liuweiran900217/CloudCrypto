@@ -1,13 +1,14 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.application.llw15.params.RBACLLW15PublicKeyParameters;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15KeyPairGenerationParameter;
+import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -15,14 +16,14 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu role-based access control key pair generator.
  */
-public class RBACLLW15KeyPairGenerator {
-    private RBACLLW15KeyPairGenerationParameters parameters;
+public class RBACLLW15KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+    private RBACLLW15KeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (RBACLLW15KeyPairGenerationParameters)keyGenerationParameters;
+        this.parameters = (RBACLLW15KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricCipherKeyPair generateKeyPair() {
+    public AsymmetricKeySerPair generateKeyPair() {
         PairingParameters parameters = this.parameters.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
 
@@ -40,8 +41,8 @@ public class RBACLLW15KeyPairGenerator {
             u[i] = pairing.getG1().newRandomElement().getImmutable();
         }
 
-        return new AsymmetricCipherKeyPair(
-                new RBACLLW15PublicKeyParameters(parameters, g, g1, g2, g3, gh, u0, uv, u),
-                new RBACLLW15MasterSecretKeyParameters(parameters, g2Alpha));
+        return new AsymmetricKeySerPair(
+                new RBACLLW15PublicKeySerParameter(parameters, g, g1, g2, g3, gh, u0, uv, u),
+                new RBACLLW15MasterSecretKeySerParameter(parameters, g2Alpha));
     }
 }

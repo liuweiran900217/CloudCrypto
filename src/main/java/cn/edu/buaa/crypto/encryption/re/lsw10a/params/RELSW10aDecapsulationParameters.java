@@ -3,25 +3,25 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.params;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.util.Arrays;
-
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Waters revocation encryption decapsulation parameter.
  */
 public class RELSW10aDecapsulationParameters implements CipherParameters {
-    private RELSW10aPublicKeyParameters publicKeyParameters;
-    private RELSW10aSecretKeyParameters secretKeyParameters;
+    private RELSW10APublicKeySerParameter publicKeyParameters;
+    private RELSW10ASecretKeySerParameter secretKeyParameters;
     private String[] ids;
-    private RELSW10aCiphertextParameters ciphertextParameters;
+    private RELSW10ACipherSerParameter ciphertextParameters;
 
     public RELSW10aDecapsulationParameters(CipherParameters publicKeyParameters,
                                            CipherParameters secretKeyParameters,
                                            String[] ids,
                                            CipherParameters ciphertextParameters) {
-        this.publicKeyParameters = (RELSW10aPublicKeyParameters)publicKeyParameters;
-        this.secretKeyParameters = (RELSW10aSecretKeyParameters)secretKeyParameters;
-        this.ids = Arrays.copyOf(ids, ids.length);
-        this.ciphertextParameters = (RELSW10aCiphertextParameters)ciphertextParameters;
+        this.publicKeyParameters = (RELSW10APublicKeySerParameter)publicKeyParameters;
+        this.secretKeyParameters = (RELSW10ASecretKeySerParameter)secretKeyParameters;
+        this.ids = ids;
+        this.ciphertextParameters = (RELSW10ACipherSerParameter)ciphertextParameters;
         if (this.ciphertextParameters.getLength() != ids.length) {
             throw new IllegalArgumentException
                     ("Length of " + RELSW10aEngine.SCHEME_NAME
@@ -31,15 +31,15 @@ public class RELSW10aDecapsulationParameters implements CipherParameters {
         }
     }
 
-    public RELSW10aPublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
+    public RELSW10APublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }
 
-    public RELSW10aSecretKeyParameters getSecretKeyParameters() { return this.secretKeyParameters; }
+    public RELSW10ASecretKeySerParameter getSecretKeyParameters() { return this.secretKeyParameters; }
 
-    public RELSW10aCiphertextParameters getCiphertextParameters() { return this.ciphertextParameters; }
+    public RELSW10ACipherSerParameter getCiphertextParameters() { return this.ciphertextParameters; }
 
     public int getLength() { return this.ids.length; }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public String getIdsAt(int index) { return this.ids[index]; }
 }

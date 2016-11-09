@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
-import cn.edu.buaa.crypto.algebra.params.SecurePrimeParameters;
+import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 
 import java.math.BigInteger;
 
@@ -12,7 +12,7 @@ import java.math.BigInteger;
 class DLogKR00bPublicKeyParameters extends DLogKR00bKeyParameters {
     private BigInteger y;
 
-    DLogKR00bPublicKeyParameters(BigInteger y, SecurePrimeParameters params) {
+    DLogKR00bPublicKeyParameters(BigInteger y, SecurePrimeSerParameter params) {
         super(false, params);
         this.y = y;
     }

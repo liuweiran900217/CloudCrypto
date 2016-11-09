@@ -3,10 +3,10 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.serialization;
 import cn.edu.buaa.crypto.utils.SerializationUtils;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeyParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04SecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04SecretKeySerParameter;
 import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.*;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -57,21 +57,21 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
     }
 
     public Document documentSerialization(CipherParameters cipherParameters) {
-        if (cipherParameters instanceof HIBEBB04PublicKeyParameters) {
-            return getInstance().publicKeyParametersSerialization((HIBEBB04PublicKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof HIBEBB04MasterSecretKeyParameters) {
-            return getInstance().masterSecretKeyParametersSerialization((HIBEBB04MasterSecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof HIBEBB04SecretKeyParameters) {
-            return getInstance().secretKeyParametersSerialization((HIBEBB04SecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof HIBEBB04CiphertextParameters) {
-            return getInstance().ciphertextParametersSerialization((HIBEBB04CiphertextParameters) cipherParameters);
+        if (cipherParameters instanceof HIBEBB04PublicKeySerParameter) {
+            return getInstance().publicKeyParametersSerialization((HIBEBB04PublicKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof HIBEBB04MasterSecretKeySerParameter) {
+            return getInstance().masterSecretKeyParametersSerialization((HIBEBB04MasterSecretKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof HIBEBB04SecretKeySerParameter) {
+            return getInstance().secretKeyParametersSerialization((HIBEBB04SecretKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof HIBEBB04CipherSerParameter) {
+            return getInstance().ciphertextParametersSerialization((HIBEBB04CipherSerParameter) cipherParameters);
         } else {
             throw new InvalidParameterException("Invalid CipherParameter Instance of " + TAG_SCHEME_NAME +
                     " Scheme, find" + cipherParameters.getClass().getName());
         }
     }
 
-    private Document publicKeyParametersSerialization(HIBEBB04PublicKeyParameters publicKeyParameters){
+    private Document publicKeyParametersSerialization(HIBEBB04PublicKeySerParameter publicKeyParameters){
         try {
             Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = publicKeyParametersDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
@@ -93,7 +93,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document masterSecretKeyParametersSerialization(HIBEBB04MasterSecretKeyParameters masterSecretKeyParameters) {
+    private Document masterSecretKeyParametersSerialization(HIBEBB04MasterSecretKeySerParameter masterSecretKeyParameters) {
         try {
             Document masterSecretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = masterSecretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
@@ -108,7 +108,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document secretKeyParametersSerialization(HIBEBB04SecretKeyParameters secretKeyParameters){
+    private Document secretKeyParametersSerialization(HIBEBB04SecretKeySerParameter secretKeyParameters){
         try {
             Document secretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = secretKeyDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
@@ -128,7 +128,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document ciphertextParametersSerialization(HIBEBB04CiphertextParameters ciphertextParameters){
+    private Document ciphertextParametersSerialization(HIBEBB04CipherSerParameter ciphertextParameters){
         try {
             Document ciphertextDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = ciphertextDocument.createElement(HIBEBB04XMLSerializer.TAG_SCHEME_NAME);
@@ -185,7 +185,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
                 hs = SerializationUtils.GetElementArray(pairing, node, TAG_PK_HI, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new HIBEBB04PublicKeyParameters(pairingParameters, g, g1, g2, hs);
+        return new HIBEBB04PublicKeySerParameter(pairingParameters, g, g1, g2, hs);
     }
 
     private CipherParameters masterSecretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement){
@@ -199,7 +199,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
                 g2Alpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new HIBEBB04MasterSecretKeyParameters(pairingParameters, g2Alpha);
+        return new HIBEBB04MasterSecretKeySerParameter(pairingParameters, g2Alpha);
     }
 
     private CipherParameters secretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -221,7 +221,7 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
                 ids = SerializationUtils.GetStringArray(node, TAG_SK_IDI);
             }
         }
-        return new HIBEBB04SecretKeyParameters(pairingParameters, ids, PairingUtils.MapToZr(pairing, ids), d0, ds);
+        return new HIBEBB04SecretKeySerParameter(pairingParameters, ids, PairingUtils.MapToZr(pairing, ids), d0, ds);
     }
 
     private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -240,6 +240,6 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
                 Cs = SerializationUtils.GetElementArray(pairing, node, TAG_CT_CI, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new HIBEBB04CiphertextParameters(pairingParameters, length, B, Cs);
+        return new HIBEBB04CipherSerParameter(pairingParameters, length, B, Cs);
     }
 }

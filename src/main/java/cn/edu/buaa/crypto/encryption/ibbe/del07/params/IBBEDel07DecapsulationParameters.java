@@ -10,37 +10,37 @@ import java.util.Arrays;
  * Decapsulation parameters for Delerablée IBBE scheme.
  */
 public class IBBEDel07DecapsulationParameters implements CipherParameters {
-    private IBBEDel07PublicKeyParameters publicKeyParameters;
-    private IBBEDel07SecretKeyParameters secretKeyParameters;
+    private IBBEDel07PublicKeySerParameter publicKeyParameters;
+    private IBBEDel07SecretKeySerParameter secretKeyParameters;
     private String[] ids;
-    private IBBEDel07CiphertextParameters ciphertextParameters;
+    private IBBEDel07CipherSerParameter ciphertextParameters;
 
     public IBBEDel07DecapsulationParameters(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String[] ids,
             CipherParameters ciphertextParameters) {
-        this.publicKeyParameters = (IBBEDel07PublicKeyParameters)publicKeyParameters;
-        this.secretKeyParameters = (IBBEDel07SecretKeyParameters)secretKeyParameters;
-        this.ids = Arrays.copyOf(ids, ids.length);
-        this.ciphertextParameters = (IBBEDel07CiphertextParameters)ciphertextParameters;
+        this.publicKeyParameters = (IBBEDel07PublicKeySerParameter)publicKeyParameters;
+        this.secretKeyParameters = (IBBEDel07SecretKeySerParameter)secretKeyParameters;
+        this.ids = ids;
+        this.ciphertextParameters = (IBBEDel07CipherSerParameter)ciphertextParameters;
     }
 
-    public IBBEDel07PublicKeyParameters getPublicKeyParameters() {
+    public IBBEDel07PublicKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public IBBEDel07SecretKeyParameters getSecretKeyParameters() {
+    public IBBEDel07SecretKeySerParameter getSecretKeyParameters() {
         return this.secretKeyParameters;
     }
 
-    public IBBEDel07CiphertextParameters getCiphertextParameters() {
+    public IBBEDel07CipherSerParameter getCiphertextParameters() {
         return this.ciphertextParameters;
     }
 
     public int getNumberOfBroadcastReceiver() { return this.ids.length; }
 
-    public String[] getIds() { return Arrays.copyOf(ids, ids.length); }
+    public String[] getIds() { return this.ids; }
 
     public String getIdsAt(int index) { return this.ids[index]; }
 }

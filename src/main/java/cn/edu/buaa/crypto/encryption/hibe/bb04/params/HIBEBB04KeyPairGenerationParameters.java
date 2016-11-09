@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
 
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**

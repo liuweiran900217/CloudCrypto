@@ -1,10 +1,10 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13SecretKeyGenerationParameters;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13SecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13SecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -24,8 +24,8 @@ public class CPABERW13SecretKeyGenerator {
     }
 
     public CipherParameters generateKey() {
-        CPABERW13PublicKeyParameters publicKeyParameters = params.getPublicKeyParameters();
-        CPABERW13MasterSecretKeyParameters masterSecretKeyParameters = params.getMasterSecretKeyParameters();
+        CPABERW13PublicKeySerParameter publicKeyParameters = params.getPublicKeyParameters();
+        CPABERW13MasterSecretKeySerParameter masterSecretKeyParameters = params.getMasterSecretKeyParameters();
         int length = params.getLength();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
@@ -49,7 +49,7 @@ public class CPABERW13SecretKeyGenerator {
                     .mul(publicKeyParameters.getV().powZn(r.negate())).getImmutable();
         }
 
-        return new CPABERW13SecretKeyParameters(publicKeyParameters.getParameters(),
+        return new CPABERW13SecretKeySerParameter(publicKeyParameters.getParameters(),
                 params.getAttributes(), elementAttributes, k0, k1, k2s, k3s);
     }
 }

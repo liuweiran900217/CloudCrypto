@@ -1,14 +1,15 @@
 package com.example.encryption.hibbe;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.utils.Timer;
 import edu.princeton.cs.algs4.Out;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -27,6 +28,7 @@ public class HIBBEPerformanceTest {
     //the maximal number of role index is chosen
     private static final int maximal_users = 100;
 
+    private final int rBitLength;
     private final int qBitLength;
     //setup time
     private double timeSetep;
@@ -48,12 +50,12 @@ public class HIBBEPerformanceTest {
     private double[][] timeEHRDecapsulationM = new double[maximal_depth][maximal_users];
 
     private HIBBEEngine engine;
-    private PairingParameters pairingParameters;
 
     private Out out;
 
-    private HIBBEPerformanceTest(int qBitLength, HIBBEEngine engine, String name) {
+    public HIBBEPerformanceTest(int rBitLength, int qBitLength, HIBBEEngine engine, String name) {
         this.engine = engine;
+        this.rBitLength = rBitLength;
         this.qBitLength = qBitLength;
 
         out = new Out(default_path + name);
@@ -87,7 +89,7 @@ public class HIBBEPerformanceTest {
 //        }
     }
 
-    private void performanceTest() {
+    public void performanceTest() {
         for (int i = 0; i < test_round; i++) {
             System.out.println("Test round: " + (i+1));
             out.println("Test round: " + (i+1));
@@ -132,11 +134,20 @@ public class HIBBEPerformanceTest {
     }
 
     private void test_one_round() {
-        PairingParametersGenerationParameters pairingParametersGenerationParameters =
-                new PairingParametersGenerationParameters(3, qBitLength);
-        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
-        pairingParametersGenerator.init(pairingParametersGenerationParameters);
-        this.pairingParameters = pairingParametersGenerator.generateParameters();
+        PairingParameters pairingParameters;
+        if (this.engine instanceof HIBBELLW14Engine) {
+            PairingParametersGenerationParameters pairingParametersGenerationParameters =
+                    new PairingParametersGenerationParameters(3, qBitLength);
+            PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
+            pairingParametersGenerator.init(pairingParametersGenerationParameters);
+            pairingParameters = pairingParametersGenerator.generateParameters();
+        } else {
+            PairingParametersGenerationParameters pairingParametersGenerationParameters =
+                    new PairingParametersGenerationParameters(PairingParametersGenerationParameters.PairingType.TYPE_A, rBitLength, qBitLength);
+            PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
+            pairingParametersGenerator.init(pairingParametersGenerationParameters);
+            pairingParameters = pairingParametersGenerator.generateParameters();
+        }
 
         double temperTime;
         Timer timer = new Timer(maximal_users);
@@ -144,19 +155,19 @@ public class HIBBEPerformanceTest {
         System.out.print("Setup; ");
         out.print("Setup : ");
         timer.start(0);
-        AsymmetricCipherKeyPair keyPair = engine.setup(pairingParameters, maximal_users);
+        AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, maximal_users);
         temperTime = timer.stop(0);
         out.print("\t" + temperTime);
         this.timeSetep += temperTime;
         out.println();
 
-        CipherParameters publicKey = keyPair.getPublic();
-        CipherParameters masterKey = keyPair.getPrivate();
+        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
 
         System.out.print("KeyGen; ");
         out.print("KeyGen: ");
         //test secret key generation performance
-        CipherParameters[] secretKeys = new CipherParameters[maximal_depth];
+        AsymmetricKeySerParameter[] secretKeys = new AsymmetricKeySerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth; i++) {
             timer.start(i);
             secretKeys[i] = engine.keyGen(publicKey, masterKey, identityVectors[i]);
@@ -169,7 +180,7 @@ public class HIBBEPerformanceTest {
         System.out.print("Delegate; ");
         out.print("Delegate: ");
         //test secret key delegation performance
-        CipherParameters[] delegateKeys = new CipherParameters[maximal_depth];
+        AsymmetricKeySerParameter[] delegateKeys = new AsymmetricKeySerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth - 1; i++) {
             timer.start(i + 1);
             delegateKeys[i + 1] = engine.delegate(publicKey, secretKeys[i], i + 1, "Delegate");
@@ -185,7 +196,7 @@ public class HIBBEPerformanceTest {
         CipherParameters[] encapsulations = new CipherParameters[maximal_users];
         for (int i = 0; i < maximal_users; i++) {
             timer.start(i);
-            PairingKeyEncapsulationPair encapsulationPair = engine.encapsulation(publicKey, encapsulationIdentityVectorSets[i]);
+            PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, encapsulationIdentityVectorSets[i]);
             encapsulations[i] = encapsulationPair.getCiphertext();
             temperTime = timer.stop(i);
             out.print("\t" + temperTime);
@@ -213,12 +224,5 @@ public class HIBBEPerformanceTest {
         }
         out.println();
         System.out.println();
-    }
-
-    public static void main(String[] args) {
-        //the q bit length is chosen according to the reviewer #2 from The Computer Journal.
-        final int q_bit_length = 512;
-
-        new HIBBEPerformanceTest(q_bit_length, HIBBELLW14Engine.getInstance(), "HIBBE-LLW14.txt").performanceTest();
     }
 }

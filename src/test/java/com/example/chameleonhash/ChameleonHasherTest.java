@@ -1,6 +1,6 @@
 package com.example.chameleonhash;
 
-import cn.edu.buaa.crypto.algebra.params.SecurePrimeParameters;
+import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00bDigestHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bHasher;
@@ -77,12 +77,12 @@ public class ChameleonHasherTest {
     public static void main(String[] args) {
         SecureRandom secureRandom = new SecureRandom();
         //RFC 3526, 1536-bit MODP Group
-        SecurePrimeParameters securePrimeParameters = SecurePrimeParameters.RFC3526_1536BIT_MODP_GROUP;
+        SecurePrimeSerParameter securePrimeSerParameter = SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP;
 
         //test Krawczyk-Rabin Chameleon hash
         System.out.println("Test Krawczyk-Rabin Chameleon hash function");
         AsymmetricCipherKeyPairGenerator signKeyPairGenerator = new DLogKR00bKeyPairGenerator();
-        signKeyPairGenerator.init(new DLogKR00bKeyGenerationParameters(secureRandom, securePrimeParameters));
+        signKeyPairGenerator.init(new DLogKR00bKeyGenerationParameters(secureRandom, securePrimeSerParameter));
         ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
         new ChameleonHasherTest(signKeyPairGenerator, chameleonHasher).processTest();
 

@@ -3,10 +3,10 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.serialization;
 import cn.edu.buaa.crypto.utils.SerializationUtils;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aCiphertextParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aSecretKeyParameters;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10ACipherSerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10AMasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10APublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10ASecretKeySerParameter;
 import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -59,21 +59,21 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
     }
 
     public Document documentSerialization(CipherParameters cipherParameters) {
-        if (cipherParameters instanceof RELSW10aPublicKeyParameters) {
-            return getInstance().publicKeyParametersSerialization((RELSW10aPublicKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof RELSW10aMasterSecretKeyParameters) {
-            return getInstance().masterSecretKeyParametersSerialization((RELSW10aMasterSecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof RELSW10aSecretKeyParameters) {
-            return getInstance().secretKeyParametersSerialization((RELSW10aSecretKeyParameters) cipherParameters);
-        } else if (cipherParameters instanceof RELSW10aCiphertextParameters) {
-            return getInstance().ciphertextParametersSerialization((RELSW10aCiphertextParameters) cipherParameters);
+        if (cipherParameters instanceof RELSW10APublicKeySerParameter) {
+            return getInstance().publicKeyParametersSerialization((RELSW10APublicKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof RELSW10AMasterSecretKeySerParameter) {
+            return getInstance().masterSecretKeyParametersSerialization((RELSW10AMasterSecretKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof RELSW10ASecretKeySerParameter) {
+            return getInstance().secretKeyParametersSerialization((RELSW10ASecretKeySerParameter) cipherParameters);
+        } else if (cipherParameters instanceof RELSW10ACipherSerParameter) {
+            return getInstance().ciphertextParametersSerialization((RELSW10ACipherSerParameter) cipherParameters);
         } else {
             throw new InvalidParameterException("Invalid CipherParameter Instance of " + RELSW10aEngine.SCHEME_NAME
                     + " Scheme, find" + cipherParameters.getClass().getName());
         }
     }
 
-    private Document publicKeyParametersSerialization(RELSW10aPublicKeyParameters publicKeyParameters){
+    private Document publicKeyParametersSerialization(RELSW10APublicKeySerParameter publicKeyParameters){
         try {
             Document publicKeyParametersDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = publicKeyParametersDocument.createElement(RELSW10aXMLSerializer.TAG_SCHEME_NAME);
@@ -96,7 +96,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document masterSecretKeyParametersSerialization(RELSW10aMasterSecretKeyParameters masterSecretKeyParameters) {
+    private Document masterSecretKeyParametersSerialization(RELSW10AMasterSecretKeySerParameter masterSecretKeyParameters) {
         try {
             Document masterSecretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = masterSecretKeyDocument.createElement(RELSW10aXMLSerializer.TAG_SCHEME_NAME);
@@ -115,7 +115,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document secretKeyParametersSerialization(RELSW10aSecretKeyParameters secretKeyParameters){
+    private Document secretKeyParametersSerialization(RELSW10ASecretKeySerParameter secretKeyParameters){
         try {
             Document secretKeyDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = secretKeyDocument.createElement(RELSW10aXMLSerializer.TAG_SCHEME_NAME);
@@ -136,7 +136,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
         }
     }
 
-    private Document ciphertextParametersSerialization(RELSW10aCiphertextParameters ciphertextParameters){
+    private Document ciphertextParametersSerialization(RELSW10ACipherSerParameter ciphertextParameters){
         try {
             Document ciphertextDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element schemeElement = ciphertextDocument.createElement(RELSW10aXMLSerializer.TAG_SCHEME_NAME);
@@ -200,7 +200,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
                 eggAlpha = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.GT);
             }
         }
-        return new RELSW10aPublicKeyParameters(pairingParameters, g, gb, gb2, hb, eggAlpha);
+        return new RELSW10APublicKeySerParameter(pairingParameters, g, gb, gb2, hb, eggAlpha);
     }
 
     private CipherParameters masterSecretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement){
@@ -222,7 +222,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
                 h = SerializationUtils.GetElement(pairing, node, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new RELSW10aMasterSecretKeyParameters(pairingParameters, alpha, b, h);
+        return new RELSW10AMasterSecretKeySerParameter(pairingParameters, alpha, b, h);
     }
 
     private CipherParameters secretKeyParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -248,7 +248,7 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
             }
         }
         it.unisa.dia.gas.jpbc.Element elementId = PairingUtils.MapToZr(pairing, id);
-        return new RELSW10aSecretKeyParameters(pairingParameters, id, elementId, d0, d1, d2);
+        return new RELSW10ASecretKeySerParameter(pairingParameters, id, elementId, d0, d1, d2);
     }
 
     private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {
@@ -271,6 +271,6 @@ public class RELSW10aXMLSerializer implements PairingParameterXMLSerializer {
                 C2s = SerializationUtils.GetElementArray(pairing, node, TAG_CT_C2I, SerializationUtils.PairingGroupType.G1);
             }
         }
-        return new RELSW10aCiphertextParameters(pairingParameters,length, C0, C1s, C2s);
+        return new RELSW10ACipherSerParameter(pairingParameters,length, C0, C1s, C2s);
     }
 }

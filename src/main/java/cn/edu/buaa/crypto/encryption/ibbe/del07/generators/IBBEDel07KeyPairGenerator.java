@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -41,7 +41,7 @@ public class IBBEDel07KeyPairGenerator implements AsymmetricCipherKeyPairGenerat
         }
 
         return new AsymmetricCipherKeyPair(
-                new IBBEDel07PublicKeyParameters(parameters, w, v, hs),
-                new IBBEDel07MasterSecretKeyParameters(parameters, g, gamma));
+                new IBBEDel07PublicKeySerParameter(parameters, w, v, hs),
+                new IBBEDel07MasterSecretKeySerParameter(parameters, g, gamma));
     }
 }

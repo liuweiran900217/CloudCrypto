@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aKeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aMasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aPublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10AMasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10APublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -39,7 +39,7 @@ public class RELSW10aKeyPairGenerator implements AsymmetricCipherKeyPairGenerato
         Element eggAlpha = pairing.pairing(g, g).powZn(alpha).getImmutable();
 
         return new AsymmetricCipherKeyPair(
-                new RELSW10aPublicKeyParameters(parameters, g, gb, gb2, hb, eggAlpha),
-                new RELSW10aMasterSecretKeyParameters(parameters, alpha, b, h));
+                new RELSW10APublicKeySerParameter(parameters, g, gb, gb2, hb, eggAlpha),
+                new RELSW10AMasterSecretKeySerParameter(parameters, alpha, b, h));
     }
 }

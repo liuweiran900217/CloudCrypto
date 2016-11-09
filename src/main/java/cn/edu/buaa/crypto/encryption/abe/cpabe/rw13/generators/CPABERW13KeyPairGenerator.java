@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13MasterSecretKeyParameters;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13PublicKeyParameters;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.CPABERW13PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -37,7 +37,7 @@ public class CPABERW13KeyPairGenerator implements AsymmetricCipherKeyPairGenerat
         Element eggAlpha = pairing.pairing(g, g).powZn(alpha).getImmutable();
 
         return new AsymmetricCipherKeyPair(
-                new CPABERW13PublicKeyParameters(parameters, g, u, h, w, v, eggAlpha, this.parameters.getAccessControlEngine()),
-                new CPABERW13MasterSecretKeyParameters(parameters, alpha));
+                new CPABERW13PublicKeySerParameter(parameters, g, u, h, w, v, eggAlpha, this.parameters.getAccessControlEngine()),
+                new CPABERW13MasterSecretKeySerParameter(parameters, alpha));
     }
 }

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re;
 
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -40,7 +40,7 @@ public interface REEngine {
      * @param ids revocation identity set
      * @return session key / ciphertext pair associated with the revocation identity set ids
      */
-    public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids);
+    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids);
 
     /**
      * Key Decapsulation Algorithm for RE

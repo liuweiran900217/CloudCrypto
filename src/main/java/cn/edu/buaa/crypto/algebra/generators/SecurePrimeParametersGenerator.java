@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.algebra.generators;
 
-import cn.edu.buaa.crypto.algebra.params.SecurePrimeParameters;
+import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -37,7 +37,7 @@ public class SecurePrimeParametersGenerator {
      * Note: can take a while...
      * </p>
      */
-    public SecurePrimeParameters generateParameters() {
+    public SecurePrimeSerParameter generateParameters() {
         //
         // find a safe prime p where p = 2*q + 1, where p and q are prime.
         //
@@ -47,6 +47,6 @@ public class SecurePrimeParametersGenerator {
         BigInteger q = safePrimes[1];
         BigInteger g = SecurePrimeParametersGeneratorHelper.selectGenerator(q, random);
 
-        return new SecurePrimeParameters(p, q, g);
+        return new SecurePrimeSerParameter(p, q, g);
     }
 }

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe;
 
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -45,7 +45,7 @@ public interface HIBEEngine {
      * @param ids an identity vector
      * @return session key / ciphertext pair associated with the identity vector ids
      */
-    PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String... ids);
+    PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids);
 
     /**
      * Key Decapsulation Algorithm for HIBE

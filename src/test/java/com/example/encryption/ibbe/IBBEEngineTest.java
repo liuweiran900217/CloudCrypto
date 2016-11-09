@@ -1,8 +1,8 @@
 package com.example.encryption.ibbe;
 
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -35,7 +35,7 @@ public class IBBEEngineTest {
         AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength, 8);
         CipherParameters publicKey = keyPair.getPublic();
         CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeyParameters) publicKey).getParameters();
+        PairingParameters pairingParameters = ((PairingKeySerParameter) publicKey).getParameters();
 
         // KeyGen
         String receiverID = "ID_0";
@@ -50,17 +50,17 @@ public class IBBEEngineTest {
         CipherParameters skNonReceiverID = engine.keyGen(publicKey, masterKey, nonReceiverID);
 
         // Encryption
-        PairingKeyEncapsulationPair ciphertextPairSet1 = engine.encapsulation(publicKey, receiverSet1);
+        PairingKeyEncapsulationSerPair ciphertextPairSet1 = engine.encapsulation(publicKey, receiverSet1);
         CipherParameters ciphertextSet1 = ciphertextPairSet1.getCiphertext();
         byte[] sessionKeySet1 = ciphertextPairSet1.getSessionKey();
         String stringSessionKeySet1 = new String(Hex.encode(sessionKeySet1));
 
-        PairingKeyEncapsulationPair ciphertextPairSet4 = engine.encapsulation(publicKey, receiverSet4);
+        PairingKeyEncapsulationSerPair ciphertextPairSet4 = engine.encapsulation(publicKey, receiverSet4);
         CipherParameters ciphertextSet4 = ciphertextPairSet4.getCiphertext();
         byte[] sessionKeySet4 = ciphertextPairSet4.getSessionKey();
         String stringSessionKeySet4 = new String(Hex.encode(sessionKeySet4));
 
-        PairingKeyEncapsulationPair ciphertextPairSet8 = engine.encapsulation(publicKey, receiverSet8);
+        PairingKeyEncapsulationSerPair ciphertextPairSet8 = engine.encapsulation(publicKey, receiverSet8);
         CipherParameters ciphertextSet8 = ciphertextPairSet8.getCiphertext();
         byte[] sessionKeySet8 = ciphertextPairSet8.getSessionKey();
         String stringSessionKeySet8 = new String(Hex.encode(sessionKeySet8));
@@ -149,7 +149,7 @@ public class IBBEEngineTest {
         try {
             //Decrypt ciphertext set 9 using secret key ID_8, but the broadcast set is out of bound
             System.out.println("Test decrypting ciphertext set 9 using secret key ID_8, but the broadcast set is out of bound");
-            PairingKeyEncapsulationPair ciphertextPairSet9 = engine.encapsulation(publicKey, receiverSet9);
+            PairingKeyEncapsulationSerPair ciphertextPairSet9 = engine.encapsulation(publicKey, receiverSet9);
             CipherParameters ciphertextSet9 = ciphertextPairSet9.getCiphertext();
             byte[] sessionKeySet9 = ciphertextPairSet9.getSessionKey();
             String stringSessionKeySet9 = new String(Hex.encode(sessionKeySet9));

@@ -1,14 +1,20 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10KeyDecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10KeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10DecapsulationGenerator;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10EncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.params.*;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10CiphertextGenerationParameters;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10DecapsulationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10KeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10SecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.*;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -18,7 +24,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class IBELW10Engine implements IBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LW10IBE";
+    private static final String SCHEME_NAME = "LW10IBE";
 
     private static IBELW10Engine engine;
 
@@ -33,68 +39,68 @@ public class IBELW10Engine implements IBEEngine {
 
     }
 
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength) {
+    public AsymmetricKeySerPair setup(PairingParameters pairingParameters) {
         IBELW10KeyPairGenerator keyPairGenerator = new IBELW10KeyPairGenerator();
-        keyPairGenerator.init(new IBELW10KeyPairGenerationParameters(qBitLength));
+        keyPairGenerator.init(new IBELW10KeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String id) {
-        if (!(publicKey instanceof IBELW10PublicKeyParameters)){
+    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id) {
+        if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + IBELW10PublicKeyParameters.class.getName());
+                            + IBELW10PublicKeySerParameter.class.getName());
         }
-        if (!(masterKey instanceof IBELW10MasterSecretKeyParameters)) {
+        if (!(masterKey instanceof IBELW10MasterSecretKeySerParameter)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + masterKey.getClass().getName() + ", require"
-                            + IBELW10MasterSecretKeyParameters.class.getName());
+                            + IBELW10MasterSecretKeySerParameter.class.getName());
         }
         IBELW10SecretKeyGenerator secretKeyGenerator = new IBELW10SecretKeyGenerator();
-        secretKeyGenerator.init(new IBELW10SecretKeyGenerationParameters(
+        secretKeyGenerator.init(new IBELW10SecretKeyGenerationParameter(
                 publicKey, masterKey, id));
 
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, String id){
-        if (!(publicKey instanceof IBELW10PublicKeyParameters)){
+    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String id){
+        if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + IBELW10PublicKeyParameters.class.getName());
+                            + IBELW10PublicKeySerParameter.class.getName());
         }
-        IBELW10KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new IBELW10KeyEncapsulationPairGenerator();
+        IBELW10EncapsulationPairGenerator keyEncapsulationPairGenerator = new IBELW10EncapsulationPairGenerator();
         keyEncapsulationPairGenerator.init(new IBELW10CiphertextGenerationParameters(publicKey, id));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
-    public byte[] decapsulation (CipherParameters publicKey, CipherParameters secretKey,
-                                 String id, CipherParameters ciphertext) throws InvalidCipherTextException {
-        if (!(publicKey instanceof IBELW10PublicKeyParameters)){
+    public byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+                                 String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+        if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + IBELW10PublicKeyParameters.class.getName());
+                            + IBELW10PublicKeySerParameter.class.getName());
         }
-        if (!(secretKey instanceof IBELW10SecretKeyParameters)){
+        if (!(secretKey instanceof IBELW10SecretKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require "
-                            + IBELW10SecretKeyParameters.class.getName());
+                            + IBELW10SecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof IBELW10CiphertextParameters)){
+        if (!(ciphertext instanceof IBELW10CipherSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + IBELW10CiphertextParameters.class.getName());
+                            + IBELW10CipherSerParameter.class.getName());
         }
-        IBELW10KeyDecapsulationGenerator keyDecapsulationGenerator = new IBELW10KeyDecapsulationGenerator();
-        keyDecapsulationGenerator.init(new IBELW10DecapsulationParameters(
+        IBELW10DecapsulationGenerator keyDecapsulationGenerator = new IBELW10DecapsulationGenerator();
+        keyDecapsulationGenerator.init(new IBELW10DecapsulationParameter(
                 publicKey, secretKey, id, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
     }

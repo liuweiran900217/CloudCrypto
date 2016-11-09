@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params;
 
-import cn.edu.buaa.crypto.algebra.params.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -10,8 +10,8 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Secret Key Generation parameters for Rouselakis-Waters CP-ABE.
  */
 public class CPABERW13SecretKeyGenerationParameters extends KeyGenerationParameters {
-    private CPABERW13MasterSecretKeyParameters masterSecretKeyParameters;
-    private CPABERW13PublicKeyParameters publicKeyParameters;
+    private CPABERW13MasterSecretKeySerParameter masterSecretKeyParameters;
+    private CPABERW13PublicKeySerParameter publicKeyParameters;
     private String[] attributes;
 
     public CPABERW13SecretKeyGenerationParameters(
@@ -19,15 +19,15 @@ public class CPABERW13SecretKeyGenerationParameters extends KeyGenerationParamet
             CipherParameters masterSecretKeyParameters,
             String[] attributes) {
         super(null, PairingParametersGenerationParameters.STENGTH);
-        this.masterSecretKeyParameters = (CPABERW13MasterSecretKeyParameters)masterSecretKeyParameters;
-        this.publicKeyParameters = (CPABERW13PublicKeyParameters)publicKeyParameters;
+        this.masterSecretKeyParameters = (CPABERW13MasterSecretKeySerParameter)masterSecretKeyParameters;
+        this.publicKeyParameters = (CPABERW13PublicKeySerParameter)publicKeyParameters;
         this.attributes = new String[attributes.length];
         System.arraycopy(attributes, 0, this.attributes, 0, this.attributes.length);
     }
 
-    public CPABERW13MasterSecretKeyParameters getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
+    public CPABERW13MasterSecretKeySerParameter getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
 
-    public CPABERW13PublicKeyParameters getPublicKeyParameters() { return this.publicKeyParameters; }
+    public CPABERW13PublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }
 
     public String getAttributeAt(int index) {
         return this.attributes[index];

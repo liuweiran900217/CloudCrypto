@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13;
 
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13KeyDecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13KeyEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13DecapsulationGenerator;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13EncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.params.*;
-import cn.edu.buaa.crypto.algebra.params.PairingKeyEncapsulationPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -42,17 +42,17 @@ public class CPABERW13Engine extends CPABEEngine {
 
     @Override
     public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String[] attributeSet) {
-        if (!(publicKey instanceof CPABERW13PublicKeyParameters)){
+        if (!(publicKey instanceof CPABERW13PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + CPABERW13PublicKeyParameters.class.getName());
+                            + CPABERW13PublicKeySerParameter.class.getName());
         }
-        if (!(masterKey instanceof CPABERW13MasterSecretKeyParameters)) {
+        if (!(masterKey instanceof CPABERW13MasterSecretKeySerParameter)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + masterKey.getClass().getName() + ", require"
-                            + CPABERW13MasterSecretKeyParameters.class.getName());
+                            + CPABERW13MasterSecretKeySerParameter.class.getName());
         }
         CPABERW13SecretKeyGenerator secretKeyGenerator = new CPABERW13SecretKeyGenerator();
         secretKeyGenerator.init(new CPABERW13SecretKeyGenerationParameters(
@@ -62,14 +62,14 @@ public class CPABERW13Engine extends CPABEEngine {
     }
 
     @Override
-    public PairingKeyEncapsulationPair encapsulation(CipherParameters publicKey, int[][] accessPolicyIntArrays, String[] rhos) {
-        if (!(publicKey instanceof CPABERW13PublicKeyParameters)){
+    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, int[][] accessPolicyIntArrays, String[] rhos) {
+        if (!(publicKey instanceof CPABERW13PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + CPABERW13PublicKeyParameters.class.getName());
+                            + CPABERW13PublicKeySerParameter.class.getName());
         }
-        CPABERW13KeyEncapsulationPairGenerator keyEncapsulationPairGenerator = new CPABERW13KeyEncapsulationPairGenerator();
+        CPABERW13EncapsulationPairGenerator keyEncapsulationPairGenerator = new CPABERW13EncapsulationPairGenerator();
         keyEncapsulationPairGenerator.init(new CPABERW13CiphertextGenerationParameters(
                 publicKey, accessPolicyIntArrays, rhos));
         return keyEncapsulationPairGenerator.generateEncryptionPair();
@@ -77,25 +77,25 @@ public class CPABERW13Engine extends CPABEEngine {
 
     @Override
     public byte[] decapsulation(CipherParameters publicKey, CipherParameters secretKey, int[][] accessPolicyIntArrays, String[] rhos, CipherParameters ciphertext) throws InvalidCipherTextException {
-        if (!(publicKey instanceof CPABERW13PublicKeyParameters)){
+        if (!(publicKey instanceof CPABERW13PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + CPABERW13PublicKeyParameters.class.getName());
+                            + CPABERW13PublicKeySerParameter.class.getName());
         }
-        if (!(secretKey instanceof CPABERW13SecretKeyParameters)){
+        if (!(secretKey instanceof CPABERW13SecretKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require "
-                            + CPABERW13SecretKeyParameters.class.getName());
+                            + CPABERW13SecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof CPABERW13CiphertextParameters)){
+        if (!(ciphertext instanceof CPABERW13CipherSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + CPABERW13CiphertextParameters.class.getName());
+                            + CPABERW13CipherSerParameter.class.getName());
         }
-        CPABERW13KeyDecapsulationGenerator keyDecapsulationGenerator = new CPABERW13KeyDecapsulationGenerator();
+        CPABERW13DecapsulationGenerator keyDecapsulationGenerator = new CPABERW13DecapsulationGenerator();
         keyDecapsulationGenerator.init(new CPABERW13DecapsulationParameters(
                 publicKey, secretKey, accessPolicyIntArrays, rhos, ciphertext));
         return keyDecapsulationGenerator.recoverKey();

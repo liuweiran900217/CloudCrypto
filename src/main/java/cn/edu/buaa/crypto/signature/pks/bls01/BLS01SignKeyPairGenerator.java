@@ -2,7 +2,6 @@ package cn.edu.buaa.crypto.signature.pks.bls01;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
@@ -26,10 +25,10 @@ public class BLS01SignKeyPairGenerator implements AsymmetricCipherKeyPairGenerat
         Element x = pairing.getZr().newRandomElement().getImmutable();
         Element g = pairing.getG1().newRandomElement().getImmutable();
         Element v = g.powZn(x).getImmutable();
-        BLS01SignPublicKeyParameters publicKeyParameters = new BLS01SignPublicKeyParameters(this.param.getPairingParameters(), g, v);
+        BLS01SignPublicKeySerParameter publicKeyParameters = new BLS01SignPublicKeySerParameter(this.param.getPairingParameters(), g, v);
 
         return new AsymmetricCipherKeyPair(
                 publicKeyParameters,
-                new BLS01SignSecretKeyParameters(this.param.getPairingParameters(), x));
+                new BLS01SignSecretKeySerParameter(this.param.getPairingParameters(), x));
     }
 }
