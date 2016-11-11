@@ -2,6 +2,7 @@ package cn.edu.buaa.crypto.utils;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
@@ -20,9 +21,18 @@ import java.util.Arrays;
  * Utilities for pairing-based cryptography.
  */
 public class PairingUtils {
+    public static final String PATH_a_160_512 = "params/a_160_512.properties";
+    public static final String PATH_a_320_512 = "params/a_320_512.properties";
+    public static final String PATH_a1_2_256 = "params/a1_2_256.properties";
+    public static final String PATH_a1_3_256 = "params/a1_3_256.properties";
+    public static final String PATH_a1_2_512 = "params/a1_2_512.properties";
+    public static final String PATH_a1_3_512 = "params/a1_3_512.properties";
+
     public enum PairingGroupType {
         Zr, G1, G2, GT,
     }
+
+//    public static final PairingParameters DEFAULT_TYPE_A_160_512_PAIRING_PARAMETER = PairingFactory.getPairingParameters()
 
     /**
      * Generate type A parameter for further used in paiaring-based cryptography.

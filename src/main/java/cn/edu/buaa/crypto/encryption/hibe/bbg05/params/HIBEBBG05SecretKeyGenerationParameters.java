@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -18,7 +18,7 @@ public class HIBEBBG05SecretKeyGenerationParameters extends KeyGenerationParamet
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (HIBEBBG05MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (HIBEBBG05PublicKeySerParameter)publicKeyParameters;
         this.ids = new String[ids.length];

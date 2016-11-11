@@ -24,4 +24,17 @@ public class AsymmetricKeySerParameter implements CipherParameters, Serializable
     {
         return privateKey;
     }
+
+    @Override
+    public boolean equals(Object anOjbect) {
+        if (this == anOjbect) {
+            return true;
+        }
+        if (anOjbect instanceof AsymmetricKeySerParameter) {
+            AsymmetricKeySerParameter that = (AsymmetricKeySerParameter)anOjbect;
+            //Compare Pairing Parameters
+            return (this.privateKey == that.privateKey);
+        }
+        return false;
+    }
 }

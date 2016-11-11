@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * Pairing-based signature scheme interface.
  */
-public interface PairingSigner {
+public interface PairingSigner extends java.io.Serializable {
 
     /**
      * Initialise the signer for signing or verification.

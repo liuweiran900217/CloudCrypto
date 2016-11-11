@@ -1,11 +1,11 @@
 package com.example.encryption.ibe.lw10;
 
-import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.IBELW10Engine;
+import com.example.TestUtils;
 import com.example.encryption.ibe.IBEEngineTest;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 /**
  * Created by Weiran Liu on 16/5/7.
@@ -17,11 +17,7 @@ public class IBELW10EngineTest {
         IBEEngine engine = IBELW10Engine.getInstance();
         IBEEngineTest engineTest = new IBEEngineTest(engine);
 
-        PairingParametersGenerationParameters pairingParametersGenerationParameters =
-                new PairingParametersGenerationParameters(3, 256);
-        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
-        pairingParametersGenerator.init(pairingParametersGenerationParameters);
-        PairingParameters pairingParameters = pairingParametersGenerator.generateParameters();
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128);
         engineTest.processTest(pairingParameters);
     }
 }

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.genparams;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
@@ -20,7 +20,7 @@ public class IBELW10SecretKeyGenerationParameter extends KeyGenerationParameters
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String id) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (IBELW10MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (IBELW10PublicKeySerParameter)publicKeyParameters;
         this.id = id;

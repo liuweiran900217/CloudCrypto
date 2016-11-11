@@ -1,9 +1,9 @@
 package com.example;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import edu.princeton.cs.algs4.Out;
-import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -22,11 +22,13 @@ import java.io.*;
  * Utilities used in Unit Test
  */
 public class TestUtils {
-    public static final int R_BIT_LENGTH = 160;
-    public static final int Q_BIT_LENGTH = 512;
+    public static final String TEST_PAIRING_PARAMETERS_PATH_a_80_256 = "params/a_80_256.properties";
+    public static final String TEST_PAIRING_PARAMETERS_PATH_a1_2_128 = "params/a1_2_128.properties";
+    public static final String TEST_PAIRING_PARAMETERS_PATH_a1_3_128 = "params/a1_3_128.properties";
 
-    public static final int NUM_OF_PRIME_FACTORS = 3;
-    public static final int PRIME_BIT_LENGTH = 256;
+    public static final int DEFAULT_SIMU_TEST_ROUND = 2;
+    public static final int DEFAULT_PRIME_ORDER_TEST_ROUND = 100;
+    public static final int DEFAULT_COMPOSITE_ORDER_TEST_ROUND = 50;
 
     public static byte[] SerCipherParameter(CipherParameters cipherParameters) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -76,13 +78,13 @@ public class TestUtils {
         return null;
     }
 
-    public static void OutputPairingParameters(PairingParameters pairingParameters, String path) {
-        Out out = new Out(path);
+    public static void main(String[] args) {
+        PairingParametersGenerationParameter pairingParametersGenerationParameter =
+                new PairingParametersGenerationParameter(3, 128);
+        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
+        pairingParametersGenerator.init(pairingParametersGenerationParameter);
+        PairingParameters pairingParameters = pairingParametersGenerator.generateParameters();
+        Out out = new Out("params/a1_3_128.properties");
         out.println(pairingParameters);
-    }
-
-    public static Pairing InputPairingParameters(String path) {
-        Pairing pairing = PairingFactory.getPairing(path);
-        return pairing;
     }
 }

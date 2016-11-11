@@ -62,8 +62,8 @@ public abstract class LSSSPolicyEngine implements AccessControlEngine {
         int[] rows = new int[minSatisfiedAttributes.length];
         int counter = 0;
         for(int i = 0; i < leafAttributes.length; i++){
-            for(int j = 0; j < minSatisfiedAttributes.length; j++){
-                if(leafAttributes[i].equals(minSatisfiedAttributes[j])) {
+            for (String minSatisfiedAttribute : minSatisfiedAttributes) {
+                if (leafAttributes[i].equals(minSatisfiedAttribute)) {
                     //比较L矩阵和获得的S参数中各个元素，记下所有相同的元素对应的在数组中的位置，并生成一个新的矩阵，把相同的元素存在一个叫做result的数组之中，长度为counter
                     rows[counter++] = i;
                 }
@@ -76,9 +76,9 @@ public abstract class LSSSPolicyEngine implements AccessControlEngine {
         counter = 0;
         int [] cols = new int[result.length];
         for(int j = 0; j < lsssPolicyParameter.getColumn(); j++){
-            for(int i = 0; i < result.length; i++){
-                if(lsssPolicyParameter.getLSSSMatrix()[result[i]][j] != 0) {
-                    if(counter == cols.length){
+            for (int aResult : result) {
+                if (lsssPolicyParameter.getLSSSMatrix()[aResult][j] != 0) {
+                    if (counter == cols.length) {
                         //此时矩阵不满足解密的条件
                         throw new UnsatisfiedAccessControlException("Invalid access structure or attributes. Unable to reconstruct coefficients.");
                     }
@@ -105,27 +105,27 @@ public abstract class LSSSPolicyEngine implements AccessControlEngine {
 
         Element[] minSatisfiedOmegaElements = new Element[solution.length];
         for (int i = 0; i < minSatisfiedOmegaElements.length; i++) {
-            minSatisfiedOmegaElements[i] = pairing.getZr().newElement(pairing.getZr().newElement((int) solution[i])).getImmutable();
+            minSatisfiedOmegaElements[i] = pairing.getZr().newElement((int) solution[i]).getImmutable();
         }
 
         Map<String, Element> omegaElementsMap = new HashMap<String, Element>();
         for (int i = 0; i < rows.length; i++) {
-            for (int j = 0; j < attributes.length; j++) {
-                if (leafAttributes[rows[i]].equals(attributes[j])) {
-                    omegaElementsMap.put(attributes[j], minSatisfiedOmegaElements[i].duplicate().getImmutable());
+            for (String attribute : attributes) {
+                if (leafAttributes[rows[i]].equals(attribute)) {
+                    omegaElementsMap.put(attribute, minSatisfiedOmegaElements[i].duplicate().getImmutable());
                 }
             }
         }
-        for (int i = 0; i < attributes.length; i++) {
-            if (!omegaElementsMap.containsKey(attributes[i])) {
-                omegaElementsMap.put(attributes[i], pairing.getZr().newZeroElement().getImmutable());
+        for (String attribute : attributes) {
+            if (!omegaElementsMap.containsKey(attribute)) {
+                omegaElementsMap.put(attribute, pairing.getZr().newZeroElement().getImmutable());
             }
         }
         return omegaElementsMap;
     }
 
     private double[] get_identity_vector(int length) {
-        ;//该方法实现的功能是：生成矩阵求逆时等号右边的列向量，第一个数为1，剩下的都是0
+        //该方法实现的功能是：生成矩阵求逆时等号右边的列向量，第一个数为1，剩下的都是0
         double[] result = new double[length];
         result[0] = 1.0;
         for(int i = 1; i < length; i++) {

@@ -2,10 +2,11 @@ package cn.edu.buaa.crypto.access.lsss;
 
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.AccessTreeNode;
-import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 
 /**
  * Created by Weiran Liu on 2016/7/18.
+ *
+ * LSSS policy parameter.
  */
 public class LSSSPolicyParameter extends AccessControlParameter {
     //The LSSS matrix
@@ -26,13 +27,13 @@ public class LSSSPolicyParameter extends AccessControlParameter {
         }
     }
 
-    public int getRow() {
+    int getRow() {
         return this.row;
     }
 
-    public int getColumn() { return this.column; }
+    int getColumn() { return this.column; }
 
-    public int[][] getLSSSMatrix(){
+    int[][] getLSSSMatrix(){
         return this.lsssMatrix;
     }
 
@@ -42,13 +43,13 @@ public class LSSSPolicyParameter extends AccessControlParameter {
 
     @Override
     public String toString(){
-        StringBuffer buffer = new StringBuffer("M[][], L[i]\n");
+        StringBuilder buffer = new StringBuilder("M[][], L[i]\n");
         for(int i=0; i<row; i++){
-            buffer.append(i + " |");
+            buffer.append(i).append(" |");
             for(int j=0; j<column; j++){
-                buffer.append(lsssMatrix[i][j] + ",");
+                buffer.append(lsssMatrix[i][j]).append(",");
             }
-            buffer.append("|, Rho["+i+"] = " + rhos[i]);
+            buffer.append("|, Rho[").append(i).append("] = ").append(rhos[i]);
             buffer.append("\n");
         }
         return buffer.toString();

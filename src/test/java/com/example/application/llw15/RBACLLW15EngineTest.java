@@ -1,14 +1,13 @@
 package com.example.application.llw15;
 
-import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.util.encoders.Hex;
@@ -406,12 +405,7 @@ public class RBACLLW15EngineTest {
         RBACLLW15Engine engine = RBACLLW15Engine.getInstance();
         RBACLLW15EngineTest engineTest = new RBACLLW15EngineTest(engine);
 
-        PairingParametersGenerationParameters pairingParametersGenerationParameters =
-                new PairingParametersGenerationParameters(PairingParametersGenerationParameters.PairingType.TYPE_A,
-                        TestUtils.R_BIT_LENGTH, TestUtils.Q_BIT_LENGTH);
-        PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
-        pairingParametersGenerator.init(pairingParametersGenerationParameters);
-        PairingParameters pairingParameters = pairingParametersGenerator.generateParameters();
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
         engineTest.processTest(pairingParameters);
     }
 }

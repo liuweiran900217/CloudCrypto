@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.algebra.generators;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -17,25 +17,25 @@ import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
  * Pairing parameter generator.
  */
 public class PairingParametersGenerator {
-    private PairingParametersGenerationParameters pairingParametersGenerationParameters;
+    private PairingParametersGenerationParameter pairingParametersGenerationParameter;
 
-    public void init(PairingParametersGenerationParameters pairingParametersGenerationParameters) {
-        this.pairingParametersGenerationParameters = pairingParametersGenerationParameters;
+    public void init(PairingParametersGenerationParameter pairingParametersGenerationParameter) {
+        this.pairingParametersGenerationParameter = pairingParametersGenerationParameter;
     }
 
     public PairingParameters generateParameters() {
-        switch (pairingParametersGenerationParameters.getPairingType()) {
+        switch (pairingParametersGenerationParameter.getPairingType()) {
             case TYPE_A:
-                int rBitLengthTypeA = pairingParametersGenerationParameters.getRBitLength();
-                int qBitLengthTypeA = pairingParametersGenerationParameters.getQBitLength();
+                int rBitLengthTypeA = pairingParametersGenerationParameter.getRBitLength();
+                int qBitLengthTypeA = pairingParametersGenerationParameter.getQBitLength();
                 return generate_type_a_curve_params(rBitLengthTypeA, qBitLengthTypeA);
             case TYPE_A1:
-                int nTypeA1 = pairingParametersGenerationParameters.getN();
-                int qBitLengthTypeA1 = pairingParametersGenerationParameters.getQBitLength();
+                int nTypeA1 = pairingParametersGenerationParameter.getN();
+                int qBitLengthTypeA1 = pairingParametersGenerationParameter.getQBitLength();
                 return generate_type_a1_curve_params(nTypeA1, qBitLengthTypeA1);
             case TYPE_E:
-                int rBitLengthTypeE = pairingParametersGenerationParameters.getRBitLength();
-                int qBitLengthTypeE = pairingParametersGenerationParameters.getQBitLength();
+                int rBitLengthTypeE = pairingParametersGenerationParameter.getRBitLength();
+                int qBitLengthTypeE = pairingParametersGenerationParameter.getQBitLength();
                 return generate_type_e_curve_params(rBitLengthTypeE, qBitLengthTypeE);
             case TYPE_F:
                 throw new IllegalArgumentException("Curve type not support.");
@@ -71,7 +71,7 @@ public class PairingParametersGenerator {
             parameters = (PropertiesParameters) parametersGenerator.generate();
             pairing = PairingFactory.getPairing(parameters);
             generator = pairing.getG1().newRandomElement().getImmutable();
-            g = ElementUtils.getGenerator(pairing, generator, parameters, 0, 3).getImmutable();
+            g = ElementUtils.getGenerator(pairing, generator, parameters, 0, n).getImmutable();
             if (!pairing.pairing(g, g).isOne()) { break; }
         }
         return parameters;

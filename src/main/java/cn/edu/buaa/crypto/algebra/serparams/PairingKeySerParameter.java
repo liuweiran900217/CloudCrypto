@@ -20,4 +20,17 @@ public class PairingKeySerParameter extends AsymmetricKeySerParameter implements
     public PairingParameters getParameters() {
         return parameters;
     }
+
+    @Override
+    public boolean equals(Object anOjbect) {
+        if (this == anOjbect) {
+            return true;
+        }
+        if (anOjbect instanceof PairingKeySerParameter) {
+            PairingKeySerParameter that = (PairingKeySerParameter)anOjbect;
+            //Compare Pairing Parameters
+            return this.getParameters().toString().equals(that.getParameters().toString());
+        }
+        return false;
+    }
 }

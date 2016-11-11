@@ -2,6 +2,9 @@ package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
 import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00b;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bKeySerParameter;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bPublicKeySerParameter;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bSecretKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 
 import java.math.BigInteger;
@@ -13,7 +16,7 @@ import java.security.SecureRandom;
  * Krawczyk-Rabin Chameleon hash scheme
  */
 public class DLogKR00bHasher implements KR00b {
-    protected DLogKR00bKeyParameters key;
+    protected DLogKR00bKeySerParameter key;
     private SecureRandom random;
 
     /**
@@ -25,9 +28,9 @@ public class DLogKR00bHasher implements KR00b {
 
     public void init(boolean forCollisionFind, CipherParameters param) {
         if (forCollisionFind) {
-            this.key = (DLogKR00bSecretKeyParameters)param;
+            this.key = (DLogKR00bSecretKeySerParameter)param;
         } else {
-            this.key = (DLogKR00bPublicKeyParameters)param;
+            this.key = (DLogKR00bPublicKeySerParameter)param;
         }
         this.random = new SecureRandom();
     }
@@ -37,7 +40,7 @@ public class DLogKR00bHasher implements KR00b {
         BigInteger p = this.key.getParameters().getP();
         BigInteger g = this.key.getParameters().getG();
         BigInteger m = calculateE(q, message);
-        BigInteger y = ((DLogKR00bPublicKeyParameters)this.key).getY();
+        BigInteger y = ((DLogKR00bPublicKeySerParameter)this.key).getY();
 
         int qBitLength = q.bitLength();
         BigInteger r;
@@ -56,7 +59,7 @@ public class DLogKR00bHasher implements KR00b {
         BigInteger p = this.key.getParameters().getP();
         BigInteger g = this.key.getParameters().getG();
         BigInteger m = calculateE(q, message);
-        BigInteger y = ((DLogKR00bPublicKeyParameters)this.key).getY();
+        BigInteger y = ((DLogKR00bPublicKeySerParameter)this.key).getY();
 
         BigInteger hash = g.modPow(m, p).multiply(y.modPow(r, p)).mod(p);
         return new BigInteger[]{ hash, m, r };
@@ -66,7 +69,7 @@ public class DLogKR00bHasher implements KR00b {
         SecurePrimeSerParameter params = key.getParameters();
         BigInteger q = params.getQ();
         BigInteger mPrime = calculateE(q, messagePrime);
-        BigInteger x = ((DLogKR00bSecretKeyParameters)key).getX();
+        BigInteger x = ((DLogKR00bSecretKeySerParameter)key).getX();
 
         BigInteger rPrime = x.modInverse(q).multiply(message.subtract(mPrime).mod(q)).mod(q).add(r).mod(q);
 

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.genparams;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15IntermediateSerParameter;
@@ -24,7 +24,7 @@ public class RBACLLW15AccessCredentialMGenParameter extends KeyGenerationParamet
             AsymmetricKeySerParameter publicKeyParameters,
             AsymmetricKeySerParameter masterSecretKeyParameters,
             String[] roles, String time) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeySerParameter)publicKeyParameters;
         assert(roles.length == this.publicKeyParameters.getMaxRoleNumber());
@@ -39,7 +39,7 @@ public class RBACLLW15AccessCredentialMGenParameter extends KeyGenerationParamet
     public RBACLLW15AccessCredentialMGenParameter(
             AsymmetricKeySerParameter publicKeyParameters, AsymmetricKeySerParameter masterSecretKeyParameters,
             PairingCipherSerParameter intermediateParameters, String[] roles, String time) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeySerParameter)publicKeyParameters;
         assert(roles.length == this.publicKeyParameters.getMaxRoleNumber());

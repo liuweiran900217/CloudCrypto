@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.genparams;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -14,7 +14,7 @@ public class RBACLLW15KeyPairGenerationParameter extends KeyGenerationParameters
     private PairingParameters pairingParameters;
 
     public RBACLLW15KeyPairGenerationParameter(PairingParameters pairingParameters, int maxRoleNumber) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
 
         this.pairingParameters = pairingParameters;
         this.maxRoleNumber = maxRoleNumber;

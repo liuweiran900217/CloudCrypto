@@ -3,6 +3,7 @@ package com.example.encryption.hibbe;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -49,7 +50,7 @@ public class HIBBEEngineTest {
 
         // Encryption
         PairingKeyEncapsulationSerPair ciphertextPair13467 = engine.encapsulation(publicKey, ivs13467);
-        CipherParameters ciphertext13467 = ciphertextPair13467.getCiphertext();
+        PairingCipherSerParameter ciphertext13467 = ciphertextPair13467.getCiphertext();
         byte[] sessionKey13467 = ciphertextPair13467.getSessionKey();
         String stringSessionKey13467 = new String(Hex.encode(sessionKey13467));
 

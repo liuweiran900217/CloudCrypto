@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.application.llw15.genparams;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15IntermediateSerParameter;
@@ -23,7 +23,7 @@ public class RBACLLW15AccessCredentialPGenParameter extends KeyGenerationParamet
             AsymmetricKeySerParameter publicKeyParameters,
             AsymmetricKeySerParameter masterSecretKeyParameters,
             String id) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeySerParameter)publicKeyParameters;
         this.id = id;
@@ -35,7 +35,7 @@ public class RBACLLW15AccessCredentialPGenParameter extends KeyGenerationParamet
                                                   AsymmetricKeySerParameter masterSecretKeyParameters,
                                                   PairingCipherSerParameter intermediateParameters,
                                                   String id) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (RBACLLW15MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (RBACLLW15PublicKeySerParameter)publicKeyParameters;
         this.id = id;

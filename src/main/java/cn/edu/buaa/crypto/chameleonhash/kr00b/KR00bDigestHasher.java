@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b;
 
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.CryptoException;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.Digest;
-import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -14,7 +14,7 @@ import java.math.BigInteger;
 /**
  * Created by Weiran Liu on 2016/10/20.
  *
- *
+ * Krawczyk-Rabin Chameleon hasher
  */
 public class KR00bDigestHasher implements ChameleonHasher {
     private final Digest digest;
@@ -29,7 +29,7 @@ public class KR00bDigestHasher implements ChameleonHasher {
     public void init(boolean forCollisionFind, CipherParameters parameters)
     {
         this.forCollisionFind = forCollisionFind;
-        AsymmetricKeyParameter k = (AsymmetricKeyParameter)parameters;
+        AsymmetricKeySerParameter k = (AsymmetricKeySerParameter)parameters;
 
         if (forCollisionFind && !k.isPrivate()) {
             throw new IllegalArgumentException("Finding Collision Requires Private Key.");

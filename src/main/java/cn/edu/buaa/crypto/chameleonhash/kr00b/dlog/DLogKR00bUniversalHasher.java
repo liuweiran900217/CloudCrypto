@@ -1,8 +1,7 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
-import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bHasher;
-import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bPublicKeyParameters;
 import org.bouncycastle.crypto.Digest;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.*;
 
 import java.math.BigInteger;
 
@@ -29,7 +28,7 @@ public class DLogKR00bUniversalHasher extends DLogKR00bHasher {
     }
 
     private BigInteger[] compute_universal_hash(BigInteger[] hashResult) {
-        DLogKR00bPublicKeyParameters publicKeyParameters = (DLogKR00bPublicKeyParameters) key;
+        DLogKR00bPublicKeySerParameter publicKeyParameters = (DLogKR00bPublicKeySerParameter) key;
 
         byte[] byteArrayP = publicKeyParameters.getParameters().getP().toByteArray();
         byte[] byteArrayQ = publicKeyParameters.getParameters().getQ().toByteArray();

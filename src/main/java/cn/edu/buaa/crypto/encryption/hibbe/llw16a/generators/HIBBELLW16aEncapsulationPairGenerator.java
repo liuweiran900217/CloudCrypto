@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aCiphertextGenerationParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16ACipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aPublicKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -43,6 +43,6 @@ public class HIBBELLW16aEncapsulationPairGenerator implements PairingEncapsulati
         C1 = C1.powZn(beta).getImmutable();
         return new PairingKeyEncapsulationSerPair(
                 byteArraySessionKey,
-                new HIBBELLW16ACipherSerParameter(publicKeyParameters.getParameters(), C0, C1));
+                new HIBBELLW16aCipherSerParameter(publicKeyParameters.getParameters(), C0, C1));
     }
 }

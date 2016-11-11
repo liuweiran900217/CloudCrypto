@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.params;
 
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;

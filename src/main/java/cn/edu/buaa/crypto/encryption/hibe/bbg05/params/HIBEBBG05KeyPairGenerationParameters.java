@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -14,7 +14,7 @@ public class HIBEBBG05KeyPairGenerationParameters extends KeyGenerationParameter
     private int qBitLength;
 
     public HIBEBBG05KeyPairGenerationParameters(int rBitLength, int qBitLength, int maxDepth) {
-        super(null, PairingParametersGenerationParameters.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
 
         this.maxDepth = maxDepth;
         this.rBitLength = rBitLength;

@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams;
 
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16ACipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aSecretKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
@@ -14,7 +14,7 @@ public class HIBBELLW16aDecapsulationParameter implements CipherParameters {
     private HIBBELLW16aPublicKeySerParameter publicKeyParameters;
     private HIBBELLW16aSecretKeySerParameter secretKeyParameters;
     private String[] ids;
-    private HIBBELLW16ACipherSerParameter ciphertextParameters;
+    private HIBBELLW16aCipherSerParameter ciphertextParameters;
 
     public HIBBELLW16aDecapsulationParameter(
             CipherParameters publicKeyParameters,
@@ -26,7 +26,7 @@ public class HIBBELLW16aDecapsulationParameter implements CipherParameters {
         assert(ids.length == this.publicKeyParameters.getMaxUser());
         this.ids = new String[ids.length];
         System.arraycopy(ids, 0, this.ids, 0, this.ids.length);
-        this.ciphertextParameters = (HIBBELLW16ACipherSerParameter)ciphertextParameters;
+        this.ciphertextParameters = (HIBBELLW16aCipherSerParameter)ciphertextParameters;
     }
 
     public HIBBELLW16aPublicKeySerParameter getPublicKeyParameters() {
@@ -37,7 +37,7 @@ public class HIBBELLW16aDecapsulationParameter implements CipherParameters {
         return this.secretKeyParameters;
     }
 
-    public HIBBELLW16ACipherSerParameter getCiphertextParameters() {
+    public HIBBELLW16aCipherSerParameter getCiphertextParameters() {
         return this.ciphertextParameters;
     }
 

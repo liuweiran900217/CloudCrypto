@@ -1,16 +1,14 @@
 package com.example.encryption.hibbe;
 
-import cn.edu.buaa.crypto.algebra.generators.PairingParametersGenerator;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameters;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.utils.Timer;
 import edu.princeton.cs.algs4.Out;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.crypto.CipherParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -19,17 +17,14 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * HIBBE scheme performance test.
  */
 public class HIBBEPerformanceTest {
+    private final String pairingParameterPath;
     //file path for performance test result
     private static final String default_path = "benchmarks/encryption/hibbe/";
-    //the test round is chosen according to the full version of our paper.
-    private static final int test_round = 25;
+    private int test_round;
     //the maximal depth of roles is chosen according to the full version of our paper.
     private static final int maximal_depth = 10;
     //the maximal number of role index is chosen
     private static final int maximal_users = 100;
-
-    private final int rBitLength;
-    private final int qBitLength;
     //setup time
     private double timeSetep;
 
@@ -53,10 +48,10 @@ public class HIBBEPerformanceTest {
 
     private Out out;
 
-    public HIBBEPerformanceTest(int rBitLength, int qBitLength, HIBBEEngine engine, String name) {
+    public HIBBEPerformanceTest(String paringParameterPath, int test_round, HIBBEEngine engine, String name) {
+        this.pairingParameterPath = paringParameterPath;
         this.engine = engine;
-        this.rBitLength = rBitLength;
-        this.qBitLength = qBitLength;
+        this.test_round = test_round;
 
         out = new Out(default_path + name);
 
@@ -134,20 +129,7 @@ public class HIBBEPerformanceTest {
     }
 
     private void test_one_round() {
-        PairingParameters pairingParameters;
-        if (this.engine instanceof HIBBELLW14Engine) {
-            PairingParametersGenerationParameters pairingParametersGenerationParameters =
-                    new PairingParametersGenerationParameters(3, qBitLength);
-            PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
-            pairingParametersGenerator.init(pairingParametersGenerationParameters);
-            pairingParameters = pairingParametersGenerator.generateParameters();
-        } else {
-            PairingParametersGenerationParameters pairingParametersGenerationParameters =
-                    new PairingParametersGenerationParameters(PairingParametersGenerationParameters.PairingType.TYPE_A, rBitLength, qBitLength);
-            PairingParametersGenerator pairingParametersGenerator = new PairingParametersGenerator();
-            pairingParametersGenerator.init(pairingParametersGenerationParameters);
-            pairingParameters = pairingParametersGenerator.generateParameters();
-        }
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(pairingParameterPath);
 
         double temperTime;
         Timer timer = new Timer(maximal_users);
@@ -193,7 +175,7 @@ public class HIBBEPerformanceTest {
         System.out.print("Encrypt; ");
         out.print("Encrypt: ");
         //test key encapsulation performance
-        CipherParameters[] encapsulations = new CipherParameters[maximal_users];
+        PairingCipherSerParameter[] encapsulations = new PairingCipherSerParameter[maximal_users];
         for (int i = 0; i < maximal_users; i++) {
             timer.start(i);
             PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, encapsulationIdentityVectorSets[i]);

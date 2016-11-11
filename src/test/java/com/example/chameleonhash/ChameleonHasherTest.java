@@ -1,5 +1,8 @@
 package com.example.chameleonhash;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00bDigestHasher;
@@ -7,12 +10,12 @@ import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyGenerationParameters;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyPairGenerator;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bUniversalHasher;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
+import com.example.TestUtils;
+import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.CryptoException;
 import org.bouncycastle.crypto.digests.SHA256Digest;
-import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -24,23 +27,26 @@ import static org.junit.Assert.assertEquals;
  */
 public class ChameleonHasherTest {
 
-    private AsymmetricCipherKeyPairGenerator asymmetricCipherKeyPairGenerator;
+    private AsymmetricKeySerPairGenerator asymmetricCipherKeyPairGenerator;
     private ChameleonHasher chameleonHasher;
 
-    private ChameleonHasherTest(AsymmetricCipherKeyPairGenerator asymmetricCipherKeyPairGenerator, ChameleonHasher chameleonHasher) {
+    private ChameleonHasherTest(AsymmetricKeySerPairGenerator asymmetricCipherKeyPairGenerator, ChameleonHasher chameleonHasher) {
         this.asymmetricCipherKeyPairGenerator = asymmetricCipherKeyPairGenerator;
         this.chameleonHasher = chameleonHasher;
     }
 
     public void processTest() {
         //KeyGen
-        AsymmetricCipherKeyPair keyPair = asymmetricCipherKeyPairGenerator.generateKeyPair();
-        AsymmetricKeyParameter publicKey = keyPair.getPublic();
-        AsymmetricKeyParameter secretKey = keyPair.getPrivate();
+        AsymmetricKeySerPair keyPair = asymmetricCipherKeyPairGenerator.generateKeyPair();
+        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+        AsymmetricKeySerParameter secretKey = keyPair.getPrivate();
 
         String message1 = "This is message 1";
         String message2 = "This is message 2";
+        System.out.println("========================================");
+        System.out.println("Test chameleon hash functionality.");
         try {
+            System.out.println("Test inequality with different messages.");
             chameleonHasher.init(false, publicKey);
             chameleonHasher.update(message1.getBytes(), 0, message1.getBytes().length);
             byte[][] cHashResult1 = chameleonHasher.computeHash();
@@ -54,6 +60,7 @@ public class ChameleonHasherTest {
             assertEquals(false, Arrays.equals(cHashResult1[0], cHashResult2[0]));
 
             //Test equality without / with randomness r
+            System.out.println("Test equality without / with randomness r.");
             chameleonHasher.reset();
             chameleonHasher.update(message1.getBytes(), 0, message1.getBytes().length);
             byte[][] cHashResult1Prime = chameleonHasher.computeHash(cHashResult1[0], cHashResult1[1]);
@@ -61,15 +68,37 @@ public class ChameleonHasherTest {
             assertEquals(true, Arrays.equals(cHashResult1[0], cHashResult1Prime[0]));
 
             //Test collision
+            System.out.println("Test equality with collision finding.");
             chameleonHasher.init(true, secretKey);
             chameleonHasher.update(message2.getBytes(), 0, message2.getBytes().length);
             byte[][] cHashCollision = chameleonHasher.findCollision(cHashResult1[0], cHashResult1[1]);
             System.out.println("Coll. Resist. = " + Arrays.toString(cHashCollision[0]));
             assertEquals(true, Arrays.equals(cHashResult1[0], cHashCollision[0]));
+            System.out.println("Chameleon hash functionality test pass.");
 
-            System.out.println("Test pass.");
+            System.out.println("========================================");
+            System.out.println("Test signer parameters serialization & de-serialization.");
+            //serialize public key
+            System.out.println("Test serialize & de-serialize public key.");
+            byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
+            CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
+            assertEquals(publicKey, anPublicKey);
+
+            //serialize secret key
+            System.out.println("Test serialize & de-serialize secret keys.");
+            //serialize sk4
+            byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
+            CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
+            assertEquals(secretKey, anSecretKey);
+
+            System.out.println("Signer parameter serialization tests passed.");
             System.out.println();
+
         } catch (CryptoException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -81,7 +110,7 @@ public class ChameleonHasherTest {
 
         //test Krawczyk-Rabin Chameleon hash
         System.out.println("Test Krawczyk-Rabin Chameleon hash function");
-        AsymmetricCipherKeyPairGenerator signKeyPairGenerator = new DLogKR00bKeyPairGenerator();
+        AsymmetricKeySerPairGenerator signKeyPairGenerator = new DLogKR00bKeyPairGenerator();
         signKeyPairGenerator.init(new DLogKR00bKeyGenerationParameters(secureRandom, securePrimeSerParameter));
         ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
         new ChameleonHasherTest(signKeyPairGenerator, chameleonHasher).processTest();

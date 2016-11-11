@@ -315,16 +315,6 @@ public class SecurePrimeSerParameter implements CipherParameters, Serializable {
         this.g = g;
     }
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof SecurePrimeSerParameter)) {
-            return false;
-        }
-
-        SecurePrimeSerParameter pm = (SecurePrimeSerParameter) obj;
-
-        return (pm.getP().equals(p) && pm.getQ().equals(q) && pm.getG().equals(g));
-    }
-
     public int hashCode() {
         return getP().hashCode() ^ getQ().hashCode() ^ getG().hashCode();
     }
@@ -339,5 +329,17 @@ public class SecurePrimeSerParameter implements CipherParameters, Serializable {
 
     public BigInteger getP() {
         return p;
+    }
+
+    @Override
+    public boolean equals(Object anOjbect) {
+        if (this == anOjbect) {
+            return true;
+        }
+        if (anOjbect instanceof SecurePrimeSerParameter) {
+            SecurePrimeSerParameter that = (SecurePrimeSerParameter)anOjbect;
+            return (that.getP().equals(p) && that.getQ().equals(q) && that.getG().equals(g));
+        }
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16ACipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aDecapsulationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aSecretKeySerParameter;
@@ -27,7 +27,7 @@ public class HIBBELLW16aDecapsulationGenerator implements PairingDecapsulationGe
     public byte[] recoverKey() throws InvalidCipherTextException {
         HIBBELLW16aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
         HIBBELLW16aSecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        HIBBELLW16ACipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        HIBBELLW16aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());

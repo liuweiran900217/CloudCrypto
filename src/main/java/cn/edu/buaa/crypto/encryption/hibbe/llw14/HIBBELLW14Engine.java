@@ -3,6 +3,7 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw14;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14DecapsulationGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14EncapsulationPairGenerator;
@@ -11,7 +12,6 @@ import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14SecretKeyG
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.*;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.*;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -97,7 +97,7 @@ public class HIBBELLW14Engine implements HIBBEEngine {
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
-    public byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String[] ids, CipherParameters ciphertext)
+    public byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBBELLW14PublicKeySerParameter)){
             throw new IllegalArgumentException

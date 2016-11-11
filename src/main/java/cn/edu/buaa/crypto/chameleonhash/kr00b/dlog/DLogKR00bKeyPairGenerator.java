@@ -1,8 +1,10 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bPublicKeySerParameter;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bSecretKeySerParameter;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 import org.bouncycastle.math.ec.WNafUtil;
 import org.bouncycastle.util.BigIntegers;
@@ -15,7 +17,7 @@ import java.security.SecureRandom;
  *
  * Krawczyk-Rabin Chameleon hash.key pair generator.
  */
-public class DLogKR00bKeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
+public class DLogKR00bKeyPairGenerator implements AsymmetricKeySerPairGenerator {
     private static final BigInteger ONE = BigInteger.valueOf(1);
 
     private DLogKR00bKeyGenerationParameters param;
@@ -24,15 +26,15 @@ public class DLogKR00bKeyPairGenerator implements AsymmetricCipherKeyPairGenerat
         this.param = (DLogKR00bKeyGenerationParameters) param;
     }
 
-    public AsymmetricCipherKeyPair generateKeyPair() {
+    public AsymmetricKeySerPair generateKeyPair() {
         SecurePrimeSerParameter securePrimeSerParameter = param.getParameters();
 
         BigInteger x = generatePrivateKey(securePrimeSerParameter.getQ(), param.getRandom());
         BigInteger y = calculatePublicKey(securePrimeSerParameter.getP(), securePrimeSerParameter.getG(), x);
 
-        return new AsymmetricCipherKeyPair(
-                new DLogKR00bPublicKeyParameters(y, securePrimeSerParameter),
-                new DLogKR00bSecretKeyParameters(x, securePrimeSerParameter));
+        return new AsymmetricKeySerPair(
+                new DLogKR00bPublicKeySerParameter(y, securePrimeSerParameter),
+                new DLogKR00bSecretKeySerParameter(x, securePrimeSerParameter));
     }
 
     private static BigInteger generatePrivateKey(BigInteger q, SecureRandom random) {
