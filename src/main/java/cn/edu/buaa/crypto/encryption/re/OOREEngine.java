@@ -3,7 +3,6 @@ package cn.edu.buaa.crypto.encryption.re;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import org.bouncycastle.crypto.CipherParameters;
 
 /**
  * Created by Weiran Liu on 2016/4/5.
