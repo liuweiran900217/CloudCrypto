@@ -1,18 +1,15 @@
 package com.example.encryption.ibbe;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.util.encoders.Hex;
-import org.w3c.dom.Document;
-
-import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,19 +20,16 @@ import static org.junit.Assert.assertEquals;
  */
 public class IBBEEngineTest {
     private IBBEEngine engine;
-    private PairingParameterXMLSerializer schemeXMLSerializer;
 
-    public IBBEEngineTest(IBBEEngine engine, PairingParameterXMLSerializer schemeXMLSerializer) {
+    public IBBEEngineTest(IBBEEngine engine) {
         this.engine = engine;
-        this.schemeXMLSerializer = schemeXMLSerializer;
     }
 
-    public void processTest(int rBitLength, int qBitLength) {
+    public void processTest(PairingParameters pairingParameters) {
         // Setup
-        AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength, 8);
-        CipherParameters publicKey = keyPair.getPublic();
-        CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeySerParameter) publicKey).getParameters();
+        AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, 8);
+        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
 
         // KeyGen
         String receiverID = "ID_0";
@@ -46,27 +40,28 @@ public class IBBEEngineTest {
         String[] receiverSet8 = {"ID_1", "ID_2", "ID_3", "ID_4", "ID_5", "ID_6", "ID_7", "ID_0"};
         String[] receiverSet9 = {"ID_1", "ID_2", "ID_3", "ID_4", "ID_5", "ID_6", "ID_7", "ID_0", "ID_8"};
 
-        CipherParameters skReceiverID = engine.keyGen(publicKey, masterKey, receiverID);
-        CipherParameters skNonReceiverID = engine.keyGen(publicKey, masterKey, nonReceiverID);
+        AsymmetricKeySerParameter skReceiverID = engine.keyGen(publicKey, masterKey, receiverID);
+        AsymmetricKeySerParameter skNonReceiverID = engine.keyGen(publicKey, masterKey, nonReceiverID);
 
         // Encryption
         PairingKeyEncapsulationSerPair ciphertextPairSet1 = engine.encapsulation(publicKey, receiverSet1);
-        CipherParameters ciphertextSet1 = ciphertextPairSet1.getCiphertext();
+        PairingCipherSerParameter ciphertextSet1 = ciphertextPairSet1.getCiphertext();
         byte[] sessionKeySet1 = ciphertextPairSet1.getSessionKey();
         String stringSessionKeySet1 = new String(Hex.encode(sessionKeySet1));
 
         PairingKeyEncapsulationSerPair ciphertextPairSet4 = engine.encapsulation(publicKey, receiverSet4);
-        CipherParameters ciphertextSet4 = ciphertextPairSet4.getCiphertext();
+        PairingCipherSerParameter ciphertextSet4 = ciphertextPairSet4.getCiphertext();
         byte[] sessionKeySet4 = ciphertextPairSet4.getSessionKey();
         String stringSessionKeySet4 = new String(Hex.encode(sessionKeySet4));
 
         PairingKeyEncapsulationSerPair ciphertextPairSet8 = engine.encapsulation(publicKey, receiverSet8);
-        CipherParameters ciphertextSet8 = ciphertextPairSet8.getCiphertext();
+        PairingCipherSerParameter ciphertextSet8 = ciphertextPairSet8.getCiphertext();
         byte[] sessionKeySet8 = ciphertextPairSet8.getSessionKey();
         String stringSessionKeySet8 = new String(Hex.encode(sessionKeySet8));
 
+        System.out.println("======================================");
+        System.out.println("Test IBBE engine functionality.");
         // Decrypt with correct secret keys
-        System.out.println("========================================");
         System.out.println("Test decrypting with correct secret key");
         try {
             //Decrypt ciphertext set 1 using secret key ID_0
@@ -102,7 +97,6 @@ public class IBBEEngineTest {
             System.exit(1);
         }
         //Decrypt with incorrect secret keys
-        System.out.println("==========================================");
         System.out.println("Test decrypting with incorrect secret keys");
         try {
             //Decrypt ciphertext set 1 using secret key ID_8
@@ -150,7 +144,7 @@ public class IBBEEngineTest {
             //Decrypt ciphertext set 9 using secret key ID_8, but the broadcast set is out of bound
             System.out.println("Test decrypting ciphertext set 9 using secret key ID_8, but the broadcast set is out of bound");
             PairingKeyEncapsulationSerPair ciphertextPairSet9 = engine.encapsulation(publicKey, receiverSet9);
-            CipherParameters ciphertextSet9 = ciphertextPairSet9.getCiphertext();
+            PairingCipherSerParameter ciphertextSet9 = ciphertextPairSet9.getCiphertext();
             byte[] sessionKeySet9 = ciphertextPairSet9.getSessionKey();
             String stringSessionKeySet9 = new String(Hex.encode(sessionKeySet9));
             assertEquals(false, stringSessionKeySet9.equals(
@@ -164,71 +158,39 @@ public class IBBEEngineTest {
         } catch (Exception e) {
             //Correct if getting there, nothing to do
         }
-        System.out.println("======================================");
-        System.out.println("HIBBE Engine tests passed.");
-
+        System.out.println("IBE engine functionality test passed.");
+        System.out.println();
         //Test Serialize & deserialize
-        if (this.schemeXMLSerializer != null) {
-            File file = new File("serializations/ibbe");
-            file.mkdir();
+        System.out.println("======================================");
+        System.out.println("Test IBE parameter serialization & de-serialization.");
+        try {
+            //serialize public key
+            System.out.println("Test serialize & de-serialize public key.");
+            byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
+            CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
+            assertEquals(publicKey, anPublicKey);
 
-            //Serialize & deserialize public key
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing public key");
-            TestUtils.OutputXMLDocument("serializations/ibbe/IBBE_Public_Key.xml", schemeXMLSerializer.documentSerialization(publicKey));
-            Document documentPublicKey = TestUtils.InputXMLDocument("serializations/ibbe/IBBE_Public_Key.xml");
-            CipherParameters anoPublicKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentPublicKey);
-            assertEquals(publicKey, anoPublicKey);
+            //serialize master secret key
+            System.out.println("Test serialize & de-serialize master secret key.");
+            byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
+            CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
+            assertEquals(masterKey, anMasterKey);
 
-            //Serialize & deserialize master secret key
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing master secret key");
-            TestUtils.OutputXMLDocument("serializations/ibbe/IBBE_Master_Secret_Key.xml", schemeXMLSerializer.documentSerialization(masterKey));
-            Document documentMasterKey = TestUtils.InputXMLDocument("serializations/ibbe/IBBE_Master_Secret_Key.xml");
-            CipherParameters anoMasterKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentMasterKey);
-            assertEquals(masterKey, anoMasterKey);
+            //serialize secret key
+            System.out.println("Test serialize & de-serialize secret key.");
+            byte[] byteArraySkID01 = TestUtils.SerCipherParameter(skReceiverID);
+            CipherParameters anSkID_1 = TestUtils.deserCipherParameters(byteArraySkID01);
+            assertEquals(skReceiverID, anSkID_1);
 
-            //Serialize & deserialize secret keys
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing secret key for the receiver");
-            //Serialize & deserialize secret key for the receiver
-            TestUtils.OutputXMLDocument("serializations/ibbe/IBBE_Secret_Key_Receiver.xml", schemeXMLSerializer.documentSerialization(skReceiverID));
-            Document documentSkReceiver = TestUtils.InputXMLDocument("serializations/ibbe/IBBE_Secret_Key_Receiver.xml");
-            CipherParameters anSkReceiver = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSkReceiver);
-            assertEquals(skReceiverID, anSkReceiver);
-            //Serialize & deserialize secret key for the non-receiver
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing secret key for the non-receiver");
-            TestUtils.OutputXMLDocument("serializations/ibbe/IBBE_Secret_Key_NonReceiver.xml",schemeXMLSerializer.documentSerialization(skNonReceiverID));
-            Document documentSkNonReceiver = TestUtils.InputXMLDocument("serializations/ibbe/IBBE_Secret_Key_NonReceiver.xml");
-            CipherParameters anSkNonReceiver = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSkNonReceiver);
-            assertEquals(skNonReceiverID, anSkNonReceiver);
-
-            //Serialize & deserialize ciphertexts
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing ciphertext set 1");
-            //Serialize & deserialize ciphertext set 1
-            TestUtils.OutputXMLDocument("serializations/ibbe/IBBE_Ciphertext_Set_1.xml", schemeXMLSerializer.documentSerialization(ciphertextSet1));
-            Document documentCiphertextSet1 = TestUtils.InputXMLDocument("serializations/ibbe/IBBE_Ciphertext_Set_1.xml");
-            CipherParameters anCiphertextSet1 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextSet1);
-            assertEquals(ciphertextSet1, anCiphertextSet1);
-            //Serialize & deserialize ciphertext set 4
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing ciphertext set 4");
-            TestUtils.OutputXMLDocument("serializations/ibbe/IBBE_Ciphertext_Set_4.xml", schemeXMLSerializer.documentSerialization(ciphertextSet4));
-            Document documentCiphertextSet4 = TestUtils.InputXMLDocument("serializations/ibbe/IBBE_Ciphertext_Set_4.xml");
-            CipherParameters anCiphertextSet4 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextSet4);
-            assertEquals(ciphertextSet4, anCiphertextSet4);
-            //Serialize & deserialize ciphertext set 8
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing ciphertext set 8");
-            TestUtils.OutputXMLDocument("serializations/ibbe/IBBE_Ciphertext_Set_8.xml", schemeXMLSerializer.documentSerialization(ciphertextSet8));
-            Document documentCiphertextSet8 = TestUtils.InputXMLDocument("serializations/ibbe/IBBE_Ciphertext_Set_8.xml");
-            CipherParameters anCiphertextSet8 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextSet8);
-            assertEquals(ciphertextSet8, anCiphertextSet8);
-
-            System.out.println("======================================");
-            System.out.println("Serialize & deserialize tests passed.");
+            //serialize ciphertext01
+            System.out.println("Test serialize & de-serialize ciphertext.");
+            byte[] byteArrayCiphertext01 = TestUtils.SerCipherParameter(ciphertextSet1);
+            CipherParameters anCiphertextID_1 = TestUtils.deserCipherParameters(byteArrayCiphertext01);
+            assertEquals(ciphertextSet1, anCiphertextID_1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        System.out.println("IBE parameter serialization tests passed.");
+        System.out.println();
     }
 }

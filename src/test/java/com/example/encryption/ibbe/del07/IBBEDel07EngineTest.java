@@ -2,9 +2,10 @@ package com.example.encryption.ibbe.del07;
 
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.IBBEDel07Engine;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.serialization.IBBEDel07XMLSerializer;
-import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
+import com.example.TestUtils;
 import com.example.encryption.ibbe.IBBEEngineTest;
+import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 /**
  * Created by Weiran Liu on 2016/8/24.
@@ -14,9 +15,9 @@ import com.example.encryption.ibbe.IBBEEngineTest;
 public class IBBEDel07EngineTest {
     public static void main(String[] args) {
         IBBEEngine engine = IBBEDel07Engine.getInstance();
-        PairingParameterXMLSerializer schemeXMLSerializer = IBBEDel07XMLSerializer.getInstance();
+        IBBEEngineTest engineTest = new IBBEEngineTest(engine);
 
-        IBBEEngineTest engineTest = new IBBEEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(160, 256);
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
+        engineTest.processTest(pairingParameters);
     }
 }

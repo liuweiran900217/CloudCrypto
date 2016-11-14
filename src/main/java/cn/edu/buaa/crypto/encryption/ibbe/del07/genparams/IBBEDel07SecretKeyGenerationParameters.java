@@ -1,6 +1,9 @@
-package cn.edu.buaa.crypto.encryption.ibbe.del07.params;
+package cn.edu.buaa.crypto.encryption.ibbe.del07.genparams;
 
+import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -16,7 +19,7 @@ public class IBBEDel07SecretKeyGenerationParameters extends KeyGenerationParamet
     private String id;
 
     public IBBEDel07SecretKeyGenerationParameters(CipherParameters publicKeyParameters, CipherParameters masterSecretKeyParameters, String id) {
-        super(null, IBBEEngine.STENGTH);
+        super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (IBBEDel07MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (IBBEDel07PublicKeySerParameter)publicKeyParameters;
         this.id = id;

@@ -2,10 +2,10 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
 import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07CipherSerParameter;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07DecapsulationParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07DecapsulationParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;

@@ -1,14 +1,20 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07DecapsulationGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07EncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.*;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.*;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -33,14 +39,14 @@ public class IBBEDel07Engine implements IBBEEngine {
 
     }
 
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength, int maxBroadcastReceiver) {
+    public AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver) {
         IBBEDel07KeyPairGenerator keyPairGenerator = new IBBEDel07KeyPairGenerator();
-        keyPairGenerator.init(new IBBEDel07KeyPairGenerationParameters(rBitLength, qBitLength, maxBroadcastReceiver));
+        keyPairGenerator.init(new IBBEDel07KeyPairGenerationParameters(pairingParameters, maxBroadcastReceiver));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String id) {
+    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id) {
         if (!(publicKey instanceof IBBEDel07PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -60,7 +66,7 @@ public class IBBEDel07Engine implements IBBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids) {
+    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids) {
         if (!(publicKey instanceof IBBEDel07PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -74,7 +80,8 @@ public class IBBEDel07Engine implements IBBEEngine {
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
-    public byte[] decapsulation(CipherParameters publicKey, CipherParameters secretKey, String[] ids, CipherParameters ciphertext) throws InvalidCipherTextException {
+    public byte[] decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+                                String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof IBBEDel07PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "

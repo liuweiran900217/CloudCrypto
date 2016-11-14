@@ -1,8 +1,7 @@
-package cn.edu.buaa.crypto.encryption.ibbe.del07.params;
+package cn.edu.buaa.crypto.encryption.ibbe.del07.genparams;
 
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/8/24.

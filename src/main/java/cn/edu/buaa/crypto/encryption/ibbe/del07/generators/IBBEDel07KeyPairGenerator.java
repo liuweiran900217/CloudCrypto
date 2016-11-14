@@ -1,15 +1,13 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
-import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07MasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.params.IBBEDel07PublicKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07KeyPairGenerationParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -17,16 +15,15 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Public key / master secret key generator for Delerablée IBBE scheme.
  */
-public class IBBEDel07KeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
+public class IBBEDel07KeyPairGenerator implements AsymmetricKeySerPairGenerator {
     private IBBEDel07KeyPairGenerationParameters parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.parameters = (IBBEDel07KeyPairGenerationParameters)keyGenerationParameters;
     }
 
-    public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
-        Pairing pairing = PairingFactory.getPairing(parameters);
+    public AsymmetricKeySerPair generateKeyPair() {
+        Pairing pairing = PairingFactory.getPairing(this.parameters.getPairingParameters());
         Element[] hs = new Element[this.parameters.getMaxBroadcastReceiver() + 1];
         hs[0] = pairing.getG2().newRandomElement().getImmutable();
         Element g = pairing.getG1().newRandomElement().getImmutable();
@@ -40,8 +37,8 @@ public class IBBEDel07KeyPairGenerator implements AsymmetricCipherKeyPairGenerat
             hs[i] = hs[0].powZn(gammaToi).getImmutable();
         }
 
-        return new AsymmetricCipherKeyPair(
-                new IBBEDel07PublicKeySerParameter(parameters, w, v, hs),
-                new IBBEDel07MasterSecretKeySerParameter(parameters, g, gamma));
+        return new AsymmetricKeySerPair(
+                new IBBEDel07PublicKeySerParameter(this.parameters.getPairingParameters(), w, v, hs),
+                new IBBEDel07MasterSecretKeySerParameter(this.parameters.getPairingParameters(), g, gamma));
     }
 }
