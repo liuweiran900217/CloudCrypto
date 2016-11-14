@@ -1,5 +1,8 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10ADecapsulationGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10AEncapsulationPairGenerator;
@@ -7,8 +10,11 @@ import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyPairGenerat
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aSecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.*;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -18,7 +24,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class RELSW10aEngine implements REEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LSW10aRE";
+    public static final String SCHEME_NAME = "LSW10a-RE";
 
     private static RELSW10aEngine engine;
 
@@ -33,72 +39,70 @@ public class RELSW10aEngine implements REEngine {
 
     }
 
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength) {
+    public AsymmetricKeySerPair setup(PairingParameters pairingParameters) {
         RELSW10aKeyPairGenerator keyPairGenerator = new RELSW10aKeyPairGenerator();
-        keyPairGenerator.init(new RELSW10aKeyPairGenerationParameters(rBitLength, qBitLength));
+        keyPairGenerator.init(new RELSW10aKeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String id) {
-        if (!(publicKey instanceof RELSW10APublicKeySerParameter)){
+    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id) {
+        if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + RELSW10APublicKeySerParameter.class.getName());
+                            + RELSW10aPublicKeySerParameter.class.getName());
         }
-        if (!(masterKey instanceof RELSW10AMasterSecretKeySerParameter)) {
+        if (!(masterKey instanceof RELSW10aMasterSecretKeySerParameter)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + masterKey.getClass().getName() + ", require"
-                            + RELSW10AMasterSecretKeySerParameter.class.getName());
+                            + RELSW10aMasterSecretKeySerParameter.class.getName());
         }
         RELSW10aSecretKeyGenerator secretKeyGenerator = new RELSW10aSecretKeyGenerator();
-        secretKeyGenerator.init(new RELSW10aSecretKeyGenerationParameters(
+        secretKeyGenerator.init(new RELSW10aSecretKeyGenerationParameter(
                 publicKey, masterKey, id));
 
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids){
-        if (!(publicKey instanceof RELSW10APublicKeySerParameter)){
+    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids){
+        if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + RELSW10APublicKeySerParameter.class.getName());
+                            + RELSW10aPublicKeySerParameter.class.getName());
         }
         RELSW10AEncapsulationPairGenerator keyEncapsulationPairGenerator = new RELSW10AEncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new RELSW10aCiphertextGenerationParameters(
+        keyEncapsulationPairGenerator.init(new RELSW10aCiphertextGenerationParameter(
                 publicKey, ids));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
     public byte[] decapsulation (
-            CipherParameters publicKey,
-            CipherParameters secretKey,
-            String[] ids,
-            CipherParameters ciphertext) throws InvalidCipherTextException {
-        if (!(publicKey instanceof RELSW10APublicKeySerParameter)){
+            AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+            String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+        if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
-                            + RELSW10APublicKeySerParameter.class.getName());
+                            + RELSW10aPublicKeySerParameter.class.getName());
         }
-        if (!(secretKey instanceof RELSW10ASecretKeySerParameter)){
+        if (!(secretKey instanceof RELSW10aSecretKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + secretKey.getClass().getName() + ", require "
-                            + RELSW10ASecretKeySerParameter.class.getName());
+                            + RELSW10aSecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof RELSW10ACipherSerParameter)){
+        if (!(ciphertext instanceof RELSW10aCipherSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + RELSW10ACipherSerParameter.class.getName());
+                            + RELSW10aCipherSerParameter.class.getName());
         }
         RELSW10ADecapsulationGenerator keyDecapsulationGenerator = new RELSW10ADecapsulationGenerator();
-        keyDecapsulationGenerator.init(new RELSW10aDecapsulationParameters(
+        keyDecapsulationGenerator.init(new RELSW10aDecapsulationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
     }

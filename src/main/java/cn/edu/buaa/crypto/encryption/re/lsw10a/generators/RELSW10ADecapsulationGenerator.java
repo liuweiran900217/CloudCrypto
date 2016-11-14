@@ -1,10 +1,10 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10ACipherSerParameter;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aDecapsulationParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10APublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10ASecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aDecapsulationParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -18,16 +18,16 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Lewko-Sahai-Waters revocation encryption session key decapsulation generator.
  */
 public class RELSW10ADecapsulationGenerator implements PairingDecapsulationGenerator {
-    private RELSW10aDecapsulationParameters params;
+    private RELSW10aDecapsulationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (RELSW10aDecapsulationParameters)params;
+        this.params = (RELSW10aDecapsulationParameter)params;
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
-        RELSW10APublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        RELSW10ASecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        RELSW10ACipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        RELSW10aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        RELSW10aSecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
+        RELSW10aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIds = PairingUtils.MapToZr(pairing, this.params.getIds());
 

@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07CiphertextGenerationParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07CiphertextGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
@@ -19,10 +19,10 @@ import org.bouncycastle.crypto.CipherParameters;
  */
 public class IBBEDel07EncapsulationPairGenerator implements PairingEncapsulationPairGenerator {
 
-    private IBBEDel07CiphertextGenerationParameters params;
+    private IBBEDel07CiphertextGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (IBBEDel07CiphertextGenerationParameters)params;
+        this.params = (IBBEDel07CiphertextGenerationParameter)params;
     }
 
     public PairingKeyEncapsulationSerPair generateEncryptionPair() {

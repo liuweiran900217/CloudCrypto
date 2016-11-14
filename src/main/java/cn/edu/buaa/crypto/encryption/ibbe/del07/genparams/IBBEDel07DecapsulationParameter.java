@@ -10,13 +10,13 @@ import org.bouncycastle.crypto.CipherParameters;
  *
  * Decapsulation parameters for Delerablée IBBE scheme.
  */
-public class IBBEDel07DecapsulationParameters implements CipherParameters {
+public class IBBEDel07DecapsulationParameter implements CipherParameters {
     private IBBEDel07PublicKeySerParameter publicKeyParameters;
     private IBBEDel07SecretKeySerParameter secretKeyParameters;
     private String[] ids;
     private IBBEDel07CipherSerParameter ciphertextParameters;
 
-    public IBBEDel07DecapsulationParameters(
+    public IBBEDel07DecapsulationParameter(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String[] ids,

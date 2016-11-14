@@ -1,58 +1,53 @@
 package com.example.encryption.re;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.OOREEngine;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.util.encoders.Hex;
-import org.w3c.dom.Document;
-
-import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Weiran Liu on 2016/4/10.
+ *
+ * Online/Offline revocation encryption engine test.
  */
 public class OOREEngineTest {
     private OOREEngine engine;
-    private PairingParameterXMLSerializer schemeXMLSerializer;
 
-    public OOREEngineTest(OOREEngine engine, PairingParameterXMLSerializer schemeXMLSerializer) {
+    public OOREEngineTest(OOREEngine engine) {
         this.engine = engine;
-        this.schemeXMLSerializer = schemeXMLSerializer;
     }
 
-    public void processTest(int rBitLength, int qBitLength) {
+    public void processTest(PairingParameters pairingParameters) {
         // Setup
-        AsymmetricCipherKeyPair keyPair = engine.setup(rBitLength, qBitLength);
-        CipherParameters publicKey = keyPair.getPublic();
-        CipherParameters masterKey = keyPair.getPrivate();
-        PairingParameters pairingParameters = ((PairingKeySerParameter)publicKey).getParameters();
+        AsymmetricKeySerPair keyPair = engine.setup(pairingParameters);
+        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
 
         // KeyGen
         String id = "Identity";
         String rid = "Revocated Identity";
 
-        CipherParameters skId = engine.keyGen(publicKey, masterKey, id);
-        CipherParameters skRid = engine.keyGen(publicKey, masterKey, rid);
+        AsymmetricKeySerParameter skId = engine.keyGen(publicKey, masterKey, id);
+        AsymmetricKeySerParameter skRid = engine.keyGen(publicKey, masterKey, rid);
 
         // Regular Encryption
         String[] rids1 = new String[]{rid, "Id_1"};
         PairingKeyEncapsulationSerPair ciphertextPairRids1 = engine.encapsulation(publicKey, rids1);
-        CipherParameters ciphertextRids1 = ciphertextPairRids1.getCiphertext();
+        PairingCipherSerParameter ciphertextRids1 = ciphertextPairRids1.getCiphertext();
         byte[] sessionKeyRids1 = ciphertextPairRids1.getSessionKey();
         String stringSessionKeyRids1 = new String(Hex.encode(sessionKeyRids1));
 
         String[] rids2 = new String[]{"Id_1", "Id_2", "Id_3", "Id_4", "Id_5", "Id_6", "Id_7", "Id_8", "Id_9", rid};
         PairingKeyEncapsulationSerPair ciphertextPairRids2 = engine.encapsulation(publicKey, rids2);
-        CipherParameters ciphertextRids2 = ciphertextPairRids2.getCiphertext();
+        PairingCipherSerParameter ciphertextRids2 = ciphertextPairRids2.getCiphertext();
         byte[] sessionKeyRids2 = ciphertextPairRids2.getSessionKey();
         String stringSessionKeyRids2 = new String(Hex.encode(sessionKeyRids2));
 
@@ -60,20 +55,20 @@ public class OOREEngineTest {
         PairingKeyEncapsulationSerPair iCiphertextPairRids1 = engine.offlineEncapsulation(publicKey, rids1.length);
         PairingCipherSerParameter iCiphertextRids1 = iCiphertextPairRids1.getCiphertext();
         PairingKeyEncapsulationSerPair ooCiphertextPairRids1 = engine.onlineEncapsulation(publicKey, iCiphertextRids1, rids1);
-        CipherParameters ooCiphertextRids1 = ooCiphertextPairRids1.getCiphertext();
+        PairingCipherSerParameter ooCiphertextRids1 = ooCiphertextPairRids1.getCiphertext();
         byte[] ooSessionKeyRids1 = ooCiphertextPairRids1.getSessionKey();
         String stringOOSessionKeyRids1 = new String(Hex.encode(ooSessionKeyRids1));
 
         PairingKeyEncapsulationSerPair iCiphertextPairRids2 = engine.offlineEncapsulation(publicKey, rids2.length);
         PairingCipherSerParameter iCiphertextRids2 = iCiphertextPairRids2.getCiphertext();
         PairingKeyEncapsulationSerPair ooCiphertextPairRids2 = engine.onlineEncapsulation(publicKey, iCiphertextRids2, rids2);
-        CipherParameters ooCiphertextRids2 = ooCiphertextPairRids2.getCiphertext();
+        PairingCipherSerParameter ooCiphertextRids2 = ooCiphertextPairRids2.getCiphertext();
         byte[] ooSessionKeyRids2 = ooCiphertextPairRids2.getSessionKey();
         String stringOOSessionKeyRids2 = new String(Hex.encode(ooSessionKeyRids2));
 
         // Regular Decrypt with correct secret keys
         System.out.println("========================================");
-        System.out.println("Test decrypting with correct secret keys");
+        System.out.println("Test online/offline revocation encryption functionality");
         try {
             //Decrypt ciphertext Rids1 using secret key id
             System.out.println("Test decrypting ciphertext rids1 using secret key id");
@@ -188,92 +183,42 @@ public class OOREEngineTest {
         }
 
         //Test Serialize & deserialize
-        if (this.schemeXMLSerializer != null) {
-            File file = new File("serializations/re");
-            file.mkdir();
+        System.out.println("======================================");
+        System.out.println("Test online/offline RE parameter serialization & de-serialization.");
+        try {
+            //serialize public key
+            System.out.println("Test serialize & de-serialize public key.");
+            byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
+            CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
+            assertEquals(publicKey, anPublicKey);
 
-            //Serialize & deserialize public key
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing public key");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_Public_Key.xml", schemeXMLSerializer.documentSerialization(publicKey));
-            Document documentPublicKey = TestUtils.InputXMLDocument("serializations/re/OORE_Public_Key.xml");
-            CipherParameters anoPublicKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentPublicKey);
-            assertEquals(publicKey, anoPublicKey);
+            //serialize master secret key
+            System.out.println("Test serialize & de-serialize master secret key.");
+            byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
+            CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
+            assertEquals(masterKey, anMasterKey);
 
-            //Serialize & deserialize master secret key
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing master secret key");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_Master_Secret_Key.xml", schemeXMLSerializer.documentSerialization(masterKey));
-            Document documentMasterKey = TestUtils.InputXMLDocument("serializations/re/OORE_Master_Secret_Key.xml");
-            CipherParameters anoMasterKey = schemeXMLSerializer.documentDeserialization(pairingParameters, documentMasterKey);
-            assertEquals(masterKey, anoMasterKey);
+            //serialize secret key
+            System.out.println("Test serialize & de-serialize secret key.");
+            byte[] byteArraySkID01 = TestUtils.SerCipherParameter(skId);
+            CipherParameters anSkID_1 = TestUtils.deserCipherParameters(byteArraySkID01);
+            assertEquals(skId, anSkID_1);
 
-            //Serialize & deserialize secret keys
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing secret key skId");
-            //Serialize & deserialize skId
-            TestUtils.OutputXMLDocument("serializations/re/OORE_Secret_Key_Id.xml", schemeXMLSerializer.documentSerialization(skId));
-            Document documentSkId = TestUtils.InputXMLDocument("serializations/re/OORE_Secret_Key_Id.xml");
-            CipherParameters anSkId = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSkId);
-            assertEquals(skId, anSkId);
-            //Serialize & deserialize skRid
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing secret key skRid");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_Secret_Key_Rid.xml",schemeXMLSerializer.documentSerialization(skRid));
-            Document documentSkRid = TestUtils.InputXMLDocument("serializations/re/OORE_Secret_Key_Rid.xml");
-            CipherParameters anSkRid = schemeXMLSerializer.documentDeserialization(pairingParameters, documentSkRid);
-            assertEquals(skRid, anSkRid);
+            //serialize ciphertext01
+            System.out.println("Test serialize & de-serialize ciphertext.");
+            byte[] byteArrayCiphertext01 = TestUtils.SerCipherParameter(ciphertextRids1);
+            CipherParameters anCiphertextID_1 = TestUtils.deserCipherParameters(byteArrayCiphertext01);
+            assertEquals(ciphertextRids1, anCiphertextID_1);
 
-            //Serialize & deserialize intermediate ciphertexts
-            //Serialize & deserialize intermediate ciphertext0
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing intermediate ciphertext Rids1");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_ICiphertext_Rids1.xml", schemeXMLSerializer.documentSerialization(iCiphertextRids1));
-            Document documentICiphertextRids1 = TestUtils.InputXMLDocument("serializations/re/OORE_ICiphertext_Rids1.xml");
-            CipherParameters anICiphertextRids1 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentICiphertextRids1);
-            assertEquals(iCiphertextRids1, anICiphertextRids1);
-            //Serialize & deserialize ciphertext01
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing intermediate ciphertext Rids2");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_ICiphertext_Rids2.xml", schemeXMLSerializer.documentSerialization(iCiphertextRids2));
-            Document documentICiphertextRids2 = TestUtils.InputXMLDocument("serializations/re/OORE_ICiphertext_Rids2.xml");
-            CipherParameters anICiphertextRids2 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentICiphertextRids2);
-            assertEquals(iCiphertextRids2, anICiphertextRids2);
-
-            //Serialize & deserialize ciphertexts
-            //Serialize & deserialize ciphertext0
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing ciphertext Rids1");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_Ciphertext_Rids1.xml", schemeXMLSerializer.documentSerialization(ciphertextRids1));
-            Document documentCiphertextRids1 = TestUtils.InputXMLDocument("serializations/re/OORE_Ciphertext_Rids1.xml");
-            CipherParameters anCiphertextRids1 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextRids1);
-            assertEquals(ciphertextRids1, anCiphertextRids1);
-            //Serialize & deserialize ciphertext01
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing ciphertext Rids2");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_Ciphertext_Rids2.xml", schemeXMLSerializer.documentSerialization(ciphertextRids2));
-            Document documentCiphertextRids2 = TestUtils.InputXMLDocument("serializations/re/OORE_Ciphertext_Rids2.xml");
-            CipherParameters anCiphertextRids2 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentCiphertextRids2);
-            assertEquals(ciphertextRids2, anCiphertextRids2);
-
-            //Serialize & deserialize online/offline ciphertexts
-            //Serialize & deserialize online/offline ciphertext0
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing online/offline ciphertext Rids1");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_OOCiphertext_Rids1.xml", schemeXMLSerializer.documentSerialization(ooCiphertextRids1));
-            Document documentOOCiphertextRids1 = TestUtils.InputXMLDocument("serializations/re/OORE_OOCiphertext_Rids1.xml");
-            CipherParameters anOOCiphertextRids1 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentOOCiphertextRids1);
-            assertEquals(ooCiphertextRids1, anOOCiphertextRids1);
-            //Serialize & deserialize online/offline ciphertext01
-            System.out.println("======================================");
-            System.out.println("Test Serializing & deserializing online/offline ciphertext Rids2");
-            TestUtils.OutputXMLDocument("serializations/re/OORE_OOCiphertext_Rids2.xml", schemeXMLSerializer.documentSerialization(ooCiphertextRids2));
-            Document documentOOCiphertextRids2 = TestUtils.InputXMLDocument("serializations/re/OORE_OOCiphertext_Rids2.xml");
-            CipherParameters anOOCiphertextRids2 = schemeXMLSerializer.documentDeserialization(pairingParameters, documentOOCiphertextRids2);
-            assertEquals(ooCiphertextRids2, anOOCiphertextRids2);
-
-            System.out.println("======================================");
-            System.out.println("Serialize & deserialize tests passed.");
+            //serialize ict
+            System.out.println("Test serialize & de-serialize intermediate ciphertext.");
+            byte[] byteArrayIntermediateCiphertext = TestUtils.SerCipherParameter(iCiphertextRids1);
+            CipherParameters anICiphertextRids1 = TestUtils.deserCipherParameters(byteArrayIntermediateCiphertext);
+            assertEquals(byteArrayIntermediateCiphertext, anICiphertextRids1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        System.out.println("online/offline RE parameter serialization tests passed.");
+        System.out.println();
     }
 }

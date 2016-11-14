@@ -9,11 +9,11 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Public key / master secret key parameter generation parameters for Delerablée IBBE scheme.
  */
-public class IBBEDel07KeyPairGenerationParameters extends KeyGenerationParameters {
+public class IBBEDel07KeyPairGenerationParameter extends KeyGenerationParameters {
     private int maxBroadcastReceiver;
     private PairingParameters pairingParameters;
 
-    public IBBEDel07KeyPairGenerationParameters(PairingParameters pairingParameters, int maxBroadcastReceiver) {
+    public IBBEDel07KeyPairGenerationParameter(PairingParameters pairingParameters, int maxBroadcastReceiver) {
         super(null, PairingParametersGenerationParameter.STENGTH);
 
         this.maxBroadcastReceiver = maxBroadcastReceiver;

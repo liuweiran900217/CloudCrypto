@@ -12,13 +12,13 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Secret key parameter generation parameters for Delerablée IBBE scheme.
  */
-public class IBBEDel07SecretKeyGenerationParameters extends KeyGenerationParameters {
+public class IBBEDel07SecretKeyGenerationParameter extends KeyGenerationParameters {
 
     private IBBEDel07MasterSecretKeySerParameter masterSecretKeyParameters;
     private IBBEDel07PublicKeySerParameter publicKeyParameters;
     private String id;
 
-    public IBBEDel07SecretKeyGenerationParameters(CipherParameters publicKeyParameters, CipherParameters masterSecretKeyParameters, String id) {
+    public IBBEDel07SecretKeyGenerationParameter(CipherParameters publicKeyParameters, CipherParameters masterSecretKeyParameters, String id) {
         super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (IBBEDel07MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (IBBEDel07PublicKeySerParameter)publicKeyParameters;

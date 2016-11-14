@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07KeyPairGenerationParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07KeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -16,10 +16,10 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Public key / master secret key generator for Delerablée IBBE scheme.
  */
 public class IBBEDel07KeyPairGenerator implements AsymmetricKeySerPairGenerator {
-    private IBBEDel07KeyPairGenerationParameters parameters;
+    private IBBEDel07KeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (IBBEDel07KeyPairGenerationParameters)keyGenerationParameters;
+        this.parameters = (IBBEDel07KeyPairGenerationParameter)keyGenerationParameters;
     }
 
     public AsymmetricKeySerPair generateKeyPair() {

@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07DecapsulationParameters;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07DecapsulationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
@@ -19,10 +19,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Key decapsulation generator for Delerablée IBBE scheme.
  */
 public class IBBEDel07DecapsulationGenerator implements PairingDecapsulationGenerator {
-    private IBBEDel07DecapsulationParameters params;
+    private IBBEDel07DecapsulationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (IBBEDel07DecapsulationParameters)params;
+        this.params = (IBBEDel07DecapsulationParameter)params;
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {

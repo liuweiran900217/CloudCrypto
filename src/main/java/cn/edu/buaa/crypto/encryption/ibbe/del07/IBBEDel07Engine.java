@@ -41,7 +41,7 @@ public class IBBEDel07Engine implements IBBEEngine {
 
     public AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver) {
         IBBEDel07KeyPairGenerator keyPairGenerator = new IBBEDel07KeyPairGenerator();
-        keyPairGenerator.init(new IBBEDel07KeyPairGenerationParameters(pairingParameters, maxBroadcastReceiver));
+        keyPairGenerator.init(new IBBEDel07KeyPairGenerationParameter(pairingParameters, maxBroadcastReceiver));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -60,7 +60,7 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07MasterSecretKeySerParameter.class.getName());
         }
         IBBEDel07SecretKeyGenerator secretKeyGenerator = new IBBEDel07SecretKeyGenerator();
-        secretKeyGenerator.init(new IBBEDel07SecretKeyGenerationParameters(
+        secretKeyGenerator.init(new IBBEDel07SecretKeyGenerationParameter(
                 publicKey, masterKey, id));
 
         return secretKeyGenerator.generateKey();
@@ -74,7 +74,7 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07PublicKeySerParameter.class.getName());
         }
         IBBEDel07EncapsulationPairGenerator keyEncapsulationPairGenerator = new IBBEDel07EncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new IBBEDel07CiphertextGenerationParameters(
+        keyEncapsulationPairGenerator.init(new IBBEDel07CiphertextGenerationParameter(
                 publicKey, ids));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();
@@ -101,7 +101,7 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07CipherSerParameter.class.getName());
         }
         IBBEDel07DecapsulationGenerator keyDecapsulationGenerator = new IBBEDel07DecapsulationGenerator();
-        keyDecapsulationGenerator.init(new IBBEDel07DecapsulationParameters(
+        keyDecapsulationGenerator.init(new IBBEDel07DecapsulationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
     }

@@ -1,30 +1,29 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
-import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aKeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10AMasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10APublicKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
+ *
+ * Lewko-Sahai-Waters revocation encryption public key / master secret key pair generator.
  */
-public class RELSW10aKeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
-    private RELSW10aKeyPairGenerationParameters parameters;
+public class RELSW10aKeyPairGenerator implements AsymmetricKeySerPairGenerator {
+    private RELSW10aKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters param) {
-        this.parameters = (RELSW10aKeyPairGenerationParameters)param;
+        this.parameters = (RELSW10aKeyPairGenerationParameter)param;
     }
 
-    public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
-        Pairing pairing = PairingFactory.getPairing(parameters);
+    public AsymmetricKeySerPair generateKeyPair() {
+        Pairing pairing = PairingFactory.getPairing(this.parameters.getPairingParameters());
 
         Element g = pairing.getG1().newRandomElement().getImmutable();
         Element alpha = pairing.getZr().newRandomElement().getImmutable();
@@ -38,8 +37,8 @@ public class RELSW10aKeyPairGenerator implements AsymmetricCipherKeyPairGenerato
 
         Element eggAlpha = pairing.pairing(g, g).powZn(alpha).getImmutable();
 
-        return new AsymmetricCipherKeyPair(
-                new RELSW10APublicKeySerParameter(parameters, g, gb, gb2, hb, eggAlpha),
-                new RELSW10AMasterSecretKeySerParameter(parameters, alpha, b, h));
+        return new AsymmetricKeySerPair(
+                new RELSW10aPublicKeySerParameter(this.parameters.getPairingParameters(), g, gb, gb2, hb, eggAlpha),
+                new RELSW10aMasterSecretKeySerParameter(this.parameters.getPairingParameters(), alpha, b, h));
     }
 }

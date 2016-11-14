@@ -1,8 +1,10 @@
 package cn.edu.buaa.crypto.encryption.re;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -14,16 +16,12 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 
 public interface REEngine {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    int STENGTH = 12;
-
     /**
      * Setup Algorithm for RE
-     * @param rBitLength Zr Bit Length, ignore if the scheme is based on composite-order bilinear groups
-     * @param qBitLength q Bit Length
+     * @param pairingParameters Pairing Parameters
      * @return public key / master secret key pair of the scheme
      */
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength);
+    AsymmetricKeySerPair setup(PairingParameters pairingParameters);
 
     /**
      * Secret Key Generation Algorithm for RE
@@ -32,7 +30,7 @@ public interface REEngine {
      * @param id associated identity
      * @return secret key associated with the identity id
      */
-    public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String id);
+    AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id);
 
     /**
      * Key Encapsulation Algorithm for RE
@@ -40,7 +38,7 @@ public interface REEngine {
      * @param ids revocation identity set
      * @return session key / ciphertext pair associated with the revocation identity set ids
      */
-    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids);
+    PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids);
 
     /**
      * Key Decapsulation Algorithm for RE
@@ -51,10 +49,7 @@ public interface REEngine {
      * @return the decapsulated session key
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public byte[] decapsulation (
-            CipherParameters publicKey,
-            CipherParameters secretKey,
-            String[] ids,
-            CipherParameters ciphertext
+    byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+                          String[] ids, PairingCipherSerParameter ciphertext
     ) throws InvalidCipherTextException;
 }
