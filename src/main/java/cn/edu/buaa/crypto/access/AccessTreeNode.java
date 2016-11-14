@@ -6,16 +6,18 @@ import java.util.Map;
 
 /**
  * Created by Weiran Liu on 2016/7/19.
+ *
+ * Generic access tree node
  */
-public class AccessTreeNode {
+public class AccessTreeNode implements java.io.Serializable {
     private static int numberOfLeafNodes = 0;
     public static AccessTreeNode GenerateAccessTree(final int[][] accessPolicy, final String[] rhos) {
         Map<String, String> collisionMap = new HashMap<String, String>();
-        for (int i = 0; i < rhos.length; i++) {
-            if (collisionMap.containsKey(rhos[i])) {
-                throw new InvalidParameterException("Invalid access policy, rhos containing identical string: " + rhos[i]);
+        for (String rho : rhos) {
+            if (collisionMap.containsKey(rho)) {
+                throw new InvalidParameterException("Invalid access policy, rhos containing identical string: " + rho);
             } else {
-                collisionMap.put(rhos[i], rhos[i]);
+                collisionMap.put(rho, rho);
             }
         }
         numberOfLeafNodes = 0;
@@ -65,18 +67,18 @@ public class AccessTreeNode {
         }
     }
 
-    public boolean isAccessControlSatisfied(final String[] attributes) {
+    boolean isAccessControlSatisfied(final String[] attributes) {
         if (!this.isLeafNode) {
             int satisfiedChildNumber = 0;
-            for (int i = 0; i < this.childNodes.length; i++) {
-                if (childNodes[i].isAccessControlSatisfied(attributes)) {
+            for (AccessTreeNode childNode : this.childNodes) {
+                if (childNode.isAccessControlSatisfied(attributes)) {
                     satisfiedChildNumber++;
                 }
             }
             return (satisfiedChildNumber >= t);
         } else {
-            for (int i = 0; i < attributes.length; i++) {
-                if (this.attribute.equals(attributes[i])) {
+            for (String eachAttribute : attributes) {
+                if (this.attribute.equals(eachAttribute)) {
                     return true;
                 }
             }
@@ -126,24 +128,20 @@ public class AccessTreeNode {
             //Compare leafnode
             if (this.isLeafNode) {
                 //Compare attribute
-                if (!this.attribute.equals(that.getAttribute())) {
+                if (!this.attribute.equals(that.attribute)) {
                     return false;
                 }
-                if (this.isLeafNode != that.isLeafNode) {
-                    return false;
-                }
-                return true;
+                return this.isLeafNode == that.isLeafNode;
             } else {
                 //Compare nonleaf nodes
-                for (int i = 0; i < this.childNodes.length; i++) {
-                    //Compare child nodes
-                    if (!this.childNodes.equals(that.getChildNodeAt(i))) {
-                        return false;
-                    }
-                }
-                //Compare number of child nodes
                 if (this.childNodes.length != that.childNodes.length) {
                     return false;
+                }
+                for (int i = 0; i < this.childNodes.length; i++) {
+                    //Compare child nodes
+                    if (!this.childNodes[i].equals(that.getChildNodeAt(i))) {
+                        return false;
+                    }
                 }
                 return true;
             }

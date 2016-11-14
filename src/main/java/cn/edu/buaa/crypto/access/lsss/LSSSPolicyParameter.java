@@ -3,6 +3,8 @@ package cn.edu.buaa.crypto.access.lsss;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.AccessTreeNode;
 
+import java.util.Arrays;
+
 /**
  * Created by Weiran Liu on 2016/7/18.
  *
@@ -53,5 +55,34 @@ public class LSSSPolicyParameter extends AccessControlParameter {
             buffer.append("\n");
         }
         return buffer.toString();
+    }
+
+    @Override
+    public boolean equals(Object anObject) {
+        if (this == anObject) {
+            return true;
+        }
+        if (anObject instanceof LSSSPolicyParameter) {
+            LSSSPolicyParameter that = (LSSSPolicyParameter) anObject;
+            //Compare row
+            if (this.row != that.getRow()) {
+                return false;
+            }
+            //Compare column
+            if (this.column != that.getColumn()) {
+                return false;
+            }
+            //Compare lsss matrix
+            if (this.lsssMatrix.length != that.getLSSSMatrix().length) {
+                return false;
+            }
+            for (int i = 0; i < this.lsssMatrix.length; i++) {
+                if (!Arrays.equals(this.lsssMatrix[i], that.lsssMatrix[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

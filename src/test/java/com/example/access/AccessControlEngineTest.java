@@ -6,11 +6,15 @@ import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.utils.PairingUtils;
+import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
+import org.bouncycastle.crypto.CipherParameters;
+import org.junit.Assert;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -251,7 +255,14 @@ public class AccessControlEngineTest {
             Element secret = pairing.getZr().newRandomElement().getImmutable();
 //        System.out.println("Generated Secret s = " + secret);
             Map<String, Element> lambdaElementsMap = accessControlEngine.secretSharing(pairing, secret, accessControlParameter);
+
+            //test access parameter serialization
+            byte[] byteArrayAccessParameter = TestUtils.SerCipherParameter(accessControlParameter);
+            CipherParameters anAccessControlParameter = TestUtils.deserCipherParameters(byteArrayAccessParameter);
+            Assert.assertEquals(accessControlParameter, anAccessControlParameter);
+
             //Secret Reconstruction
+            accessControlParameter = (AccessControlParameter)anAccessControlParameter;
             Map<String, Element> omegaElementsMap = accessControlEngine.reconstructOmegas(pairing, attributeSet, accessControlParameter);
             Element reconstructedSecret = pairing.getZr().newZeroElement().getImmutable();
             for (String eachAttribute : attributeSet) {
@@ -262,11 +273,18 @@ public class AccessControlEngineTest {
 //        System.out.println("Reconstruct Secret s = " + reconstructedSecret);
             if (!reconstructedSecret.equals(secret)) {
                 System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Reconstructed Secret Wrong...");
-//                System.exit(0);
-            } else {
-                System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + " Passed.");
+                System.exit(0);
             }
+            System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + " Passed.");
         } catch (UnsatisfiedAccessControlException e) {
+            System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for getting Exceptions...");
+            e.printStackTrace();
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for getting Exceptions...");
+            e.printStackTrace();
+            System.exit(0);
+        } catch (ClassNotFoundException e) {
             System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for getting Exceptions...");
             e.printStackTrace();
             System.exit(0);

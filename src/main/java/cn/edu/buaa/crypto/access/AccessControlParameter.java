@@ -1,13 +1,17 @@
 package cn.edu.buaa.crypto.access;
 
+import org.bouncycastle.crypto.CipherParameters;
+
 import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/7/19.
+ *
+ * Generic access control parameters.
  */
-public class AccessControlParameter {
+public class AccessControlParameter implements CipherParameters, java.io.Serializable {
     //The Access Tree
-    protected final AccessTreeNode rootAccessTreeNode;
+    private final AccessTreeNode rootAccessTreeNode;
     //The access policy represented by int array
     protected final int[][] accessPolicy;
     //Rho map
@@ -38,9 +42,7 @@ public class AccessControlParameter {
             numOfMinAttributeSet--;
             String[] minAttributeSet = new String[numOfMinAttributeSet];
             for (int j = 0, k = 0; j < attributes.length; j++) {
-                if (isRedundantAttribute[j]) {
-                    continue;
-                } else {
+                if (!isRedundantAttribute[j]) {
                     minAttributeSet[k] = attributes[j];
                     k++;
                 }
@@ -52,9 +54,7 @@ public class AccessControlParameter {
         }
         String[] minAttributeSet = new String[numOfMinAttributeSet];
         for (int j = 0, k = 0; j < attributes.length; j++) {
-            if (isRedundantAttribute[j]) {
-                continue;
-            } else {
+            if (!isRedundantAttribute[j]) {
                 minAttributeSet[k] = attributes[j];
                 k++;
             }
@@ -67,12 +67,12 @@ public class AccessControlParameter {
     }
 
     @Override
-    public boolean equals(Object anOjbect) {
-        if (this == anOjbect) {
+    public boolean equals(Object anObject) {
+        if (this == anObject) {
             return true;
         }
-        if (anOjbect instanceof AccessControlParameter) {
-            AccessControlParameter that = (AccessControlParameter) anOjbect;
+        if (anObject instanceof AccessControlParameter) {
+            AccessControlParameter that = (AccessControlParameter) anObject;
             //Compare rhos
             if (!Arrays.equals(this.rhos, that.getRhos())) {
                 return false;

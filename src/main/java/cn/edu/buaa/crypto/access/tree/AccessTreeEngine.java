@@ -47,6 +47,10 @@ public class AccessTreeEngine implements AccessControlEngine {
     public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) {
         Map<String, Element> sharedElementsMap = new HashMap<String, Element>();
         access_tree_node_secret_sharing(pairing, secret, accessControlParameter.getRootAccessTreeNode(), sharedElementsMap);
+//        Object[] keySet = sharedElementsMap.keySet().toArray();
+//        for (Object keys : keySet) {
+//            System.out.println(keys + " : " + sharedElementsMap.get(keys));
+//        }
         return sharedElementsMap;
     }
 
@@ -101,6 +105,10 @@ public class AccessTreeEngine implements AccessControlEngine {
             } else {
                 Map<String, Element> coefficientElementsMap = new HashMap<String, Element>();
                 rootSatisfiedAccessTreeNode.calcCoefficients(coefficientElementsMap);
+//                Object[] keySet = coefficientElementsMap.keySet().toArray();
+//                for (Object keys : keySet) {
+//                    System.out.println(keys + " : " + coefficientElementsMap.get(keys));
+//                }
                 return coefficientElementsMap;
             }
         }
@@ -111,8 +119,8 @@ public class AccessTreeEngine implements AccessControlEngine {
             this.index = index;
             if (accessTreeNode.isLeafNode()) {
                 this.childNodes = null;
-                this.t = 0;
-                this.n = 0;
+                this.t = 1;
+                this.n = 1;
                 this.attribute = accessTreeNode.getAttribute();
                 this.isLeafNode = true;
             } else {
@@ -172,8 +180,9 @@ public class AccessTreeEngine implements AccessControlEngine {
                 SatisfiedAccessTreeNode currentNode = this;
                 Element coefficientElement =  pairing.getZr().newOneElement().getImmutable();
                 while (currentNode.parentNode != null) {
+                    int currentNodeIndex = currentNode.index;
                     currentNode = currentNode.parentNode;
-                    coefficientElement = coefficientElement.mulZn(LagrangePolynomial.calCoef(pairing, currentNode.satisfiedIndex, currentNode.index)).getImmutable();
+                    coefficientElement = coefficientElement.mulZn(LagrangePolynomial.calCoef(pairing, currentNode.satisfiedIndex, currentNodeIndex)).getImmutable();
                 }
                 coefficientElementsMap.put(this.attribute, coefficientElement);
             }
