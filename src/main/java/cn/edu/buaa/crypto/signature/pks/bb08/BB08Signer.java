@@ -41,7 +41,7 @@ public class BB08Signer implements PairingSigner {
         Element y = secretKeyParameters.getY().getImmutable();
         Element g1 = secretKeyParameters.getG1().getImmutable();
 
-        Element m = PairingUtils.MapToZr(pairing, message);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.Zr);
         Element r;
         do {
             r = pairing.getZr().newRandomElement().getImmutable();
@@ -56,7 +56,7 @@ public class BB08Signer implements PairingSigner {
         PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
         BB08SignPublicKeySerParameter publicKeyParameters = (BB08SignPublicKeySerParameter) this.pairingKeySerParameter;
-        Element m = PairingUtils.MapToZr(pairing, message);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.Zr);
         Element g2 = publicKeyParameters.getG2();
         Element u = publicKeyParameters.getU();
         Element v = publicKeyParameters.getV();

@@ -33,7 +33,7 @@ public class RELSW10aSecretKeyGenerator implements AsymmetricKeySerParametersGen
             RELSW10aPublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element elementId = PairingUtils.MapToZr(pairing, parameters.getId()).getImmutable();
+            Element elementId = PairingUtils.MapStringToGroup(pairing, parameters.getId(), PairingUtils.PairingGroupType.Zr).getImmutable();
             Element t = pairing.getZr().newRandomElement().getImmutable();
 
             Element d0 = publicKeyParameters.getG().powZn(masterSecretKeyParameters.getAlpha())

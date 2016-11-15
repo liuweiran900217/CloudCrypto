@@ -30,7 +30,7 @@ public class IBELW10SecretKeyGenerator implements AsymmetricKeySerParametersGene
         IBELW10PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element elementId = PairingUtils.MapToZr(pairing, parameters.getId()).getImmutable();
+        Element elementId = PairingUtils.MapStringToGroup(pairing, parameters.getId(), PairingUtils.PairingGroupType.Zr).getImmutable();
         Element Zr_R3 = pairing.getZr().newRandomElement().getImmutable();
         Element R3 = masterSecretKeyParameters.getG3Generator().powZn(Zr_R3).getImmutable();
         Element Zr_R3Prime = pairing.getZr().newRandomElement().getImmutable();

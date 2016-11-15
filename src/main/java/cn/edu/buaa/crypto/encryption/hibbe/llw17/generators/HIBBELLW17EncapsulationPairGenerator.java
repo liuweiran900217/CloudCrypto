@@ -31,7 +31,7 @@ public class HIBBELLW17EncapsulationPairGenerator implements PairingEncapsulatio
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
-        Element[] elementIds = PairingUtils.MapToZr(pairing, ids);
+        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
 
         Element beta = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = publicKeyParameters.getEggAlpha().powZn(beta).getImmutable();
@@ -48,7 +48,7 @@ public class HIBBELLW17EncapsulationPairGenerator implements PairingEncapsulatio
         digest.update(byteArrayC0, 0, byteArrayC0.length);
         byte[] byteArrayIDv = new byte[digest.getDigestSize()];
         digest.doFinal(byteArrayIDv, 0);
-        Element elementIDv = PairingUtils.MapToZr(pairing, byteArrayIDv);
+        Element elementIDv = PairingUtils.MapByteArrayToGroup(pairing, byteArrayIDv, PairingUtils.PairingGroupType.Zr);
         C1 = C1.mul(publicKeyParameters.getUv().powZn(elementIDv)).powZn(beta).getImmutable();
         return new PairingKeyEncapsulationSerPair(
                 byteArraySessionKey,

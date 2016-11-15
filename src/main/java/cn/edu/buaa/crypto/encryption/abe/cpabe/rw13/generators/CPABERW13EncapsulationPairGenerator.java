@@ -34,7 +34,7 @@ public class CPABERW13EncapsulationPairGenerator implements PairingEncapsulation
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         int[][] accessPolicy = params.getAccessPolicy();
         String[] rhos = params.getRhos();
-        Element[] elementRhos = PairingUtils.MapToZr(pairing, rhos);
+        Element[] elementRhos = PairingUtils.MapStringArrayToGroup(pairing, rhos, PairingUtils.PairingGroupType.Zr);
 
         Element s = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = publicKeyParameters.getEggAlpha().powZn(s).getImmutable();

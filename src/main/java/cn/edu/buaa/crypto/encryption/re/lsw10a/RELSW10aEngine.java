@@ -4,8 +4,8 @@ import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10ADecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10AEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aDecapsulationGenerator;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aSecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.*;
@@ -73,7 +73,7 @@ public class RELSW10aEngine implements REEngine {
                             + publicKey.getClass().getName() + ", require "
                             + RELSW10aPublicKeySerParameter.class.getName());
         }
-        RELSW10AEncapsulationPairGenerator keyEncapsulationPairGenerator = new RELSW10AEncapsulationPairGenerator();
+        RELSW10aEncapsulationPairGenerator keyEncapsulationPairGenerator = new RELSW10aEncapsulationPairGenerator();
         keyEncapsulationPairGenerator.init(new RELSW10aCiphertextGenerationParameter(
                 publicKey, ids));
 
@@ -101,7 +101,7 @@ public class RELSW10aEngine implements REEngine {
                             + ciphertext.getClass().getName() + ", require "
                             + RELSW10aCipherSerParameter.class.getName());
         }
-        RELSW10ADecapsulationGenerator keyDecapsulationGenerator = new RELSW10ADecapsulationGenerator();
+        RELSW10aDecapsulationGenerator keyDecapsulationGenerator = new RELSW10aDecapsulationGenerator();
         keyDecapsulationGenerator.init(new RELSW10aDecapsulationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();

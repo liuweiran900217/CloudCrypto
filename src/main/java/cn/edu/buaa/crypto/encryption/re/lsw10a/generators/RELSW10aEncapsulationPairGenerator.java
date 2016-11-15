@@ -16,7 +16,7 @@ import org.bouncycastle.crypto.CipherParameters;
  *
  * Lewko-Sahai-Waters revocation encryption ciphertext / session key encapsulation pair generator.
  */
-public class RELSW10AEncapsulationPairGenerator implements PairingEncapsulationPairGenerator {
+public class RELSW10aEncapsulationPairGenerator implements PairingEncapsulationPairGenerator {
     private RELSW10aCiphertextGenerationParameter params;
 
     public void init(CipherParameters params) {
@@ -27,7 +27,7 @@ public class RELSW10AEncapsulationPairGenerator implements PairingEncapsulationP
         RELSW10aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
-        Element[] elementIds = PairingUtils.MapToZr(pairing, ids);
+        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
 
         Element[] ss = new Element[this.params.getLength()];
         Element s = pairing.getZr().newZeroElement().getImmutable();

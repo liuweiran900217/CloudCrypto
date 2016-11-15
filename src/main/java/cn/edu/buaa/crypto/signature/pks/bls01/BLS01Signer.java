@@ -39,7 +39,7 @@ public class BLS01Signer implements PairingSigner {
         BLS01SignSecretKeySerParameter secretKeyParameters = (BLS01SignSecretKeySerParameter) this.pairingKeySerParameter;
         Element x = secretKeyParameters.getX();
 
-        Element m = PairingUtils.MapToG2(pairing, message);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G2);
         Element sigma = m.powZn(x).getImmutable();
 
         return new Element[]{sigma};
@@ -49,7 +49,7 @@ public class BLS01Signer implements PairingSigner {
         PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
         BLS01SignPublicKeySerParameter publicKeyParameters = (BLS01SignPublicKeySerParameter) this.pairingKeySerParameter;
-        Element m = PairingUtils.MapToG2(pairing, message);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G2);
         Element g = publicKeyParameters.getG();
         Element v = publicKeyParameters.getV();
 

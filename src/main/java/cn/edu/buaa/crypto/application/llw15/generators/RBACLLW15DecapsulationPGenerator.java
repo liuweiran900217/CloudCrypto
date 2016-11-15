@@ -30,8 +30,8 @@ public class RBACLLW15DecapsulationPGenerator implements PairingDecapsulationGen
         RBACLLW15EncapsulationSerParameter ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementRolesCT = PairingUtils.MapToZr(pairing, this.params.getRoles());
-        Element elementTimeCT = PairingUtils.MapToZr(pairing, this.params.getTime());
+        Element[] elementRolesCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getRoles(), PairingUtils.PairingGroupType.Zr);
+        Element elementTimeCT = PairingUtils.MapStringToGroup(pairing, this.params.getTime(), PairingUtils.PairingGroupType.Zr);
 
         //Check identity
         if (!secretKeyParameters.getId().equals(this.params.getId())) {
@@ -49,7 +49,7 @@ public class RBACLLW15DecapsulationPGenerator implements PairingDecapsulationGen
             }
         }
         a0 = a0.mul(secretKeyParameters.getB0Prime().powZn(elementTimeCT))
-                .mul(secretKeyParameters.getBvPrime().powZn(PairingUtils.MapToZr(pairing, C0.toBytes()))).getImmutable();
+                .mul(secretKeyParameters.getBvPrime().powZn(PairingUtils.MapByteArrayToGroup(pairing, C0.toBytes(), PairingUtils.PairingGroupType.Zr))).getImmutable();
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();
         Element sessionKey = temp0.div(temp1).getImmutable();

@@ -26,18 +26,20 @@ public class RBACLLW15EncapsulationAudit {
         RBACLLW15EncapsulationSerParameter encapsulationParameters = this.params.getCiphertextParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] roles = this.params.getRoles();
-        Element[] elementRoles = PairingUtils.MapToZr(pairing, roles);
+        Element[] elementRoles = PairingUtils.MapStringArrayToGroup(pairing, roles, PairingUtils.PairingGroupType.Zr);
         String time = this.params.getTime();
-        Element elementTime = PairingUtils.MapToZr(pairing, time);
+        Element elementTime = PairingUtils.MapStringToGroup(pairing, time, PairingUtils.PairingGroupType.Zr);
         String identity = this.params.getId();
-        Element elementId = PairingUtils.MapToZr(pairing, identity);
+        Element elementId = PairingUtils.MapStringToGroup(pairing, identity, PairingUtils.PairingGroupType.Zr);
 
         Element temp00 = publicKeyParameters.getG();
         Element temp01 = encapsulationParameters.getC1();
         Element temp10 = encapsulationParameters.getC0();
         Element temp11  = publicKeyParameters.getG3().mul(publicKeyParameters.getU0().powZn(elementTime))
                 .mul(publicKeyParameters.getGh().powZn(elementId))
-                .mul(publicKeyParameters.getUv().powZn(PairingUtils.MapToZr(pairing, encapsulationParameters.getC0().toBytes()))).getImmutable();
+                .mul(publicKeyParameters.getUv().powZn(
+                        PairingUtils.MapByteArrayToGroup(
+                                pairing, encapsulationParameters.getC0().toBytes(), PairingUtils.PairingGroupType.Zr))).getImmutable();
         for (int i=0; i<roles.length; i++) {
             if (roles[i] != null) {
                 temp11 = temp11.mul(publicKeyParameters.getUsAt(i).powZn(elementRoles[i])).getImmutable();

@@ -30,7 +30,7 @@ public class IBELW10DecapsulationGenerator implements PairingDecapsulationGenera
         IBELW10CipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element elementIdCT = PairingUtils.MapToZr(pairing, this.params.getId());
+        Element elementIdCT = PairingUtils.MapStringToGroup(pairing, this.params.getId(), PairingUtils.PairingGroupType.Zr);
 
         if (!secretKeyParameters.getElementId().equals(elementIdCT)){
             throw new InvalidCipherTextException("Secret Key identity vector does not match Ciphertext identity vector");

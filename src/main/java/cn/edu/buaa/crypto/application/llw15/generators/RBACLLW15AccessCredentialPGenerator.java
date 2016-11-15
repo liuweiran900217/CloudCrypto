@@ -28,7 +28,7 @@ public class RBACLLW15AccessCredentialPGenerator implements AsymmetricKeySerPara
         RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element elementId = PairingUtils.MapToZr(pairing, parameters.getId());
+        Element elementId = PairingUtils.MapStringToGroup(pairing, parameters.getId(), PairingUtils.PairingGroupType.Zr);
         if (!parameters.isIntermediateGeneration()) {
             //generate patient access credential without using intermediate
             Element r = pairing.getZr().newRandomElement().getImmutable();

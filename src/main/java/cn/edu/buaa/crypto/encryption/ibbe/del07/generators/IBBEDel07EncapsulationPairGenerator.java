@@ -34,7 +34,7 @@ public class IBBEDel07EncapsulationPairGenerator implements PairingEncapsulation
                     " is greater than the maximal number of receivers " + publicKeyParameters.getMaxBroadcastReceiver());
         }
 
-        Element[] elementIds = PairingUtils.MapToZr(pairing, ids);
+        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
 
         Element k = pairing.getZr().newRandomElement().getImmutable();
         //Computer session key

@@ -32,8 +32,8 @@ public class RBACLLW15AccessCredentialMGenerator implements AsymmetricKeySerPara
             RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementRoles = PairingUtils.MapToZr(pairing, parameters.getRoles());
-            Element elementTime = PairingUtils.MapToZr(pairing, parameters.getTime());
+            Element[] elementRoles = PairingUtils.MapStringArrayToGroup(pairing, parameters.getRoles(), PairingUtils.PairingGroupType.Zr);
+            Element elementTime = PairingUtils.MapStringToGroup(pairing, parameters.getTime(), PairingUtils.PairingGroupType.Zr);
             if (!parameters.isIntermediateGeneration()) {
                 //generate medical staff access credential without using intermediate parameters
                 Element r = pairing.getZr().newRandomElement().getImmutable();
@@ -96,7 +96,7 @@ public class RBACLLW15AccessCredentialMGenerator implements AsymmetricKeySerPara
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] roles = new String[publicKeyParameters.getMaxRoleNumber()];
             Element[] elementRoles = new Element[publicKeyParameters.getMaxRoleNumber()];
-            Element elementDelegateRole = PairingUtils.MapToZr(pairing, parameters.getDelegateRole()).getImmutable();
+            Element elementDelegateRole = PairingUtils.MapStringToGroup(pairing, parameters.getDelegateRole(), PairingUtils.PairingGroupType.Zr).getImmutable();
             if (!parameters.isIntermediateGeneration()) {
                 //generate medical staff access credential without using intermediate parameters
                 Element t = pairing.getZr().newRandomElement().getImmutable();

@@ -2,7 +2,6 @@ package cn.edu.buaa.crypto.utils;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
@@ -111,170 +110,66 @@ public class PairingUtils {
         return md.digest();
     }
 
-    /**
-     * Map a byte array to Element in Zr
-     * @param pairing pairing of the underlying cryptography system
-     * @param message message to be hashed
-     * @return Zr Element mapping the message
-     */
-    public static Element MapToZr(Pairing pairing, byte[] message) {
+    public static Element MapByteArrayToGroup(Pairing pairing, byte[] message, PairingGroupType pairingGroupType) {
         byte[] shaResult = hash(512, message);
-        Element hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
-        return hash;
+        switch (pairingGroupType) {
+            case Zr: return pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
+            case G1: return pairing.getG1().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
+            case G2: return pairing.getG2().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
+            case GT: return pairing.getGT().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
+            default: throw new RuntimeException("Invalid pairing group type.");
+        }
     }
 
-    public static Element MapToFirstHalfZr(Pairing pairing, byte[] message) {
-        byte[] shaResult = hash(512, message);
-        byte[] hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).toBytes();
-        hash[0] &= 0xEF;
-        return pairing.getZr().newElementFromBytes(hash).getImmutable();
+    public static Element MapStringToGroup(Pairing pairing, String message, PairingGroupType pairingGroupType) {
+        return PairingUtils.MapByteArrayToGroup(pairing, message.getBytes(), pairingGroupType);
     }
 
-    public static Element MapToSecondHalfZr(Pairing pairing, byte[] message) {
+    public static Element MapByteArrayToFirstHalfZr(Pairing pairing, byte[] message) {
+        byte[] shaResult = hash(512, message);
+        byte[] hashZr = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).toBytes();
+        hashZr[0] &= 0xEF;
+        return pairing.getZr().newElementFromBytes(hashZr).getImmutable();
+    }
+
+    public static Element MapByteArrayToSecondHalfZr(Pairing pairing, byte[] message) {
         byte[] shaResult = hash(512, message);
         byte[] hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).toBytes();
         hash[0] |= 0x80;
         return pairing.getZr().newElementFromBytes(hash).getImmutable();
     }
 
-    /**
-     * Map a String to Element in Zr
-     * @param pairing pairing of the underlying cryptography system
-     * @param message message to be hashed
-     * @return Zr Element mapping the message
-     */
-    public static Element MapToZr(Pairing pairing, String message) {
-        if (message == null) {
-            return null;
-        }
-        return MapToZr(pairing, message.getBytes());
-    }
-
-    public static Element MapToFirstHalfZr(Pairing pairing, String message) {
-        if (message == null) {
-            return null;
-        }
-        return MapToFirstHalfZr(pairing, message.getBytes());
-    }
-
-    /**
-     * Map several byte arrays to Elements in Zr
-     * @param pairing pairing of the underlying cryptography system
-     * @param message messages to be hashed
-     * @return Zr Element arrays mapping the messages
-     */
-    public static Element[] MapToZr(Pairing pairing, byte[][] message){
+    public static Element[] MapByteArraysToGroup(Pairing pairing, byte[][] message, PairingGroupType pairingGroupType){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapToZr(pairing, message[i]);
+            elements[i] = PairingUtils.MapByteArrayToGroup(pairing, message[i], pairingGroupType);
         }
         return elements;
     }
 
-    public static Element[] MapToFirstHalfZr(Pairing pairing, byte[][] message){
+    public static Element[] MapStringArrayToGroup(Pairing pairing, String[] message, PairingGroupType pairingGroupType){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapToFirstHalfZr(pairing, message[i]);
+            if (message[i] == null) {
+                continue;
+            }
+            elements[i] = PairingUtils.MapByteArrayToGroup(pairing, message[i].getBytes(), pairingGroupType);
         }
         return elements;
     }
 
-    /**
-     * Map a String array to Elements in Zr
-     * @param pairing pairing of the underlying cryptography system
-     * @param message messages to be hashed
-     * @return Zr Element arrays mapping the messages
-     */
-    public static Element[] MapToZr(Pairing pairing, String[] message){
+    public static Element[] MapByteArraysToFirstHalfZr(Pairing pairing, byte[][] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapToZr(pairing, message[i]);
+            elements[i] = PairingUtils.MapByteArrayToFirstHalfZr(pairing, message[i]);
         }
         return elements;
     }
 
-    public static Element[] MapToFirstHalfZr(Pairing pairing, String[] message){
+    public static Element[] MapStringArrayToFirstHalfZr(Pairing pairing, String[] message){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapToFirstHalfZr(pairing, message[i]);
-        }
-        return elements;
-    }
-
-    /**
-     * Map a byte array to Element in G1
-     * @param pairing pairing of the underlying cryptography system
-     * @param message message to be hashed
-     * @return G1 Element mapping the message
-     */
-    public static Element MapToG1(Pairing pairing, byte[] message) {
-        byte[] shaResult = hash(512, message);
-        Element hash = pairing.getG1().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
-        return hash;
-    }
-
-    /**
-     * Map several byte arrays to Elements in G1
-     * @param pairing pairing of the underlying cryptography system
-     * @param message messages to be hashed
-     * @return G1 Element arrays mapping the messages
-     */
-    public static Element[] MapToG1(Pairing pairing, byte[][] message){
-        Element[] elements = new Element[message.length];
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapToG1(pairing, message[i]);
-        }
-        return elements;
-    }
-
-    /**
-     * Map a byte array to Element in G2
-     * @param pairing pairing of the underlying cryptography system
-     * @param message message to be hashed
-     * @return G2 Element mapping the message
-     */
-    public static Element MapToG2(Pairing pairing, byte[] message){
-        byte[] shaResult = hash(512, message);
-        Element hash = pairing.getG2().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
-        return hash;
-    }
-
-    /**
-     * Map several byte arrays to Elements in G2
-     * @param pairing pairing of the underlying cryptography system
-     * @param message messages to be hashed
-     * @return G2 Element arrays mapping the messages
-     */
-    public static Element[] MapToG2(Pairing pairing, byte[][] message){
-        Element[] elements = new Element[message.length];
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapToG2(pairing, message[i]);
-        }
-        return elements;
-    }
-
-    /**
-     * Map a byte array to Element in GT
-     * @param pairing pairing of the underlying cryptography system
-     * @param message message to be hashed
-     * @return GT Element mapping the message
-     */
-    public static Element MapToGT(Pairing pairing, byte[] message){
-        byte[] shaResult = hash(512, message);
-        Element hash = pairing.getGT().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
-        return hash;
-    }
-
-    /**
-     * Map several byte arrays to Elements in GT
-     * @param pairing pairing of the underlying cryptography system
-     * @param message messages to be hashed
-     * @return GT Element arrays mapping the messages
-     */
-    public static Element[] MapToGT(Pairing pairing, byte[][] message){
-        Element[] elements = new Element[message.length];
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapToGT(pairing, message[i]);
+            elements[i] = PairingUtils.MapByteArrayToFirstHalfZr(pairing, message[i].getBytes());
         }
         return elements;
     }

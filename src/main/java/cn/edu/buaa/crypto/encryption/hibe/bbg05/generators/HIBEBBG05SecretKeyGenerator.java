@@ -31,7 +31,7 @@ public class HIBEBBG05SecretKeyGenerator {
             assert(length <= publicKeyParameters.getMaxLength());
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementIds = PairingUtils.MapToZr(pairing, parameters.getIds());
+            Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, parameters.getIds(), PairingUtils.PairingGroupType.Zr);
             Element r = pairing.getZr().newRandomElement().getImmutable();
             Element a0 = publicKeyParameters.getG3().getImmutable();
             Element a1 = publicKeyParameters.getG().powZn(r).getImmutable();
@@ -64,7 +64,7 @@ public class HIBEBBG05SecretKeyGenerator {
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = new String[length];
             Element[] elementIds = new Element[length];
-            Element elementDelegateId = PairingUtils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
+            Element elementDelegateId = PairingUtils.MapStringToGroup(pairing, parameters.getDelegateId(), PairingUtils.PairingGroupType.Zr).getImmutable();
             Element r = pairing.getZr().newRandomElement().getImmutable();
             Element a0 = publicKeyParameters.getG3().getImmutable();
             Element a1 = publicKeyParameters.getG().powZn(r).getImmutable();

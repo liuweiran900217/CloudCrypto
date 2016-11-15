@@ -28,11 +28,11 @@ public class RBACLLW15EncapsulationPairGenerator implements PairingEncapsulation
         RBACLLW15PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] roles = this.params.getRoles();
-        Element[] elementRoles = PairingUtils.MapToZr(pairing, roles);
+        Element[] elementRoles = PairingUtils.MapStringArrayToGroup(pairing, roles, PairingUtils.PairingGroupType.Zr);
         String time = this.params.getTime();
-        Element elementTime = PairingUtils.MapToZr(pairing, time);
+        Element elementTime = PairingUtils.MapStringToGroup(pairing, time, PairingUtils.PairingGroupType.Zr);
         String identity = this.params.getId();
-        Element elementId = PairingUtils.MapToZr(pairing, identity);
+        Element elementId = PairingUtils.MapStringToGroup(pairing, identity, PairingUtils.PairingGroupType.Zr);
 
         if (!params.isIntermediateGeneration()) {
             //encapsulate key without using intermediate parameters
@@ -41,7 +41,7 @@ public class RBACLLW15EncapsulationPairGenerator implements PairingEncapsulation
             byte[] byteArraySessionKey = sessionKey.toBytes();
 
             Element C0 = publicKeyParameters.getG().powZn(beta).getImmutable();
-            Element w = PairingUtils.MapToZr(pairing, C0.toBytes());
+            Element w = PairingUtils.MapByteArrayToGroup(pairing, C0.toBytes(), PairingUtils.PairingGroupType.Zr);
             Element C1 = publicKeyParameters.getG3().getImmutable();
             for (int i = 0; i < publicKeyParameters.getMaxRoleNumber(); i++) {
                 if (roles[i] != null) {
@@ -63,7 +63,7 @@ public class RBACLLW15EncapsulationPairGenerator implements PairingEncapsulation
             byte[] byteArraySessionKey = sessionKey.toBytes();
 
             Element C0 = intermediateParameters.get_G_r().getImmutable();
-            Element w = PairingUtils.MapToZr(pairing, C0.toBytes());
+            Element w = PairingUtils.MapByteArrayToGroup(pairing, C0.toBytes(), PairingUtils.PairingGroupType.Zr);
             Element C1 = intermediateParameters.get_G_3_r().getImmutable();
             for (int i = 0; i < publicKeyParameters.getMaxRoleNumber(); i++) {
                 if (roles[i] != null) {

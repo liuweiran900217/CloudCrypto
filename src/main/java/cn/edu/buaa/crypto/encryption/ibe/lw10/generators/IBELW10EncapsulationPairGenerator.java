@@ -26,7 +26,7 @@ public class IBELW10EncapsulationPairGenerator implements PairingEncapsulationPa
         IBELW10PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String id = this.params.getId();
-        Element elementId = PairingUtils.MapToZr(pairing, id).getImmutable();
+        Element elementId = PairingUtils.MapStringToGroup(pairing, id, PairingUtils.PairingGroupType.Zr).getImmutable();
 
         Element s = pairing.getZr().newRandomElement().getImmutable();
         Element sessionKey = publicKeyParameters.getEggAlpha().powZn(s).getImmutable();

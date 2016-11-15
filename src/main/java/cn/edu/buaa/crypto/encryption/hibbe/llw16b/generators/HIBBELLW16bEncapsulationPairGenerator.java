@@ -52,8 +52,8 @@ public class HIBBELLW16bEncapsulationPairGenerator  implements PairingEncapsulat
             HIBBELLW16bPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = this.params.getIds();
-            Element[] elementIds = PairingUtils.MapToZr(pairing, ids);
-            Element elementVk = PairingUtils.MapToZr(pairing, byteArraySignPublicKey);
+            Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
+            Element elementVk = PairingUtils.MapByteArrayToGroup(pairing, byteArraySignPublicKey, PairingUtils.PairingGroupType.Zr);
 
             Element beta = pairing.getZr().newRandomElement().getImmutable();
             Element sessionKey = pairing.pairing(publicKeyParameters.getG1(), publicKeyParameters.getG2()).powZn(beta).getImmutable();

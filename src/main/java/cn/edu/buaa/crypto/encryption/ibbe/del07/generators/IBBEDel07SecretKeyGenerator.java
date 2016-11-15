@@ -29,7 +29,7 @@ public class IBBEDel07SecretKeyGenerator implements AsymmetricKeySerParametersGe
         IBBEDel07PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element elementId = PairingUtils.MapToZr(pairing, parameters.getId());
+        Element elementId = PairingUtils.MapStringToGroup(pairing, parameters.getId(), PairingUtils.PairingGroupType.Zr);
 
         Element secretKey = masterSecretKeyParameters.getG().powZn(masterSecretKeyParameters.getGamma().add(elementId).invert()).getImmutable();
 

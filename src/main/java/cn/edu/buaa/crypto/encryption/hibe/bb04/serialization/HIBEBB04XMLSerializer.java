@@ -221,7 +221,8 @@ public class HIBEBB04XMLSerializer implements PairingParameterXMLSerializer {
                 ids = SerializationUtils.GetStringArray(node, TAG_SK_IDI);
             }
         }
-        return new HIBEBB04SecretKeySerParameter(pairingParameters, ids, PairingUtils.MapToZr(pairing, ids), d0, ds);
+        return new HIBEBB04SecretKeySerParameter(pairingParameters, ids,
+                PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr), d0, ds);
     }
 
     private CipherParameters ciphertextParametersDeserialization(PairingParameters pairingParameters, Element schemeElement) {

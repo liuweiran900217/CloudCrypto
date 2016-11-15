@@ -17,7 +17,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Lewko-Sahai-Waters revocation encryption session key decapsulation generator.
  */
-public class RELSW10ADecapsulationGenerator implements PairingDecapsulationGenerator {
+public class RELSW10aDecapsulationGenerator implements PairingDecapsulationGenerator {
     private RELSW10aDecapsulationParameter params;
 
     public void init(CipherParameters params) {
@@ -29,7 +29,7 @@ public class RELSW10ADecapsulationGenerator implements PairingDecapsulationGener
         RELSW10aSecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
         RELSW10aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIds = PairingUtils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
 
         for (Element elementId : elementIds) {
             if (PairingUtils.isEqualElement(secretKeyParameters.getElementId(), elementId)) {

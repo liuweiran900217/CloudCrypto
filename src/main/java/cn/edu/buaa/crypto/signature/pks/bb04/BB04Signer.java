@@ -42,7 +42,7 @@ public class BB04Signer implements PairingSigner {
         Element g1 = secretKeyParameters.getPublicKeyParameters().getG1();
 
         Element r = pairing.getZr().newRandomElement().getImmutable();
-        Element m = PairingUtils.MapToZr(pairing, message);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.Zr);
         Element sigma = g1.powZn(y.mulZn(r).add(m).add(x).invert()).getImmutable();
 
         return new Element[]{sigma, r};
@@ -52,7 +52,7 @@ public class BB04Signer implements PairingSigner {
         PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
         BB04SignPublicKeySerParameter publicKeyParameters = (BB04SignPublicKeySerParameter)this.pairingKeySerParameter;
-        Element m = PairingUtils.MapToZr(pairing, message);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.Zr);
         Element g1 = publicKeyParameters.getG1();
         Element g2 = publicKeyParameters.getG2();
         Element u = publicKeyParameters.getU();

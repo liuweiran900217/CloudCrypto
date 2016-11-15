@@ -47,7 +47,7 @@ public class IBBEDel07DecapsulationGenerator implements PairingDecapsulationGene
         Element[] elementsIdsWithoutTarget = new Element[this.params.getNumberOfBroadcastReceiver() - 1];
         for (int i = 0, j = 0; i < params.getNumberOfBroadcastReceiver(); i++) {
             if (i != index) {
-                elementsIdsWithoutTarget[j] = PairingUtils.MapToZr(pairing, this.params.getIdsAt(i)).getImmutable();
+                elementsIdsWithoutTarget[j] = PairingUtils.MapStringToGroup(pairing, this.params.getIdsAt(i), PairingUtils.PairingGroupType.Zr).getImmutable();
                 j++;
             }
         }

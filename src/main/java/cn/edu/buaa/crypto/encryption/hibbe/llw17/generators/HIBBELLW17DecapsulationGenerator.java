@@ -33,7 +33,7 @@ public class HIBBELLW17DecapsulationGenerator implements PairingDecapsulationGen
         HIBBELLW17CipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIdsCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
 
         for (int i=0; i<publicKeyParameters.getMaxUser(); i++){
             if (secretKeyParameters.getIdAt(i) != null &&
@@ -52,7 +52,7 @@ public class HIBBELLW17DecapsulationGenerator implements PairingDecapsulationGen
         digest.update(byteArrayC0, 0, byteArrayC0.length);
         byte[] byteArrayIDv = new byte[digest.getDigestSize()];
         digest.doFinal(byteArrayIDv, 0);
-        Element elementIDv = PairingUtils.MapToZr(pairing, byteArrayIDv).getImmutable();
+        Element elementIDv = PairingUtils.MapByteArrayToGroup(pairing, byteArrayIDv, PairingUtils.PairingGroupType.Zr).getImmutable();
         Element Z3_r = pairing.getZr().newRandomElement().getImmutable();
         Element Z3 = publicKeyParameters.getX3().powZn(Z3_r).getImmutable();
         Element Z3Prime_r = pairing.getZr().newRandomElement().getImmutable();

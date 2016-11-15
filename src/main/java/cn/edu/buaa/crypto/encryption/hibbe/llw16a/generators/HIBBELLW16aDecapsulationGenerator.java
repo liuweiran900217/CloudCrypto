@@ -30,7 +30,7 @@ public class HIBBELLW16aDecapsulationGenerator implements PairingDecapsulationGe
         HIBBELLW16aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIdsCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
 
         for (int i=0; i<publicKeyParameters.getMaxUser(); i++){
             if (secretKeyParameters.getIdAt(i) != null &&

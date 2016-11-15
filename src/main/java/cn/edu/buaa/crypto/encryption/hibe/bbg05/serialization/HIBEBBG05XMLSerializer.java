@@ -20,6 +20,8 @@ import java.security.InvalidParameterException;
 
 /**
  * Created by Weiran Liu on 15/11/14.
+ *
+ *
  */
 public class HIBEBBG05XMLSerializer implements PairingParameterXMLSerializer {
     private static final String TAG_SCHEME_NAME = HIBEBBG05Engine.SCHEME_NAME;
@@ -235,7 +237,7 @@ public class HIBEBBG05XMLSerializer implements PairingParameterXMLSerializer {
                 ids = SerializationUtils.GetStringArray(node, TAG_SK_IDI);
             }
         }
-        elementIds = PairingUtils.MapToZr(pairing, ids);
+        elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
         return new HIBEBBG05SecretKeySerParameter(pairingParameters, ids, elementIds, a0, a1, bs);
     }
 

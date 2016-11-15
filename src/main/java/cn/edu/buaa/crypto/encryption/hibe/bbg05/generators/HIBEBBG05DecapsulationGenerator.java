@@ -33,7 +33,7 @@ public class HIBEBBG05DecapsulationGenerator implements PairingDecapsulationGene
         int ciphertextLength = ciphertextParameters.getLength();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIdsCT = PairingUtils.MapToZr(pairing, this.params.getIds());
+        Element[] elementIdsCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
 
         if (ciphertextLength < secretKeyLength) {
             throw new InvalidCipherTextException("Secret Key length is longer than Ciphertext length");

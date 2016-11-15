@@ -29,7 +29,7 @@ public class CPABERW13SecretKeyGenerator {
         int length = params.getLength();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementAttributes = PairingUtils.MapToZr(pairing, params.getAttributes());
+        Element[] elementAttributes = PairingUtils.MapStringArrayToGroup(pairing, params.getAttributes(), PairingUtils.PairingGroupType.Zr);
         Element r = pairing.getZr().newRandomElement().getImmutable();
         Element[] rs = new Element[length];
         for (int i = 0; i < rs.length; i++) {

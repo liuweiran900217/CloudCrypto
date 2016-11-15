@@ -28,8 +28,8 @@ public class RBACLLW15DecapsulationMGenerator implements PairingDecapsulationGen
         RBACLLW15EncapsulationSerParameter ciphertextParameters = this.params.getCiphertextParameters();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementRolesCT = PairingUtils.MapToZr(pairing, this.params.getRoles());
-        Element elementIdCT = PairingUtils.MapToZr(pairing, this.params.getId());
+        Element[] elementRolesCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getRoles(), PairingUtils.PairingGroupType.Zr);
+        Element elementIdCT = PairingUtils.MapStringToGroup(pairing, this.params.getId(), PairingUtils.PairingGroupType.Zr);
 
         //Check time
         if (!secretKeyParameters.getTime().equals(this.params.getTime())) {
@@ -55,7 +55,7 @@ public class RBACLLW15DecapsulationMGenerator implements PairingDecapsulationGen
             }
         }
         a0 = a0.mul(secretKeyParameters.getA2().powZn(elementIdCT)).getImmutable();
-        a0 = a0.mul(secretKeyParameters.getBv().powZn(PairingUtils.MapToZr(pairing, C0.toBytes()))).getImmutable();
+        a0 = a0.mul(secretKeyParameters.getBv().powZn(PairingUtils.MapByteArrayToGroup(pairing, C0.toBytes(), PairingUtils.PairingGroupType.Zr))).getImmutable();
 
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();

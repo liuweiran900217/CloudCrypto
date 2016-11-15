@@ -31,7 +31,7 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             assert(length <= publicKeyParameters.getMaxLength());
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementIds = PairingUtils.MapToZr(pairing, parameters.getIds());
+            Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, parameters.getIds(), PairingUtils.PairingGroupType.Zr);
             Element[] rs = new Element[length];
             Element[] ds = new Element[length];
             Element d0 = pairing.getG1().newOneElement();
@@ -57,7 +57,7 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             Element[] elementIds = new Element[length];
             Element[] ds = new Element[length];
 
-            Element elementDelegateId = PairingUtils.MapToZr(pairing, parameters.getDelegateId()).getImmutable();
+            Element elementDelegateId = PairingUtils.MapStringToGroup(pairing, parameters.getDelegateId(), PairingUtils.PairingGroupType.Zr).getImmutable();
             Element r_j = pairing.getZr().newRandomElement().getImmutable();
             Element d_j = publicKeyParameters.getG().powZn(r_j).getImmutable();
             Element d0 = secretKeyParameters.getD0();
