@@ -1,8 +1,10 @@
 package cn.edu.buaa.crypto.encryption.hibe;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -14,12 +16,11 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 public interface HIBEEngine {
     /**
      * Setup Algorithm for HIBE
-     * @param rBitLength Zr Bit Length, ignore if the scheme is based on composite-order bilinear groups
-     * @param qBitLength q Bit Length
+     * @param pairingParameters Pairing Parameters
      * @param maxDepth maximal depth of hierarchy, ignore if the scheme is unbounded
      * @return public key / master secret key pair of the scheme
      */
-    AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength, int maxDepth);
+    AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxDepth);
 
     /**
      * Secret Key Generation Algorithm for HIBE
@@ -28,7 +29,7 @@ public interface HIBEEngine {
      * @param ids associated identity vector
      * @return secret key associated with the identity vector ids
      */
-    CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String... ids);
+    AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String... ids);
 
     /**
      * Secret Key Delegation Algorithm for HIBE
@@ -37,7 +38,7 @@ public interface HIBEEngine {
      * @param id delegated identity
      * @return secret key associated with the identity vector (ids, id)
      */
-    CipherParameters delegate(CipherParameters publicKey, CipherParameters secretKey, String id);
+    AsymmetricKeySerParameter delegate(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String id);
 
     /**
      * Key Encapsulation Algorithm for HIBE
@@ -45,7 +46,7 @@ public interface HIBEEngine {
      * @param ids an identity vector
      * @return session key / ciphertext pair associated with the identity vector ids
      */
-    PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String... ids);
+    PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids);
 
     /**
      * Key Decapsulation Algorithm for HIBE
@@ -57,9 +58,9 @@ public interface HIBEEngine {
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
     byte[] decapsulation (
-            CipherParameters publicKey,
-            CipherParameters secretKey,
+            AsymmetricKeySerParameter publicKey,
+            AsymmetricKeySerParameter secretKey,
             String[] ids,
-            CipherParameters ciphertext
+            PairingCipherSerParameter ciphertext
     ) throws InvalidCipherTextException;
 }

@@ -2,9 +2,9 @@ package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CipherSerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05CiphertextGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams.HIBEBBG05CiphertextGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -17,10 +17,10 @@ import org.bouncycastle.crypto.CipherParameters;
  * Ciphertext Encapsulation generator for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05EncapsulationPairGenerator implements PairingEncapsulationPairGenerator {
-    private HIBEBBG05CiphertextGenerationParameters params;
+    private HIBEBBG05CiphertextGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBEBBG05CiphertextGenerationParameters)params;
+        this.params = (HIBEBBG05CiphertextGenerationParameter)params;
     }
 
     public PairingKeyEncapsulationSerPair generateEncryptionPair() {

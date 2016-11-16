@@ -1,5 +1,6 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bb04.genparams;
 
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**
@@ -7,14 +8,14 @@ import org.bouncycastle.crypto.CipherParameters;
  *
  * Ciphertext generation parameters for Boneh-Boyen HIBE scheme.
  */
-public class HIBEBB04CiphertextGenerationParameters implements CipherParameters {
+public class HIBEBB04CiphertextGenerationParameter implements CipherParameters {
     private HIBEBB04PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
-    public HIBEBB04CiphertextGenerationParameters(
+    public HIBEBB04CiphertextGenerationParameter(
             CipherParameters publicKeyParameters, String[] ids) {
         this.publicKeyParameters = (HIBEBB04PublicKeySerParameter)publicKeyParameters;
-        assert(ids.length <= this.publicKeyParameters.getMaxLength());
+        assert(ids.length <= this.publicKeyParameters.getMaxDepth());
         this.ids = ids;
     }
 

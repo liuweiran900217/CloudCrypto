@@ -1,6 +1,8 @@
-package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams;
 
 import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -9,20 +11,19 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Secret Key Generation parameters for Boneh-Boyen-Goh HIBBE.
  */
-public class HIBEBBG05SecretKeyGenerationParameters extends KeyGenerationParameters {
+public class HIBEBBG05SecretKeyGenerationParameter extends KeyGenerationParameters {
     private HIBEBBG05MasterSecretKeySerParameter masterSecretKeyParameters;
     private HIBEBBG05PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
-    public HIBEBBG05SecretKeyGenerationParameters(
+    public HIBEBBG05SecretKeyGenerationParameter(
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] ids) {
         super(null, PairingParametersGenerationParameter.STENGTH);
         this.masterSecretKeyParameters = (HIBEBBG05MasterSecretKeySerParameter)masterSecretKeyParameters;
         this.publicKeyParameters = (HIBEBBG05PublicKeySerParameter)publicKeyParameters;
-        this.ids = new String[ids.length];
-        System.arraycopy(ids, 0, this.ids, 0, this.ids.length);
+        this.ids = ids;
     }
 
     public HIBEBBG05MasterSecretKeySerParameter getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }

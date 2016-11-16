@@ -2,9 +2,10 @@ package com.example.encryption.hibe.bb04;
 
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.serialization.HIBEBB04XMLSerializer;
-import cn.edu.buaa.crypto.algebra.PairingParameterXMLSerializer;
+import com.example.TestUtils;
 import com.example.encryption.hibe.HIBEEngineTest;
+import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
@@ -14,9 +15,9 @@ import com.example.encryption.hibe.HIBEEngineTest;
 public class HIBEBB04EngineTest {
     public static void main(String[] args) {
         HIBEEngine engine = HIBEBB04Engine.getInstance();
-        PairingParameterXMLSerializer schemeXMLSerializer = HIBEBB04XMLSerializer.getInstance();
+        HIBEEngineTest engineTest = new HIBEEngineTest(engine);
 
-        HIBEEngineTest engineTest = new HIBEEngineTest(engine, schemeXMLSerializer);
-        engineTest.processTest(160, 512, 10);
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
+        engineTest.processTest(pairingParameters, 8);
     }
 }

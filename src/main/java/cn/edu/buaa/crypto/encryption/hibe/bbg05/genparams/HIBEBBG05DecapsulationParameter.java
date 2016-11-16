@@ -1,22 +1,23 @@
-package cn.edu.buaa.crypto.encryption.hibe.bbg05.params;
+package cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams;
 
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05SecretKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
  *
  * Key Decapsulation parameters for Boneh-Boyen-Goh HIBE.
  */
-public class HIBEBBG05DecapsulationParameters implements CipherParameters {
+public class HIBEBBG05DecapsulationParameter implements CipherParameters {
     private HIBEBBG05PublicKeySerParameter publicKeyParameters;
     private HIBEBBG05SecretKeySerParameter secretKeyParameters;
     private String[] ids;
     private HIBEBBG05CipherSerParameter ciphertextParameters;
 
-    public HIBEBBG05DecapsulationParameters(
+    public HIBEBBG05DecapsulationParameter(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String[] ids,

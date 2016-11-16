@@ -1,12 +1,15 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.*;
-import it.unisa.dia.gas.crypto.cipher.CipherParametersGenerator;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.genparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -14,21 +17,21 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Secret key generator for Boneh-Boyen HIBE scheme.
  */
-public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
+public class HIBEBB04SecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public CipherParameters generateKey() {
-        if (params instanceof HIBEBB04SecretKeyGenerationParameters) {
-            HIBEBB04SecretKeyGenerationParameters parameters = (HIBEBB04SecretKeyGenerationParameters)params;
+    public AsymmetricKeySerParameter generateKey() {
+        if (params instanceof HIBEBB04SecretKeyGenerationParameter) {
+            HIBEBB04SecretKeyGenerationParameter parameters = (HIBEBB04SecretKeyGenerationParameter)params;
 
             HIBEBB04MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
             HIBEBB04PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
             int length = parameters.getLength();
-            assert(length <= publicKeyParameters.getMaxLength());
+            assert(length <= publicKeyParameters.getMaxDepth());
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, parameters.getIds(), PairingUtils.PairingGroupType.Zr);
@@ -37,20 +40,20 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             Element d0 = pairing.getG1().newOneElement();
             d0 = d0.mul(masterSecretKeyParameters.getG2Alpha());
 
-            for (int i=0; i<rs.length; i++){
+            for (int i = 0; i < rs.length; i++){
                 rs[i] = pairing.getZr().newRandomElement().getImmutable();
                 ds[i] = publicKeyParameters.getG().powZn(rs[i]).getImmutable();
                 d0 = d0.mul(publicKeyParameters.getG1().powZn(elementIds[i]).mul(publicKeyParameters.getHsAt(i)).powZn(rs[i])).getImmutable();
             }
 
             return new HIBEBB04SecretKeySerParameter(publicKeyParameters.getParameters(), parameters.getIds(), elementIds, d0, ds);
-        } else if (params instanceof HIBEBB04DelegateGenerationParameters)  {
-            HIBEBB04DelegateGenerationParameters parameters = (HIBEBB04DelegateGenerationParameters)params;
+        } else if (params instanceof HIBEBB04DelegateGenerationParameter)  {
+            HIBEBB04DelegateGenerationParameter parameters = (HIBEBB04DelegateGenerationParameter)params;
 
             HIBEBB04PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
             HIBEBB04SecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
             int length = secretKeyParameters.getLength() + 1;
-            assert(length <= publicKeyParameters.getMaxLength());
+            assert(length <= publicKeyParameters.getMaxDepth());
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = new String[length];
@@ -62,7 +65,7 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             Element d_j = publicKeyParameters.getG().powZn(r_j).getImmutable();
             Element d0 = secretKeyParameters.getD0();
             d0 = d0.mul(publicKeyParameters.getG1().powZn(elementDelegateId).mul(publicKeyParameters.getHsAt(length - 1)).powZn(r_j)).getImmutable();
-            for (int i=0; i<length - 1; i++) {
+            for (int i = 0; i < length - 1; i++) {
                 ids[i] = secretKeyParameters.getIdAt(i);
                 elementIds[i] = secretKeyParameters.getElementIdAt(i);
                 ds[i] = secretKeyParameters.getDsAt(i);
@@ -76,8 +79,8 @@ public class HIBEBB04SecretKeyGenerator implements CipherParametersGenerator {
             throw new IllegalArgumentException
                     ("Invalid KeyGenerationParameters for HIBEBB04Engine Secret Key Generatation, find "
                             + params.getClass().getName() + ", require "
-                            + HIBEBB04SecretKeyGenerationParameters.class.getName() + " or "
-                            + HIBEBB04DelegateGenerationParameters.class.getName());
+                            + HIBEBB04SecretKeyGenerationParameter.class.getName() + " or "
+                            + HIBEBB04DelegateGenerationParameter.class.getName());
         }
     }
 }

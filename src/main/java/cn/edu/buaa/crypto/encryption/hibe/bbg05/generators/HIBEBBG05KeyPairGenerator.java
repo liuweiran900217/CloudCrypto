@@ -1,15 +1,13 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
-import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05KeyPairGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05MasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.HIBEBBG05PublicKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams.HIBEBBG05KeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -17,16 +15,15 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Public Key / Master Secret Key pair generator for Boneh-Boyen-Goh HIBE.
  */
-public class HIBEBBG05KeyPairGenerator implements AsymmetricCipherKeyPairGenerator {
-    private HIBEBBG05KeyPairGenerationParameters parameters;
+public class HIBEBBG05KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+    private HIBEBBG05KeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (HIBEBBG05KeyPairGenerationParameters)keyGenerationParameters;
+        this.parameters = (HIBEBBG05KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricCipherKeyPair generateKeyPair() {
-        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(this.parameters.getRBitLength(), this.parameters.getQBitLength());
-        Pairing pairing = PairingFactory.getPairing(parameters);
+    public AsymmetricKeySerPair generateKeyPair() {
+        Pairing pairing = PairingFactory.getPairing(this.parameters.getPairingParameters());
 
         Element g = pairing.getG1().newRandomElement().getImmutable();
         Element alpha = pairing.getZr().newRandomElement().getImmutable();
@@ -40,8 +37,8 @@ public class HIBEBBG05KeyPairGenerator implements AsymmetricCipherKeyPairGenerat
             hs[i] = pairing.getG1().newRandomElement().getImmutable();
         }
 
-        return new AsymmetricCipherKeyPair(
-                new HIBEBBG05PublicKeySerParameter(parameters, g, g1, g2, g3, hs),
-                new HIBEBBG05MasterSecretKeySerParameter(parameters, g2Alpha));
+        return new AsymmetricKeySerPair(
+                new HIBEBBG05PublicKeySerParameter(this.parameters.getPairingParameters(), g, g1, g2, g3, hs),
+                new HIBEBBG05MasterSecretKeySerParameter(this.parameters.getPairingParameters(), g2Alpha));
     }
 }

@@ -1,12 +1,16 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05SecretKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.params.*;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
@@ -14,16 +18,16 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Secret Key Generators for Boneh-Boyen-Goh HIBE.
  */
-public class HIBEBBG05SecretKeyGenerator {
+public class HIBEBBG05SecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public CipherParameters generateKey() {
-        if (params instanceof HIBEBBG05SecretKeyGenerationParameters) {
-            HIBEBBG05SecretKeyGenerationParameters parameters = (HIBEBBG05SecretKeyGenerationParameters)params;
+    public AsymmetricKeySerParameter generateKey() {
+        if (params instanceof HIBEBBG05SecretKeyGenerationParameter) {
+            HIBEBBG05SecretKeyGenerationParameter parameters = (HIBEBBG05SecretKeyGenerationParameter)params;
 
             HIBEBBG05PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
             HIBEBBG05MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
@@ -53,8 +57,8 @@ public class HIBEBBG05SecretKeyGenerator {
 
             return new HIBEBBG05SecretKeySerParameter(publicKeyParameters.getParameters(),
                     parameters.getIds(), elementIds, a0, a1, hs);
-        } else if (params instanceof HIBEBBG05DelegateGenerationParameters)  {
-            HIBEBBG05DelegateGenerationParameters parameters = (HIBEBBG05DelegateGenerationParameters)params;
+        } else if (params instanceof HIBEBBG05DelegateGenerationParameter)  {
+            HIBEBBG05DelegateGenerationParameter parameters = (HIBEBBG05DelegateGenerationParameter)params;
 
             HIBEBBG05PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
             HIBEBBG05SecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
@@ -103,8 +107,8 @@ public class HIBEBBG05SecretKeyGenerator {
                     ("Invalid KeyGenerationParameters for " + HIBEBBG05Engine.SCHEME_NAME
                             + " Secret Key Generatation, find "
                             + params.getClass().getName() + ", require "
-                            + HIBEBBG05SecretKeyGenerationParameters.class.getName() + " or "
-                            + HIBEBBG05DelegateGenerationParameters.class.getName());
+                            + HIBEBBG05SecretKeyGenerationParameter.class.getName() + " or "
+                            + HIBEBBG05DelegateGenerationParameter.class.getName());
         }
     }
 }

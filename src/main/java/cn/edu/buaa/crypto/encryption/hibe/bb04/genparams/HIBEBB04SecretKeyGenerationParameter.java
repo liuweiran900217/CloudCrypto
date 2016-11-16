@@ -1,6 +1,8 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bb04.genparams;
 
 import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04MasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
@@ -9,13 +11,13 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Secret key generation parameters for Boneh-Boyen HIBE scheme.
  */
-public class HIBEBB04SecretKeyGenerationParameters extends KeyGenerationParameters {
+public class HIBEBB04SecretKeyGenerationParameter extends KeyGenerationParameters {
 
     private HIBEBB04MasterSecretKeySerParameter masterSecretKeyParameters;
     private HIBEBB04PublicKeySerParameter publicKeyParameters;
     private String[] ids;
 
-    public HIBEBB04SecretKeyGenerationParameters(
+    public HIBEBB04SecretKeyGenerationParameter(
             CipherParameters publicKeyParameters,
             CipherParameters masterSecretKeyParameters,
             String[] ids) {

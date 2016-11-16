@@ -1,9 +1,11 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bb04.serparams;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
+import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
 import java.util.Arrays;
@@ -16,21 +18,27 @@ import java.util.Arrays;
 public class HIBEBB04SecretKeySerParameter extends PairingKeySerParameter {
 
     private final String[] ids;
-    private final Element[] elementIds;
+    private transient Element[] elementIds;
+    private final byte[][] byteArraysElementIds;
 
-    private final Element d0;
-    private final Element[] ds;
+    private transient Element d0;
+    private final byte[] byteArrayD0;
 
+    private transient Element[] ds;
+    private final byte[][] byteArraysDs;
 
     public HIBEBB04SecretKeySerParameter(PairingParameters pairingParameters, String[] ids, Element[] elementIds, Element d0, Element[] ds) {
         super(true, pairingParameters);
 
         this.d0 = d0.getImmutable();
-        this.ds = ElementUtils.cloneImmutable(ds);
-        this.ids = new String[ids.length];
+        this.byteArrayD0 = this.d0.toBytes();
 
-        System.arraycopy(ids, 0, this.ids, 0, this.ids.length);
+        this.ds = ElementUtils.cloneImmutable(ds);
+        this.byteArraysDs = PairingUtils.GetElementArrayBytes(this.ds);
+
+        this.ids = ids;
         this.elementIds = ElementUtils.cloneImmutable(elementIds);
+        this.byteArraysElementIds = PairingUtils.GetElementArrayBytes(this.elementIds);
     }
 
     public int getLength() { return this.ids.length; }
@@ -68,17 +76,35 @@ public class HIBEBB04SecretKeySerParameter extends PairingKeySerParameter {
             if (!PairingUtils.isEqualElementArray(this.elementIds, that.getElementIds())) {
                 return false;
             }
+            if (!PairingUtils.isEqualByteArrays(this.byteArraysElementIds, that.byteArraysElementIds)) {
+                return false;
+            }
             //Compare d0
             if (!PairingUtils.isEqualElement(this.d0, that.getD0())) {
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayD0, that.byteArrayD0)) {
                 return false;
             }
             //Compare ds
             if (!PairingUtils.isEqualElementArray(this.ds, that.getDs())) {
                 return false;
             }
+            if (!PairingUtils.isEqualByteArrays(this.byteArraysDs, that.byteArraysDs)) {
+                return false;
+            }
             //Compare Pairing Parameters
             return this.getParameters().toString().equals(that.getParameters().toString());
         }
         return false;
+    }
+
+    private void readObject(java.io.ObjectInputStream objectInputStream)
+            throws java.io.IOException, ClassNotFoundException {
+        objectInputStream.defaultReadObject();
+        Pairing pairing = PairingFactory.getPairing(this.getParameters());
+        this.d0 = pairing.getG1().newElementFromBytes(this.byteArrayD0);
+        this.elementIds = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysElementIds, PairingUtils.PairingGroupType.Zr);
+        this.ds = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysDs, PairingUtils.PairingGroupType.G1);
     }
 }

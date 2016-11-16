@@ -16,7 +16,7 @@ public class HIBBELLW16aEngineTest {
     public static void main(String[] args) {
         HIBBEEngine engine = HIBBELLW16aEngine.getInstance();
         HIBBEEngineTest engineTest = new HIBBEEngineTest(engine);
-        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128);
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
         engineTest.processTest(pairingParameters);
     }
 }

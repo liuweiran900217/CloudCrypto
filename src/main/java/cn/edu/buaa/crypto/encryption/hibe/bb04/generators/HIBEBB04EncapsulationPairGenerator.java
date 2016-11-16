@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CipherSerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04CiphertextGenerationParameters;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.params.HIBEBB04PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.genparams.HIBEBB04CiphertextGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import it.unisa.dia.gas.jpbc.Element;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.CipherParameters;
  */
 public class HIBEBB04EncapsulationPairGenerator implements PairingEncapsulationPairGenerator {
 
-    private HIBEBB04CiphertextGenerationParameters params;
+    private HIBEBB04CiphertextGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBEBB04CiphertextGenerationParameters)params;
+        this.params = (HIBEBB04CiphertextGenerationParameter)params;
     }
 
     public PairingKeyEncapsulationSerPair generateEncryptionPair() {
@@ -36,7 +36,7 @@ public class HIBEBB04EncapsulationPairGenerator implements PairingEncapsulationP
 
         Element B = publicKeyParameters.getG().powZn(s).getImmutable();
         Element[] Cs = new Element[ids.length];
-        for (int i=0; i<Cs.length; i++){
+        for (int i = 0; i < Cs.length; i++){
             Cs[i] = publicKeyParameters.getG1().powZn(elementIds[i]).mul(publicKeyParameters.getHsAt(i)).powZn(s).getImmutable();
         }
         return new PairingKeyEncapsulationSerPair(

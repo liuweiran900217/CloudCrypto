@@ -1,22 +1,23 @@
-package cn.edu.buaa.crypto.encryption.hibe.bb04.params;
+package cn.edu.buaa.crypto.encryption.hibe.bb04.genparams;
 
 import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
-
-import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 15-10-1.
  *
  * Delegation parameters for Boneh-Boyen HIBE scheme.
  */
-public class HIBEBB04DecapsulationParameters implements CipherParameters {
+public class HIBEBB04DecapsulationParameter implements CipherParameters {
     private HIBEBB04PublicKeySerParameter publicKeyParameters;
     private HIBEBB04SecretKeySerParameter secretKeyParameters;
     private String[] ids;
     private HIBEBB04CipherSerParameter ciphertextParameters;
 
-    public HIBEBB04DecapsulationParameters(
+    public HIBEBB04DecapsulationParameter(
             CipherParameters publicKeyParameters,
             CipherParameters secretKeyParameters,
             String[] ids,
