@@ -13,6 +13,7 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,7 +34,7 @@ public class KPABEGPSW06aSecretKeyGenerator implements AsymmetricKeySerParameter
 
         int[][] accessPolicy = this.parameters.getAccessPolicy();
         String[] stringRhos = this.parameters.getRhos();
-        Element[] Ds = new Element[publicKeyParameters.getMaxAttributesNum()];
+        Map<String, Element> Ds = new HashMap<String, Element>();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         try {
@@ -41,14 +42,15 @@ public class KPABEGPSW06aSecretKeyGenerator implements AsymmetricKeySerParameter
             AccessControlParameter accessControlParameter =
                     this.parameters.getAccessControlEngine().generateAccessControl(accessPolicy, stringRhos);
             Map<String, Element> lambdaElementsMap = this.parameters.getAccessControlEngine().secretSharing(pairing, y, accessControlParameter);
-            for (String rho : stringRhos) {
+            for (String rho : lambdaElementsMap.keySet()) {
                 int index = Integer.parseInt(rho);
                 if (index >= publicKeyParameters.getMaxAttributesNum() || index < 0) {
                     throw new InvalidParameterException("Rho index greater than or equal to the max number of attributes supported");
                 }
-                Ds[index] = publicKeyParameters.getG().powZn(lambdaElementsMap.get(rho).div(masterSecretKeyParameters.getTsAt(index))).getImmutable();
+                Element d = publicKeyParameters.getG().powZn(lambdaElementsMap.get(rho).div(masterSecretKeyParameters.getTsAt(String.valueOf(index)))).getImmutable();
+                Ds.put(String.valueOf(index), d);
             }
-            return new KPABEGPSW06aSecretKeySerParameter(publicKeyParameters.getParameters(), accessControlParameter, stringRhos, Ds);
+            return new KPABEGPSW06aSecretKeySerParameter(publicKeyParameters.getParameters(), accessControlParameter, Ds);
         } catch (NumberFormatException e) {
             throw new InvalidParameterException("Invalid rhos, require rhos represented by integers");
         }

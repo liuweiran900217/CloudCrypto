@@ -7,9 +7,9 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Weiran Liu on 2016/11/17.
@@ -18,27 +18,30 @@ import java.util.Arrays;
  */
 public class KPABEGPSW06aSecretKeySerParameter extends PairingKeySerParameter {
     private final AccessControlParameter accessControlParameter;
-    private final String[] rhos;
 
-    private transient Element[] Ds;
-    private final byte[][] byteArraysDs;
+    private transient Map<String, Element> Ds;
+    private final Map<String, byte[]> byteArraysDs;
 
-    public KPABEGPSW06aSecretKeySerParameter(PairingParameters pairingParameters,
-                                             AccessControlParameter accessControlParameter, String[] rhos, Element[] Ds) {
+    public KPABEGPSW06aSecretKeySerParameter(PairingParameters pairingParameters, AccessControlParameter accessControlParameter,
+                                             Map<String, Element> Ds) {
         super(true, pairingParameters);
 
         this.accessControlParameter = accessControlParameter;
-        this.rhos = rhos;
 
-        this.Ds = ElementUtils.cloneImmutable(Ds);
-        this.byteArraysDs = PairingUtils.GetElementArrayBytes(this.Ds);
+        this.Ds = new HashMap<String, Element>();
+        this.byteArraysDs = new HashMap<String, byte[]>();
+        for (String rho : Ds.keySet()) {
+            Element elementRho = Ds.get(rho).duplicate().getImmutable();
+            this.Ds.put(rho, elementRho);
+            this.byteArraysDs.put(rho, elementRho.toBytes());
+        }
     }
 
     public AccessControlParameter getAccessControlParameter() { return this.accessControlParameter; }
 
-    public String[] getRhos() { return this.rhos; }
+    public String[] getRhos() { return this.Ds.keySet().toArray(new String[1]); }
 
-    public Element[] getDs() { return ElementUtils.cloneImmutable(Ds); }
+    public Element getDsAt(String rho) { return this.Ds.get(rho).duplicate(); }
 
     @Override
     public boolean equals(Object anObject) {
@@ -51,14 +54,12 @@ public class KPABEGPSW06aSecretKeySerParameter extends PairingKeySerParameter {
             if (!this.accessControlParameter.equals(that.accessControlParameter)) {
                 return false;
             }
-            if (!Arrays.equals(this.rhos, that.rhos)) {
-                return false;
-            }
             //Compare Ds
-            if (!PairingUtils.isEqualElementArray(this.Ds, that.Ds)) {
+            if (!this.Ds.equals(that.Ds)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrays(this.byteArraysDs, that.byteArraysDs)) {
+            //Compare byteArrayDs
+            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysDs, that.byteArraysDs)) {
                 return false;
             }
             //Compare Pairing Parameters
@@ -71,6 +72,9 @@ public class KPABEGPSW06aSecretKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.Ds = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysDs, PairingUtils.PairingGroupType.G1);
+        this.Ds = new HashMap<String, Element>();
+        for (String rho : this.byteArraysDs.keySet()) {
+            this.Ds.put(rho, pairing.getG1().newElementFromBytes(this.byteArraysDs.get(rho)));
+        }
     }
 }

@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams;
 
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**
@@ -14,8 +15,8 @@ public class KPABEGPSW06aCiphertextGenerationParameter implements CipherParamete
 
     public KPABEGPSW06aCiphertextGenerationParameter(CipherParameters publicKeyParameters, String[] attributes) {
         this.publicKeyParameters = (KPABEGPSW06aPublicKeySerParameter)publicKeyParameters;
+        this.attributes = PairingUtils.removeDuplicates(attributes);
         assert(attributes.length <= this.publicKeyParameters.getMaxAttributesNum());
-        this.attributes = attributes;
     }
 
     public KPABEGPSW06aPublicKeySerParameter getPublicKeyParameters() {

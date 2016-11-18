@@ -34,7 +34,7 @@ public abstract class KPABEEngine implements Engine {
     /**
      * Setup Algorithm for KP-ABE
      * @param pairingParameters Pairing Parameters
-     * @param maxAttributesNum maximal number of attributes supported, left 0 if no such limitation
+     * @param maxAttributesNum maximal number of attributes supported, useless if no such limitation
      * @return public key / master secret key pair of the scheme
      */
     public abstract AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum);

@@ -6,9 +6,10 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Weiran Liu on 2016/11/17.
@@ -22,30 +23,35 @@ public class KPABEGPSW06aPublicKeySerParameter extends PairingKeySerParameter {
     public transient Element g;
     private final byte[] byteArrayG;
 
-    private transient Element[] Ts;
-    private final byte[][] byteArraysTs;
+    private transient Map<String, Element> Ts;
+    private final Map<String, byte[]> byteArraysTs;
 
     private transient Element Y;
     private final byte[] byteArrayY;
 
-    public KPABEGPSW06aPublicKeySerParameter(PairingParameters parameters, Element g, Element[] Ts, Element Y) {
+    public KPABEGPSW06aPublicKeySerParameter(PairingParameters parameters, Element g, Map<String, Element> Ts, Element Y) {
         super(false, parameters);
 
         this.g = g.getImmutable();
         this.byteArrayG = this.g.toBytes();
 
-        this.Ts = ElementUtils.cloneImmutable(Ts);
-        this.byteArraysTs = PairingUtils.GetElementArrayBytes(this.Ts);
+        this.Ts = new HashMap<String, Element>();
+        this.byteArraysTs = new HashMap<String, byte[]>();
+        for (String attribute : Ts.keySet()) {
+            Element T = Ts.get(attribute).duplicate().getImmutable();
+            this.Ts.put(attribute, T);
+            this.byteArraysTs.put(attribute, T.toBytes());
+        }
 
         this.Y = Y.getImmutable();
         this.byteArrayY = this.Y.toBytes();
 
-        this.maxAttributesNum = this.Ts.length;
+        this.maxAttributesNum = this.Ts.keySet().size();
     }
 
     public Element getG() { return this.g.duplicate(); }
 
-    public Element getTsAt(int index) { return this.Ts[index].duplicate(); }
+    public Element getTsAt(String attribute) { return this.Ts.get(attribute).duplicate(); }
 
     public Element getY() { return this.Y.duplicate(); }
 
@@ -70,10 +76,10 @@ public class KPABEGPSW06aPublicKeySerParameter extends PairingKeySerParameter {
                 return false;
             }
             //Compare Ts
-            if (!PairingUtils.isEqualElementArray(this.Ts, that.Ts)) {
+            if (!this.Ts.equals(that.Ts)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrays(this.byteArraysTs, that.byteArraysTs)) {
+            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysTs, that.byteArraysTs)) {
                 return false;
             }
             //Compare Y
@@ -94,7 +100,10 @@ public class KPABEGPSW06aPublicKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.g = pairing.getG1().newElementFromBytes(this.byteArrayG);
-        this.Ts = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysTs, PairingUtils.PairingGroupType.G1);
+        this.Ts = new HashMap<String, Element>();
+        for (String attribute : this.byteArraysTs.keySet()) {
+            this.Ts.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysTs.get(attribute)));
+        }
         this.Y = pairing.getGT().newElementFromBytes(this.byteArrayY);
     }
 }

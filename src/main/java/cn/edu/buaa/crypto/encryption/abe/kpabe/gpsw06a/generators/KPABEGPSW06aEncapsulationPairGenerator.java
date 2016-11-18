@@ -11,13 +11,15 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Weiran Liu on 2016/11/18.
  *
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE session key / ciphertext pair generator.
  */
-public class KPABEGPSW06aEncapsulationPairGenerator  implements PairingEncapsulationPairGenerator {
+public class KPABEGPSW06aEncapsulationPairGenerator implements PairingEncapsulationPairGenerator {
 
     private KPABEGPSW06aCiphertextGenerationParameter params;
 
@@ -38,13 +40,14 @@ public class KPABEGPSW06aEncapsulationPairGenerator  implements PairingEncapsula
             Element s = pairing.getZr().newRandomElement().getImmutable();
             Element sessionKey = publicKeyParameters.getY().powZn(s).getImmutable();
             byte[] byteArraySessionKey = sessionKey.toBytes();
-            Element[] Es = new Element[publicKeyParameters.getMaxAttributesNum()];
+            Map<String, Element> Es = new HashMap<String, Element>();
             for (String attribute : attributes) {
                 int index = Integer.parseInt(attribute);
                 if (index >= publicKeyParameters.getMaxAttributesNum() || index < 0) {
                     throw new InvalidParameterException("Rho index greater than or equal to the max number of attributes supported");
                 }
-                Es[index] = publicKeyParameters.getTsAt(index).powZn(s).getImmutable();
+                Element E = publicKeyParameters.getTsAt(String.valueOf(index)).powZn(s).getImmutable();
+                Es.put(String.valueOf(index), E);
             }
 
             return new PairingKeyEncapsulationSerPair(

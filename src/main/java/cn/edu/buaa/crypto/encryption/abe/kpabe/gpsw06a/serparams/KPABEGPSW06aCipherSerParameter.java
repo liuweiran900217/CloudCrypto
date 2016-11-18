@@ -6,7 +6,9 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Weiran Liu on 2016/11/17.
@@ -14,17 +16,22 @@ import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE ciphertext parameter.
  */
 public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
-    private transient Element[] Es;
-    private final byte[][] byteArraysEs;
+    private transient Map<String, Element> Es;
+    private final Map<String, byte[]> byteArraysEs;
 
-    public KPABEGPSW06aCipherSerParameter(PairingParameters pairingParameters, Element[] Es) {
+    public KPABEGPSW06aCipherSerParameter(PairingParameters pairingParameters, Map<String, Element> Es) {
         super(pairingParameters);
 
-        this.Es = ElementUtils.cloneImmutable(Es);
-        this.byteArraysEs = PairingUtils.GetElementArrayBytes(this.Es);
+        this.Es = new HashMap<String, Element>();
+        this.byteArraysEs = new HashMap<String, byte[]>();
+        for (String attribute : Es.keySet()) {
+            Element E = Es.get(attribute).duplicate().getImmutable();
+            this.Es.put(attribute, E);
+            this.byteArraysEs.put(attribute, E.toBytes());
+        }
     }
 
-    public Element[] getEs() { return ElementUtils.cloneImmutable(Es); }
+    public Element getEsAt(String attribute) { return this.Es.get(attribute).duplicate(); }
 
     @Override
     public boolean equals(Object anObject) {
@@ -34,10 +41,10 @@ public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
         if (anObject instanceof KPABEGPSW06aCipherSerParameter) {
             KPABEGPSW06aCipherSerParameter that = (KPABEGPSW06aCipherSerParameter)anObject;
             //Compare Es
-            if (!PairingUtils.isEqualElementArray(this.Es, that.Es)){
+            if (!this.Es.equals(that.Es)){
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrays(this.byteArraysEs, that.byteArraysEs)) {
+            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysEs, that.byteArraysEs)) {
                 return false;
             }
             //Compare Pairing Parameters
@@ -50,6 +57,9 @@ public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.Es = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysEs, PairingUtils.PairingGroupType.G1);
+        this.Es = new HashMap<String, Element>();
+        for (String attribute : this.byteArraysEs.keySet()) {
+            this.Es.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysEs.get(attribute)));
+        }
     }
 }

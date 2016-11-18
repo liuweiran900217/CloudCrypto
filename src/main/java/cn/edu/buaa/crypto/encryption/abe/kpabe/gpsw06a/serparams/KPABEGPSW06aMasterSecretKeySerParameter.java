@@ -6,9 +6,10 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Weiran Liu on 2016/11/17.
@@ -16,22 +17,28 @@ import java.util.Arrays;
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE master secret key parameter.
  */
 public class KPABEGPSW06aMasterSecretKeySerParameter extends PairingKeySerParameter {
-    private transient Element[] ts;
-    private final byte[][] byteArraysTs;
+    private transient Map<String, Element> ts;
+    private final Map<String, byte[]> byteArraysTs;
 
     private transient Element y;
     private final byte[] byteArrayY;
 
-    public KPABEGPSW06aMasterSecretKeySerParameter(PairingParameters pairingParameters, Element[] ts, Element y) {
+    public KPABEGPSW06aMasterSecretKeySerParameter(PairingParameters pairingParameters, Map<String, Element> ts, Element y) {
         super(true, pairingParameters);
-        this.ts = ElementUtils.cloneImmutable(ts);
-        this.byteArraysTs = PairingUtils.GetElementArrayBytes(this.ts);
+
+        this.ts = new HashMap<String, Element>();
+        this.byteArraysTs = new HashMap<String, byte[]>();
+        for (String attribute : ts.keySet()) {
+            Element elementAttribute = ts.get(attribute).duplicate().getImmutable();
+            this.ts.put(attribute, elementAttribute);
+            this.byteArraysTs.put(attribute, elementAttribute.toBytes());
+        }
 
         this.y = y.getImmutable();
         this.byteArrayY = this.y.toBytes();
     }
 
-    public Element getTsAt(int index) { return this.ts[index].duplicate(); }
+    public Element getTsAt(String attribute) { return this.ts.get(attribute).duplicate(); }
 
     public Element getY() { return this.y.duplicate(); }
 
@@ -43,10 +50,10 @@ public class KPABEGPSW06aMasterSecretKeySerParameter extends PairingKeySerParame
         if (anObject instanceof KPABEGPSW06aMasterSecretKeySerParameter) {
             KPABEGPSW06aMasterSecretKeySerParameter that = (KPABEGPSW06aMasterSecretKeySerParameter)anObject;
             //compare g
-            if (!(PairingUtils.isEqualElementArray(this.ts, that.ts))) {
+            if (!this.ts.equals(that.ts)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrays(this.byteArraysTs, that.byteArraysTs)) {
+            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysTs, that.byteArraysTs)) {
                 return false;
             }
             //compare y
@@ -66,7 +73,10 @@ public class KPABEGPSW06aMasterSecretKeySerParameter extends PairingKeySerParame
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.ts = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysTs, PairingUtils.PairingGroupType.Zr);
+        this.ts = new HashMap<String, Element>();
+        for (String attribute : this.byteArraysTs.keySet()) {
+            this.ts.put(attribute, pairing.getZr().newElementFromBytes(this.byteArraysTs.get(attribute)));
+        }
         this.y = pairing.getZr().newElementFromBytes(this.byteArrayY);
     }
 }

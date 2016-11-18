@@ -4,11 +4,8 @@ import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import org.bouncycastle.crypto.CipherParameters;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
@@ -28,9 +25,7 @@ public class RELSW10aDecapsulationParameter implements CipherParameters {
         this.publicKeyParameters = (RELSW10aPublicKeySerParameter)publicKeyParameters;
         this.secretKeyParameters = (RELSW10aSecretKeySerParameter)secretKeyParameters;
         //remove repeated ids
-        Set<String> idSet = new HashSet<String>();
-        Collections.addAll(idSet, ids);
-        this.ids = idSet.toArray(new String[1]);
+        this.ids = PairingUtils.removeDuplicates(ids);
 
         this.ciphertextParameters = (RELSW10aCipherSerParameter)ciphertextParameters;
         if (this.ciphertextParameters.getLength() != this.ids.length) {

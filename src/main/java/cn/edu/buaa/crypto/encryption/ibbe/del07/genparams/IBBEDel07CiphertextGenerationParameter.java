@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.genparams;
 
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**
@@ -15,7 +16,7 @@ public class IBBEDel07CiphertextGenerationParameter implements CipherParameters 
     public IBBEDel07CiphertextGenerationParameter(CipherParameters publicKeyParameters, String[] ids) {
         this.publicKeyParameters = (IBBEDel07PublicKeySerParameter)publicKeyParameters;
         assert(ids.length <= this.publicKeyParameters.getMaxBroadcastReceiver());
-        this.ids = ids;
+        this.ids = PairingUtils.removeDuplicates(ids);
     }
 
     public IBBEDel07PublicKeySerParameter getPublicKeyParameters() {

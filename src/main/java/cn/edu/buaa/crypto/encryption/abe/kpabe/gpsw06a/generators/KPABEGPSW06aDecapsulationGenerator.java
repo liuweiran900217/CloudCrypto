@@ -39,22 +39,16 @@ public class KPABEGPSW06aDecapsulationGenerator implements PairingDecapsulationG
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         try {
             Map<String, Element> omegaElementsMap = accessControlEngine.reconstructOmegas(pairing, attributes, accessControlParameter);
-            Element[] lambdas = new Element[publicKeyParameters.getMaxAttributesNum()];
-            Element[] Ds = secretKeyParameters.getDs();
-            Element[] Es = ciphertextParameters.getEs();
-            //test if the user is in the broadcast receiver set
-            for (String attribute : attributes) {
+            Element sessionKey = pairing.getGT().newOneElement().getImmutable();
+            for (String attribute : omegaElementsMap.keySet()) {
                 int index = Integer.parseInt(attribute);
                 if (index >= publicKeyParameters.getMaxAttributesNum() || index < 0) {
                     throw new InvalidParameterException("Rho index greater than or equal to the max number of attributes supported");
                 }
-                lambdas[index] = omegaElementsMap.get(attribute);
-            }
-            Element sessionKey = pairing.getGT().newOneElement().getImmutable();
-            for (int i = 0; i < lambdas.length; i++) {
-                if (lambdas[i] != null) {
-                    sessionKey = sessionKey.mul(pairing.pairing(Ds[i], Es[i]).powZn(lambdas[i])).getImmutable();
-                }
+                Element D = secretKeyParameters.getDsAt(String.valueOf(index));
+                Element E = ciphertextParameters.getEsAt(String.valueOf(index));
+                Element lambda = omegaElementsMap.get(attribute);
+                sessionKey = sessionKey.mul(pairing.pairing(D, E).powZn(lambda)).getImmutable();
             }
             return sessionKey.toBytes();
         } catch (UnsatisfiedAccessControlException e) {

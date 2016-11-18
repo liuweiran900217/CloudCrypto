@@ -3,6 +3,7 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.genparams;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**
@@ -23,7 +24,7 @@ public class IBBEDel07DecapsulationParameter implements CipherParameters {
             CipherParameters ciphertextParameters) {
         this.publicKeyParameters = (IBBEDel07PublicKeySerParameter)publicKeyParameters;
         this.secretKeyParameters = (IBBEDel07SecretKeySerParameter)secretKeyParameters;
-        this.ids = ids;
+        this.ids = PairingUtils.removeDuplicates(ids);
         this.ciphertextParameters = (IBBEDel07CipherSerParameter)ciphertextParameters;
     }
 

@@ -12,7 +12,7 @@ import org.bouncycastle.util.encoders.Hex;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Created by Weiran Liu on 2016/8/24.
@@ -234,6 +234,23 @@ public class PairingUtils {
         return true;
     }
 
+    public static boolean isEqualByteArrayMaps(final Map<String, byte[]> thisMap, final Map<String, byte[]> thatMap) {
+        if (thisMap == thatMap) {
+            return true;
+        }
+        for (String thisString : thisMap.keySet()) {
+            if (!Arrays.equals(thisMap.get(thisString), thatMap.get(thisString))) {
+                return false;
+            }
+        }
+        for (String thatString : thatMap.keySet()) {
+            if (!Arrays.equals(thisMap.get(thatString), thatMap.get(thatString))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static byte[][] GetElementArrayBytes(Element[] elementArray) {
         byte[][] byteArrays = new byte[elementArray.length][];
         for (int i = 0; i < byteArrays.length; i++) {
@@ -267,5 +284,11 @@ public class PairingUtils {
             }
         }
         return elementArray;
+    }
+
+    public static String[] removeDuplicates(String[] orginalArray) {
+        Set<String> stringSet = new HashSet<String>();
+        Collections.addAll(stringSet, orginalArray);
+        return stringSet.toArray(new String[1]);
     }
 }
