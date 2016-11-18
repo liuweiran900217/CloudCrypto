@@ -219,6 +219,21 @@ public class PairingUtils {
         return true;
     }
 
+    public static boolean isEqualIntArrays(final int[][] thisIntArrays, final int[][] thatIntArrays) {
+        if (thisIntArrays == thatIntArrays) {
+            return true;
+        }
+        if (thisIntArrays.length != thatIntArrays.length) {
+            return false;
+        }
+        for (int i=0; i<thisIntArrays.length; i++){
+            if (!(Arrays.equals(thisIntArrays[i], thatIntArrays[i]))){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static byte[][] GetElementArrayBytes(Element[] elementArray) {
         byte[][] byteArrays = new byte[elementArray.length][];
         for (int i = 0; i < byteArrays.length; i++) {

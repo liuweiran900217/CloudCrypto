@@ -22,7 +22,7 @@ import java.util.Map;
  * I rewrite the code to meet my code architecture.
  */
 public class LSSSLW10Engine extends LSSSPolicyEngine {
-    private static final String SCHEME_NAME = "Lewko-Waters LSSS";
+    public static final String SCHEME_NAME = "Lewko-Waters-10 linear secret-sharing scheme";
 
     private static LSSSLW10Engine instance = new LSSSLW10Engine();
 

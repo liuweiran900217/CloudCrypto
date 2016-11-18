@@ -1,10 +1,14 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe;
 
+import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
+import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -14,16 +18,25 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * All KP-ABE scheme should implement this engine.
  */
 public abstract class KPABEEngine {
-    // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    private static final int STENGTH = 12;
+    protected AccessControlEngine accessControlEngine = AccessTreeEngine.getInstance();
+
+    public abstract String getEngineName();
+
+    public void setAccessControlEngine(AccessControlEngine accessControlEngine) {
+        this.accessControlEngine = accessControlEngine;
+    }
+
+    public boolean isAccessControlEngineSupportThresholdGate() {
+        return this.accessControlEngine.isSupportThresholdGate();
+    }
 
     /**
      * Setup Algorithm for KP-ABE
-     * @param rBitLength Zr Bit Length, ignore if the scheme is based on composite-order bilinear groups
-     * @param qBitLength q Bit Length
+     * @param pairingParameters Pairing Parameters
+     * @param maxAttributesNum maximal number of attributes supported, left 0 if no such limitation
      * @return public key / master secret key pair of the scheme
      */
-    public abstract AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength);
+    public abstract AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum);
 
     /**
      * Secret Key Generation Algorithm for KP-ABE
@@ -33,7 +46,7 @@ public abstract class KPABEEngine {
      * @return secret key associated with the access policy
      * @throws PolicySyntaxException if error occurs when parsing the access policy string
      */
-    public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, String accessPolicy) throws PolicySyntaxException {
+    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String accessPolicy) throws PolicySyntaxException {
         int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
         String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
         return keyGen(publicKey, masterKey, accessPolicyIntArrays, rhos);
@@ -47,25 +60,25 @@ public abstract class KPABEEngine {
      * @param rhos associated rhos, given by string array
      * @return secret key associated with the access policy
      */
-    public abstract CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, int[][] accessPolicyIntArrays, String[] rhos);
+    public abstract AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos);
 
     /**
      * Key Encapsulation Algorithm for KP-ABE
      * @param publicKey public key
-     * @param attributeSet associated attribute set
+     * @param attributes associated attribute set
      * @return session key / ciphertext pair associated with the attribute set
      */
-    public abstract PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String[] attributeSet);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String[] attributes);
 
     /**
      * Key Decapsulation Algorithm for KP-ABE
      * @param publicKey public key
      * @param secretKey secret key associated with an access policy
-     * @param attributeSet attribute set associating with the ciphertext
+     * @param attributes attribute set associating with the ciphertext
      * @param ciphertext ciphertext
      * @return the decapsulated session key
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public abstract byte[] decapsulation (CipherParameters publicKey, CipherParameters secretKey,
-                                 String[] attributeSet, CipherParameters ciphertext) throws InvalidCipherTextException;
+    public abstract byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+                                 String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 }

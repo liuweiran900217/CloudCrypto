@@ -18,7 +18,7 @@ import java.util.Map;
  * Conference version: V. Goyal, O. Pandey, A. Sahai, B. Waters. Attribute-based encryption for fine-grained access control of encrypted data. CCS 2006, 89-98.
  */
 public class AccessTreeEngine implements AccessControlEngine {
-    public static String SCHEME_NAME = "General Access Tree Method";
+    public static String SCHEME_NAME = "general access tree";
 
     private static AccessTreeEngine instance = new AccessTreeEngine();
 

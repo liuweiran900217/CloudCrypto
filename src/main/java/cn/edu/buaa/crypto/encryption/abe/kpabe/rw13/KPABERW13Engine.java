@@ -1,9 +1,11 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.rw13;
 
+import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.CipherParameters;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -19,23 +21,29 @@ public class KPABERW13Engine extends KPABEEngine {
 
     }
 
-    @Override
-    public AsymmetricCipherKeyPair setup(int rBitLength, int qBitLength) {
+    public String getEngineName() {
         return null;
     }
 
     @Override
-    public CipherParameters keyGen(CipherParameters publicKey, CipherParameters masterKey, int[][] accessPolicyIntArrays, String[] rhos) {
+    public AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         return null;
     }
 
     @Override
-    public PairingKeyEncapsulationSerPair encapsulation(CipherParameters publicKey, String[] attributeSet) {
+    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                            int[][] accessPolicyIntArrays, String[] rhos) {
         return null;
     }
 
     @Override
-    public byte[] decapsulation(CipherParameters publicKey, CipherParameters secretKey, String[] attributeSet, CipherParameters ciphertext) throws InvalidCipherTextException {
+    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String[] attributeSet) {
+        return null;
+    }
+
+    @Override
+    public byte[] decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+                                String[] attributeSet, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         return new byte[0];
     }
 }
