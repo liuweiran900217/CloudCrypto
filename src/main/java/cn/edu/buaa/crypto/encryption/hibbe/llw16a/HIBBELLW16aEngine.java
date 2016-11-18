@@ -21,7 +21,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class HIBBELLW16aEngine implements HIBBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LLW16aHIBBE";
+    public static final String SCHEME_NAME = "Liu-Liu-Wu-16 CPA-secure prime-order HIBBE";
 
     private static HIBBELLW16aEngine engine;
 
@@ -121,5 +121,9 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
         keyDecapsulationGenerator.init(new HIBBELLW16aDecapsulationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }

@@ -27,7 +27,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class KPABEGPSW06aEngine extends KPABEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "Goyal-Pandey-Sahai-Waters-06 small-universe KP-ABE";
+    private static final String SCHEME_NAME = "Goyal-Pandey-Sahai-Waters-06 small-universe KP-ABE";
 
     private static KPABEGPSW06aEngine engine;
 

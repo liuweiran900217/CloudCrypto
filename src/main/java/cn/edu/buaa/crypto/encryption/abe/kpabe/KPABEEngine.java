@@ -4,6 +4,7 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
+import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
@@ -17,7 +18,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Key-Policy Attribute-Based Encryption Engine.
  * All KP-ABE scheme should implement this engine.
  */
-public abstract class KPABEEngine {
+public abstract class KPABEEngine implements Engine {
     protected AccessControlEngine accessControlEngine = AccessTreeEngine.getInstance();
 
     public abstract String getEngineName();

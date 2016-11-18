@@ -1,11 +1,11 @@
 package cn.edu.buaa.crypto.encryption.hibbe;
 
+import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import it.unisa.dia.gas.jpbc.PairingParameters;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
 /**
@@ -13,7 +13,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Generic HIBE Engine.
  */
-public interface HIBBEEngine {
+public interface HIBBEEngine extends Engine {
 
     /**
      * Setup Algorithm for HIBBE

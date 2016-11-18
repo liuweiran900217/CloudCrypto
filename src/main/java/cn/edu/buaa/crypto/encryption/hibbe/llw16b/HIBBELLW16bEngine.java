@@ -35,13 +35,17 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
  */
 public class HIBBELLW16bEngine implements HIBBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LLW16bHIBBE";
+    public static final String SCHEME_NAME = "Liu-Liu-Wu-16 CCA2-secure prime-order HIBBE";
 
     private static HIBBELLW16bEngine engine;
     private Signer signer = new PairingDigestSigner(new BB08Signer(), new SHA256Digest());
     private AsymmetricKeySerPairGenerator signKeyPairGenerator = new BB08SignKeyPairGenerator();
     private KeyGenerationParameters signKeyPairGenerationParameter =
             new BB08SignKeyPairGenerationParameter(PairingFactory.getPairingParameters(PairingUtils.PATH_a_160_512));
+
+    public String getEngineName() {
+        return SCHEME_NAME;
+    }
 
     public static HIBBELLW16bEngine getInstance() {
         if (engine == null) {

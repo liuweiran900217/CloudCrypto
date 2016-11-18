@@ -19,6 +19,7 @@ import java.io.IOException;
  * Boneh-Boyen 2008 signer.
  */
 public class BB08Signer implements PairingSigner {
+    private static final String SCHEME_NAME = "Boneh-Boyen-08 signature scheme";
     private transient PairingKeySerParameter pairingKeySerParameter;
 
     public BB08Signer() {
@@ -85,5 +86,9 @@ public class BB08Signer implements PairingSigner {
                 pairing.getG1().newElementFromBytes(Hex.decode(((ASN1String) s.getObjectAt(0)).getString())),
                 pairing.getZr().newElementFromBytes(Hex.decode(((ASN1String) s.getObjectAt(1)).getString())),
         };
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }

@@ -14,9 +14,10 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
  */
 public class HIBBELLW16aEngineTest {
     public static void main(String[] args) {
-        HIBBEEngine engine = HIBBELLW16aEngine.getInstance();
+        HIBBELLW16aEngine engine = HIBBELLW16aEngine.getInstance();
         HIBBEEngineTest engineTest = new HIBBEEngineTest(engine);
-        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
-        engineTest.processTest(pairingParameters);
+
+        System.out.println("Test " + engine.getEngineName());
+        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

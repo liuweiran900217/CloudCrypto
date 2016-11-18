@@ -18,16 +18,15 @@ public class KPABEGPSW06aEngineTest {
     public static void main(String[] args) {
         KPABEEngine engine = KPABEGPSW06aEngine.getInstance();
         KPABEEngineTest engineTest = new KPABEEngineTest(engine);
-        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
 
         System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
         engine.setAccessControlEngine(AccessTreeEngine.getInstance());
-        engineTest.processTest(pairingParameters);
+        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
         System.out.println();
 
         System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
         engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
-        engineTest.processTest(pairingParameters);
+        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
         System.out.println();
     }
 }

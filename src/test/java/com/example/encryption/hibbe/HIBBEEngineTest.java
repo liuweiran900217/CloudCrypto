@@ -9,9 +9,10 @@ import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
-import org.bouncycastle.util.encoders.Hex;
+import org.junit.Assert;
 
-import static org.junit.Assert.assertEquals;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by Weiran Liu on 2016/5/16.
@@ -19,221 +20,175 @@ import static org.junit.Assert.assertEquals;
  * HIBBE engine test procedures. All instances should pass this unit test.
  */
 public class HIBBEEngineTest {
+    private static final String[] identityVector4_satisfied    = {null,    null,   null,   "ID_4", null,   null,   null,   null};
+    private static final String[] identityVector46_satisfied   = {null,    null,   null,   "ID_4", null,   "ID_6", null,   null};
+    private static final String[] identityVector467_satisfied  = {null,    null,   null,   "ID_4", null,   "ID_6", "ID_7", null};
+    private static final String[] identityVector45_unsatisfied = {null,    null,   null,   "ID_4", "ID_5", null,   null,   null};
+    private static final String[] identityVector3_unsatisfied  = {"ID_3",  null,   null,   null,   null,   null,   null,   null};
+    private static final String[] identityVector31_unsatisfied = {"ID_3",  null,   "ID_1", null,   null,   null,   null,   null};
+    private static final String[] identityVectorSet13467  = {"ID_1",  null,   "ID_3", "ID_4", null,   "ID_6", "ID_7", null};
+
     private HIBBEEngine engine;
 
     public HIBBEEngineTest(HIBBEEngine engine) {
         this.engine = engine;
     }
 
+    private void test_valid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                          String[] identityVector, String[] identityVectorSet) {
+        try {
+            test_decapsulation(publicKey, masterKey, identityVector, identityVectorSet);
+        } catch (Exception e) {
+            System.out.println("Valid decapsulation test failed, " +
+                    "identity vector = " + Arrays.toString(identityVector) + ", " +
+                    "identity v. set = " + Arrays.toString(identityVectorSet));
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private void test_delegation_valid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                          String[] identityVector, int index, String delegateId, String[] identityVectorSet) {
+        try {
+            AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
+            AsymmetricKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, index, delegateId);
+            byte[] byteArrayDelegateKey = TestUtils.SerCipherParameter(delegateKey);
+            CipherParameters anDelegateKey = TestUtils.deserCipherParameters(byteArrayDelegateKey);
+            Assert.assertEquals(delegateKey, anDelegateKey);
+            delegateKey = (AsymmetricKeySerParameter)anDelegateKey;
+
+            //Encryption and serialization
+            PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identityVectorSet);
+            byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
+            PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+            byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
+            CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
+            Assert.assertEquals(ciphertext, anCiphertext);
+            ciphertext = (PairingCipherSerParameter)anCiphertext;
+
+            //Decryption
+            byte[] anSessionKey = engine.decapsulation(publicKey, delegateKey, identityVectorSet, ciphertext);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
+        } catch (Exception e) {
+            System.out.println("Valid delegate decapsulation test failed, " +
+                    "identity vector = " + Arrays.toString(identityVector) + ", " +
+                    "identity v. set = " + Arrays.toString(identityVectorSet));
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private void test_invalid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                          String[] identityVector, String[] identityVectorSet) {
+        try {
+            test_decapsulation(publicKey, masterKey, identityVector, identityVectorSet);
+        } catch (InvalidCipherTextException e) {
+            //correct if getting there, nothing to do.
+        } catch (Exception e) {
+            System.out.println("Invalid decapsulation test failed, " +
+                    "identity vector = " + Arrays.toString(identityVector) + ", " +
+                    "identity v. set = " + Arrays.toString(identityVectorSet));
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private void test_delegation_invalid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                                       String[] identityVector, int index, String delegateId, String[] identityVectorSet) {
+        try {
+            AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
+            AsymmetricKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, index, delegateId);
+            byte[] byteArrayDelegateKey = TestUtils.SerCipherParameter(delegateKey);
+            CipherParameters anDelegateKey = TestUtils.deserCipherParameters(byteArrayDelegateKey);
+            Assert.assertEquals(delegateKey, anDelegateKey);
+            delegateKey = (AsymmetricKeySerParameter)anDelegateKey;
+
+            //Encryption and serialization
+            PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identityVectorSet);
+            byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
+            PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+            byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
+            CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
+            Assert.assertEquals(ciphertext, anCiphertext);
+            ciphertext = (PairingCipherSerParameter)anCiphertext;
+
+            //Decryption
+            byte[] anSessionKey = engine.decapsulation(publicKey, delegateKey, identityVectorSet, ciphertext);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
+        } catch (InvalidCipherTextException e) {
+            //correct if getting there, nothing to do.
+        } catch (Exception e) {
+            System.out.println("Invalid delegate decapsulation test failed, " +
+                    "identity vector = " + Arrays.toString(identityVector) + ", " +
+                    "delegate ident. = " + delegateId + ", " +
+                    "identity v. set = " + Arrays.toString(identityVectorSet));
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+
+    private void test_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                     String[] identityVector, String[] identityVectorSet)
+            throws InvalidCipherTextException, IOException, ClassNotFoundException {
+        //KeyGen and serialization
+        AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
+        byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
+        CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
+        Assert.assertEquals(secretKey, anSecretKey);
+        secretKey = (AsymmetricKeySerParameter)anSecretKey;
+
+        //Encryption and serialization
+        PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identityVectorSet);
+        byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
+        PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+        byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
+        CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
+        Assert.assertEquals(ciphertext, anCiphertext);
+        ciphertext = (PairingCipherSerParameter)anCiphertext;
+
+        //Decryption
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityVectorSet, ciphertext);
+        Assert.assertArrayEquals(sessionKey, anSessionKey);
+    }
+
     public void processTest(PairingParameters pairingParameters) {
-        // Setup
-        AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, 8);
-        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
-        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
-
-        // KeyGen
-        String[] id4    = {null,    null,   null,   "ID_4", null,   null,   null,   null};
-        String[] id46   = {null,    null,   null,   "ID_4", null,   "ID_6", null,   null};
-        String[] id467  = {null,    null,   null,   "ID_4", null,   "ID_6", "ID_7", null};
-        String[] id45   = {null,    null,   null,   "ID_4", "ID_5", null,   null,   null};
-        String[] id3    = {"ID_3",  null,   null,   null,   null,   null,   null,   null};
-        String[] id31   = {"ID_3",  null,   "ID_1", null,   null,   null,   null,   null};
-
-        String[] ivs13467  = {"ID_1",  null,   "ID_3", "ID_4", null,   "ID_6", "ID_7", null};
-
-        AsymmetricKeySerParameter sk4 = engine.keyGen(publicKey, masterKey, id4);
-        AsymmetricKeySerParameter sk46 = engine.keyGen(publicKey, masterKey, id46);
-        AsymmetricKeySerParameter sk467 = engine.keyGen(publicKey, masterKey, id467);
-        AsymmetricKeySerParameter sk45 = engine.keyGen(publicKey, masterKey, id45);
-        AsymmetricKeySerParameter sk3 = engine.keyGen(publicKey, masterKey, id3);
-        AsymmetricKeySerParameter sk31 = engine.keyGen(publicKey, masterKey, id31);
-
-        // Encryption
-        PairingKeyEncapsulationSerPair ciphertextPair13467 = engine.encapsulation(publicKey, ivs13467);
-        PairingCipherSerParameter ciphertext13467 = ciphertextPair13467.getCiphertext();
-        byte[] sessionKey13467 = ciphertextPair13467.getSessionKey();
-        String stringSessionKey13467 = new String(Hex.encode(sessionKey13467));
-
-        // Decrypt with correct secret keys
-        System.out.println("========================================");
-        System.out.println("Test HIBBE engine functionality");
         try {
-            //Decrypt ciphertext 13467 using secret key 4
-            System.out.println("Test decrypting with correct secret keys");
-            System.out.println("Test decrypting ciphertext 13467 using secret key 4");
-            String sessionKey =  new String(Hex.encode(engine.decapsulation(publicKey, sk4, ivs13467, ciphertext13467)));
-            assertEquals(stringSessionKey13467, sessionKey);
-            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-        try {
-            //Decrypt ciphertext 13467 using secret key 46
-            System.out.println("Test decrypting ciphertext 13467 using secret key 46");
-            String sessionKey = new String(Hex.encode(engine.decapsulation(publicKey, sk46, ivs13467, ciphertext13467)));
-            assertEquals(stringSessionKey13467, sessionKey);
-            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-        try {
-            //Decrypt ciphertext 13467 using secret key 467
-            System.out.println("Test decrypting ciphertext 13467 using secret key 467");
-            String sessionKey = new String(Hex.encode(engine.decapsulation(publicKey, sk467, ivs13467, ciphertext13467)));
-            assertEquals(stringSessionKey13467, sessionKey);
-            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        try {
-            //Decrypt with incorrect secret keys
-            System.out.println("Test decrypting with incorrect secret keys");
-            //Decrypt ciphertext 13467 using secret key 45
-            System.out.println("Test decrypting ciphertext 13467 using secret key 45");
-            assertEquals(false, stringSessionKey13467.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            sk45,
-                            ivs13467,
-                            ciphertextPair13467.getCiphertext()
-                    )))
-            ));
-        } catch (InvalidCipherTextException e) {
-            //Correct if getting there, nothing to do
-        }
-        try {
-            //Decrypt ciphertext 13467 using secret key 3
-            System.out.println("Test decrypting ciphertext 13467 using secret key 3");
-            assertEquals(false, stringSessionKey13467.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            sk3,
-                            ivs13467,
-                            ciphertextPair13467.getCiphertext()
-                    )))
-            ));
-        } catch (InvalidCipherTextException e) {
-            //Correct if getting there, nothing to do
-        }
-        try {
-            //Decrypt ciphertext 13467 using secret key 31
-            System.out.println("Test decrypting ciphertext 13467 using secret key 31");
-            assertEquals(false, stringSessionKey13467.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            sk31,
-                            ivs13467,
-                            ciphertextPair13467.getCiphertext()
-                    )))
-            ));
-        } catch (InvalidCipherTextException e){
-            //Correct if getting there, nothing to do
-        }
-
-        try {
-            //Delegate & Correct Decrypt
-            System.out.println("Test delegating and correct decrypting");
-            //Delegate sk46 using sk4 and decrypt
-            System.out.println("Test delegating sk46 using sk4 and decrypting");
-            String sessionKey = new String(Hex.encode(engine.decapsulation(
-                    publicKey, engine.delegate(publicKey, sk4, 5, "ID_6"), ivs13467, ciphertextPair13467.getCiphertext()
-            )));
-            assertEquals(stringSessionKey13467, sessionKey);
-            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-        try {
-            //Delegate sk467 using sk46 and decrypt
-            System.out.println("Test delegating sk467 using sk46 and decrypting");
-            String sessionKey = new String(Hex.encode(engine.decapsulation(
-                    publicKey, engine.delegate(publicKey, sk46, 6, "ID_7"), ivs13467, ciphertextPair13467.getCiphertext()
-            )));
-            assertEquals(stringSessionKey13467, sessionKey);
-            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-        try {
-            //Delegate sk467 using sk4 and decrypt
-            System.out.println("Test delegating sk012 using sk0 and decrypting");
-            String sessionKey = new String(Hex.encode(engine.decapsulation(
-                    publicKey, engine.delegate(publicKey, engine.delegate(publicKey, sk4, 5, "ID_6"), 6, "ID_7"),
-                    ivs13467, ciphertextPair13467.getCiphertext()
-            )));
-            assertEquals(stringSessionKey13467, sessionKey);
-            System.out.println("Expect:" + stringSessionKey13467 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-        try {
-            //Delegate & Incorrect Decrypt
-            System.out.println("Test delegating and incorrect decrypting");
-            System.out.println("Test delegating sk31 and decrypting ciphertext 13467");
-            String sessionKey = new String(Hex.encode(engine.decapsulation(
-                    publicKey, engine.delegate(publicKey, sk3, 2, "ID_1"),
-                    ivs13467, ciphertextPair13467.getCiphertext()
-            )));
-            assertEquals(false, stringSessionKey13467.equals(sessionKey));
-        } catch (InvalidCipherTextException e) {
-            //Correct if getting there, nothing to do
-        }
-        System.out.println("HIBBE Engine functionality test passed.");
-        System.out.println();
-
-        //Test Serialize & deserialize
-        System.out.println("======================================");
-        System.out.println("Test HIBBE parameter serialization & de-serialization.");
-        try {
-            //serialize public key
-            System.out.println("Test serialize & de-serialize public key.");
+            // Setup and serialization
+            AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, identityVectorSet13467.length);
+            AsymmetricKeySerParameter publicKey = keyPair.getPublic();
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
-            assertEquals(publicKey, anPublicKey);
+            Assert.assertEquals(publicKey, anPublicKey);
+            publicKey = (AsymmetricKeySerParameter) anPublicKey;
 
-            //serialize master secret key
-            System.out.println("Test serialize & de-serialize master secret key.");
+            AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
             byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
             CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
-            assertEquals(masterKey, anMasterKey);
+            Assert.assertEquals(masterKey, anMasterKey);
+            masterKey = (AsymmetricKeySerParameter) anMasterKey;
 
-            //serialize secret key
-            System.out.println("Test serialize & de-serialize secret keys.");
-            //serialize sk4
-            byte[] byteArraySk4 = TestUtils.SerCipherParameter(sk4);
-            CipherParameters anSk4 = TestUtils.deserCipherParameters(byteArraySk4);
-            assertEquals(sk4, anSk4);
-            //serialize sk46
-            byte[] byteArraySk46 = TestUtils.SerCipherParameter(sk46);
-            CipherParameters anSk46 = TestUtils.deserCipherParameters(byteArraySk46);
-            assertEquals(sk46, anSk46);
-            //serialize sk467
-            byte[] byteArraySk467 = TestUtils.SerCipherParameter(sk467);
-            CipherParameters anSk467 = TestUtils.deserCipherParameters(byteArraySk467);
-            assertEquals(sk467, anSk467);
+            //test valid example
+            System.out.println("Test valid examples");
+            test_valid_decapsulation(publicKey, masterKey, identityVector4_satisfied, identityVectorSet13467);
+            test_valid_decapsulation(publicKey, masterKey, identityVector46_satisfied, identityVectorSet13467);
+            test_valid_decapsulation(publicKey, masterKey, identityVector467_satisfied, identityVectorSet13467);
+            test_delegation_valid_decapsulation(publicKey, masterKey, identityVector4_satisfied, 5, "ID_6", identityVectorSet13467);
+            test_delegation_valid_decapsulation(publicKey, masterKey, identityVector46_satisfied, 6, "ID_7", identityVectorSet13467);
 
-            //serialize ciphertext
-            System.out.println("Test serialize & de-serialize ciphertexts.");
-            byte[] byteArrayCt13467 = TestUtils.SerCipherParameter(ciphertext13467);
-            CipherParameters anCiphertext13467 = TestUtils.deserCipherParameters(byteArrayCt13467);
-            assertEquals(ciphertext13467, anCiphertext13467);
-
-            System.out.println("HIBBE parameter serialization tests passed.");
-            System.out.println();
-        } catch (Exception e) {
+            //test valid example
+            System.out.println("Test invalid examples");
+            test_invalid_decapsulation(publicKey, masterKey, identityVector45_unsatisfied, identityVectorSet13467);
+            test_invalid_decapsulation(publicKey, masterKey, identityVector3_unsatisfied, identityVectorSet13467);
+            test_invalid_decapsulation(publicKey, masterKey, identityVector31_unsatisfied, identityVectorSet13467);
+            test_delegation_invalid_decapsulation(publicKey, masterKey, identityVector3_unsatisfied, 2, "ID_1", identityVectorSet13467);
+            System.out.println(engine.getEngineName() + " test passed");
+        } catch (ClassNotFoundException e) {
+            System.out.println("setup test failed.");
+            e.printStackTrace();
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println("setup test failed.");
             e.printStackTrace();
             System.exit(1);
         }

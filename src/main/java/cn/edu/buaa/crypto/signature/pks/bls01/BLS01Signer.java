@@ -19,6 +19,8 @@ import java.io.IOException;
  * Boneh-Lynn-Shacham short signature scheme.
  */
 public class BLS01Signer implements PairingSigner {
+    private static final String SCHEME_NAME = "Boneh-Lynn-Shacham-01 signature scheme";
+
     private transient PairingKeySerParameter pairingKeySerParameter;
 
     public BLS01Signer() {
@@ -74,5 +76,9 @@ public class BLS01Signer implements PairingSigner {
         return new Element[]{
                 pairing.getG2().newElementFromBytes(Hex.decode(((ASN1String) s.getObjectAt(0)).getString())),
         };
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }

@@ -25,7 +25,7 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
  * Liu-Liu-Wu composite-order CCA2-secure HIBBE engine.
  */
 public class HIBBELLW17Engine implements HIBBEEngine {
-    public static final String SCHEME_NAME = "LLW17HIBBE";
+    public static final String SCHEME_NAME = "Liu-Liu-Wu-17 CCA2-secure composite-order HIBBE";
     private static HIBBELLW17Engine engine;
 
     private Digest digest = new SHA256Digest();
@@ -40,6 +40,8 @@ public class HIBBELLW17Engine implements HIBBEEngine {
         }
         return engine;
     }
+
+
 
     private HIBBELLW17Engine() {
 
@@ -130,5 +132,9 @@ public class HIBBELLW17Engine implements HIBBEEngine {
         keyDecapsulationGenerator.init(new HIBBELLW17DecapsulationParameter(
                 digest, publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }
