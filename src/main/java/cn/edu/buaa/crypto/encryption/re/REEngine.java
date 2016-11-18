@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re;
 
+import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
@@ -15,7 +16,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * This interface is an abstract definition of RE.
  */
 
-public interface REEngine {
+public interface REEngine extends Engine {
     /**
      * Setup Algorithm for RE
      * @param pairingParameters Pairing Parameters

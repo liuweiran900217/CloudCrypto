@@ -3,6 +3,10 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.params;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Weiran Liu on 2016/4/4.
  *
@@ -14,7 +18,10 @@ public class RELSW10aCiphertextGenerationParameter implements CipherParameters {
 
     public RELSW10aCiphertextGenerationParameter(CipherParameters publicKeyParameters, String[] ids) {
         this.publicKeyParameters = (RELSW10aPublicKeySerParameter)publicKeyParameters;
-        this.ids = ids;
+        //remove repeated ids
+        Set<String> idSet = new HashSet<String>();
+        Collections.addAll(idSet, ids);
+        this.ids = idSet.toArray(new String[1]);
     }
 
     public RELSW10aPublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }

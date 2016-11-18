@@ -31,6 +31,9 @@ public class HIBBELLW16bSecretKeyGenerator  implements AsymmetricKeySerParameter
 
             HIBBELLW16bPublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
             HIBBELLW16bMasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            if (parameters.getIds().length != publicKeyParameters.getMaxUser()) {
+                throw new IllegalArgumentException("Invalid identity vector length");
+            }
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, parameters.getIds(), PairingUtils.PairingGroupType.Zr);
@@ -63,6 +66,10 @@ public class HIBBELLW16bSecretKeyGenerator  implements AsymmetricKeySerParameter
 
             HIBBELLW16bPublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
             HIBBELLW16bSecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
+            if (secretKeyParameters.getIds().length != publicKeyParameters.getMaxUser()
+                    || secretKeyParameters.getIds()[parameters.getIndex()] != null) {
+                throw new IllegalArgumentException("Invalid identity vector length");
+            }
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = new String[publicKeyParameters.getMaxUser()];

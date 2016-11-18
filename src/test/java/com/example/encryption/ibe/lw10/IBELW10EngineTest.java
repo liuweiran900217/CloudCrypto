@@ -4,7 +4,6 @@ import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.IBELW10Engine;
 import com.example.TestUtils;
 import com.example.encryption.ibe.IBEEngineTest;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 /**
@@ -17,7 +16,6 @@ public class IBELW10EngineTest {
         IBEEngine engine = IBELW10Engine.getInstance();
         IBEEngineTest engineTest = new IBEEngineTest(engine);
 
-        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128);
-        engineTest.processTest(pairingParameters);
+        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128));
     }
 }

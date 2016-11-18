@@ -4,7 +4,6 @@ import cn.edu.buaa.crypto.encryption.re.REEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import com.example.TestUtils;
 import com.example.encryption.re.REEngineTest;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 /**
@@ -17,7 +16,6 @@ public class RELSW10aEngineTest {
         REEngine engine = RELSW10aEngine.getInstance();
         REEngineTest engineTest = new REEngineTest(engine);
 
-        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
-        engineTest.processTest(pairingParameters);
+        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

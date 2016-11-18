@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe;
 
+import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
@@ -13,7 +14,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Hierarchical Identity-Based Encryption Engine.
  * All instances should implement this Interface.
  */
-public interface HIBEEngine {
+public interface HIBEEngine extends Engine {
     /**
      * Setup Algorithm for HIBE
      * @param pairingParameters Pairing Parameters

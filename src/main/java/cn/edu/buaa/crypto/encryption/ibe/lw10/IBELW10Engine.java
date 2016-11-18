@@ -24,7 +24,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class IBELW10Engine implements IBEEngine {
     //Scheme name, used for exceptions
-    private static final String SCHEME_NAME = "LW10IBE";
+    private static final String SCHEME_NAME = "Lewko-Waters-10 IBE scheme";
 
     private static IBELW10Engine engine;
 
@@ -103,5 +103,9 @@ public class IBELW10Engine implements IBEEngine {
         keyDecapsulationGenerator.init(new IBELW10DecapsulationParameter(
                 publicKey, secretKey, id, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }

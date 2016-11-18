@@ -28,6 +28,9 @@ public class HIBBELLW17EncapsulationPairGenerator implements PairingEncapsulatio
         Digest digest = this.params.getDigest();
         digest.reset();
         HIBBELLW17PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        if (this.params.getIds().length != publicKeyParameters.getMaxUser()) {
+            throw new IllegalArgumentException("Invalid identity vector set length");
+        }
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();

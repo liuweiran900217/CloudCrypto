@@ -24,7 +24,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class IBBEDel07Engine implements IBBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "Del07-IBBE";
+    public static final String SCHEME_NAME = "Delerablée-7 IBBE scheme";
 
     private static IBBEDel07Engine engine;
 
@@ -104,5 +104,9 @@ public class IBBEDel07Engine implements IBBEEngine {
         keyDecapsulationGenerator.init(new IBBEDel07DecapsulationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }

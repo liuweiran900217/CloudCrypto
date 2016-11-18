@@ -72,6 +72,7 @@ public class HIBBEEngineTest {
         } catch (Exception e) {
             System.out.println("Valid delegate decapsulation test failed, " +
                     "identity vector = " + Arrays.toString(identityVector) + ", " +
+                    "delegate ident. = " + delegateId + ", " +
                     "identity v. set = " + Arrays.toString(identityVectorSet));
             e.printStackTrace();
             System.exit(1);
@@ -126,7 +127,6 @@ public class HIBBEEngineTest {
             System.exit(1);
         }
     }
-
 
     private void test_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
                                      String[] identityVector, String[] identityVectorSet)

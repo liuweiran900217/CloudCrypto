@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibe;
 
+import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
@@ -14,7 +15,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * This interface is an abstract of IBE definitions.
  */
-public interface IBEEngine {
+public interface IBEEngine extends Engine {
     /**
      * Setup Algorithm for IBE
      * @param pairingParameters pairingParameters

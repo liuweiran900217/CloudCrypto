@@ -24,7 +24,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class RELSW10aEngine implements REEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LSW10a-RE";
+    public static final String SCHEME_NAME = "Lewko-Waters-08a Revocation Encryption";
 
     private static RELSW10aEngine engine;
 
@@ -105,5 +105,9 @@ public class RELSW10aEngine implements REEngine {
         keyDecapsulationGenerator.init(new RELSW10aDecapsulationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }

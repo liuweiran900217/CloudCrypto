@@ -10,6 +10,10 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.util.encoders.Hex;
+import org.junit.Assert;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,125 +23,110 @@ import static org.junit.Assert.assertEquals;
  * Revocation encryption engine test.
  */
 public class REEngineTest {
+    private static final String identity = "ID";
+    private static final String identityRevoke = "RevokeID";
+
+    private static final String[] identityRevokeSet1 = {"ID_1", "RevokeID"};
+    private static final String[] identityRevokeSet2 = {"RevokeID", "ID_1"};
+    private static final String[] identityRevokeSet3 = {"ID_1", "ID_2", "ID_3", "ID_4", "RevokeID", "ID_5", "ID_6", "ID_7", "ID_8", "ID_9"};
+    private static final String[] identityRevokeSet4 = {"ID_2", "ID_2", "ID_2", "ID_3", "RevokeID", "ID_5", "ID_5", "ID_5", "ID_5", "ID_9"};
+
     private REEngine engine;
 
     public REEngineTest(REEngine engine) {
         this.engine = engine;
     }
 
+    private void test_valid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                          String identity, String[] identityRevokeSet) {
+        try {
+            test_decapsulation(publicKey, masterKey, identity, identityRevokeSet);
+        } catch (Exception e) {
+            System.out.println("Valid decapsulation test failed, " +
+                    "identity for secret key  = " + identity + ", " +
+                    "ciphertext revoke ID set = " + Arrays.toString(identityRevokeSet));
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private void test_invalid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                            String identity, String[] identityRevokeSet) {
+        try {
+            test_decapsulation(publicKey, masterKey, identity, identityRevokeSet);
+        } catch (InvalidCipherTextException e) {
+            //correct if getting there, nothing to do.
+        } catch (Exception e) {
+            System.out.println("Invalid decapsulation test failed, " +
+                    "identity for secret key  = " + identity + ", " +
+                    "ciphertext revoke ID set = " + Arrays.toString(identityRevokeSet));
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private void test_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+                                    String identity, String[] identityRevokeSet)
+            throws InvalidCipherTextException, IOException, ClassNotFoundException {
+        //KeyGen and serialization
+        AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identity);
+        byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
+        CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
+        Assert.assertEquals(secretKey, anSecretKey);
+        secretKey = (AsymmetricKeySerParameter)anSecretKey;
+
+        //Encryption and serialization
+        PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identityRevokeSet);
+        byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
+        PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+        byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
+        CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
+        Assert.assertEquals(ciphertext, anCiphertext);
+        ciphertext = (PairingCipherSerParameter)anCiphertext;
+
+        //Decryption
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityRevokeSet, ciphertext);
+        Assert.assertArrayEquals(sessionKey, anSessionKey);
+    }
+
     public void processTest(PairingParameters pairingParameters) {
-        // Setup
-        AsymmetricKeySerPair keyPair = engine.setup(pairingParameters);
-        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
-        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
-
-        // KeyGen
-        String id = "Identity";
-        String rid = "Revocated Identity";
-
-        AsymmetricKeySerParameter skId = engine.keyGen(publicKey, masterKey, id);
-        AsymmetricKeySerParameter skRid = engine.keyGen(publicKey, masterKey, rid);
-
-        // Encryption
-        String[] rids1 = new String[]{rid, "Id_1"};
-        PairingKeyEncapsulationSerPair ciphertextPairRids1 = engine.encapsulation(publicKey, rids1);
-        PairingCipherSerParameter ciphertextRids1 = ciphertextPairRids1.getCiphertext();
-        byte[] sessionKeyRids1 = ciphertextPairRids1.getSessionKey();
-        String stringSessionKeyRids1 = new String(Hex.encode(sessionKeyRids1));
-
-        String[] rids2 = new String[]{"Id_1", "Id_2", "Id_3", "Id_4", "Id_5", "Id_6", "Id_7", "Id_8", "Id_9", rid};
-        PairingKeyEncapsulationSerPair ciphertextPairRids2 = engine.encapsulation(publicKey, rids2);
-        PairingCipherSerParameter ciphertextRids2 = ciphertextPairRids2.getCiphertext();
-        byte[] sessionKeyRids2 = ciphertextPairRids2.getSessionKey();
-        String stringSessionKeyRids2 = new String(Hex.encode(sessionKeyRids2));
-
-        // Decrypt with correct secret keys
-        System.out.println("========================================");
-        System.out.println("Test RE functionality");
         try {
-            //Decrypt ciphertext Rids1 using secret key id
-            System.out.println("Test decrypting ciphertext rids1 using secret key id");
-            String sessionKey =  new String(Hex.encode(engine.decapsulation(publicKey, skId, rids1, ciphertextRids1)));
-            assertEquals(stringSessionKeyRids1, sessionKey);
-            System.out.println("Expect:" + stringSessionKeyRids1 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-        try {
-            //Decrypt ciphertext Rids2 using secret key id
-            System.out.println("Test decrypting ciphertext rids2 using secret key id");
-            String sessionKey = new String(Hex.encode(engine.decapsulation(publicKey, skId, rids2, ciphertextRids2)));
-            assertEquals(stringSessionKeyRids2, sessionKey);
-            System.out.println("Expect:" + stringSessionKeyRids2 + "\nActual:" + sessionKey);
-        } catch (InvalidCipherTextException e) {
-            //Bugs if getting there
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        //Decrypt with incorrect secret keys
-        System.out.println("Test decrypting with incorrect secret keys");
-        try {
-            //Decrypt ciphertext Rids1 using secret key rid
-            System.out.println("Test decrypting ciphertext rids1 using secret key rid");
-            assertEquals(false, stringSessionKeyRids1.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            skRid,
-                            rids1,
-                            ciphertextPairRids1.getCiphertext()
-                    )))
-            ));
-        } catch (InvalidCipherTextException e) {
-            //Correct if getting there, nothing to do
-        }
-        try {
-            //Decrypt ciphertext Rids2 using secret key rid
-            System.out.println("Test decrypting ciphertext rids2 using secret key rid");
-            assertEquals(false, stringSessionKeyRids2.equals(
-                    new String(Hex.encode(engine.decapsulation(
-                            publicKey,
-                            skRid,
-                            rids2,
-                            ciphertextPairRids2.getCiphertext()
-                    )))
-            ));
-        } catch (InvalidCipherTextException e) {
-            //Correct if getting there, nothing to do
-        }
-
-        System.out.println("======================================");
-        System.out.println("Test RE parameter serialization & de-serialization.");
-        try {
-            //serialize public key
-            System.out.println("Test serialize & de-serialize public key.");
+            // Setup and serialization
+            AsymmetricKeySerPair keyPair = engine.setup(pairingParameters);
+            AsymmetricKeySerParameter publicKey = keyPair.getPublic();
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
-            assertEquals(publicKey, anPublicKey);
+            Assert.assertEquals(publicKey, anPublicKey);
+            publicKey = (AsymmetricKeySerParameter) anPublicKey;
 
-            //serialize master secret key
-            System.out.println("Test serialize & de-serialize master secret key.");
+            AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
             byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
             CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
-            assertEquals(masterKey, anMasterKey);
+            Assert.assertEquals(masterKey, anMasterKey);
+            masterKey = (AsymmetricKeySerParameter) anMasterKey;
 
-            //serialize secret key
-            System.out.println("Test serialize & de-serialize secret key.");
-            byte[] byteArraySkID01 = TestUtils.SerCipherParameter(skId);
-            CipherParameters anSkID_1 = TestUtils.deserCipherParameters(byteArraySkID01);
-            assertEquals(skId, anSkID_1);
+            //test valid example
+            System.out.println("Test valid examples");
+            test_valid_decapsulation(publicKey, masterKey, identity, identityRevokeSet1);
+            test_valid_decapsulation(publicKey, masterKey, identity, identityRevokeSet2);
+            test_valid_decapsulation(publicKey, masterKey, identity, identityRevokeSet3);
+            test_valid_decapsulation(publicKey, masterKey, identity, identityRevokeSet4);
 
-            //serialize ciphertext01
-            System.out.println("Test serialize & de-serialize ciphertext.");
-            byte[] byteArrayCiphertext01 = TestUtils.SerCipherParameter(ciphertextRids1);
-            CipherParameters anCiphertextID_1 = TestUtils.deserCipherParameters(byteArrayCiphertext01);
-            assertEquals(ciphertextRids1, anCiphertextID_1);
-        } catch (Exception e) {
+            //test valid example
+            System.out.println("Test invalid examples");
+            test_invalid_decapsulation(publicKey, masterKey, identityRevoke, identityRevokeSet1);
+            test_invalid_decapsulation(publicKey, masterKey, identityRevoke, identityRevokeSet2);
+            test_invalid_decapsulation(publicKey, masterKey, identityRevoke, identityRevokeSet3);
+            test_invalid_decapsulation(publicKey, masterKey, identityRevoke, identityRevokeSet4);
+            System.out.println(engine.getEngineName() + " test passed");
+        } catch (ClassNotFoundException e) {
+            System.out.println("setup test failed.");
             e.printStackTrace();
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println("setup test failed.");
+            e.printStackTrace();
+            System.exit(1);
         }
-        System.out.println("RE parameter serialization tests passed.");
-        System.out.println();
     }
 }

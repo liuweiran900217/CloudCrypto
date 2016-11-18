@@ -50,6 +50,9 @@ public class HIBBELLW16bEncapsulationPairGenerator  implements PairingEncapsulat
             byteArrayOutputStream.close();
 
             HIBBELLW16bPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+            if (this.params.getIds().length != publicKeyParameters.getMaxUser()) {
+                throw new IllegalArgumentException("Invalid identity vector set length");
+            }
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] ids = this.params.getIds();
             Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);

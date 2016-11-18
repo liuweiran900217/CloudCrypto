@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.ibbe;
 
+import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
@@ -13,7 +14,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Identity-Based Broadcast Encryption Engine.
  * All instances should implement this Interface.
  */
-public interface IBBEEngine {
+public interface IBBEEngine extends Engine {
     /**
      * Setup Algorithm for IBBE
      * @param pairingParameters Pairing Parameters.

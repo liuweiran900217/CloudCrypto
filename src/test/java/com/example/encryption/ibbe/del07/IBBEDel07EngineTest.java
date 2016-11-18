@@ -17,7 +17,6 @@ public class IBBEDel07EngineTest {
         IBBEEngine engine = IBBEDel07Engine.getInstance();
         IBBEEngineTest engineTest = new IBBEEngineTest(engine);
 
-        PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
-        engineTest.processTest(pairingParameters);
+        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

@@ -12,6 +12,10 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Weiran Liu on 2016/4/4.
  *
@@ -29,7 +33,9 @@ public class RELSW10aDecapsulationGenerator implements PairingDecapsulationGener
         RELSW10aSecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
         RELSW10aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
+        //remove repeated ids
+        String[] ids = this.params.getIds();
+        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
 
         for (Element elementId : elementIds) {
             if (PairingUtils.isEqualElement(secretKeyParameters.getElementId(), elementId)) {

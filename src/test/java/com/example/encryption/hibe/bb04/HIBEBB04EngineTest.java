@@ -18,6 +18,6 @@ public class HIBEBB04EngineTest {
         HIBEEngineTest engineTest = new HIBEEngineTest(engine);
 
         PairingParameters pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
-        engineTest.processTest(pairingParameters, 8);
+        engineTest.processTest(pairingParameters);
     }
 }

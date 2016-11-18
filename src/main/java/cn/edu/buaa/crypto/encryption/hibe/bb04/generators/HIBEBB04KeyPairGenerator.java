@@ -31,7 +31,7 @@ public class HIBEBB04KeyPairGenerator implements AsymmetricKeySerPairGenerator {
         Element g2 = pairing.getG1().newRandomElement().getImmutable();
         Element g2Alpha = g2.powZn(alpha).getImmutable();
 
-                Element[] h = new Element[this.parameters.getMaxDepth()];
+        Element[] h = new Element[this.parameters.getMaxDepth()];
         for (int i=0; i<this.parameters.getMaxDepth(); i++) {
             h[i] = pairing.getG1().newRandomElement().getImmutable();
         }

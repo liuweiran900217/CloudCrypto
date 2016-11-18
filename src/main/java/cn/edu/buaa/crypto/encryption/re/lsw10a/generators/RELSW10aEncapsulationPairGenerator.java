@@ -11,6 +11,10 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Weiran Liu on 2016/4/4.
  *
@@ -26,8 +30,7 @@ public class RELSW10aEncapsulationPairGenerator implements PairingEncapsulationP
     public PairingKeyEncapsulationSerPair generateEncryptionPair() {
         RELSW10aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-        String[] ids = this.params.getIds();
-        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
+        Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
 
         Element[] ss = new Element[this.params.getLength()];
         Element s = pairing.getZr().newZeroElement().getImmutable();

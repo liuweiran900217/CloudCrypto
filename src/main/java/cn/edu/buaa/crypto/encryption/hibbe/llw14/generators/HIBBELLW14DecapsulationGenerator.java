@@ -32,6 +32,11 @@ public class HIBBELLW14DecapsulationGenerator implements PairingDecapsulationGen
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIdsCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
 
+        if (this.params.getIds().length != publicKeyParameters.getMaxUser()
+                || secretKeyParameters.getIds().length != publicKeyParameters.getMaxUser()) {
+            throw new IllegalArgumentException("Invalid identity vector / identity vector set length");
+        }
+
         for (int i=0; i<publicKeyParameters.getMaxUser(); i++){
             if (secretKeyParameters.getIdAt(i) != null &&
                     !secretKeyParameters.getElementIdAt(i).equals(elementIdsCT[i])){

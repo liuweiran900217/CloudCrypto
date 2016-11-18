@@ -28,7 +28,10 @@ public class HIBBELLW16aDecapsulationGenerator implements PairingDecapsulationGe
         HIBBELLW16aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
         HIBBELLW16aSecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
         HIBBELLW16aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
-
+        if (this.params.getIds().length != publicKeyParameters.getMaxUser()
+                || secretKeyParameters.getIds().length != publicKeyParameters.getMaxUser()) {
+            throw new IllegalArgumentException("Invalid identity vector / identity vector set length");
+        }
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIdsCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
 

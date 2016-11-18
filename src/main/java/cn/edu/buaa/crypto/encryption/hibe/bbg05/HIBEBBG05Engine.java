@@ -24,7 +24,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class HIBEBBG05Engine implements HIBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "BBG05HIBE";
+    public static final String SCHEME_NAME = "Boneh-Boyen-Goh-05 HIBE scheme";
 
     private static HIBEBBG05Engine engine;
 
@@ -124,5 +124,9 @@ public class HIBEBBG05Engine implements HIBEEngine {
         keyDecapsulationGenerator.init(new HIBEBBG05DecapsulationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }
