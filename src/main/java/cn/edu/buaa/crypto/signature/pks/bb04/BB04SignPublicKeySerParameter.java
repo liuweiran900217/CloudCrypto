@@ -104,9 +104,9 @@ class BB04SignPublicKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
 
-        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1);
-        this.g2 = pairing.getG2().newElementFromBytes(this.byteArrayG2);
-        this.u = pairing.getG2().newElementFromBytes(this.byteArrayU);
-        this.v = pairing.getG2().newElementFromBytes(this.byteArrayV);
+        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1).getImmutable();
+        this.g2 = pairing.getG2().newElementFromBytes(this.byteArrayG2).getImmutable();
+        this.u = pairing.getG2().newElementFromBytes(this.byteArrayU).getImmutable();
+        this.v = pairing.getG2().newElementFromBytes(this.byteArrayV).getImmutable();
     }
 }

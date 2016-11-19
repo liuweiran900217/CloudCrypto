@@ -69,7 +69,7 @@ public class RBACLLW15EncapsulationSerParameter extends PairingCipherSerParamete
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.C0 = pairing.getG1().newElementFromBytes(this.byteArrayC0);
-        this.C1 = pairing.getG1().newElementFromBytes(this.byteArrayC1);
+        this.C0 = pairing.getG1().newElementFromBytes(this.byteArrayC0).getImmutable();
+        this.C1 = pairing.getG1().newElementFromBytes(this.byteArrayC1).getImmutable();
     }
 }

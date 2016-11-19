@@ -14,7 +14,7 @@ import java.util.Arrays;
  *
  * Boneh-Boyen 2008 signature secret key parameter.
  */
-public class BB08SignSecretKeySerParameter extends PairingKeySerParameter {
+class BB08SignSecretKeySerParameter extends PairingKeySerParameter {
     private transient Element g1;
     private final byte[] byteArrayG1;
 
@@ -87,8 +87,8 @@ public class BB08SignSecretKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
 
-        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1);
-        this.x = pairing.getZr().newElementFromBytes(this.byteArrayX);
-        this.y = pairing.getZr().newElementFromBytes(this.byteArrayY);
+        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1).getImmutable();
+        this.x = pairing.getZr().newElementFromBytes(this.byteArrayX).getImmutable();
+        this.y = pairing.getZr().newElementFromBytes(this.byteArrayY).getImmutable();
     }
 }

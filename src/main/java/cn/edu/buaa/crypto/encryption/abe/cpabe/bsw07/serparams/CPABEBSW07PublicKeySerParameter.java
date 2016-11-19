@@ -93,9 +93,9 @@ public class CPABEBSW07PublicKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG);
-        this.h = pairing.getG1().newElementFromBytes(this.byteArrayH);
-        this.f = pairing.getGT().newElementFromBytes(this.byteArrayF);
-        this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha);
+        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG).getImmutable();
+        this.h = pairing.getG1().newElementFromBytes(this.byteArrayH).getImmutable();
+        this.f = pairing.getGT().newElementFromBytes(this.byteArrayF).getImmutable();
+        this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha).getImmutable();
     }
 }

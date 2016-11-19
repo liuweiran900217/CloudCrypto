@@ -97,9 +97,9 @@ public class IBELW10PublicKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.u = pairing.getG1().newElementFromBytes(this.byteArrayU);
-        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG);
-        this.h = pairing.getG1().newElementFromBytes(this.byteArrayH);
-        this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha);
+        this.u = pairing.getG1().newElementFromBytes(this.byteArrayU).getImmutable();
+        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG).getImmutable();
+        this.h = pairing.getG1().newElementFromBytes(this.byteArrayH).getImmutable();
+        this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha).getImmutable();
     }
 }

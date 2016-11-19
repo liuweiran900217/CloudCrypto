@@ -48,11 +48,7 @@ public class RELSW10aCipherSerParameter extends PairingCipherSerParameter {
 
     public Element getC1sAt(int index) { return this.C1s[index].duplicate(); }
 
-    public Element[] getC1s() { return this.C1s; }
-
     public Element getC2sAt(int index) { return this.C2s[index].duplicate(); }
-
-    public Element[] getC2s() { return this.C2s; }
 
     @Override
     public boolean equals(Object anObject) {
@@ -73,14 +69,14 @@ public class RELSW10aCipherSerParameter extends PairingCipherSerParameter {
                 return false;
             }
             //Compare C1s
-            if (!PairingUtils.isEqualElementArray(this.C1s, that.getC1s())) {
+            if (!PairingUtils.isEqualElementArray(this.C1s, that.C1s)) {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysC1s, that.byteArraysC1s)) {
                 return false;
             }
             //Compare C2s
-            if (!PairingUtils.isEqualElementArray(this.C2s, that.getC2s())) {
+            if (!PairingUtils.isEqualElementArray(this.C2s, that.C2s)) {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysC2s, that.byteArraysC2s)) {
@@ -96,7 +92,7 @@ public class RELSW10aCipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.C0 = pairing.getG1().newElementFromBytes(this.byteArrayC0);
+        this.C0 = pairing.getG1().newElementFromBytes(this.byteArrayC0).getImmutable();
         this.C1s = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysC1s, PairingUtils.PairingGroupType.G1);
         this.C2s = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysC2s, PairingUtils.PairingGroupType.G1);
     }

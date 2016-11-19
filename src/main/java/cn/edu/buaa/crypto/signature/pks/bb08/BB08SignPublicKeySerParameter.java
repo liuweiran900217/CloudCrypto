@@ -14,7 +14,7 @@ import java.util.Arrays;
  *
  * Boneh-Boyen 2008 signature public key.
  */
-public class BB08SignPublicKeySerParameter extends PairingKeySerParameter {
+class BB08SignPublicKeySerParameter extends PairingKeySerParameter {
     private transient Element g1;
     private final byte[] byteArrayG1;
 
@@ -64,7 +64,7 @@ public class BB08SignPublicKeySerParameter extends PairingKeySerParameter {
         return this.v.duplicate();
     }
 
-    public Element getZ() {
+    Element getZ() {
         return this.z.duplicate();
     }
 
@@ -121,10 +121,10 @@ public class BB08SignPublicKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
 
-        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1);
-        this.g2 = pairing.getG2().newElementFromBytes(this.byteArrayG2);
-        this.u = pairing.getG2().newElementFromBytes(this.byteArrayU);
-        this.v = pairing.getG2().newElementFromBytes(this.byteArrayV);
-        this.z = pairing.getGT().newElementFromBytes(this.byteArrayZ);
+        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1).getImmutable();
+        this.g2 = pairing.getG2().newElementFromBytes(this.byteArrayG2).getImmutable();
+        this.u = pairing.getG2().newElementFromBytes(this.byteArrayU).getImmutable();
+        this.v = pairing.getG2().newElementFromBytes(this.byteArrayV).getImmutable();
+        this.z = pairing.getGT().newElementFromBytes(this.byteArrayZ).getImmutable();
     }
 }

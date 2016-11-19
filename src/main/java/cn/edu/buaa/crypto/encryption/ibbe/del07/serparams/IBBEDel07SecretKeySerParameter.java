@@ -74,7 +74,7 @@ public class IBBEDel07SecretKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.elementId = pairing.getZr().newElementFromBytes(this.byteArrayElementId);
-        this.secretKey = pairing.getG1().newElementFromBytes(this.byteArraySecretKey);
+        this.elementId = pairing.getZr().newElementFromBytes(this.byteArrayElementId).getImmutable();
+        this.secretKey = pairing.getG1().newElementFromBytes(this.byteArraySecretKey).getImmutable();
     }
 }

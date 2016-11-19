@@ -82,7 +82,7 @@ class BB04SignSecretKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
 
-        this.x = pairing.getZr().newElementFromBytes(this.byteArrayX);
-        this.y = pairing.getZr().newElementFromBytes(this.byteArrayY);
+        this.x = pairing.getZr().newElementFromBytes(this.byteArrayX).getImmutable();
+        this.y = pairing.getZr().newElementFromBytes(this.byteArrayY).getImmutable();
     }
 }

@@ -53,6 +53,6 @@ public class HIBBELLW14MasterSecretKeySerParameter extends PairingKeySerParamete
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.gAlpha = pairing.getG1().newElementFromBytes(this.byteArrayGAlpha);
+        this.gAlpha = pairing.getG1().newElementFromBytes(this.byteArrayGAlpha).getImmutable();
     }
 }

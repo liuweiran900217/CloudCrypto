@@ -47,8 +47,6 @@ public class IBBEDel07PublicKeySerParameter extends PairingKeySerParameter {
 
     public Element getV() { return this.v.duplicate(); }
 
-    public Element[] getHs() { return this.hs; }
-
     public Element getHsAt(int index) {
         return this.hs[index].duplicate();
     }
@@ -81,7 +79,7 @@ public class IBBEDel07PublicKeySerParameter extends PairingKeySerParameter {
                 return false;
             }
             //Compare hs
-            if (!PairingUtils.isEqualElementArray(this.hs, that.getHs())) {
+            if (!PairingUtils.isEqualElementArray(this.hs, that.hs)) {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysHs, that.byteArraysHs)) {
@@ -97,8 +95,8 @@ public class IBBEDel07PublicKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.w = pairing.getG1().newElementFromBytes(this.byteArrayW);
-        this.v = pairing.getGT().newElementFromBytes(this.byteArrayV);
+        this.w = pairing.getG1().newElementFromBytes(this.byteArrayW).getImmutable();
+        this.v = pairing.getGT().newElementFromBytes(this.byteArrayV).getImmutable();
         this.hs = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysHs, PairingUtils.PairingGroupType.G2);
     }
 }

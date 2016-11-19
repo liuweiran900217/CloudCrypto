@@ -99,11 +99,11 @@ public class KPABEGPSW06aPublicKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG);
+        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG).getImmutable();
         this.Ts = new HashMap<String, Element>();
         for (String attribute : this.byteArraysTs.keySet()) {
-            this.Ts.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysTs.get(attribute)));
+            this.Ts.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysTs.get(attribute)).getImmutable());
         }
-        this.Y = pairing.getGT().newElementFromBytes(this.byteArrayY);
+        this.Y = pairing.getGT().newElementFromBytes(this.byteArrayY).getImmutable();
     }
 }

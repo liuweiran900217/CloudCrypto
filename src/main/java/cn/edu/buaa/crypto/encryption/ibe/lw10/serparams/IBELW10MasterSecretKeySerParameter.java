@@ -67,7 +67,7 @@ public class IBELW10MasterSecretKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.alpha = pairing.getZr().newElementFromBytes(this.byteArrayAlpha);
-        this.g3Generator = pairing.getG1().newElementFromBytes(this.byteArrayG3Generator);
+        this.alpha = pairing.getZr().newElementFromBytes(this.byteArrayAlpha).getImmutable();
+        this.g3Generator = pairing.getG1().newElementFromBytes(this.byteArrayG3Generator).getImmutable();
     }
 }

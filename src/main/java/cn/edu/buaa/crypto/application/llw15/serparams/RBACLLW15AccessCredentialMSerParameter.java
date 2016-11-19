@@ -80,8 +80,6 @@ public class RBACLLW15AccessCredentialMSerParameter extends PairingKeySerParamet
 
     public Element getElementTime() { return this.elementTime.duplicate(); }
 
-    public Element[] getElementRoles() { return this.elementRoles; }
-
     public Element getA0() { return this.a0.duplicate(); }
 
     public Element getA1() { return this.a1.duplicate(); }
@@ -106,7 +104,7 @@ public class RBACLLW15AccessCredentialMSerParameter extends PairingKeySerParamet
                 return false;
             }
             //Compare elementRoles
-            if (!PairingUtils.isEqualElementArray(this.elementRoles, that.getElementRoles())) {
+            if (!PairingUtils.isEqualElementArray(this.elementRoles, that.elementRoles)) {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysElementRoles, that.byteArraysElementRoles)) {
@@ -158,11 +156,11 @@ public class RBACLLW15AccessCredentialMSerParameter extends PairingKeySerParamet
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.elementRoles = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysElementRoles, PairingUtils.PairingGroupType.Zr);
-        this.elementTime = pairing.getZr().newElementFromBytes(this.byteArrayElementTime);
-        this.a0 = pairing.getG1().newElementFromBytes(this.byteArrayElementA0);
-        this.a1 = pairing.getG1().newElementFromBytes(this.byteArrayElementA1);
-        this.a2 = pairing.getG1().newElementFromBytes(this.byteArrayElementA2);
-        this.bv= pairing.getG1().newElementFromBytes(this.byteArrayElementBv);
+        this.elementTime = pairing.getZr().newElementFromBytes(this.byteArrayElementTime).getImmutable();
+        this.a0 = pairing.getG1().newElementFromBytes(this.byteArrayElementA0).getImmutable();
+        this.a1 = pairing.getG1().newElementFromBytes(this.byteArrayElementA1).getImmutable();
+        this.a2 = pairing.getG1().newElementFromBytes(this.byteArrayElementA2).getImmutable();
+        this.bv= pairing.getG1().newElementFromBytes(this.byteArrayElementBv).getImmutable();
         this.bs = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysElementBs, PairingUtils.PairingGroupType.G1);
     }
 }

@@ -55,7 +55,7 @@ public class IBELW10CipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.C1 = pairing.getG1().newElementFromBytes(this.byteArrayC1);
-        this.C2 = pairing.getG1().newElementFromBytes(this.byteArrayC2);
+        this.C1 = pairing.getG1().newElementFromBytes(this.byteArrayC1).getImmutable();
+        this.C2 = pairing.getG1().newElementFromBytes(this.byteArrayC2).getImmutable();
     }
 }

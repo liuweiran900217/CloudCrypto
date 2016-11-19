@@ -78,7 +78,7 @@ public class HIBEBB04CipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.B = pairing.getG1().newElementFromBytes(this.byteArrayB);
+        this.B = pairing.getG1().newElementFromBytes(this.byteArrayB).getImmutable();
         this.Cs = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysCs, PairingUtils.PairingGroupType.G1);
     }
 }

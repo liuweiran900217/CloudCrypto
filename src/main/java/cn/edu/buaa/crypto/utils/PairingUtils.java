@@ -271,13 +271,13 @@ public class PairingUtils {
                 continue;
             }
             switch (groupType) {
-                case Zr: elementArray[i] = pairing.getZr().newElementFromBytes(byteArrays[i]);
+                case Zr: elementArray[i] = pairing.getZr().newElementFromBytes(byteArrays[i]).getImmutable();
                     break;
-                case G1: elementArray[i] = pairing.getG1().newElementFromBytes(byteArrays[i]);
+                case G1: elementArray[i] = pairing.getG1().newElementFromBytes(byteArrays[i]).getImmutable();
                     break;
-                case G2: elementArray[i] = pairing.getG2().newElementFromBytes(byteArrays[i]);
+                case G2: elementArray[i] = pairing.getG2().newElementFromBytes(byteArrays[i]).getImmutable();
                     break;
-                case GT: elementArray[i] = pairing.getGT().newElementFromBytes(byteArrays[i]);
+                case GT: elementArray[i] = pairing.getGT().newElementFromBytes(byteArrays[i]).getImmutable();
                     break;
                 default:
                     throw new RuntimeException("Invalid pairing group type.");

@@ -77,8 +77,6 @@ public class RBACLLW15IntermediateSerParameter extends PairingCipherSerParameter
 
     public Element get_U_s_r_at(int index) { return this.u_s_r[index]; }
 
-    public Element[] get_U_s_r() { return this.u_s_r; }
-
     @Override
     public boolean equals(Object anOjbect) {
         if (this == anOjbect) {
@@ -129,7 +127,7 @@ public class RBACLLW15IntermediateSerParameter extends PairingCipherSerParameter
                 return false;
             }
             //Compare u_s_r
-            if (!PairingUtils.isEqualElementArray(this.u_s_r, that.get_U_s_r())) {
+            if (!PairingUtils.isEqualElementArray(this.u_s_r, that.u_s_r)) {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysU_s_r, that.byteArraysU_s_r)) {
@@ -145,12 +143,12 @@ public class RBACLLW15IntermediateSerParameter extends PairingCipherSerParameter
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.r = pairing.getZr().newElementFromBytes(this.byteArrayR);
-        this.g_3_r = pairing.getG1().newElementFromBytes(this.byteArrayG_3_r);
-        this.g_h_r = pairing.getG1().newElementFromBytes(this.byteArrayG_h_r);
-        this.g_r = pairing.getG1().newElementFromBytes(this.byteArrayG_r);
-        this.u_0_r = pairing.getG1().newElementFromBytes(this.byteArrayU_0_r);
-        this.u_v_r = pairing.getG1().newElementFromBytes(this.byteArrayU_v_r);
+        this.r = pairing.getZr().newElementFromBytes(this.byteArrayR).getImmutable();
+        this.g_3_r = pairing.getG1().newElementFromBytes(this.byteArrayG_3_r).getImmutable();
+        this.g_h_r = pairing.getG1().newElementFromBytes(this.byteArrayG_h_r).getImmutable();
+        this.g_r = pairing.getG1().newElementFromBytes(this.byteArrayG_r).getImmutable();
+        this.u_0_r = pairing.getG1().newElementFromBytes(this.byteArrayU_0_r).getImmutable();
+        this.u_v_r = pairing.getG1().newElementFromBytes(this.byteArrayU_v_r).getImmutable();
         this.u_s_r = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysU_s_r, PairingUtils.PairingGroupType.G1);
     }
 }

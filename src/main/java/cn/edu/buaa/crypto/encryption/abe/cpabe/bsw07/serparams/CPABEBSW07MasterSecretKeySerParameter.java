@@ -65,7 +65,7 @@ public class CPABEBSW07MasterSecretKeySerParameter extends PairingKeySerParamete
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.gAlpha = pairing.getG1().newElementFromBytes(this.byteArrayGAlpha);
-        this.beta = pairing.getZr().newElementFromBytes(this.byteArrayBeta);
+        this.gAlpha = pairing.getG1().newElementFromBytes(this.byteArrayGAlpha).getImmutable();
+        this.beta = pairing.getZr().newElementFromBytes(this.byteArrayBeta).getImmutable();
     }
 }

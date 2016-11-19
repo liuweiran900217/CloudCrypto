@@ -55,8 +55,6 @@ public class HIBEBB04SecretKeySerParameter extends PairingKeySerParameter {
 
     public Element getDsAt(int index) { return this.ds[index].duplicate(); }
 
-    public Element[] getDs() { return this.ds; }
-
     @Override
     public boolean equals(Object anObject) {
         if (this == anObject) {
@@ -87,7 +85,7 @@ public class HIBEBB04SecretKeySerParameter extends PairingKeySerParameter {
                 return false;
             }
             //Compare ds
-            if (!PairingUtils.isEqualElementArray(this.ds, that.getDs())) {
+            if (!PairingUtils.isEqualElementArray(this.ds, that.ds)) {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysDs, that.byteArraysDs)) {
@@ -103,7 +101,7 @@ public class HIBEBB04SecretKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.d0 = pairing.getG1().newElementFromBytes(this.byteArrayD0);
+        this.d0 = pairing.getG1().newElementFromBytes(this.byteArrayD0).getImmutable();
         this.elementIds = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysElementIds, PairingUtils.PairingGroupType.Zr);
         this.ds = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysDs, PairingUtils.PairingGroupType.G1);
     }

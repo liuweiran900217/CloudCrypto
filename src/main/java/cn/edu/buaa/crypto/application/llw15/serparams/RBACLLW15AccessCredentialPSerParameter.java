@@ -73,8 +73,6 @@ public class RBACLLW15AccessCredentialPSerParameter extends PairingKeySerParamet
 
     public Element getBsPrimeAt(int index) { return this.bsPrime[index].duplicate(); }
 
-    public Element[] getBsPrime() { return this.bsPrime; }
-
     @Override
     public boolean equals(Object anOjbect) {
         if (this == anOjbect) {
@@ -122,7 +120,7 @@ public class RBACLLW15AccessCredentialPSerParameter extends PairingKeySerParamet
                 return false;
             }
             //Compare bsPrime
-            if (!PairingUtils.isEqualElementArray(this.bsPrime, that.getBsPrime())) {
+            if (!PairingUtils.isEqualElementArray(this.bsPrime, that.bsPrime)) {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysBsPrime, that.byteArraysBsPrime)) {
@@ -138,11 +136,11 @@ public class RBACLLW15AccessCredentialPSerParameter extends PairingKeySerParamet
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.elementId = pairing.getZr().newElementFromBytes(this.byteArrayElementId);
-        this.a0Prime = pairing.getG1().newElementFromBytes(this.byteArrayA0Prime);
-        this.a1Prime = pairing.getG1().newElementFromBytes(this.byteArrayA1Prime);
-        this.b0Prime = pairing.getG1().newElementFromBytes(this.byteArrayB0Prime);
-        this.bvPrime = pairing.getG1().newElementFromBytes(this.byteArrayBvPrime);
+        this.elementId = pairing.getZr().newElementFromBytes(this.byteArrayElementId).getImmutable();
+        this.a0Prime = pairing.getG1().newElementFromBytes(this.byteArrayA0Prime).getImmutable();
+        this.a1Prime = pairing.getG1().newElementFromBytes(this.byteArrayA1Prime).getImmutable();
+        this.b0Prime = pairing.getG1().newElementFromBytes(this.byteArrayB0Prime).getImmutable();
+        this.bvPrime = pairing.getG1().newElementFromBytes(this.byteArrayBvPrime).getImmutable();
         this.bsPrime = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysBsPrime, PairingUtils.PairingGroupType.G1);
     }
 }

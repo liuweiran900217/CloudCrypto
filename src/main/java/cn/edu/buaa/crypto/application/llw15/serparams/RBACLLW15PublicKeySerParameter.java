@@ -170,13 +170,13 @@ public class RBACLLW15PublicKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG);
-        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1);
-        this.g2 = pairing.getG1().newElementFromBytes(this.byteArrayG2);
-        this.g3 = pairing.getG1().newElementFromBytes(this.byteArrayG3);
-        this.gh = pairing.getG1().newElementFromBytes(this.byteArrayGh);
-        this.u0 = pairing.getG1().newElementFromBytes(this.byteArrayU0);
-        this.uv = pairing.getG1().newElementFromBytes(this.byteArrayUv);
+        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG).getImmutable();
+        this.g1 = pairing.getG1().newElementFromBytes(this.byteArrayG1).getImmutable();
+        this.g2 = pairing.getG1().newElementFromBytes(this.byteArrayG2).getImmutable();
+        this.g3 = pairing.getG1().newElementFromBytes(this.byteArrayG3).getImmutable();
+        this.gh = pairing.getG1().newElementFromBytes(this.byteArrayGh).getImmutable();
+        this.u0 = pairing.getG1().newElementFromBytes(this.byteArrayU0).getImmutable();
+        this.uv = pairing.getG1().newElementFromBytes(this.byteArrayUv).getImmutable();
         this.us = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysUs, PairingUtils.PairingGroupType.G1);
     }
 }

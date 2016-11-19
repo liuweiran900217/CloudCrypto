@@ -68,7 +68,7 @@ class BLS01SignPublicKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
 
-        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG);
-        this.v = pairing.getG1().newElementFromBytes(this.byteArrayV);
+        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG).getImmutable();
+        this.v = pairing.getG1().newElementFromBytes(this.byteArrayV).getImmutable();
     }
 }

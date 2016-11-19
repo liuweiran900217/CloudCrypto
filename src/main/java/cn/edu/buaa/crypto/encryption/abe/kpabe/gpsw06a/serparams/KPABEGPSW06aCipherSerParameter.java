@@ -59,7 +59,7 @@ public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.Es = new HashMap<String, Element>();
         for (String attribute : this.byteArraysEs.keySet()) {
-            this.Es.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysEs.get(attribute)));
+            this.Es.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysEs.get(attribute)).getImmutable());
         }
     }
 }

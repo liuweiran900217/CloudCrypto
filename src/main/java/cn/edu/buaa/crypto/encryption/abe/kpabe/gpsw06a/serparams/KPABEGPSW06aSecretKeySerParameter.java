@@ -74,7 +74,7 @@ public class KPABEGPSW06aSecretKeySerParameter extends PairingKeySerParameter {
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.Ds = new HashMap<String, Element>();
         for (String rho : this.byteArraysDs.keySet()) {
-            this.Ds.put(rho, pairing.getG1().newElementFromBytes(this.byteArraysDs.get(rho)));
+            this.Ds.put(rho, pairing.getG1().newElementFromBytes(this.byteArraysDs.get(rho)).getImmutable());
         }
     }
 }

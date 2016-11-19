@@ -104,9 +104,9 @@ public class RELSW10aSecretKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.elementId = pairing.getZr().newElementFromBytes(this.byteArrayElementId);
-        this.d0 = pairing.getG1().newElementFromBytes(this.byteArrayD0);
-        this.d1 = pairing.getG1().newElementFromBytes(this.byteArrayD1);
-        this.d2 = pairing.getG1().newElementFromBytes(this.byteArrayD2);
+        this.elementId = pairing.getZr().newElementFromBytes(this.byteArrayElementId).getImmutable();
+        this.d0 = pairing.getG1().newElementFromBytes(this.byteArrayD0).getImmutable();
+        this.d1 = pairing.getG1().newElementFromBytes(this.byteArrayD1).getImmutable();
+        this.d2 = pairing.getG1().newElementFromBytes(this.byteArrayD2).getImmutable();
     }
 }

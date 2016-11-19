@@ -123,10 +123,10 @@ public class HIBBELLW14PublicKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG);
-        this.h = pairing.getG1().newElementFromBytes(this.byteArrayH);
+        this.g = pairing.getG1().newElementFromBytes(this.byteArrayG).getImmutable();
+        this.h = pairing.getG1().newElementFromBytes(this.byteArrayH).getImmutable();
         this.us = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysUs, PairingUtils.PairingGroupType.G1);
-        this.X3 = pairing.getG1().newElementFromBytes(this.byteArrayX3);
-        this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha);
+        this.X3 = pairing.getG1().newElementFromBytes(this.byteArrayX3).getImmutable();
+        this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha).getImmutable();
     }
 }

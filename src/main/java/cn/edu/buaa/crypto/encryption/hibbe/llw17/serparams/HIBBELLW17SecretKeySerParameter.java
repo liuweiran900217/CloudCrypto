@@ -129,9 +129,9 @@ public class HIBBELLW17SecretKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.elementIds = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysElementIds, PairingUtils.PairingGroupType.Zr);
-        this.a0 = pairing.getG1().newElementFromBytes(this.byteArrayA0);
-        this.a1 = pairing.getG1().newElementFromBytes(this.byteArrayA1);
+        this.a0 = pairing.getG1().newElementFromBytes(this.byteArrayA0).getImmutable();
+        this.a1 = pairing.getG1().newElementFromBytes(this.byteArrayA1).getImmutable();
         this.bs = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysBs, PairingUtils.PairingGroupType.G1);
-        this.bv = pairing.getG1().newElementFromBytes(this.byteArrayBv);
+        this.bv = pairing.getG1().newElementFromBytes(this.byteArrayBv).getImmutable();
     }
 }
