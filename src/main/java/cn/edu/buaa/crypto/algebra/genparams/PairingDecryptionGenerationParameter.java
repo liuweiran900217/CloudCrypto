@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.algebra.genparams;
 
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 
@@ -10,20 +10,20 @@ import org.bouncycastle.crypto.CipherParameters;
  * Pairing decryption generation parameter
  */
 public abstract class PairingDecryptionGenerationParameter implements CipherParameters {
-    private AsymmetricKeySerParameter publicKeyParameter;
-    private AsymmetricKeySerParameter secretKeyParameter;
+    private PairingKeySerParameter publicKeyParameter;
+    private PairingKeySerParameter secretKeyParameter;
     private PairingCipherSerParameter ciphertextParameter;
 
     public PairingDecryptionGenerationParameter(
-            AsymmetricKeySerParameter publicKeyParameter, AsymmetricKeySerParameter secretKeyParameter,
+            PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
             PairingCipherSerParameter ciphertextParameter) {
         this.publicKeyParameter = publicKeyParameter;
         this.secretKeyParameter = secretKeyParameter;
         this.ciphertextParameter = ciphertextParameter;
     }
-    public AsymmetricKeySerParameter getPublicKeyParameter() { return this.publicKeyParameter; }
+    public PairingKeySerParameter getPublicKeyParameter() { return this.publicKeyParameter; }
 
-    public AsymmetricKeySerParameter getSecretKeyParameter() { return this.secretKeyParameter; }
+    public PairingKeySerParameter getSecretKeyParameter() { return this.secretKeyParameter; }
 
     public PairingCipherSerParameter getCiphertextParameter() { return this.ciphertextParameter; }
 }

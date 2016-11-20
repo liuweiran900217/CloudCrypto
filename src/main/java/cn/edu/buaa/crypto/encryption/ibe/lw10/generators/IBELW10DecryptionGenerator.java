@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10DecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10SecretKeySerParameter;
@@ -25,9 +25,9 @@ public class IBELW10DecryptionGenerator implements PairingDecryptionGenerator {
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {
-        IBELW10PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        IBELW10SecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        IBELW10CipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        IBELW10PublicKeySerParameter publicKeyParameters = (IBELW10PublicKeySerParameter)this.params.getPublicKeyParameter();
+        IBELW10SecretKeySerParameter secretKeyParameters = (IBELW10SecretKeySerParameter)this.params.getSecretKeyParameter();
+        IBELW10CiphertextSerParameter ciphertextParameters = (IBELW10CiphertextSerParameter)this.params.getCiphertextParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element elementIdCT = PairingUtils.MapStringToGroup(pairing, this.params.getId(), PairingUtils.PairingGroupType.Zr);

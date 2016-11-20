@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15AccessCredentialMDeleParameter;
 import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15AccessCredentialMGenParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -17,19 +17,19 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu role-based access control medial staff access credential generator.
  */
-public class RBACLLW15AccessCredentialMGenerator implements AsymmetricKeySerParametersGenerator {
+public class RBACLLW15AccessCredentialMGenerator implements PairingKeyParameterGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public AsymmetricKeySerParameter generateKey() {
+    public PairingKeySerParameter generateKey() {
         if (params instanceof RBACLLW15AccessCredentialMGenParameter) {
             RBACLLW15AccessCredentialMGenParameter parameters = (RBACLLW15AccessCredentialMGenParameter)params;
 
-            RBACLLW15PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            RBACLLW15PublicKeySerParameter publicKeyParameters = (RBACLLW15PublicKeySerParameter)parameters.getPublicKeyParameter();
+            RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = (RBACLLW15MasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             Element[] elementRoles = PairingUtils.MapStringArrayToGroup(pairing, parameters.getRoles(), PairingUtils.PairingGroupType.Zr);
@@ -90,8 +90,8 @@ public class RBACLLW15AccessCredentialMGenerator implements AsymmetricKeySerPara
         } else if (params instanceof RBACLLW15AccessCredentialMDeleParameter)  {
             RBACLLW15AccessCredentialMDeleParameter parameters = (RBACLLW15AccessCredentialMDeleParameter)params;
 
-            RBACLLW15PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            RBACLLW15AccessCredentialMSerParameter secretKeyParameters = parameters.getAccessCredentialMParameters();
+            RBACLLW15PublicKeySerParameter publicKeyParameters = (RBACLLW15PublicKeySerParameter)parameters.getPublicKeyParameter();
+            RBACLLW15AccessCredentialMSerParameter secretKeyParameters = (RBACLLW15AccessCredentialMSerParameter)parameters.getSecretKeyParameter();
 
             Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
             String[] roles = new String[publicKeyParameters.getMaxRoleNumber()];

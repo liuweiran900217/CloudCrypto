@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aEncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -24,7 +24,7 @@ public class HIBBELLW16aEncryptionGenerator implements PairingEncryptionGenerato
     }
 
     public PairingCipherSerParameter generateCiphertext() {
-        HIBBELLW16aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        HIBBELLW16aPublicKeySerParameter publicKeyParameters = (HIBBELLW16aPublicKeySerParameter)this.params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
         if (this.params.getIds().length != publicKeyParameters.getMaxUser()) {
@@ -43,6 +43,6 @@ public class HIBBELLW16aEncryptionGenerator implements PairingEncryptionGenerato
             }
         }
         C1 = C1.powZn(beta).getImmutable();
-        return new HIBBELLW16aCipherSerParameter(publicKeyParameters.getParameters(), C0, C1, C2);
+        return new HIBBELLW16aCiphertextSerParameter(publicKeyParameters.getParameters(), C0, C1, C2);
     }
 }

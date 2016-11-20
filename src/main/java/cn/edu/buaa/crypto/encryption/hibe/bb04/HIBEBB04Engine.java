@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04DecryptionGenerator;
@@ -9,7 +9,7 @@ import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04EncryptionGene
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.genparams.*;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
@@ -39,14 +39,14 @@ public class HIBEBB04Engine implements HIBEEngine {
 
     }
 
-    public AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxDepth) {
+    public PairingKeySerPair setup(PairingParameters pairingParameters, int maxDepth) {
         HIBEBB04KeyPairGenerator keyPairGenerator = new HIBEBB04KeyPairGenerator();
         keyPairGenerator.init(new HIBEBB04KeyPairGenerationParameter(pairingParameters, maxDepth));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String... ids) {
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String... ids) {
         if (!(publicKey instanceof HIBEBB04PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -66,7 +66,7 @@ public class HIBEBB04Engine implements HIBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public AsymmetricKeySerParameter delegate(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String id) {
+    public PairingKeySerParameter delegate(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String id) {
         if (!(publicKey instanceof HIBEBB04PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -86,7 +86,7 @@ public class HIBEBB04Engine implements HIBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message){
+    public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof HIBEBB04PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -99,8 +99,8 @@ public class HIBEBB04Engine implements HIBEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
-    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-            String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+    public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                              String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBEBB04PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -113,11 +113,11 @@ public class HIBEBB04Engine implements HIBEEngine {
                             + secretKey.getClass().getName() + ", require "
                             + HIBEBB04SecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof HIBEBB04CipherSerParameter)){
+        if (!(ciphertext instanceof HIBEBB04CiphertextSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + HIBEBB04CipherSerParameter.class.getName());
+                            + HIBEBB04CiphertextSerParameter.class.getName());
         }
         HIBEBB04DecryptionGenerator decryptionGenerator = new HIBEBB04DecryptionGenerator();
         decryptionGenerator.init(new HIBEBB04DecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));

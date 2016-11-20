@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.algebra.generators;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerPair;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
- * Created by Weiran Liu on 2016/11/9.
+ * Created by Weiran Liu on 2016/11/21.
  *
- * Asymmetric serializable key pair generator.
+ * Asymmetric key pair generator.
  */
 public interface AsymmetricKeySerPairGenerator {
     /**

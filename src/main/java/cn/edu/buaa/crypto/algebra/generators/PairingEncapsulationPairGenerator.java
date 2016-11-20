@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.algebra.generators;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**

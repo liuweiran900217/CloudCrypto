@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10KeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
@@ -14,16 +14,17 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 16/5/7.
- * Modified by Weiran Liu on 16/5/16.
+ *
+ * Lewko-Waters IBE public key / master secret key pair generator.
  */
-public class IBELW10KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+public class IBELW10KeyPairGenerator implements PairingKeyPairGenerator {
     private IBELW10KeyPairGenerationParameter params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = (IBELW10KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerPair generateKeyPair() {
+    public PairingKeySerPair generateKeyPair() {
         PropertiesParameters parameters = (PropertiesParameters) this.params.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
         Element generator = pairing.getG1().newRandomElement().getImmutable();
@@ -39,7 +40,7 @@ public class IBELW10KeyPairGenerator implements AsymmetricKeySerPairGenerator {
         parameters.remove("n0");
         parameters.remove("n1");
         parameters.remove("n2");
-        return new AsymmetricKeySerPair(
+        return new PairingKeySerPair(
                 new IBELW10PublicKeySerParameter(parameters, u, g, h, eggAlpha),
                 new IBELW10MasterSecretKeySerParameter(parameters, alpha, g3Generator));
     }

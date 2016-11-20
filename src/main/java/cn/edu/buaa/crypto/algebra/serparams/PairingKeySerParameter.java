@@ -2,23 +2,24 @@ package cn.edu.buaa.crypto.algebra.serparams;
 
 import it.unisa.dia.gas.jpbc.PairingParameters;
 
-import java.io.Serializable;
-
 /**
  * Created by Weiran Liu on 2016/11/9.
  *
- * Pairing-based scheme key serializable parameters.
+ * Serializable asymmetric key parameter.
+ * This is the same as AsymmetricKeyParameters, except that this is serializable.
+ * All the asymmetric key parameters should extend this class for supporting serialization.
  */
-public class PairingKeySerParameter extends AsymmetricKeySerParameter implements Serializable {
-    private PairingParameters parameters;
+public class PairingKeySerParameter extends PairingCipherSerParameter {
+    private boolean privateKey;
 
-    public PairingKeySerParameter(boolean isPrivate, PairingParameters parameters) {
-        super(isPrivate);
-        this.parameters = parameters;
+    public PairingKeySerParameter(boolean privateKey, PairingParameters pairingParameters) {
+        super(pairingParameters);
+        this.privateKey = privateKey;
     }
 
-    public PairingParameters getParameters() {
-        return parameters;
+    public boolean isPrivate()
+    {
+        return privateKey;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class PairingKeySerParameter extends AsymmetricKeySerParameter implements
         if (anOjbect instanceof PairingKeySerParameter) {
             PairingKeySerParameter that = (PairingKeySerParameter)anOjbect;
             //Compare Pairing Parameters
-            return this.getParameters().toString().equals(that.getParameters().toString());
+            return (this.privateKey == that.privateKey);
         }
         return false;
     }

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aDecryptionGenerator;
@@ -12,7 +12,7 @@ import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aEnc
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aSecretKeyGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aSecretKeySerParameter;
@@ -46,14 +46,14 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
         return SCHEME_NAME;
     }
 
-    public AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
+    public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         KPABEGPSW06aKeyPairGenerator keyPairGenerator = new KPABEGPSW06aKeyPairGenerator();
         keyPairGenerator.init(new KPABEGPSW06aKeyPairGenerationParameter(pairingParameters, maxAttributesNum));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos) {
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos) {
         if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -73,7 +73,7 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] attributes, Element message) {
+    public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] attributes, Element message) {
         if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -86,8 +86,8 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
-    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-                                String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+    public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                              String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -100,11 +100,11 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
                             + secretKey.getClass().getName() + ", require "
                             + KPABEGPSW06aSecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof KPABEGPSW06aCipherSerParameter)){
+        if (!(ciphertext instanceof KPABEGPSW06aCiphertextSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + KPABEGPSW06aCipherSerParameter.class.getName());
+                            + KPABEGPSW06aCiphertextSerParameter.class.getName());
         }
         KPABEGPSW06aDecryptionGenerator decryptionGenerator = new KPABEGPSW06aDecryptionGenerator();
         decryptionGenerator.init(new KPABEGPSW06aDecryptionGenerationParameter(

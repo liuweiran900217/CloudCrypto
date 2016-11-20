@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.genparams;
 
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15EncapsulationSerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15PublicKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
@@ -18,11 +19,11 @@ public class RBACLLW15EncapsulationAuditParameter implements CipherParameters {
     private RBACLLW15EncapsulationSerParameter encapsulationParameters;
 
     public RBACLLW15EncapsulationAuditParameter(
-            AsymmetricKeySerParameter publicKeyParameters,
+            PairingKeySerParameter publicKeyParameters,
             String id,
             String[] roles,
             String time,
-            CipherParameters encapsulationParameters) {
+            PairingCipherSerParameter encapsulationParameters) {
         this.publicKeyParameters = (RBACLLW15PublicKeySerParameter)publicKeyParameters;
         assert(roles.length == this.publicKeyParameters.getMaxRoleNumber());
         this.roles = roles;
@@ -40,8 +41,6 @@ public class RBACLLW15EncapsulationAuditParameter implements CipherParameters {
     }
 
     public String[] getRoles() { return this.roles; }
-
-    public String getRolesAt(int index) { return this.roles[index]; }
 
     public String getId() { return this.id; }
 

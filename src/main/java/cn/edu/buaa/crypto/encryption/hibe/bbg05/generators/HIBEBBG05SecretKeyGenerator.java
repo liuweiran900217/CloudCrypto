@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05SecretKeySerParameter;
@@ -18,19 +18,19 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Secret Key Generators for Boneh-Boyen-Goh HIBE.
  */
-public class HIBEBBG05SecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
+public class HIBEBBG05SecretKeyGenerator implements PairingKeyParameterGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public AsymmetricKeySerParameter generateKey() {
+    public PairingKeySerParameter generateKey() {
         if (params instanceof HIBEBBG05SecretKeyGenerationParameter) {
             HIBEBBG05SecretKeyGenerationParameter parameters = (HIBEBBG05SecretKeyGenerationParameter)params;
 
-            HIBEBBG05PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBEBBG05MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            HIBEBBG05PublicKeySerParameter publicKeyParameters = (HIBEBBG05PublicKeySerParameter)parameters.getPublicKeyParameter();
+            HIBEBBG05MasterSecretKeySerParameter masterSecretKeyParameters = (HIBEBBG05MasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
             int length = parameters.getLength();
             assert(length <= publicKeyParameters.getMaxLength());
 
@@ -60,8 +60,8 @@ public class HIBEBBG05SecretKeyGenerator implements AsymmetricKeySerParametersGe
         } else if (params instanceof HIBEBBG05DelegateGenerationParameter)  {
             HIBEBBG05DelegateGenerationParameter parameters = (HIBEBBG05DelegateGenerationParameter)params;
 
-            HIBEBBG05PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBEBBG05SecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
+            HIBEBBG05PublicKeySerParameter publicKeyParameters = (HIBEBBG05PublicKeySerParameter)parameters.getPublicKeyParameter();
+            HIBEBBG05SecretKeySerParameter secretKeyParameters = (HIBEBBG05SecretKeySerParameter)parameters.getSecretKeyParameter();
             int length = secretKeyParameters.getLength() + 1;
             assert(length <= publicKeyParameters.getMaxLength());
 

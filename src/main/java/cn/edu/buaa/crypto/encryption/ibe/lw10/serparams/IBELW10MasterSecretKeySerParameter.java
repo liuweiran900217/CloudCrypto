@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 16/5/6.
  *
- * Lewko-Wateres composite-order IBE with full security.
+ * Lewko-Waters IBE master secret key parameter.
  */
 public class IBELW10MasterSecretKeySerParameter extends PairingKeySerParameter {
 

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -25,9 +25,9 @@ public class HIBEBB04DecryptionGenerator implements PairingDecryptionGenerator {
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {
-        HIBEBB04PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        HIBEBB04SecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        HIBEBB04CipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        HIBEBB04PublicKeySerParameter publicKeyParameters = (HIBEBB04PublicKeySerParameter)this.params.getPublicKeyParameter();
+        HIBEBB04SecretKeySerParameter secretKeyParameters = (HIBEBB04SecretKeySerParameter)this.params.getSecretKeyParameter();
+        HIBEBB04CiphertextSerParameter ciphertextParameters = (HIBEBB04CiphertextSerParameter)this.params.getCiphertextParameter();
 
         int secretKeyLength = secretKeyParameters.getLength();
 

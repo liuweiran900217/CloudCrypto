@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10DecryptionGenerator;
@@ -39,14 +39,14 @@ public class IBELW10Engine implements IBEEngine {
 
     }
 
-    public AsymmetricKeySerPair setup(PairingParameters pairingParameters) {
+    public PairingKeySerPair setup(PairingParameters pairingParameters) {
         IBELW10KeyPairGenerator keyPairGenerator = new IBELW10KeyPairGenerator();
         keyPairGenerator.init(new IBELW10KeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id) {
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id) {
         if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -66,7 +66,7 @@ public class IBELW10Engine implements IBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String id, Element message){
+    public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String id, Element message){
         if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -79,8 +79,8 @@ public class IBELW10Engine implements IBEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
-    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-                                 String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+    public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                              String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -93,11 +93,11 @@ public class IBELW10Engine implements IBEEngine {
                             + secretKey.getClass().getName() + ", require "
                             + IBELW10SecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof IBELW10CipherSerParameter)){
+        if (!(ciphertext instanceof IBELW10CiphertextSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + IBELW10CipherSerParameter.class.getName());
+                            + IBELW10CiphertextSerParameter.class.getName());
         }
         IBELW10DecryptionGenerator decryptionGenerator = new IBELW10DecryptionGenerator();
         decryptionGenerator.init(new IBELW10DecryptionGenerationParameter(

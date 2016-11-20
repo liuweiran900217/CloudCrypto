@@ -7,7 +7,6 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
-import org.bouncycastle.crypto.Signer;
 
 import java.util.Arrays;
 
@@ -37,7 +36,7 @@ public class HIBBELLW16bPublicKeySerParameter extends PairingKeySerParameter {
     private transient Element uv;
     private final byte[] byteArrayUv;
 
-    public HIBBELLW16bPublicKeySerParameter(PairingParameters parameters, Signer signer,
+    public HIBBELLW16bPublicKeySerParameter(PairingParameters parameters,
                                             Element g, Element g1, Element g2, Element g3, Element[] us, Element uv) {
         super(false, parameters);
 

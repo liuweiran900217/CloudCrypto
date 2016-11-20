@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -34,19 +34,19 @@ public class CPABEBSW07Engine extends CPABEEngine {
         return SCHEME_NAME;
     }
 
-    public AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
+    public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         return null;
     }
 
-    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String[] attributes) {
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String[] attributes) {
         return null;
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos) {
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos) {
         return null;
     }
 
-    public byte[] decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         return new byte[0];
     }
 }

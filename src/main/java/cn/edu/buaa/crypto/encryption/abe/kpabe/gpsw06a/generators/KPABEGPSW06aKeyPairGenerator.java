@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
@@ -18,14 +18,14 @@ import java.util.Map;
  *
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE public key / master secret key pair generator.
  */
-public class KPABEGPSW06aKeyPairGenerator implements AsymmetricKeySerPairGenerator {
+public class KPABEGPSW06aKeyPairGenerator implements PairingKeyPairGenerator {
     private KPABEGPSW06aKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.parameters = (KPABEGPSW06aKeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerPair generateKeyPair() {
+    public PairingKeySerPair generateKeyPair() {
         Pairing pairing = PairingFactory.getPairing(this.parameters.getPairingParameters());
 
         Map<String, Element> ts = new HashMap<String, Element>();
@@ -40,7 +40,7 @@ public class KPABEGPSW06aKeyPairGenerator implements AsymmetricKeySerPairGenerat
             Ts.put(attribute, g.powZn(t).getImmutable());
         }
 
-        return new AsymmetricKeySerPair(
+        return new PairingKeySerPair(
                 new KPABEGPSW06aPublicKeySerParameter(this.parameters.getPairingParameters(), g, Ts, Y),
                 new KPABEGPSW06aMasterSecretKeySerParameter(this.parameters.getPairingParameters(), ts, y));
     }

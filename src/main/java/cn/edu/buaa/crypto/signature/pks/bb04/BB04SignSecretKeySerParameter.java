@@ -24,7 +24,7 @@ class BB04SignSecretKeySerParameter extends PairingKeySerParameter {
     private final BB04SignPublicKeySerParameter publicKeyParameters;
 
     BB04SignSecretKeySerParameter(PairingParameters parameters, BB04SignPublicKeySerParameter publicKeyParameters,
-                                         Element x, Element y) {
+                                  Element x, Element y) {
         super(true, parameters);
         this.publicKeyParameters = publicKeyParameters;
         this.x = x.getImmutable();

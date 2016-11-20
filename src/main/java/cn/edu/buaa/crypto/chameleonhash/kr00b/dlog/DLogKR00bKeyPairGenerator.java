@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
 import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.SecurePrimeSerParameter;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bPublicKeySerParameter;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bSecretKeySerParameter;

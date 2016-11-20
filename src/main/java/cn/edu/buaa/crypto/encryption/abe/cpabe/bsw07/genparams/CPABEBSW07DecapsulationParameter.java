@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07CipherSerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicPairingKeySerParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07SecretPairingKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**
@@ -12,8 +12,8 @@ import org.bouncycastle.crypto.CipherParameters;
  * Bethencourt-Sahai-Waters large-universe CP-ABE session key decapsulation parameter.
  */
 public class CPABEBSW07DecapsulationParameter implements CipherParameters {
-    private CPABEBSW07PublicKeySerParameter publicKeyParameters;
-    private CPABEBSW07SecretKeySerParameter secretKeyParameters;
+    private CPABEBSW07PublicPairingKeySerParameter publicKeyParameters;
+    private CPABEBSW07SecretPairingKeySerParameter secretKeyParameters;
     private int[][] accessPolicy;
     private String[] rhos;
     private CPABEBSW07CipherSerParameter ciphertextParameters;
@@ -23,18 +23,18 @@ public class CPABEBSW07DecapsulationParameter implements CipherParameters {
             AccessControlEngine accessControlEngine, CipherParameters publicKeyParameters, CipherParameters secretKeyParameters,
             int[][] accessPolicy, String[] rhos, CipherParameters ciphertextParameters) {
         this.accessControlEngine = accessControlEngine;
-        this.publicKeyParameters = (CPABEBSW07PublicKeySerParameter)publicKeyParameters;
-        this.secretKeyParameters = (CPABEBSW07SecretKeySerParameter)secretKeyParameters;
+        this.publicKeyParameters = (CPABEBSW07PublicPairingKeySerParameter)publicKeyParameters;
+        this.secretKeyParameters = (CPABEBSW07SecretPairingKeySerParameter)secretKeyParameters;
         this.accessPolicy = accessPolicy;
         this.rhos = rhos;
         this.ciphertextParameters = (CPABEBSW07CipherSerParameter)ciphertextParameters;
     }
 
-    public CPABEBSW07PublicKeySerParameter getPublicKeyParameters() {
+    public CPABEBSW07PublicPairingKeySerParameter getPublicKeyParameters() {
         return this.publicKeyParameters;
     }
 
-    public CPABEBSW07SecretKeySerParameter getSecretKeyParameters() {
+    public CPABEBSW07SecretPairingKeySerParameter getSecretKeyParameters() {
         return this.secretKeyParameters;
     }
 

@@ -1,8 +1,8 @@
 package com.example.application.llw15;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -203,20 +203,20 @@ public class RBACLLW15PerformanceTest {
         System.out.print("Setup; ");
         out.print("Setup : ");
         timer.start(0);
-        AsymmetricKeySerPair keyPair = engine.Setup(pairingParameters, maximal_roles);
+        PairingKeySerPair keyPair = engine.Setup(pairingParameters, maximal_roles);
         temperTime = timer.stop(0);
         out.print("\t" + temperTime);
         this.timeSetep += temperTime;
         out.println();
 
-        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
-        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
+        PairingKeySerParameter publicKey = keyPair.getPublic();
+        PairingKeySerParameter masterKey = keyPair.getPrivate();
 
         System.out.print("ACGenP; ");
         out.print("ACGenP: ");
         //test patient access credential Generation performance
         timer.start(0);
-        AsymmetricKeySerParameter accessCredentialPatient = engine.ACGenP(publicKey, masterKey, patientId);
+        PairingKeySerParameter accessCredentialPatient = engine.ACGenP(publicKey, masterKey, patientId);
         temperTime = timer.stop(0);
         out.print("\t" + temperTime);
         this.timeAccessCredentialGenP += temperTime;
@@ -235,7 +235,7 @@ public class RBACLLW15PerformanceTest {
         System.out.print("ACGenM; ");
         out.print("ACGenM: ");
         //test medical staff access credential generation performance
-        AsymmetricKeySerParameter[] accessCredentialMedicalStaff = new AsymmetricKeySerParameter[maximal_depth];
+        PairingKeySerParameter[] accessCredentialMedicalStaff = new PairingKeySerParameter[maximal_depth];
         PairingCipherSerParameter[] accessCredentialMedicalStaffIntermediateParameters = new PairingCipherSerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth; i++) {
             timer.start(i);
@@ -262,7 +262,7 @@ public class RBACLLW15PerformanceTest {
         System.out.print("ACDeleM; ");
         out.print("ACDeleM: ");
         //test medical staff access credential delegation performance
-        AsymmetricKeySerParameter[] accessCredentialDelegateMedicalStaff = new AsymmetricKeySerParameter[maximal_depth];
+        PairingKeySerParameter[] accessCredentialDelegateMedicalStaff = new PairingKeySerParameter[maximal_depth];
         PairingCipherSerParameter[] accessCredentialDelegateMedicalStaffIntermediateParameters = new PairingCipherSerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth - 1; i++) {
             timer.start(i + 1);

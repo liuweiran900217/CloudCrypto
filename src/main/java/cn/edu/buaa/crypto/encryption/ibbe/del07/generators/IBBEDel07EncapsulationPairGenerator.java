@@ -1,10 +1,10 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
 import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07EncapsulationGenerationParameter;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -26,7 +26,7 @@ public class IBBEDel07EncapsulationPairGenerator implements PairingEncapsulation
     }
 
     public PairingKeyEncapsulationSerPair generateEncryptionPair() {
-        IBBEDel07PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        IBBEDel07PublicKeySerParameter publicKeyParameters = (IBBEDel07PublicKeySerParameter)this.params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
         if (ids.length > publicKeyParameters.getMaxBroadcastReceiver()) {
@@ -54,6 +54,6 @@ public class IBBEDel07EncapsulationPairGenerator implements PairingEncapsulation
 
         return new PairingKeyEncapsulationSerPair(
                 byteArraySessionKey,
-                new IBBEDel07CipherSerParameter(publicKeyParameters.getParameters(), C1, C2));
+                new IBBEDel07CiphertextSerParameter(publicKeyParameters.getParameters(), C1, C2));
     }
 }

@@ -21,7 +21,7 @@ import java.io.IOException;
 public class BB04Signer implements PairingSigner {
     private static final String SCHEME_NAME = "Boneh-Boyen-08 signature scheme";
 
-    private transient PairingKeySerParameter pairingKeySerParameter;
+    private PairingKeySerParameter pairingKeySerParameter;
 
     public BB04Signer() {
 

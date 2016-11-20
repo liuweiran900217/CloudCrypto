@@ -1,11 +1,10 @@
 package cn.edu.buaa.crypto.encryption.ibbe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
-import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -22,7 +21,7 @@ public interface IBBEEngine extends Engine {
      * @param maxBroadcastReceiver maximal broadcast receivers, ignore if the scheme is unbounded
      * @return public key / master secret key pair of the scheme
      */
-    AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver);
+    PairingKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver);
 
     /**
      * Secret Key Generation Algorithm for IBBE
@@ -31,7 +30,7 @@ public interface IBBEEngine extends Engine {
      * @param id associated identity
      * @return secret key associated with the identity id
      */
-    AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id);
+    PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
 
     /**
      * Key Encapsulation Algorithm for IBBE
@@ -39,7 +38,7 @@ public interface IBBEEngine extends Engine {
      * @param ids a broadcast identity set
      * @return session key / ciphertext pair associated with the broadcast identity set ids
      */
-    PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String[] ids);
+    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
 
     /**
      * Key Decapsulation Algorithm for IBBE
@@ -50,7 +49,7 @@ public interface IBBEEngine extends Engine {
      * @return the decapsulated session key
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-                           String[] ids, PairingCipherSerParameter ciphertext
+    byte[] decapsulation (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                          String[] ids, PairingCipherSerParameter ciphertext
         ) throws InvalidCipherTextException;
     }

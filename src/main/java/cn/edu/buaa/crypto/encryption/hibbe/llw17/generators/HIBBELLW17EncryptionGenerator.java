@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw17.generators;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.genparams.HIBBELLW17EncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17PublicKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
@@ -27,7 +27,7 @@ public class HIBBELLW17EncryptionGenerator implements PairingEncryptionGenerator
     public PairingCipherSerParameter generateCiphertext() {
         Digest digest = this.params.getDigest();
         digest.reset();
-        HIBBELLW17PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        HIBBELLW17PublicKeySerParameter publicKeyParameters = (HIBBELLW17PublicKeySerParameter)this.params.getPublicKeyParameter();
         if (this.params.getIds().length != publicKeyParameters.getMaxUser()) {
             throw new IllegalArgumentException("Invalid identity vector set length");
         }
@@ -57,6 +57,6 @@ public class HIBBELLW17EncryptionGenerator implements PairingEncryptionGenerator
 
         Element elementIDv = PairingUtils.MapByteArrayToGroup(pairing, byteArrayIDv, PairingUtils.PairingGroupType.Zr);
         C1 = C1.mul(publicKeyParameters.getUv().powZn(elementIDv)).powZn(beta).getImmutable();
-        return new HIBBELLW17CipherSerParameter(publicKeyParameters.getParameters(), C0, C1, C2);
+        return new HIBBELLW17CiphertextSerParameter(publicKeyParameters.getParameters(), C0, C1, C2);
     }
 }

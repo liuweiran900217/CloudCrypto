@@ -1,7 +1,7 @@
 package com.example.encryption.hibe;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import com.example.TestUtils;
@@ -36,8 +36,8 @@ public class HIBEEngineTest {
         this.engine = engine;
     }
 
-    private void test_valid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                          String[] identityVector, String[] identityVectorSet) {
+    private void test_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                       String[] identityVector, String[] identityVectorSet) {
         try {
             test_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
         } catch (Exception e) {
@@ -49,8 +49,8 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_invalid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                            String[] identityVector, String[] identityVectorSet) {
+    private void test_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                         String[] identityVector, String[] identityVectorSet) {
         try {
             test_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
         } catch (InvalidCipherTextException e) {
@@ -64,15 +64,15 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                    String[] identityVector, String[] identityVectorEnc)
+    private void test_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                 String[] identityVector, String[] identityVectorEnc)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
-        AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
+        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
         byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
         CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
         Assert.assertEquals(secretKey, anSecretKey);
-        secretKey = (AsymmetricKeySerParameter)anSecretKey;
+        secretKey = (PairingKeySerParameter)anSecretKey;
 
         //Encryption and serialization
         Element message = pairing.getGT().newRandomElement().getImmutable();
@@ -87,15 +87,15 @@ public class HIBEEngineTest {
         Assert.assertEquals(message, anMessage);
     }
 
-    private void test_delegation_valid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                                     String[] identityVector, String delegateId, String[] identityVectorEnc) {
+    private void test_delegation_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                                  String[] identityVector, String delegateId, String[] identityVectorEnc) {
         try {
-            AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
-            AsymmetricKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, delegateId);
+            PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
+            PairingKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, delegateId);
             byte[] byteArrayDelegateKey = TestUtils.SerCipherParameter(delegateKey);
             CipherParameters anDelegateKey = TestUtils.deserCipherParameters(byteArrayDelegateKey);
             Assert.assertEquals(delegateKey, anDelegateKey);
-            delegateKey = (AsymmetricKeySerParameter)anDelegateKey;
+            delegateKey = (PairingKeySerParameter)anDelegateKey;
 
             //Encryption and serialization
             Element message = pairing.getGT().newRandomElement().getImmutable();
@@ -118,15 +118,15 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_delegation_invalid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                                       String[] identityVector, String delegateId, String[] identityVectorEnc) {
+    private void test_delegation_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                                    String[] identityVector, String delegateId, String[] identityVectorEnc) {
         try {
-            AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
-            AsymmetricKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, delegateId);
+            PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
+            PairingKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, delegateId);
             byte[] byteArrayDelegateKey = TestUtils.SerCipherParameter(delegateKey);
             CipherParameters anDelegateKey = TestUtils.deserCipherParameters(byteArrayDelegateKey);
             Assert.assertEquals(delegateKey, anDelegateKey);
-            delegateKey = (AsymmetricKeySerParameter)anDelegateKey;
+            delegateKey = (PairingKeySerParameter)anDelegateKey;
 
             //Encryption and serialization
             Element message = pairing.getGT().newRandomElement().getImmutable();
@@ -155,18 +155,18 @@ public class HIBEEngineTest {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
-            AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, identityVector123.length);
-            AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+            PairingKeySerPair keyPair = engine.setup(pairingParameters, identityVector123.length);
+            PairingKeySerParameter publicKey = keyPair.getPublic();
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
             Assert.assertEquals(publicKey, anPublicKey);
-            publicKey = (AsymmetricKeySerParameter) anPublicKey;
+            publicKey = (PairingKeySerParameter) anPublicKey;
 
-            AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
+            PairingKeySerParameter masterKey = keyPair.getPrivate();
             byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
             CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
             Assert.assertEquals(masterKey, anMasterKey);
-            masterKey = (AsymmetricKeySerParameter) anMasterKey;
+            masterKey = (PairingKeySerParameter) anMasterKey;
 
             //test valid example
             System.out.println("Test valid examples");

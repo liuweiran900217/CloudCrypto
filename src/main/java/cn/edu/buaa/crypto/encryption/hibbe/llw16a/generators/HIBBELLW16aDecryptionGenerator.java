@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aSecretKeySerParameter;
@@ -25,9 +25,9 @@ public class HIBBELLW16aDecryptionGenerator implements PairingDecryptionGenerato
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {
-        HIBBELLW16aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        HIBBELLW16aSecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        HIBBELLW16aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        HIBBELLW16aPublicKeySerParameter publicKeyParameters = (HIBBELLW16aPublicKeySerParameter)this.params.getPublicKeyParameter();
+        HIBBELLW16aSecretKeySerParameter secretKeyParameters = (HIBBELLW16aSecretKeySerParameter)this.params.getSecretKeyParameter();
+        HIBBELLW16aCiphertextSerParameter ciphertextParameters = (HIBBELLW16aCiphertextSerParameter)this.params.getCiphertextParameter();
         if (this.params.getIds().length != publicKeyParameters.getMaxUser()
                 || secretKeyParameters.getIds().length != publicKeyParameters.getMaxUser()) {
             throw new IllegalArgumentException("Invalid identity vector / identity vector set length");

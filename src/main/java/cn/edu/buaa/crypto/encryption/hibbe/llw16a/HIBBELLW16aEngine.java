@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aDecryptionGenerator;
@@ -36,14 +36,14 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
 
     }
 
-    public AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxUser) {
+    public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {
         HIBBELLW16aKeyPairGenerator keyPairGenerator = new HIBBELLW16aKeyPairGenerator();
         keyPairGenerator.init(new HIBBELLW16aKeyPairGenerationParameter(pairingParameters, maxUser));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String[] ids) {
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String[] ids) {
         if (!(publicKey instanceof HIBBELLW16aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -63,7 +63,7 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public AsymmetricKeySerParameter delegate(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, int index, String id) {
+    public PairingKeySerParameter delegate(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, int index, String id) {
         if (!(publicKey instanceof HIBBELLW16aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -83,7 +83,7 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message){
+    public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof HIBBELLW16aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -96,7 +96,7 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
-    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
+    public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBBELLW16aPublicKeySerParameter)){
             throw new IllegalArgumentException
@@ -110,11 +110,11 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
                             + secretKey.getClass().getName() + ", require "
                             + HIBBELLW16aSecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof HIBBELLW16aCipherSerParameter)){
+        if (!(ciphertext instanceof HIBBELLW16aCiphertextSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + HIBBELLW16aCipherSerParameter.class.getName());
+                            + HIBBELLW16aCiphertextSerParameter.class.getName());
         }
         HIBBELLW16aDecryptionGenerator decryptionGenerator = new HIBBELLW16aDecryptionGenerator();
         decryptionGenerator.init(new HIBBELLW16aDecryptionGenerationParameter(

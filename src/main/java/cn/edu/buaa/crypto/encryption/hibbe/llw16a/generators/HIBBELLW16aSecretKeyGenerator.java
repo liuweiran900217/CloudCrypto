@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aDelegateGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aSecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -17,19 +17,19 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu prime-order HIBBE secret key generator.
  */
-public class HIBBELLW16aSecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
+public class HIBBELLW16aSecretKeyGenerator implements PairingKeyParameterGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public AsymmetricKeySerParameter generateKey() {
+    public PairingKeySerParameter generateKey() {
         if (params instanceof HIBBELLW16aSecretKeyGenerationParameter) {
             HIBBELLW16aSecretKeyGenerationParameter parameters = (HIBBELLW16aSecretKeyGenerationParameter)params;
 
-            HIBBELLW16aPublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBBELLW16aMasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            HIBBELLW16aPublicKeySerParameter publicKeyParameters = (HIBBELLW16aPublicKeySerParameter)parameters.getPublicKeyParameter();
+            HIBBELLW16aMasterSecretKeySerParameter masterSecretKeyParameters = (HIBBELLW16aMasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
             if (parameters.getIds().length != publicKeyParameters.getMaxUser()) {
                 throw new IllegalArgumentException("Invalid identity vector length");
             }
@@ -61,8 +61,8 @@ public class HIBBELLW16aSecretKeyGenerator implements AsymmetricKeySerParameters
         } else if (params instanceof HIBBELLW16aDelegateGenerationParameter)  {
             HIBBELLW16aDelegateGenerationParameter parameters = (HIBBELLW16aDelegateGenerationParameter)params;
 
-            HIBBELLW16aPublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBBELLW16aSecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
+            HIBBELLW16aPublicKeySerParameter publicKeyParameters = (HIBBELLW16aPublicKeySerParameter)parameters.getPublicKeyParameter();
+            HIBBELLW16aSecretKeySerParameter secretKeyParameters = (HIBBELLW16aSecretKeySerParameter)parameters.getSecretKeyParameter();
             if (secretKeyParameters.getIds().length != publicKeyParameters.getMaxUser()
                     || secretKeyParameters.getIds()[parameters.getIndex()] != null) {
                 throw new IllegalArgumentException("Invalid identity vector length");

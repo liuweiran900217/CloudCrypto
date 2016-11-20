@@ -1,7 +1,7 @@
 package com.example.encryption.ibe;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import com.example.TestUtils;
@@ -30,7 +30,7 @@ public class IBEEngineTest {
         this.engine = engine;
     }
 
-    private void test_valid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String identityForSecretKey, String identityForCiphertext) {
         try {
             test_decryption(pairing, publicKey, masterKey, identityForSecretKey, identityForCiphertext);
@@ -43,8 +43,8 @@ public class IBEEngineTest {
         }
     }
 
-    private void test_invalid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                            String identityForSecretKey, String identityForCiphertext) {
+    private void test_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                         String identityForSecretKey, String identityForCiphertext) {
         try {
             test_decryption(pairing, publicKey, masterKey, identityForSecretKey, identityForCiphertext);
         } catch (InvalidCipherTextException e) {
@@ -58,15 +58,15 @@ public class IBEEngineTest {
         }
     }
 
-    private void test_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                    String identityForSecretKey, String identityForCiphertext)
+    private void test_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                 String identityForSecretKey, String identityForCiphertext)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
-        AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityForSecretKey);
+        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityForSecretKey);
         byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
         CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
         Assert.assertEquals(secretKey, anSecretKey);
-        secretKey = (AsymmetricKeySerParameter)anSecretKey;
+        secretKey = (PairingKeySerParameter)anSecretKey;
 
         //Encryption and serialization
         Element message = pairing.getGT().newRandomElement().getImmutable();
@@ -85,18 +85,18 @@ public class IBEEngineTest {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
-            AsymmetricKeySerPair keyPair = engine.setup(pairingParameters);
-            AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+            PairingKeySerPair keyPair = engine.setup(pairingParameters);
+            PairingKeySerParameter publicKey = keyPair.getPublic();
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
             Assert.assertEquals(publicKey, anPublicKey);
-            publicKey = (AsymmetricKeySerParameter) anPublicKey;
+            publicKey = (PairingKeySerParameter) anPublicKey;
 
-            AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
+            PairingKeySerParameter masterKey = keyPair.getPrivate();
             byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
             CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
             Assert.assertEquals(masterKey, anMasterKey);
-            masterKey = (AsymmetricKeySerParameter) anMasterKey;
+            masterKey = (PairingKeySerParameter) anMasterKey;
 
             //test valid example
             System.out.println("Test valid examples");

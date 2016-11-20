@@ -1,8 +1,8 @@
 package com.example.encryption.abe.kpabe;
 
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
 import com.example.TestUtils;
@@ -31,7 +31,7 @@ public class KPABEEngineTest {
         this.engine = engine;
     }
 
-    private void test_valid_access_policy(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                           final String accessPolicyString, final String[] attributes) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
@@ -46,7 +46,7 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_valid_access_policy(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                           final int[][] accessPolicy, final String[] rhos, final String[] attributes) {
         try {
             test_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
@@ -58,7 +58,7 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_invalid_access_policy(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_invalid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                             final String accessPolicyString, final String[] attributes) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
@@ -75,7 +75,7 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_invalid_access_policy(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_invalid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                             final int[][] accessPolicy, final String[] rhos, final String[] attributes) {
         try {
             test_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
@@ -91,15 +91,15 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_access_policy(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                          final int[][] accessPolicy, final String[] rhos, final String[] attributes)
+    private void test_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                    final int[][] accessPolicy, final String[] rhos, final String[] attributes)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
-        AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, accessPolicy, rhos);
+        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, accessPolicy, rhos);
         byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
         CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
         Assert.assertEquals(secretKey, anSecretKey);
-        secretKey = (AsymmetricKeySerParameter)anSecretKey;
+        secretKey = (PairingKeySerParameter)anSecretKey;
 
         //Encryption and serialization
         Element message = pairing.getGT().newRandomElement().getImmutable();
@@ -118,18 +118,18 @@ public class KPABEEngineTest {
         try {
             Pairing pairing = PairingFactory.getPairing(pairingParameters);
             // Setup and serialization
-            AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, 50);
-            AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+            PairingKeySerPair keyPair = engine.setup(pairingParameters, 50);
+            PairingKeySerParameter publicKey = keyPair.getPublic();
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
             Assert.assertEquals(publicKey, anPublicKey);
-            publicKey = (AsymmetricKeySerParameter) anPublicKey;
+            publicKey = (PairingKeySerParameter) anPublicKey;
 
-            AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
+            PairingKeySerParameter masterKey = keyPair.getPrivate();
             byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
             CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
             Assert.assertEquals(masterKey, anMasterKey);
-            masterKey = (AsymmetricKeySerParameter) anMasterKey;
+            masterKey = (PairingKeySerParameter) anMasterKey;
 
             //test examples
             System.out.println("Test example 1");

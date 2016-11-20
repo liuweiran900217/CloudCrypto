@@ -1,33 +1,23 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16b.genparams;
 
-import cn.edu.buaa.crypto.algebra.genparams.PairingParametersGenerationParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bMasterSecretKeySerParameter;
+import cn.edu.buaa.crypto.algebra.genparams.PairingKeyGenerationParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bPublicKeySerParameter;
-import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2016/11/10.
  *
  * Liu-Liu-Wu prime-order CCA2-secure HIBBE secret key generation parameter.
  */
-public class HIBBELLW16bSecretKeyGenerationParameter  extends KeyGenerationParameters {
-    private HIBBELLW16bMasterSecretKeySerParameter masterSecretKeyParameters;
-    private HIBBELLW16bPublicKeySerParameter publicKeyParameters;
+public class HIBBELLW16bSecretKeyGenerationParameter extends PairingKeyGenerationParameter {
     private String[] ids;
 
-    public HIBBELLW16bSecretKeyGenerationParameter(CipherParameters publicKeyParameters, CipherParameters masterSecretKeyParameters,
+    public HIBBELLW16bSecretKeyGenerationParameter(PairingKeySerParameter publicKeyParameter, PairingKeySerParameter masterSecretKeyParameter,
                                                    String[] ids) {
-        super(null, PairingParametersGenerationParameter.STENGTH);
-        this.masterSecretKeyParameters = (HIBBELLW16bMasterSecretKeySerParameter)masterSecretKeyParameters;
-        this.publicKeyParameters = (HIBBELLW16bPublicKeySerParameter)publicKeyParameters;
-        assert(ids.length == this.publicKeyParameters.getMaxUser());
+        super(publicKeyParameter, masterSecretKeyParameter);
+        assert(ids.length == ((HIBBELLW16bPublicKeySerParameter)publicKeyParameter).getMaxUser());
         this.ids = ids;
     }
-
-    public HIBBELLW16bMasterSecretKeySerParameter getMasterSecretKeyParameters() { return this.masterSecretKeyParameters; }
-
-    public HIBBELLW16bPublicKeySerParameter getPublicKeyParameters() { return this.publicKeyParameters; }
 
     public String getIdAt(int index) {
         return ids[index];

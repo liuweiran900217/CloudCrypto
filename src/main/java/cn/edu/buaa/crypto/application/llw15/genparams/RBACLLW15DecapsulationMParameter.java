@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.genparams;
 
 import cn.edu.buaa.crypto.algebra.genparams.PairingDecryptionGenerationParameter;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15PublicKeySerParameter;
 
@@ -16,8 +16,8 @@ public class RBACLLW15DecapsulationMParameter extends PairingDecryptionGeneratio
     private String time;
 
     public RBACLLW15DecapsulationMParameter(
-            AsymmetricKeySerParameter publicKeyParameter,
-            AsymmetricKeySerParameter accessCredentialMParameter,
+            PairingKeySerParameter publicKeyParameter,
+            PairingKeySerParameter accessCredentialMParameter,
             String id,
             String[] roles,
             String time,

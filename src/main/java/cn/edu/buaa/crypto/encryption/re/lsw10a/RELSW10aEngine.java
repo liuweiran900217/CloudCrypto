@@ -1,15 +1,15 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aDecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aEncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aSecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.*;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.*;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
@@ -39,14 +39,14 @@ public class RELSW10aEngine implements REEngine {
 
     }
 
-    public AsymmetricKeySerPair setup(PairingParameters pairingParameters) {
+    public PairingKeySerPair setup(PairingParameters pairingParameters) {
         RELSW10aKeyPairGenerator keyPairGenerator = new RELSW10aKeyPairGenerator();
         keyPairGenerator.init(new RELSW10aKeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }
 
-    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id) {
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id) {
         if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -66,7 +66,7 @@ public class RELSW10aEngine implements REEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message){
+    public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -79,7 +79,7 @@ public class RELSW10aEngine implements REEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
-    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+    public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
@@ -93,11 +93,11 @@ public class RELSW10aEngine implements REEngine {
                             + secretKey.getClass().getName() + ", require "
                             + RELSW10aSecretKeySerParameter.class.getName());
         }
-        if (!(ciphertext instanceof RELSW10aCipherSerParameter)){
+        if (!(ciphertext instanceof RELSW10aCiphertextSerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + ciphertext.getClass().getName() + ", require "
-                            + RELSW10aCipherSerParameter.class.getName());
+                            + RELSW10aCiphertextSerParameter.class.getName());
         }
         RELSW10aDecryptionGenerator decryptionGenerator = new RELSW10aDecryptionGenerator();
         decryptionGenerator.init(new RELSW10aDecryptionGenerationParameter(

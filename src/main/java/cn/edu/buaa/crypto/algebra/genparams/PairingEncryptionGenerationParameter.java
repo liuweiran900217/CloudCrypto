@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.algebra.genparams;
 
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 
 /**
@@ -11,7 +11,7 @@ import it.unisa.dia.gas.jpbc.Element;
 public abstract class PairingEncryptionGenerationParameter extends PairingEncapsulationGenerationParameter {
     private Element message;
 
-    public PairingEncryptionGenerationParameter(AsymmetricKeySerParameter publicKeyParameter, Element message) {
+    public PairingEncryptionGenerationParameter(PairingKeySerParameter publicKeyParameter, Element message) {
         super(publicKeyParameter);
         this.message = message.getImmutable();
     }

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
@@ -14,20 +14,19 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 16/5/7.
- * Modified by Weiran Liu on 16/5/16.
+ *
+ * Lewko-Waters secret key generator.
  */
-public class IBELW10SecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
-    private KeyGenerationParameters params;
+public class IBELW10SecretKeyGenerator implements PairingKeyParameterGenerator {
+    private IBELW10SecretKeyGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.params = keyGenerationParameters;
+        this.parameters = (IBELW10SecretKeyGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerParameter generateKey() {
-        IBELW10SecretKeyGenerationParameter parameters = (IBELW10SecretKeyGenerationParameter)params;
-
-        IBELW10MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
-        IBELW10PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+    public PairingKeySerParameter generateKey() {
+        IBELW10MasterSecretKeySerParameter masterSecretKeyParameters = (IBELW10MasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
+        IBELW10PublicKeySerParameter publicKeyParameters = (IBELW10PublicKeySerParameter)parameters.getPublicKeyParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element elementId = PairingUtils.MapStringToGroup(pairing, parameters.getId(), PairingUtils.PairingGroupType.Zr).getImmutable();

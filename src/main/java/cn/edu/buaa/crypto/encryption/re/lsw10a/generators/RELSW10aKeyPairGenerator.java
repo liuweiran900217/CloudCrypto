@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.RELSW10aKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -15,14 +15,14 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Lewko-Sahai-Waters revocation encryption public key / master secret key pair generator.
  */
-public class RELSW10aKeyPairGenerator implements AsymmetricKeySerPairGenerator {
+public class RELSW10aKeyPairGenerator implements PairingKeyPairGenerator {
     private RELSW10aKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters param) {
         this.parameters = (RELSW10aKeyPairGenerationParameter)param;
     }
 
-    public AsymmetricKeySerPair generateKeyPair() {
+    public PairingKeySerPair generateKeyPair() {
         Pairing pairing = PairingFactory.getPairing(this.parameters.getPairingParameters());
 
         Element g = pairing.getG1().newRandomElement().getImmutable();
@@ -37,7 +37,7 @@ public class RELSW10aKeyPairGenerator implements AsymmetricKeySerPairGenerator {
 
         Element eggAlpha = pairing.pairing(g, g).powZn(alpha).getImmutable();
 
-        return new AsymmetricKeySerPair(
+        return new PairingKeySerPair(
                 new RELSW10aPublicKeySerParameter(this.parameters.getPairingParameters(), g, gb, gb2, hb, eggAlpha),
                 new RELSW10aMasterSecretKeySerParameter(this.parameters.getPairingParameters(), alpha, b, h));
     }

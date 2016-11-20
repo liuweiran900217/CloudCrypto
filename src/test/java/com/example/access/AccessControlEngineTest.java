@@ -5,12 +5,11 @@ import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
-import cn.edu.buaa.crypto.utils.PairingUtils;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import org.bouncycastle.crypto.CipherParameters;
 import org.junit.Assert;
 
@@ -26,15 +25,12 @@ public class AccessControlEngineTest {
     private AccessControlEngine accessControlEngine;
     private Pairing pairing;
 
-    public AccessControlEngineTest(AccessControlEngine accessControlEngine) {
-        this.accessControlEngine = accessControlEngine;
-        PropertiesParameters parameters = PairingUtils.GenerateTypeAParameters(160, 512);
-        this.pairing = PairingFactory.getPairing(parameters);
+    public AccessControlEngineTest(AccessControlEngine accessControlEngine, PairingParameters pairingParameters) {
+       this.accessControlEngine = accessControlEngine;
+        this.pairing = PairingFactory.getPairing(pairingParameters);
     }
 
-
-
-    public void testAccessPolicy() {
+    public void runAllTests() {
         //test satisfied access control
         if (this.accessControlEngine.isSupportThresholdGate()) {
             test_valid_access_policy(1,

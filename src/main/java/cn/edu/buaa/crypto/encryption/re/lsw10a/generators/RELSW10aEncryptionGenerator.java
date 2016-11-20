@@ -3,8 +3,8 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aEncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.RELSW10aEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -27,7 +27,7 @@ public class RELSW10aEncryptionGenerator implements PairingEncryptionGenerator {
     }
 
     public PairingCipherSerParameter generateCiphertext() {
-        RELSW10aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        RELSW10aPublicKeySerParameter publicKeyParameters = (RELSW10aPublicKeySerParameter)this.params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element s = pairing.getZr().newZeroElement().getImmutable();
 
@@ -45,6 +45,6 @@ public class RELSW10aEncryptionGenerator implements PairingEncryptionGenerator {
         Element C = sessionKey.mul(this.params.getMessage()).getImmutable();
         Element C0 = publicKeyParameters.getG().powZn(s).getImmutable();
 
-        return new RELSW10aCipherSerParameter(publicKeyParameters.getParameters(), C, C0, C1s, C2s);
+        return new RELSW10aCiphertextSerParameter(publicKeyParameters.getParameters(), C, C0, C1s, C2s);
     }
 }

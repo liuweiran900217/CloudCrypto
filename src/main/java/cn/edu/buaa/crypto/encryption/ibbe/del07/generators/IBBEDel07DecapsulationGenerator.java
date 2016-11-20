@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
 import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07DecapsulationGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
@@ -26,9 +26,9 @@ public class IBBEDel07DecapsulationGenerator implements PairingDecapsulationGene
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
-        IBBEDel07PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        IBBEDel07SecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        IBBEDel07CipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        IBBEDel07PublicKeySerParameter publicKeyParameters = (IBBEDel07PublicKeySerParameter)this.params.getPublicKeyParameter();
+        IBBEDel07SecretKeySerParameter secretKeyParameters = (IBBEDel07SecretKeySerParameter)this.params.getSecretKeyParameter();
+        IBBEDel07CiphertextSerParameter ciphertextParameters = (IBBEDel07CiphertextSerParameter)this.params.getCiphertextParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
 

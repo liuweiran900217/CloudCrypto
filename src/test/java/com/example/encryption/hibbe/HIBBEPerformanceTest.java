@@ -1,7 +1,7 @@
 package com.example.encryption.hibbe;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import cn.edu.buaa.crypto.utils.Timer;
@@ -139,19 +139,19 @@ public class HIBBEPerformanceTest {
         System.out.print("Setup; ");
         out.print("Setup : ");
         timer.start(0);
-        AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, maximal_users);
+        PairingKeySerPair keyPair = engine.setup(pairingParameters, maximal_users);
         temperTime = timer.stop(0);
         out.print("\t" + temperTime);
         this.timeSetep += temperTime;
         out.println();
 
-        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
-        AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
+        PairingKeySerParameter publicKey = keyPair.getPublic();
+        PairingKeySerParameter masterKey = keyPair.getPrivate();
 
         System.out.print("KeyGen; ");
         out.print("KeyGen: ");
         //test secret key generation performance
-        AsymmetricKeySerParameter[] secretKeys = new AsymmetricKeySerParameter[maximal_depth];
+        PairingKeySerParameter[] secretKeys = new PairingKeySerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth; i++) {
             timer.start(i);
             secretKeys[i] = engine.keyGen(publicKey, masterKey, identityVectors[i]);
@@ -164,7 +164,7 @@ public class HIBBEPerformanceTest {
         System.out.print("Delegate; ");
         out.print("Delegate: ");
         //test secret key delegation performance
-        AsymmetricKeySerParameter[] delegateKeys = new AsymmetricKeySerParameter[maximal_depth];
+        PairingKeySerParameter[] delegateKeys = new PairingKeySerParameter[maximal_depth];
         for (int i = 0; i < maximal_depth - 1; i++) {
             timer.start(i + 1);
             delegateKeys[i + 1] = engine.delegate(publicKey, secretKeys[i], i + 1, "Delegate");

@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16b.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.genparams.HIBBELLW16bEncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bPublicKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
@@ -35,11 +35,11 @@ public class HIBBELLW16bEncryptionGenerator implements PairingEncryptionGenerato
     public PairingCipherSerParameter generateCiphertext() {
         //get sign key
         Signer signer = params.getSigner();
-        AsymmetricKeySerPairGenerator signKeyPairGenerator = params.getSignKeyPairGenerator();
+        PairingKeyPairGenerator signKeyPairGenerator = params.getSignKeyPairGenerator();
         signKeyPairGenerator.init(params.getSignKeyGenerationParameters());
-        AsymmetricKeySerPair signKeySerPair = signKeyPairGenerator.generateKeyPair();
-        AsymmetricKeySerParameter signPublicKey = signKeySerPair.getPublic();
-        AsymmetricKeySerParameter signSecretKey = signKeySerPair.getPrivate();
+        PairingKeySerPair signKeySerPair = signKeyPairGenerator.generateKeyPair();
+        PairingKeySerParameter signPublicKey = signKeySerPair.getPublic();
+        PairingKeySerParameter signSecretKey = signKeySerPair.getPrivate();
 
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -49,7 +49,7 @@ public class HIBBELLW16bEncryptionGenerator implements PairingEncryptionGenerato
             objectOutputStream.close();
             byteArrayOutputStream.close();
 
-            HIBBELLW16bPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+            HIBBELLW16bPublicKeySerParameter publicKeyParameters = (HIBBELLW16bPublicKeySerParameter)this.params.getPublicKeyParameter();
             if (this.params.getIds().length != publicKeyParameters.getMaxUser()) {
                 throw new IllegalArgumentException("Invalid identity vector set length");
             }
@@ -81,7 +81,7 @@ public class HIBBELLW16bEncryptionGenerator implements PairingEncryptionGenerato
             signer.update(byteArrayC2, 0, byteArrayC2.length);
             byte[] signature = signer.generateSignature();
 
-            return new HIBBELLW16bCipherSerParameter(publicKeyParameters.getParameters(), signPublicKey, signature, C0, C1, C2);
+            return new HIBBELLW16bCiphertextSerParameter(publicKeyParameters.getParameters(), signPublicKey, signature, C0, C1, C2);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

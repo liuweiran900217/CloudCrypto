@@ -1,8 +1,8 @@
 package com.example.encryption.ibbe;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
 import com.example.TestUtils;
@@ -34,7 +34,7 @@ public class IBBEEngineTest {
         this.engine = engine;
     }
 
-    private void test_valid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_valid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                           String identity, String[] identitySet) {
         try {
             test_decapsulation(publicKey, masterKey, identity, identitySet);
@@ -47,7 +47,7 @@ public class IBBEEngineTest {
         }
     }
 
-    private void test_invalid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_invalid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                             String identity, String[] identitySet) {
         try {
             test_decapsulation(publicKey, masterKey, identity, identitySet);
@@ -62,15 +62,15 @@ public class IBBEEngineTest {
         }
     }
 
-    private void test_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                     String identity, String[] identitySet)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
-        AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identity);
+        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identity);
         byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
         CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
         Assert.assertEquals(secretKey, anSecretKey);
-        secretKey = (AsymmetricKeySerParameter)anSecretKey;
+        secretKey = (PairingKeySerParameter)anSecretKey;
 
         //Encryption and serialization
         PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identitySet);
@@ -89,18 +89,18 @@ public class IBBEEngineTest {
     public void processTest(PairingParameters pairingParameters) {
         try {
             // Setup and serialization
-            AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, identitySet4.length);
-            AsymmetricKeySerParameter publicKey = keyPair.getPublic();
+            PairingKeySerPair keyPair = engine.setup(pairingParameters, identitySet4.length);
+            PairingKeySerParameter publicKey = keyPair.getPublic();
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
             Assert.assertEquals(publicKey, anPublicKey);
-            publicKey = (AsymmetricKeySerParameter) anPublicKey;
+            publicKey = (PairingKeySerParameter) anPublicKey;
 
-            AsymmetricKeySerParameter masterKey = keyPair.getPrivate();
+            PairingKeySerParameter masterKey = keyPair.getPrivate();
             byte[] byteArrayMasterKey = TestUtils.SerCipherParameter(masterKey);
             CipherParameters anMasterKey = TestUtils.deserCipherParameters(byteArrayMasterKey);
             Assert.assertEquals(masterKey, anMasterKey);
-            masterKey = (AsymmetricKeySerParameter) anMasterKey;
+            masterKey = (PairingKeySerParameter) anMasterKey;
 
             //test valid example
             System.out.println("Test valid examples");

@@ -4,9 +4,9 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -36,7 +36,7 @@ public abstract class CPABEEngine {
      * @param maxAttributesNum maximal number of attributes supported, useless if no such limitation
      * @return public key / master secret key pair of the scheme
      */
-    public abstract AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum);
+    public abstract PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum);
 
     /**
      * Secret Key Generation Algorithm for CP-ABE
@@ -45,7 +45,7 @@ public abstract class CPABEEngine {
      * @param attributes associated attribute set
      * @return secret key associated with the attribute set
      */
-    public abstract AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String[] attributes);
+    public abstract PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String[] attributes);
 
     /**
      * Key Encapsulation Algorithm for CP-ABE
@@ -54,7 +54,7 @@ public abstract class CPABEEngine {
      * @return session key / ciphertext pair associated with the access policy
      * @throws PolicySyntaxException  if error occurs when parsing the access policy string
      */
-    public PairingKeyEncapsulationSerPair encryption(AsymmetricKeySerParameter publicKey, String accessPolicy) throws PolicySyntaxException {
+    public PairingKeyEncapsulationSerPair encryption(PairingKeySerParameter publicKey, String accessPolicy) throws PolicySyntaxException {
         int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
         String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
         return encapsulation(publicKey, accessPolicyIntArrays, rhos);
@@ -67,7 +67,7 @@ public abstract class CPABEEngine {
      * @param rhos associated rhos, given by string array
      * @return session key / ciphertext pair associated with the attribute set
      */
-    public abstract PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos);
 
     /**
      * Key Decapsulation Algorithm for CP-ABE
@@ -79,7 +79,7 @@ public abstract class CPABEEngine {
      * @throws PolicySyntaxException if error occurs when parsing the access policy string
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public byte[] decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                                 String accessPolicy, PairingCipherSerParameter ciphertext) throws PolicySyntaxException, InvalidCipherTextException {
         int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
         String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
@@ -95,7 +95,7 @@ public abstract class CPABEEngine {
      * @return the decapsulated session key
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public abstract byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+    public abstract byte[] decapsulation (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                                           int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 
 }

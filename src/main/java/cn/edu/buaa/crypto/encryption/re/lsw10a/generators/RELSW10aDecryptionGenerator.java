@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCipherSerParameter;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.params.RELSW10aDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCiphertextSerParameter;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.RELSW10aDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -25,9 +25,9 @@ public class RELSW10aDecryptionGenerator implements PairingDecryptionGenerator {
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {
-        RELSW10aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        RELSW10aSecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        RELSW10aCipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        RELSW10aPublicKeySerParameter publicKeyParameters = (RELSW10aPublicKeySerParameter)this.params.getPublicKeyParameter();
+        RELSW10aSecretKeySerParameter secretKeyParameters = (RELSW10aSecretKeySerParameter)this.params.getSecretKeyParameter();
+        RELSW10aCiphertextSerParameter ciphertextParameters = (RELSW10aCiphertextSerParameter)this.params.getCiphertextParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         //remove repeated ids
         String[] ids = PairingUtils.removeDuplicates(this.params.getIds());

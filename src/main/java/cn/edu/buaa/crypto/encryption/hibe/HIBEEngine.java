@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.encryption.hibe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -21,7 +21,7 @@ public interface HIBEEngine extends Engine {
      * @param maxDepth maximal depth of hierarchy, ignore if the scheme is unbounded
      * @return public key / master secret key pair of the scheme
      */
-    AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxDepth);
+    PairingKeySerPair setup(PairingParameters pairingParameters, int maxDepth);
 
     /**
      * Secret Key Generation Algorithm for HIBE
@@ -30,7 +30,7 @@ public interface HIBEEngine extends Engine {
      * @param ids associated identity vector
      * @return secret key associated with the identity vector ids
      */
-    AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String... ids);
+    PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String... ids);
 
     /**
      * Secret Key Delegation Algorithm for HIBE
@@ -39,7 +39,7 @@ public interface HIBEEngine extends Engine {
      * @param id delegated identity
      * @return secret key associated with the identity vector (ids, id)
      */
-    AsymmetricKeySerParameter delegate(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String id);
+    PairingKeySerParameter delegate(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String id);
 
     /**
      * Encryption Algorithm for HIBE
@@ -48,7 +48,7 @@ public interface HIBEEngine extends Engine {
      * @param message the message in GT
      * @return ciphertext associated with the identity vector ids
      */
-    PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message);
+    PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message);
 
     /**
      * Decryption Algorithm for HIBE
@@ -59,6 +59,6 @@ public interface HIBEEngine extends Engine {
      * @return the message in GT
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-            String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
+    Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                       String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 }

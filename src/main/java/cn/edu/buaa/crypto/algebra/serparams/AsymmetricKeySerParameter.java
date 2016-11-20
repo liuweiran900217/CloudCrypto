@@ -2,21 +2,15 @@ package cn.edu.buaa.crypto.algebra.serparams;
 
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.io.Serializable;
-
 /**
- * Created by Weiran Liu on 2016/11/9.
+ * Created by Weiran Liu on 2016/11/21.
  *
- * Serializable asymmetric key parameter.
- * This is the same as AsymmetricKeyParameters, except that this is serializable.
- * All the asymmetric key parameters should extend this class for supporting serialization.
+ * Asymmetric key serializable parameter.
  */
-public class AsymmetricKeySerParameter implements CipherParameters, Serializable {
+public class AsymmetricKeySerParameter implements CipherParameters, java.io.Serializable {
     private boolean privateKey;
 
-    public AsymmetricKeySerParameter(
-            boolean privateKey)
-    {
+    public AsymmetricKeySerParameter(boolean privateKey) {
         this.privateKey = privateKey;
     }
 

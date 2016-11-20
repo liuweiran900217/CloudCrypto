@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.encryption.ibe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -21,7 +21,7 @@ public interface IBEEngine extends Engine {
      * @param pairingParameters pairingParameters
      * @return public key / master secret key pair of the scheme
      */
-    AsymmetricKeySerPair setup(PairingParameters pairingParameters);
+    PairingKeySerPair setup(PairingParameters pairingParameters);
 
     /**
      * Secret Key Generation Algorithm for IBE
@@ -30,7 +30,7 @@ public interface IBEEngine extends Engine {
      * @param id associated identity
      * @return secret key associated with the identity id
      */
-    AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id);
+    PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
 
     /**
      * Encryption Algorithm for IBE
@@ -39,7 +39,7 @@ public interface IBEEngine extends Engine {
      * @param message the message in GT
      * @return ciphertext associated with the identity id
      */
-    PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String id, Element message);
+    PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String id, Element message);
 
     /**
      * Decryption Algorithm for IBE
@@ -50,6 +50,6 @@ public interface IBEEngine extends Engine {
      * @return the message in GT
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    Element decryption (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-            String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
+    Element decryption (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                        String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 }

@@ -1,8 +1,9 @@
 package cn.edu.buaa.crypto.application.llw15;
 
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.Engine;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.generators.*;
 import cn.edu.buaa.crypto.application.llw15.genparams.*;
@@ -15,7 +16,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Liu-Liu-Wu EHR role-based access control engine.
  */
-public class RBACLLW15Engine {
+public class RBACLLW15Engine implements Engine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Liu-Liu-Wu-15 EHR Role-Based Access Control scheme";
 
@@ -38,7 +39,7 @@ public class RBACLLW15Engine {
      * @param maxRoleNumber maximal number of atom roles
      * @return public key / master secret key pairs
      */
-    public AsymmetricKeySerPair Setup(PairingParameters pairingParameters, int maxRoleNumber) {
+    public PairingKeySerPair Setup(PairingParameters pairingParameters, int maxRoleNumber) {
         RBACLLW15KeyPairGenerator keyPairGenerator = new RBACLLW15KeyPairGenerator();
         keyPairGenerator.init(new RBACLLW15KeyPairGenerationParameter(pairingParameters, maxRoleNumber));
 
@@ -50,7 +51,7 @@ public class RBACLLW15Engine {
      * @param publicKey public key
      * @return intermediate parameters
      */
-    public PairingCipherSerParameter IntermediateGen(AsymmetricKeySerParameter publicKey) {
+    public PairingCipherSerParameter IntermediateGen(PairingKeySerParameter publicKey) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -69,7 +70,7 @@ public class RBACLLW15Engine {
      * @param id patient's id
      * @return access credential for the patient associated with id
      */
-    public AsymmetricKeySerParameter ACGenP(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String id) {
+    public PairingKeySerParameter ACGenP(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id) {
         isValidACGenParameters(publicKey, masterKey);
         RBACLLW15AccessCredentialPGenerator secretKeyGenerator = new RBACLLW15AccessCredentialPGenerator();
         secretKeyGenerator.init(new RBACLLW15AccessCredentialPGenParameter(
@@ -86,8 +87,8 @@ public class RBACLLW15Engine {
      * @param id patient's id
      * @return access credential for the patient associated with id
      */
-    public AsymmetricKeySerParameter ACGenP(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                   PairingCipherSerParameter intermediateParameters, String id) {
+    public PairingKeySerParameter ACGenP(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                         PairingCipherSerParameter intermediateParameters, String id) {
         isValidACGenParameters(publicKey, masterKey);
         RBACLLW15AccessCredentialPGenerator secretKeyGenerator = new RBACLLW15AccessCredentialPGenerator();
         secretKeyGenerator.init(new RBACLLW15AccessCredentialPGenParameter(
@@ -104,7 +105,7 @@ public class RBACLLW15Engine {
      * @param time valid time
      * @return access credential for the medical staff associated with roles
      */
-    public AsymmetricKeySerParameter ACGenM(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String[] roles, String time) {
+    public PairingKeySerParameter ACGenM(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String[] roles, String time) {
         isValidACGenParameters(publicKey, masterKey);
         RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
         secretKeyGenerator.init(new RBACLLW15AccessCredentialMGenParameter(
@@ -122,8 +123,8 @@ public class RBACLLW15Engine {
      * @param time valid time
      * @return access credential for the medical staff associated with roles
      */
-    public AsymmetricKeySerParameter ACGenM(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
-                                   PairingCipherSerParameter intermediateParameters, String[] roles, String time) {
+    public PairingKeySerParameter ACGenM(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                         PairingCipherSerParameter intermediateParameters, String[] roles, String time) {
         isValidACGenParameters(publicKey, masterKey);
         RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
         secretKeyGenerator.init(new RBACLLW15AccessCredentialMGenParameter(
@@ -132,7 +133,7 @@ public class RBACLLW15Engine {
         return secretKeyGenerator.generateKey();
     }
 
-    private void isValidACGenParameters(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey) {
+    private void isValidACGenParameters(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -155,7 +156,7 @@ public class RBACLLW15Engine {
      * @param role delegated role
      * @return access credential for the medical staff associated with delegated role
      */
-    public AsymmetricKeySerParameter ACDeleM(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter accessCredentialM, int index, String role) {
+    public PairingKeySerParameter ACDeleM(PairingKeySerParameter publicKey, PairingKeySerParameter accessCredentialM, int index, String role) {
         isValidACDeleMParameters(publicKey, accessCredentialM);
         RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
         secretKeyGenerator.init(new RBACLLW15AccessCredentialMDeleParameter(
@@ -173,8 +174,8 @@ public class RBACLLW15Engine {
      * @param role delegated role
      * @return access credential for the medical staff associated with delegated role
      */
-    public AsymmetricKeySerParameter ACDeleM(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter accessCredentialM,
-                                    PairingCipherSerParameter intermediateParameters, int index, String role) {
+    public PairingKeySerParameter ACDeleM(PairingKeySerParameter publicKey, PairingKeySerParameter accessCredentialM,
+                                          PairingCipherSerParameter intermediateParameters, int index, String role) {
         isValidACDeleMParameters(publicKey, accessCredentialM);
         RBACLLW15AccessCredentialMGenerator secretKeyGenerator = new RBACLLW15AccessCredentialMGenerator();
         secretKeyGenerator.init(new RBACLLW15AccessCredentialMDeleParameter(
@@ -183,7 +184,7 @@ public class RBACLLW15Engine {
         return secretKeyGenerator.generateKey();
     }
 
-    private void isValidACDeleMParameters(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter accessCredentialM) {
+    private void isValidACDeleMParameters(PairingKeySerParameter publicKey, PairingKeySerParameter accessCredentialM) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -206,7 +207,7 @@ public class RBACLLW15Engine {
      * @param time valid time
      * @return ciphertext / sesscion key pair
      */
-    public PairingKeyEncapsulationSerPair EHREnc(AsymmetricKeySerParameter publicKey, String id, String[] roles, String time) {
+    public PairingKeyEncapsulationSerPair EHREnc(PairingKeySerParameter publicKey, String id, String[] roles, String time) {
         isValidKeyEncapsulationParameters(publicKey);
         RBACLLW15EncapsulationPairGenerator keyEncapsulationPairGenerator = new RBACLLW15EncapsulationPairGenerator();
         keyEncapsulationPairGenerator.init(new RBACLLW15EncapsulationGenParameter(
@@ -224,7 +225,7 @@ public class RBACLLW15Engine {
      * @param time valid time
      * @return ciphertext / session key pair
      */
-    public PairingKeyEncapsulationSerPair EHREnc(AsymmetricKeySerParameter publicKey, PairingCipherSerParameter intermediateParameters,
+    public PairingKeyEncapsulationSerPair EHREnc(PairingKeySerParameter publicKey, PairingCipherSerParameter intermediateParameters,
                                                  String id, String[] roles, String time) {
         isValidKeyEncapsulationParameters(publicKey);
         RBACLLW15EncapsulationPairGenerator keyEncapsulationPairGenerator = new RBACLLW15EncapsulationPairGenerator();
@@ -234,7 +235,7 @@ public class RBACLLW15Engine {
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
-    private void isValidKeyEncapsulationParameters(AsymmetricKeySerParameter publicKey) {
+    private void isValidKeyEncapsulationParameters(PairingKeySerParameter publicKey) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -252,7 +253,7 @@ public class RBACLLW15Engine {
      * @param encapsulation ciphertext
      * @return true if valid, false if invalid
      */
-    public boolean EHRAudit(AsymmetricKeySerParameter publicKey, String id, String[] roles, String time, PairingCipherSerParameter encapsulation) {
+    public boolean EHRAudit(PairingKeySerParameter publicKey, String id, String[] roles, String time, PairingCipherSerParameter encapsulation) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -282,8 +283,8 @@ public class RBACLLW15Engine {
      * @return decapsulated session key
      */
     public byte[] EHRDecM (
-            AsymmetricKeySerParameter publicKey, String id, String[] roles, String time,
-            PairingCipherSerParameter encapsulation, AsymmetricKeySerParameter accessCredentialM) throws InvalidCipherTextException {
+            PairingKeySerParameter publicKey, String id, String[] roles, String time,
+            PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialM) throws InvalidCipherTextException {
         isValidAccessCredentialMDecapsulationParameters(publicKey, encapsulation, accessCredentialM);
         RBACLLW15DecapsulationMGenerator keyDecapsulationGenerator = new RBACLLW15DecapsulationMGenerator();
         keyDecapsulationGenerator.init(new RBACLLW15DecapsulationMParameter(
@@ -303,8 +304,8 @@ public class RBACLLW15Engine {
      * @throws InvalidCipherTextException if EHR encapsulation is invalid
      */
     public byte[] EHRDecMWithAudit (
-            AsymmetricKeySerParameter publicKey, String id, String[] roles, String time,
-            PairingCipherSerParameter encapsulation, AsymmetricKeySerParameter accessCredentialM) throws InvalidCipherTextException {
+            PairingKeySerParameter publicKey, String id, String[] roles, String time,
+            PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialM) throws InvalidCipherTextException {
         isValidAccessCredentialMDecapsulationParameters(publicKey, encapsulation, accessCredentialM);
         if (!EHRAudit(publicKey, id, roles, time, encapsulation)) {
             throw new InvalidCipherTextException("Encapsulation is invalid due to EHRAudit");
@@ -313,7 +314,7 @@ public class RBACLLW15Engine {
     }
 
     private void isValidAccessCredentialMDecapsulationParameters(
-            AsymmetricKeySerParameter publicKey, PairingCipherSerParameter encapsulation, AsymmetricKeySerParameter accessCredentialM) {
+            PairingKeySerParameter publicKey, PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialM) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -345,8 +346,8 @@ public class RBACLLW15Engine {
      * @return decapsulated session key
      */
     public byte[] EHRDecP (
-            AsymmetricKeySerParameter publicKey, String id, String[] roles, String time,
-            PairingCipherSerParameter encapsulation, AsymmetricKeySerParameter accessCredentialP) throws InvalidCipherTextException {
+            PairingKeySerParameter publicKey, String id, String[] roles, String time,
+            PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialP) throws InvalidCipherTextException {
         isValidAccessCredentialPDecapsulationParameters(publicKey, encapsulation, accessCredentialP);
         RBACLLW15DecapsulationPGenerator keyDecapsulationGenerator = new RBACLLW15DecapsulationPGenerator();
         keyDecapsulationGenerator.init(new RBACLLW15DecapsulationPParameter(
@@ -365,8 +366,8 @@ public class RBACLLW15Engine {
      * @return decapsulated session key
      */
     public byte[] EHRDecPWithAudit (
-            AsymmetricKeySerParameter publicKey, String id, String[] roles, String time,
-            PairingCipherSerParameter encapsulation, AsymmetricKeySerParameter accessCredentialP) throws InvalidCipherTextException {
+            PairingKeySerParameter publicKey, String id, String[] roles, String time,
+            PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialP) throws InvalidCipherTextException {
         isValidAccessCredentialPDecapsulationParameters(publicKey, encapsulation, accessCredentialP);
         if (!EHRAudit(publicKey, id, roles, time, encapsulation)) {
             throw new InvalidCipherTextException("Encapsulation is invalid due to EHRAudit");
@@ -375,7 +376,7 @@ public class RBACLLW15Engine {
     }
 
     private void isValidAccessCredentialPDecapsulationParameters(
-            AsymmetricKeySerParameter publicKey, PairingCipherSerParameter encapsulation, AsymmetricKeySerParameter accessCredentialP) {
+            PairingKeySerParameter publicKey, PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialP) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -386,7 +387,7 @@ public class RBACLLW15Engine {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + accessCredentialP.getClass().getName() + ", require "
-                            + RBACLLW15AccessCredentialMSerParameter.class.getName());
+                            + RBACLLW15AccessCredentialPSerParameter.class.getName());
         }
         if (!(encapsulation instanceof RBACLLW15EncapsulationSerParameter)){
             throw new IllegalArgumentException
@@ -394,5 +395,9 @@ public class RBACLLW15Engine {
                             + encapsulation.getClass().getName() + ", require "
                             + RBACLLW15EncapsulationSerParameter.class.getName());
         }
+    }
+
+    public String getEngineName() {
+        return SCHEME_NAME;
     }
 }

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15KeyPairGenerationParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15PublicKeySerParameter;
@@ -16,14 +16,14 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu role-based access control key pair generator.
  */
-public class RBACLLW15KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+public class RBACLLW15KeyPairGenerator implements PairingKeyPairGenerator {
     private RBACLLW15KeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.parameters = (RBACLLW15KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerPair generateKeyPair() {
+    public PairingKeySerPair generateKeyPair() {
         PairingParameters parameters = this.parameters.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
 
@@ -41,7 +41,7 @@ public class RBACLLW15KeyPairGenerator implements AsymmetricKeySerPairGenerator 
             u[i] = pairing.getG1().newRandomElement().getImmutable();
         }
 
-        return new AsymmetricKeySerPair(
+        return new PairingKeySerPair(
                 new RBACLLW15PublicKeySerParameter(parameters, g, g1, g2, g3, gh, u0, uv, u),
                 new RBACLLW15MasterSecretKeySerParameter(parameters, g2Alpha));
     }

@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw17.genparams;
 
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17CipherSerParameter;
+import cn.edu.buaa.crypto.algebra.genparams.PairingDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17SecretKeySerParameter;
-import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.Digest;
 
 /**
@@ -11,37 +11,17 @@ import org.bouncycastle.crypto.Digest;
  *
  * Liu-Liu-Wu composite-order CCA2-secure HIBBE decryption generation parameter.
  */
-public class HIBBELLW17DecryptionGenerationParameter implements CipherParameters {
-    private HIBBELLW17PublicKeySerParameter publicKeyParameters;
-    private HIBBELLW17SecretKeySerParameter secretKeyParameters;
+public class HIBBELLW17DecryptionGenerationParameter extends PairingDecryptionGenerationParameter {
     private Digest digest;
     private String[] ids;
-    private HIBBELLW17CipherSerParameter ciphertextParameters;
 
     public HIBBELLW17DecryptionGenerationParameter(
-            Digest digest,
-            CipherParameters publicKeyParameters,
-            CipherParameters secretKeyParameters,
-            String[] ids,
-            CipherParameters ciphertextParameters) {
+            Digest digest, PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
+            String[] ids, PairingCipherSerParameter ciphertextParameter) {
+        super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
         this.digest = digest;
-        this.publicKeyParameters = (HIBBELLW17PublicKeySerParameter)publicKeyParameters;
-        this.secretKeyParameters = (HIBBELLW17SecretKeySerParameter)secretKeyParameters;
-        assert(ids.length == this.publicKeyParameters.getMaxUser());
+        assert(ids.length == ((HIBBELLW17PublicKeySerParameter)publicKeyParameter).getMaxUser());
         this.ids = ids;
-        this.ciphertextParameters = (HIBBELLW17CipherSerParameter)ciphertextParameters;
-    }
-
-    public HIBBELLW17PublicKeySerParameter getPublicKeyParameters() {
-        return this.publicKeyParameters;
-    }
-
-    public HIBBELLW17SecretKeySerParameter getSecretKeyParameters() {
-        return this.secretKeyParameters;
-    }
-
-    public HIBBELLW17CipherSerParameter getCiphertextParameters() {
-        return this.ciphertextParameters;
     }
 
     public Digest getDigest() { return this.digest; }

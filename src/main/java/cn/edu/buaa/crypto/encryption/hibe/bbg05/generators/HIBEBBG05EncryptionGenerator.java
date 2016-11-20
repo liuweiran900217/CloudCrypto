@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams.HIBEBBG05EncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -24,7 +24,7 @@ public class HIBEBBG05EncryptionGenerator implements PairingEncryptionGenerator 
     }
 
     public PairingCipherSerParameter generateCiphertext() {
-        HIBEBBG05PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        HIBEBBG05PublicKeySerParameter publicKeyParameters = (HIBEBBG05PublicKeySerParameter)this.params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] ids = this.params.getIds();
         Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, ids, PairingUtils.PairingGroupType.Zr);
@@ -39,6 +39,6 @@ public class HIBEBBG05EncryptionGenerator implements PairingEncryptionGenerator 
             C = C.mul(publicKeyParameters.getHsAt(i).powZn(elementIds[i])).getImmutable();
         }
         C = C.powZn(s).getImmutable();
-        return new HIBEBBG05CipherSerParameter(publicKeyParameters.getParameters(), A, B, C);
+        return new HIBEBBG05CiphertextSerParameter(publicKeyParameters.getParameters(), A, B, C);
     }
 }

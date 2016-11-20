@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14DecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14SecretKeySerParameter;
@@ -25,9 +25,9 @@ public class HIBBELLW14DecryptionGenerator implements PairingDecryptionGenerator
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {
-        HIBBELLW14PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        HIBBELLW14SecretKeySerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        HIBBELLW14CipherSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        HIBBELLW14PublicKeySerParameter publicKeyParameters = (HIBBELLW14PublicKeySerParameter)this.params.getPublicKeyParameter();
+        HIBBELLW14SecretKeySerParameter secretKeyParameters = (HIBBELLW14SecretKeySerParameter)this.params.getSecretKeyParameter();
+        HIBBELLW14CiphertextSerParameter ciphertextParameters = (HIBBELLW14CiphertextSerParameter)this.params.getCiphertextParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIdsCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);

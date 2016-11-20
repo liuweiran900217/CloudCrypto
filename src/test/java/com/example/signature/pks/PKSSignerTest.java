@@ -1,8 +1,8 @@
 package com.example.signature.pks;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.signature.pks.PairingDigestSigner;
 import cn.edu.buaa.crypto.signature.pks.bb04.BB04SignKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.signature.pks.bb04.BB04SignKeyPairGenerator;
@@ -27,19 +27,19 @@ import static org.junit.Assert.assertEquals;
  * Public key signature test.
  */
 public class PKSSignerTest {
-    private AsymmetricKeySerPairGenerator asymmetricKeySerPairGenerator;
+    private PairingKeyPairGenerator asymmetricKeySerPairGenerator;
     private Signer signer;
 
-    private PKSSignerTest(AsymmetricKeySerPairGenerator asymmetricKeySerPairGenerator, Signer signer) {
+    private PKSSignerTest(PairingKeyPairGenerator asymmetricKeySerPairGenerator, Signer signer) {
         this.asymmetricKeySerPairGenerator = asymmetricKeySerPairGenerator;
         this.signer = signer;
     }
 
     public void processTest() {
         //KeyGen
-        AsymmetricKeySerPair keyPair = this.asymmetricKeySerPairGenerator.generateKeyPair();
-        AsymmetricKeySerParameter publicKey = keyPair.getPublic();
-        AsymmetricKeySerParameter secretKey = keyPair.getPrivate();
+        PairingKeySerPair keyPair = this.asymmetricKeySerPairGenerator.generateKeyPair();
+        PairingKeySerParameter publicKey = keyPair.getPublic();
+        PairingKeySerParameter secretKey = keyPair.getPrivate();
 
         System.out.println("========================================");
         System.out.println("Test signer functionality");
@@ -102,7 +102,7 @@ public class PKSSignerTest {
 
         //test Boneh-Boyen 2004 signature.
         System.out.println("Test Boneh-Boyen 2004 signature.");
-        AsymmetricKeySerPairGenerator signKeyPairGenerator = new BB04SignKeyPairGenerator();
+        PairingKeyPairGenerator signKeyPairGenerator = new BB04SignKeyPairGenerator();
         signKeyPairGenerator.init(new BB04SignKeyPairGenerationParameter(pairingParameters));
         Signer signer = new PairingDigestSigner(new BB04Signer(), new SHA256Digest());
         new PKSSignerTest(signKeyPairGenerator, signer).processTest();

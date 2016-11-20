@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14DelegateGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14SecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -17,109 +17,109 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu composite-order HIBBE secret key generator.
  */
-public class HIBBELLW14SecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
-    private KeyGenerationParameters params;
+public class HIBBELLW14SecretKeyGenerator implements PairingKeyParameterGenerator {
+    private KeyGenerationParameters param;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.params = keyGenerationParameters;
+        this.param = keyGenerationParameters;
     }
 
-    public AsymmetricKeySerParameter generateKey() {
-        if (params instanceof HIBBELLW14SecretKeyGenerationParameter) {
-            HIBBELLW14SecretKeyGenerationParameter parameters = (HIBBELLW14SecretKeyGenerationParameter)params;
+    public PairingKeySerParameter generateKey() {
+        if (param instanceof HIBBELLW14SecretKeyGenerationParameter) {
+            HIBBELLW14SecretKeyGenerationParameter parameter = (HIBBELLW14SecretKeyGenerationParameter)param;
 
-            HIBBELLW14PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBBELLW14MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+            HIBBELLW14PublicKeySerParameter publicKeyParameter = (HIBBELLW14PublicKeySerParameter)parameter.getPublicKeyParameter();
+            HIBBELLW14MasterSecretKeySerParameter masterSecretKeyParameter = (HIBBELLW14MasterSecretKeySerParameter)parameter.getMasterSecretKeyParameter();
 
-            if (parameters.getIds().length != publicKeyParameters.getMaxUser()) {
+            if (parameter.getIds().length != publicKeyParameter.getMaxUser()) {
                 throw new IllegalArgumentException("Invalid identity vector length");
             }
-            Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, parameters.getIds(), PairingUtils.PairingGroupType.Zr);
+            Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
+            Element[] elementIds = PairingUtils.MapStringArrayToGroup(pairing, parameter.getIds(), PairingUtils.PairingGroupType.Zr);
             Element r = pairing.getZr().newRandomElement().getImmutable();
             Element a0_r = pairing.getZr().newRandomElement().getImmutable();
             Element a1_r = pairing.getZr().newRandomElement().getImmutable();
-            Element[] bs_r = new Element[publicKeyParameters.getMaxUser()];
+            Element[] bs_r = new Element[publicKeyParameter.getMaxUser()];
 
-            Element a1 = publicKeyParameters.getG().powZn(r).mul(publicKeyParameters.getX3().powZn(a1_r)).getImmutable();
-            Element a0 = publicKeyParameters.getH().getImmutable();
-            Element[] bs = new Element[publicKeyParameters.getMaxUser()];
+            Element a1 = publicKeyParameter.getG().powZn(r).mul(publicKeyParameter.getX3().powZn(a1_r)).getImmutable();
+            Element a0 = publicKeyParameter.getH().getImmutable();
+            Element[] bs = new Element[publicKeyParameter.getMaxUser()];
 
-            for (int i=0; i<publicKeyParameters.getMaxUser(); i++){
-                if (parameters.getIdAt(i) != null) {
+            for (int i=0; i<publicKeyParameter.getMaxUser(); i++){
+                if (parameter.getIdAt(i) != null) {
                     //Compute a0
-                    a0 = a0.mul(publicKeyParameters.getUsAt(i).powZn(elementIds[i])).getImmutable();
+                    a0 = a0.mul(publicKeyParameter.getUsAt(i).powZn(elementIds[i])).getImmutable();
                     //Set h[i] to be one
                     bs[i] = pairing.getG1().newOneElement().getImmutable();
                 } else {
                     //Set h[i] to be h_i^r
                     bs_r[i] = pairing.getZr().newRandomElement().getImmutable();
-                    bs[i] = publicKeyParameters.getUsAt(i).powZn(r).mul(publicKeyParameters.getX3().powZn(bs_r[i])).getImmutable();
+                    bs[i] = publicKeyParameter.getUsAt(i).powZn(r).mul(publicKeyParameter.getX3().powZn(bs_r[i])).getImmutable();
                 }
             }
             //raise a0 to the power of r and then multiple it by gAlpha
-            a0 = a0.powZn(r).mul(masterSecretKeyParameters.getGAlpha()).mul(publicKeyParameters.getX3().powZn(a0_r)).getImmutable();
+            a0 = a0.powZn(r).mul(masterSecretKeyParameter.getGAlpha()).mul(publicKeyParameter.getX3().powZn(a0_r)).getImmutable();
 
-            return new HIBBELLW14SecretKeySerParameter(publicKeyParameters.getParameters(),
-                    parameters.getIds(), elementIds, a0, a1, bs);
-        } else if (params instanceof HIBBELLW14DelegateGenerationParameter)  {
-            HIBBELLW14DelegateGenerationParameter parameters = (HIBBELLW14DelegateGenerationParameter)params;
+            return new HIBBELLW14SecretKeySerParameter(publicKeyParameter.getParameters(),
+                    parameter.getIds(), elementIds, a0, a1, bs);
+        } else if (param instanceof HIBBELLW14DelegateGenerationParameter)  {
+            HIBBELLW14DelegateGenerationParameter parameter = (HIBBELLW14DelegateGenerationParameter)param;
 
-            HIBBELLW14PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-            HIBBELLW14SecretKeySerParameter secretKeyParameters = parameters.getSecretKeyParameters();
-            if (secretKeyParameters.getIds().length != publicKeyParameters.getMaxUser()
-                    || secretKeyParameters.getIds()[parameters.getIndex()] != null) {
+            HIBBELLW14PublicKeySerParameter publicKeyParameter = (HIBBELLW14PublicKeySerParameter)parameter.getPublicKeyParameter();
+            HIBBELLW14SecretKeySerParameter secretKeyParameter = (HIBBELLW14SecretKeySerParameter)parameter.getSecretKeyParameter();
+            if (secretKeyParameter.getIds().length != publicKeyParameter.getMaxUser()
+                    || secretKeyParameter.getIds()[parameter.getIndex()] != null) {
                 throw new IllegalArgumentException("Invalid identity vector length");
             }
 
-            Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
-            String[] ids = new String[publicKeyParameters.getMaxUser()];
-            Element[] elementIds = new Element[publicKeyParameters.getMaxUser()];
-            Element elementDelegateId = PairingUtils.MapStringToGroup(pairing, parameters.getDelegateId(), PairingUtils.PairingGroupType.Zr).getImmutable();
+            Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
+            String[] ids = new String[publicKeyParameter.getMaxUser()];
+            Element[] elementIds = new Element[publicKeyParameter.getMaxUser()];
+            Element elementDelegateId = PairingUtils.MapStringToGroup(pairing, parameter.getDelegateId(), PairingUtils.PairingGroupType.Zr).getImmutable();
 
             Element a0_r = pairing.getZr().newRandomElement().getImmutable();
             Element a1_r = pairing.getZr().newRandomElement().getImmutable();
-            Element[] bs_r = new Element[publicKeyParameters.getMaxUser()];
+            Element[] bs_r = new Element[publicKeyParameter.getMaxUser()];
             Element t = pairing.getZr().newRandomElement().getImmutable();
-            Element a0 = publicKeyParameters.getH().getImmutable();
-            Element a1 = publicKeyParameters.getG().powZn(t).getImmutable();
-            Element[] bs = new Element[publicKeyParameters.getMaxUser()];
+            Element a0 = publicKeyParameter.getH().getImmutable();
+            Element a1 = publicKeyParameter.getG().powZn(t).getImmutable();
+            Element[] bs = new Element[publicKeyParameter.getMaxUser()];
 
-            for (int i=0; i<publicKeyParameters.getMaxUser(); i++) {
-                if (secretKeyParameters.getIdAt(i) != null) {
-                    ids[i] = secretKeyParameters.getIdAt(i);
-                    elementIds[i] = secretKeyParameters.getElementIdAt(i);
+            for (int i=0; i<publicKeyParameter.getMaxUser(); i++) {
+                if (secretKeyParameter.getIdAt(i) != null) {
+                    ids[i] = secretKeyParameter.getIdAt(i);
+                    elementIds[i] = secretKeyParameter.getElementIdAt(i);
                     //Compute a0
-                    a0 = a0.mul(publicKeyParameters.getUsAt(i).powZn(elementIds[i])).getImmutable();
+                    a0 = a0.mul(publicKeyParameter.getUsAt(i).powZn(elementIds[i])).getImmutable();
                     //Set h[i] to be one
                     bs[i] = pairing.getG1().newOneElement().getImmutable();
-                } else if (i == parameters.getIndex()) {
-                    ids[i] = parameters.getDelegateId();
+                } else if (i == parameter.getIndex()) {
+                    ids[i] = parameter.getDelegateId();
                     elementIds[i] = elementDelegateId;
                     //Compute a0
-                    a0 = a0.mul(publicKeyParameters.getUsAt(i).powZn(elementIds[i])).getImmutable();
+                    a0 = a0.mul(publicKeyParameter.getUsAt(i).powZn(elementIds[i])).getImmutable();
                     //Set h[i] to be one
                     bs[i] = pairing.getG1().newOneElement().getImmutable();
                 } else {
                     bs_r[i] = pairing.getZr().newRandomElement().getImmutable();
-                    bs[i] = secretKeyParameters.getBsAt(i)
-                            .mul(publicKeyParameters.getUsAt(i).powZn(t)).mul(publicKeyParameters.getX3().powZn(bs_r[i])).getImmutable();
+                    bs[i] = secretKeyParameter.getBsAt(i)
+                            .mul(publicKeyParameter.getUsAt(i).powZn(t)).mul(publicKeyParameter.getX3().powZn(bs_r[i])).getImmutable();
                 }
             }
             //Compute the rest of a0
-            a0 = a0.powZn(t).mul(secretKeyParameters.getA0())
-                    .mul(secretKeyParameters.getBsAt(parameters.getIndex()).powZn(elementIds[parameters.getIndex()]))
-                    .mul(publicKeyParameters.getX3().powZn(a0_r)).getImmutable();
+            a0 = a0.powZn(t).mul(secretKeyParameter.getA0())
+                    .mul(secretKeyParameter.getBsAt(parameter.getIndex()).powZn(elementIds[parameter.getIndex()]))
+                    .mul(publicKeyParameter.getX3().powZn(a0_r)).getImmutable();
             //Compute the result of a1
-            a1 = a1.mul(secretKeyParameters.getA1()).mul(publicKeyParameters.getX3().powZn(a1_r)).getImmutable();
+            a1 = a1.mul(secretKeyParameter.getA1()).mul(publicKeyParameter.getX3().powZn(a1_r)).getImmutable();
 
-            return new HIBBELLW14SecretKeySerParameter(publicKeyParameters.getParameters(),
+            return new HIBBELLW14SecretKeySerParameter(publicKeyParameter.getParameters(),
                     ids, elementIds, a0, a1, bs);
         } else {
             throw new IllegalArgumentException
                     ("Invalid KeyGenerationParameters for " + HIBBELLW14Engine.SCHEME_NAME
                             + " Secret Key Generatation, find "
-                            + params.getClass().getName() + ", require "
+                            + param.getClass().getName() + ", require "
                             + HIBBELLW14SecretKeyGenerationParameter.class.getName() + " or "
                             + HIBBELLW14DelegateGenerationParameter.class.getName());
         }

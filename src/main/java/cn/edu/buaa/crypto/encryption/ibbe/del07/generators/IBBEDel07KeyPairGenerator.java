@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07KeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
@@ -15,14 +15,14 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Public key / master secret key generator for Delerablée IBBE scheme.
  */
-public class IBBEDel07KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+public class IBBEDel07KeyPairGenerator implements PairingKeyPairGenerator {
     private IBBEDel07KeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.parameters = (IBBEDel07KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerPair generateKeyPair() {
+    public PairingKeySerPair generateKeyPair() {
         Pairing pairing = PairingFactory.getPairing(this.parameters.getPairingParameters());
         Element[] hs = new Element[this.parameters.getMaxBroadcastReceiver() + 1];
         hs[0] = pairing.getG2().newRandomElement().getImmutable();
@@ -37,7 +37,7 @@ public class IBBEDel07KeyPairGenerator implements AsymmetricKeySerPairGenerator 
             hs[i] = hs[0].powZn(gammaToi).getImmutable();
         }
 
-        return new AsymmetricKeySerPair(
+        return new PairingKeySerPair(
                 new IBBEDel07PublicKeySerParameter(this.parameters.getPairingParameters(), w, v, hs),
                 new IBBEDel07MasterSecretKeySerParameter(this.parameters.getPairingParameters(), g, gamma));
     }

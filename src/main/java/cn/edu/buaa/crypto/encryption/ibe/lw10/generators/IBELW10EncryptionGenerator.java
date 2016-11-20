@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10EncryptionGenerationParameters;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10CipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -25,7 +25,7 @@ public class IBELW10EncryptionGenerator implements PairingEncryptionGenerator {
     }
 
     public PairingCipherSerParameter generateCiphertext() {
-        IBELW10PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        IBELW10PublicKeySerParameter publicKeyParameters = (IBELW10PublicKeySerParameter)this.params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String id = this.params.getId();
         Element elementId = PairingUtils.MapStringToGroup(pairing, id, PairingUtils.PairingGroupType.Zr).getImmutable();
@@ -37,6 +37,6 @@ public class IBELW10EncryptionGenerator implements PairingEncryptionGenerator {
         Element C1 = publicKeyParameters.getU().powZn(elementId).mul(publicKeyParameters.getH()).powZn(s).getImmutable();
         Element C2 = publicKeyParameters.getG().powZn(s).getImmutable();
 
-        return new IBELW10CipherSerParameter(publicKeyParameters.getParameters(), C0, C1, C2);
+        return new IBELW10CiphertextSerParameter(publicKeyParameters.getParameters(), C0, C1, C2);
     }
 }

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
@@ -17,16 +17,16 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Secret key generator for Delerablée IBBE scheme.
  */
-public class IBBEDel07SecretKeyGenerator implements AsymmetricKeySerParametersGenerator {
+public class IBBEDel07SecretKeyGenerator implements PairingKeyParameterGenerator {
     private IBBEDel07SecretKeyGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.parameters = (IBBEDel07SecretKeyGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerParameter generateKey() {
-        IBBEDel07MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
-        IBBEDel07PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
+    public PairingKeySerParameter generateKey() {
+        IBBEDel07MasterSecretKeySerParameter masterSecretKeyParameters = (IBBEDel07MasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
+        IBBEDel07PublicKeySerParameter publicKeyParameters = (IBBEDel07PublicKeySerParameter)parameters.getPublicKeyParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element elementId = PairingUtils.MapStringToGroup(pairing, parameters.getId(), PairingUtils.PairingGroupType.Zr);

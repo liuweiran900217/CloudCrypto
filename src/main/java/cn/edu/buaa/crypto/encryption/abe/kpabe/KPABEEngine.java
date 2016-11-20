@@ -5,8 +5,8 @@ import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
 import cn.edu.buaa.crypto.algebra.Engine;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -37,7 +37,7 @@ public abstract class KPABEEngine implements Engine {
      * @param maxAttributesNum maximal number of attributes supported, useless if no such limitation
      * @return public key / master secret key pair of the scheme
      */
-    public abstract AsymmetricKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum);
+    public abstract PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum);
 
     /**
      * Secret Key Generation Algorithm for KP-ABE
@@ -47,7 +47,7 @@ public abstract class KPABEEngine implements Engine {
      * @return secret key associated with the access policy
      * @throws PolicySyntaxException if error occurs when parsing the access policy string
      */
-    public AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, String accessPolicy) throws PolicySyntaxException {
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String accessPolicy) throws PolicySyntaxException {
         int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
         String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
         return keyGen(publicKey, masterKey, accessPolicyIntArrays, rhos);
@@ -61,7 +61,7 @@ public abstract class KPABEEngine implements Engine {
      * @param rhos associated rhos, given by string array
      * @return secret key associated with the access policy
      */
-    public abstract AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos);
+    public abstract PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos);
 
     /**
      * Encryption algorithm for KP-ABE
@@ -70,7 +70,7 @@ public abstract class KPABEEngine implements Engine {
      * @param message message in GT
      * @return ciphertext associated with the attribute set
      */
-    public abstract PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] attributes, Element message);
+    public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] attributes, Element message);
 
     /**
      * Decryption Algorithm for KP-ABE
@@ -81,6 +81,6 @@ public abstract class KPABEEngine implements Engine {
      * @return the message in GT
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public abstract Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-                                 String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
+    public abstract Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                                       String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 }

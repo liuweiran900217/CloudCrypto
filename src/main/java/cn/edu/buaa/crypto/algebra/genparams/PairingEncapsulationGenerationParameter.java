@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.algebra.genparams;
 
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**
@@ -9,11 +9,11 @@ import org.bouncycastle.crypto.CipherParameters;
  * Pairing key encapsulation generation parameter.
  */
 public abstract class PairingEncapsulationGenerationParameter implements CipherParameters {
-    private AsymmetricKeySerParameter publicKeyParameter;
+    private PairingKeySerParameter publicKeyParameter;
 
-    public PairingEncapsulationGenerationParameter(AsymmetricKeySerParameter publicKeyParameter) {
+    public PairingEncapsulationGenerationParameter(PairingKeySerParameter publicKeyParameter) {
         this.publicKeyParameter = publicKeyParameter;
     }
 
-    public AsymmetricKeySerParameter getPublicKeyParameter() { return this.publicKeyParameter; }
+    public PairingKeySerParameter getPublicKeyParameter() { return this.publicKeyParameter; }
 }

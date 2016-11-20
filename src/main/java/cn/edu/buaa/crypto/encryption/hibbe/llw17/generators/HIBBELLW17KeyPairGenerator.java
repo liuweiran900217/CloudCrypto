@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw17.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.genparams.HIBBELLW17KeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17PublicKeySerParameter;
@@ -17,14 +17,14 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu composite-order CCA2-secure HIBBE public key / master secret key pair generator.
  */
-public class HIBBELLW17KeyPairGenerator implements AsymmetricKeySerPairGenerator {
+public class HIBBELLW17KeyPairGenerator implements PairingKeyPairGenerator {
     private HIBBELLW17KeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.parameters = (HIBBELLW17KeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerPair generateKeyPair() {
+    public PairingKeySerPair generateKeyPair() {
         PropertiesParameters parameters = (PropertiesParameters) this.parameters.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
         Element generator = pairing.getG1().newRandomElement().getImmutable();
@@ -45,7 +45,7 @@ public class HIBBELLW17KeyPairGenerator implements AsymmetricKeySerPairGenerator
         parameters.remove("n0");
         parameters.remove("n1");
         parameters.remove("n2");
-        return new AsymmetricKeySerPair(
+        return new PairingKeySerPair(
                 new HIBBELLW17PublicKeySerParameter(parameters, g, h, u, uv, X3, eggAlpha),
                 new HIBBELLW17MasterSecretKeySerParameter(parameters, gAlpha));
     }

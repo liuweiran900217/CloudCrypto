@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerParametersGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.application.llw15.genparams.RBACLLW15AccessCredentialPGenParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.application.llw15.serparams.*;
@@ -15,17 +15,17 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu role-based access control patient access credential generator.
  */
-public class RBACLLW15AccessCredentialPGenerator implements AsymmetricKeySerParametersGenerator {
+public class RBACLLW15AccessCredentialPGenerator implements PairingKeyParameterGenerator {
     private KeyGenerationParameters params;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.params = keyGenerationParameters;
     }
 
-    public AsymmetricKeySerParameter generateKey() {
+    public PairingKeySerParameter generateKey() {
         RBACLLW15AccessCredentialPGenParameter parameters = (RBACLLW15AccessCredentialPGenParameter) params;
-        RBACLLW15PublicKeySerParameter publicKeyParameters = parameters.getPublicKeyParameters();
-        RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = parameters.getMasterSecretKeyParameters();
+        RBACLLW15PublicKeySerParameter publicKeyParameters = (RBACLLW15PublicKeySerParameter)parameters.getPublicKeyParameter();
+        RBACLLW15MasterSecretKeySerParameter masterSecretKeyParameters = (RBACLLW15MasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element elementId = PairingUtils.MapStringToGroup(pairing, parameters.getId(), PairingUtils.PairingGroupType.Zr);

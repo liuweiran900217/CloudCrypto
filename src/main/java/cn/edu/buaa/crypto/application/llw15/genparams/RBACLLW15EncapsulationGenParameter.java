@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.application.llw15.genparams;
 
 import cn.edu.buaa.crypto.algebra.genparams.PairingEncapsulationGenerationParameter;
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15IntermediateSerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15PublicKeySerParameter;
@@ -18,7 +18,7 @@ public class RBACLLW15EncapsulationGenParameter extends PairingEncapsulationGene
     private String time;
 
     public RBACLLW15EncapsulationGenParameter(
-            AsymmetricKeySerParameter publicKeyParameter, String id, String[] roles, String time) {
+            PairingKeySerParameter publicKeyParameter, String id, String[] roles, String time) {
         super(publicKeyParameter);
         assert(roles.length == ((RBACLLW15PublicKeySerParameter)publicKeyParameter).getMaxRoleNumber());
         this.roles = roles;
@@ -29,7 +29,7 @@ public class RBACLLW15EncapsulationGenParameter extends PairingEncapsulationGene
     }
 
     public RBACLLW15EncapsulationGenParameter(
-            AsymmetricKeySerParameter publicKeyParameter, PairingCipherSerParameter intermediateParameter,
+            PairingKeySerParameter publicKeyParameter, PairingCipherSerParameter intermediateParameter,
             String id, String[] roles, String time) {
         super(publicKeyParameter);
         assert(roles.length == ((RBACLLW15PublicKeySerParameter)publicKeyParameter).getMaxRoleNumber());

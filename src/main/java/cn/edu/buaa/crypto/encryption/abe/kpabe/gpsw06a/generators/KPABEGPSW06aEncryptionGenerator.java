@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aEncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -28,7 +28,7 @@ public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerat
     }
 
     public PairingCipherSerParameter generateCiphertext() {
-        KPABEGPSW06aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        KPABEGPSW06aPublicKeySerParameter publicKeyParameters = (KPABEGPSW06aPublicKeySerParameter)this.params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] attributes = this.params.getAttributes();
         Element message = this.params.getMessage();
@@ -51,7 +51,7 @@ public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerat
                 Es.put(String.valueOf(index), E);
             }
 
-            return new KPABEGPSW06aCipherSerParameter(publicKeyParameters.getParameters(), EPrime, Es);
+            return new KPABEGPSW06aCiphertextSerParameter(publicKeyParameters.getParameters(), EPrime, Es);
         } catch (NumberFormatException e) {
             throw new InvalidParameterException("Invalid rhos, require rhos represented by integers");
         }

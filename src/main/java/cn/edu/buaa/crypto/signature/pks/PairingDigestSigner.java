@@ -1,6 +1,6 @@
 package cn.edu.buaa.crypto.signature.pks;
 
-import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.Digest;
@@ -27,7 +27,7 @@ public class PairingDigestSigner implements Signer {
     public void init(boolean forSigning, CipherParameters parameters)
     {
         this.forSigning = forSigning;
-        AsymmetricKeySerParameter k = (AsymmetricKeySerParameter)parameters;
+        PairingKeySerParameter k = (PairingKeySerParameter)parameters;
         if (forSigning && !k.isPrivate()) {
             throw new IllegalArgumentException("Signing Requires Private Key.");
         }

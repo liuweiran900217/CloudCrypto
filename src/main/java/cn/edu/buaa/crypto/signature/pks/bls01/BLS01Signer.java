@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.signature.pks.bls01;
 
-import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.signature.pks.PairingSigner;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class BLS01Signer implements PairingSigner {
     private static final String SCHEME_NAME = "Boneh-Lynn-Shacham-01 signature scheme";
 
-    private transient PairingKeySerParameter pairingKeySerParameter;
+    private PairingKeySerParameter pairingKeySerParameter;
 
     public BLS01Signer() {
 
@@ -29,16 +29,16 @@ public class BLS01Signer implements PairingSigner {
 
     public void init(boolean forSigning, CipherParameters param) {
         if (forSigning) {
-            this.pairingKeySerParameter = (BLS01SignSecretKeySerParameter) param;
+            this.pairingKeySerParameter = (BLS01SignSecretPairingKeySerParameter) param;
         } else {
-            this.pairingKeySerParameter = (BLS01SignPublicKeySerParameter) param;
+            this.pairingKeySerParameter = (BLS01SignPublicPairingKeySerParameter) param;
         }
     }
 
     public Element[] generateSignature(byte[] message) {
         PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
-        BLS01SignSecretKeySerParameter secretKeyParameters = (BLS01SignSecretKeySerParameter) this.pairingKeySerParameter;
+        BLS01SignSecretPairingKeySerParameter secretKeyParameters = (BLS01SignSecretPairingKeySerParameter) this.pairingKeySerParameter;
         Element x = secretKeyParameters.getX();
 
         Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G2);
@@ -50,7 +50,7 @@ public class BLS01Signer implements PairingSigner {
     public boolean verifySignature(byte[] message, Element... signature) {
         PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
-        BLS01SignPublicKeySerParameter publicKeyParameters = (BLS01SignPublicKeySerParameter) this.pairingKeySerParameter;
+        BLS01SignPublicPairingKeySerParameter publicKeyParameters = (BLS01SignPublicPairingKeySerParameter) this.pairingKeySerParameter;
         Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G2);
         Element g = publicKeyParameters.getG();
         Element v = publicKeyParameters.getV();

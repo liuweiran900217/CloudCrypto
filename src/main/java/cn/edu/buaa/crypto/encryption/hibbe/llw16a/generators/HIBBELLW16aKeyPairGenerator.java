@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
-import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
-import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aPublicKeySerParameter;
@@ -16,14 +16,14 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  *
  * Liu-Liu-Wu prime-order HIBBE ciphertext / session key pair generator.
  */
-public class HIBBELLW16aKeyPairGenerator implements AsymmetricKeySerPairGenerator {
+public class HIBBELLW16aKeyPairGenerator implements PairingKeyPairGenerator {
     private HIBBELLW16aKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
         this.parameters = (HIBBELLW16aKeyPairGenerationParameter)keyGenerationParameters;
     }
 
-    public AsymmetricKeySerPair generateKeyPair() {
+    public PairingKeySerPair generateKeyPair() {
         PropertiesParameters parameters = (PropertiesParameters) this.parameters.getPairingParameters();
         Pairing pairing = PairingFactory.getPairing(parameters);
 
@@ -38,7 +38,7 @@ public class HIBBELLW16aKeyPairGenerator implements AsymmetricKeySerPairGenerato
             u[i] = pairing.getG1().newRandomElement().getImmutable();
         }
 
-        return new AsymmetricKeySerPair(
+        return new PairingKeySerPair(
                 new HIBBELLW16aPublicKeySerParameter(parameters, g, g1, g2, g3, u),
                 new HIBBELLW16aMasterSecretKeySerParameter(parameters, g2Alpha));
     }
