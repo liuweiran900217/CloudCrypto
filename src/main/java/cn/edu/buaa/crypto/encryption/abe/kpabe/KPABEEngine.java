@@ -6,9 +6,9 @@ import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
 import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -64,22 +64,23 @@ public abstract class KPABEEngine implements Engine {
     public abstract AsymmetricKeySerParameter keyGen(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos);
 
     /**
-     * Key Encapsulation Algorithm for KP-ABE
+     * Encryption algorithm for KP-ABE
      * @param publicKey public key
      * @param attributes associated attribute set
-     * @return session key / ciphertext pair associated with the attribute set
+     * @param message message in GT
+     * @return ciphertext associated with the attribute set
      */
-    public abstract PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String[] attributes);
+    public abstract PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] attributes, Element message);
 
     /**
-     * Key Decapsulation Algorithm for KP-ABE
+     * Decryption Algorithm for KP-ABE
      * @param publicKey public key
      * @param secretKey secret key associated with an access policy
      * @param attributes attribute set associating with the ciphertext
      * @param ciphertext ciphertext
-     * @return the decapsulated session key
+     * @return the message in GT
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    public abstract byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+    public abstract Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
                                  String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 }

@@ -1,0 +1,59 @@
+package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators;
+
+import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
+import it.unisa.dia.gas.jpbc.Element;
+import it.unisa.dia.gas.jpbc.Pairing;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import org.bouncycastle.crypto.CipherParameters;
+
+import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by Weiran Liu on 2016/11/18.
+ *
+ * Goyal-Pandey-Sahai-Waters small-universe KP-ABE encryption generator.
+ */
+public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerator {
+
+    private KPABEGPSW06aEncryptionGenerationParameter params;
+
+    public void init(CipherParameters params) {
+        this.params = (KPABEGPSW06aEncryptionGenerationParameter)params;
+    }
+
+    public PairingCipherSerParameter generateCiphertext() {
+        KPABEGPSW06aPublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
+        String[] attributes = this.params.getAttributes();
+        Element message = this.params.getMessage();
+        if (attributes.length > publicKeyParameters.getMaxAttributesNum()) {
+            throw new IllegalArgumentException("# of broadcast receiver set " + attributes.length +
+                    " is greater than the maximal number of receivers " + publicKeyParameters.getMaxAttributesNum());
+        }
+
+        try {
+            Element s = pairing.getZr().newRandomElement().getImmutable();
+            Element sessionKey = publicKeyParameters.getY().powZn(s).getImmutable();
+            Element EPrime = sessionKey.mul(message).getImmutable();
+            Map<String, Element> Es = new HashMap<String, Element>();
+            for (String attribute : attributes) {
+                int index = Integer.parseInt(attribute);
+                if (index >= publicKeyParameters.getMaxAttributesNum() || index < 0) {
+                    throw new InvalidParameterException("Rho index greater than or equal to the max number of attributes supported");
+                }
+                Element E = publicKeyParameters.getTsAt(String.valueOf(index)).powZn(s).getImmutable();
+                Es.put(String.valueOf(index), E);
+            }
+
+            return new KPABEGPSW06aCipherSerParameter(publicKeyParameters.getParameters(), EPrime, Es);
+        } catch (NumberFormatException e) {
+            throw new InvalidParameterException("Invalid rhos, require rhos represented by integers");
+        }
+    }
+}

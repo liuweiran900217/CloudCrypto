@@ -14,6 +14,7 @@ import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerPara
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -74,14 +75,14 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07PublicKeySerParameter.class.getName());
         }
         IBBEDel07EncapsulationPairGenerator keyEncapsulationPairGenerator = new IBBEDel07EncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new IBBEDel07CiphertextGenerationParameter(
+        keyEncapsulationPairGenerator.init(new IBBEDel07EncapsulationGenerationParameter(
                 publicKey, ids));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();
     }
 
     public byte[] decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-                                String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+                                 String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof IBBEDel07PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -101,7 +102,7 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07CipherSerParameter.class.getName());
         }
         IBBEDel07DecapsulationGenerator keyDecapsulationGenerator = new IBBEDel07DecapsulationGenerator();
-        keyDecapsulationGenerator.init(new IBBEDel07DecapsulationParameter(
+        keyDecapsulationGenerator.init(new IBBEDel07DecapsulationGenerationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
     }

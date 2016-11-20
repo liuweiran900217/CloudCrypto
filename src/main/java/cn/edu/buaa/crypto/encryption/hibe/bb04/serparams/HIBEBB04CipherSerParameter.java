@@ -13,10 +13,11 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 15-9-30.
  *
- * Ciphertext Parameters for Boneh-Boyen HIBE scheme.
+ * Boneh-Boyen HIBE ciphertext parameter.
  */
 public class HIBEBB04CipherSerParameter extends PairingCipherSerParameter {
-    private final int length;
+    private transient Element A;
+    private final byte[] byteArrayA;
 
     private transient Element B;
     private final byte[] byteArrayB;
@@ -24,9 +25,13 @@ public class HIBEBB04CipherSerParameter extends PairingCipherSerParameter {
     private transient Element[] Cs;
     private final byte[][] byteArraysCs;
 
-    public HIBEBB04CipherSerParameter(PairingParameters pairingParameters, int length, Element B, Element[] Cs) {
+
+
+    public HIBEBB04CipherSerParameter(PairingParameters pairingParameters, Element A, Element B, Element[] Cs) {
         super(pairingParameters);
-        this.length = length;
+
+        this.A = A.getImmutable();
+        this.byteArrayA = this.A.toBytes();
 
         this.B = B.getImmutable();
         this.byteArrayB = this.B.toBytes();
@@ -35,13 +40,11 @@ public class HIBEBB04CipherSerParameter extends PairingCipherSerParameter {
         this.byteArraysCs = PairingUtils.GetElementArrayBytes(this.Cs);
     }
 
-    public int getLength() { return this.length; }
+    public Element getA() { return this.A.duplicate(); }
 
     public Element getB() { return this.B.duplicate(); }
 
-    public Element getCsAt(int index) { return this.Cs[index].duplicate(); }
-
-    public Element[] getCs() { return this.Cs; }
+    public Element[] getCs() { return ElementUtils.cloneImmutable(this.Cs); }
 
     @Override
     public boolean equals(Object anObject) {
@@ -50,8 +53,11 @@ public class HIBEBB04CipherSerParameter extends PairingCipherSerParameter {
         }
         if (anObject instanceof HIBEBB04CipherSerParameter) {
             HIBEBB04CipherSerParameter that = (HIBEBB04CipherSerParameter)anObject;
-            //Compare length
-            if (this.length != that.getLength()) {
+            //Compare A
+            if (!PairingUtils.isEqualElement(this.A, that.getA())){
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayA, that.byteArrayA)) {
                 return false;
             }
             //Compare B
@@ -78,6 +84,7 @@ public class HIBEBB04CipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
+        this.A = pairing.getGT().newElementFromBytes(this.byteArrayA).getImmutable();
         this.B = pairing.getG1().newElementFromBytes(this.byteArrayB).getImmutable();
         this.Cs = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysCs, PairingUtils.PairingGroupType.G1);
     }

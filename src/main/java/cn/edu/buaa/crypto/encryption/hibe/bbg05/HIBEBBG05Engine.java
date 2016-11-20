@@ -1,12 +1,11 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05;
 
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05DecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05EncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams.*;
@@ -14,6 +13,7 @@ import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05CipherSerPara
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05SecretKeySerParameter;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -86,21 +86,20 @@ public class HIBEBBG05Engine implements HIBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids){
+    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + HIBEBBG05PublicKeySerParameter.class.getName());
         }
-        HIBEBBG05EncapsulationPairGenerator keyEncapsulationPairGenerator = new HIBEBBG05EncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new HIBEBBG05CiphertextGenerationParameter(
-                publicKey, ids));
+        HIBEBBG05EncryptionGenerator encryptionGenerator = new HIBEBBG05EncryptionGenerator();
+        encryptionGenerator.init(new HIBEBBG05EncryptionGenerationParameter(publicKey, ids, message));
 
-        return keyEncapsulationPairGenerator.generateEncryptionPair();
+        return encryptionGenerator.generateCiphertext();
     }
 
-    public byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
             String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
             throw new IllegalArgumentException
@@ -120,10 +119,10 @@ public class HIBEBBG05Engine implements HIBEEngine {
                             + ciphertext.getClass().getName() + ", require "
                             + HIBEBBG05CipherSerParameter.class.getName());
         }
-        HIBEBBG05DecapsulationGenerator keyDecapsulationGenerator = new HIBEBBG05DecapsulationGenerator();
-        keyDecapsulationGenerator.init(new HIBEBBG05DecapsulationParameter(
+        HIBEBBG05DecapsulationGenerator decapsulationGenerator = new HIBEBBG05DecapsulationGenerator();
+        decapsulationGenerator.init(new HIBEBBG05DecryptionGenerationParameter(
                 publicKey, secretKey, ids, ciphertext));
-        return keyDecapsulationGenerator.recoverKey();
+        return decapsulationGenerator.recoverMessage();
     }
 
     public String getEngineName() {

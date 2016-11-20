@@ -7,6 +7,7 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +17,16 @@ import java.util.Map;
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE ciphertext parameter.
  */
 public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
+    private transient Element EPrime;
+    private final byte[] byteArrayEPrime;
+
     private transient Map<String, Element> Es;
     private final Map<String, byte[]> byteArraysEs;
 
-    public KPABEGPSW06aCipherSerParameter(PairingParameters pairingParameters, Map<String, Element> Es) {
+    public KPABEGPSW06aCipherSerParameter(PairingParameters pairingParameters, Element EPrime, Map<String, Element> Es) {
         super(pairingParameters);
+        this.EPrime = EPrime.getImmutable();
+        this.byteArrayEPrime = this.EPrime.toBytes();
 
         this.Es = new HashMap<String, Element>();
         this.byteArraysEs = new HashMap<String, byte[]>();
@@ -33,6 +39,8 @@ public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
 
     public Element getEsAt(String attribute) { return this.Es.get(attribute).duplicate(); }
 
+    public Element getEPrime() { return this.EPrime.duplicate(); }
+
     @Override
     public boolean equals(Object anObject) {
         if (this == anObject) {
@@ -40,6 +48,13 @@ public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
         }
         if (anObject instanceof KPABEGPSW06aCipherSerParameter) {
             KPABEGPSW06aCipherSerParameter that = (KPABEGPSW06aCipherSerParameter)anObject;
+            //Compare EPrime
+            if (!PairingUtils.isEqualElement(this.EPrime, that.EPrime)){
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayEPrime, that.byteArrayEPrime)) {
+                return false;
+            }
             //Compare Es
             if (!this.Es.equals(that.Es)){
                 return false;
@@ -57,6 +72,7 @@ public class KPABEGPSW06aCipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
+        this.EPrime = pairing.getGT().newElementFromBytes(this.byteArrayEPrime);
         this.Es = new HashMap<String, Element>();
         for (String attribute : this.byteArraysEs.keySet()) {
             this.Es.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysEs.get(attribute)).getImmutable());

@@ -20,7 +20,7 @@ public class RBACLLW15IntermediateGenerator {
     }
 
     public RBACLLW15IntermediateSerParameter generateIntermadiateParameters() {
-        RBACLLW15PublicKeySerParameter publicKeyParameters = params.getPublicKeyParameters();
+        RBACLLW15PublicKeySerParameter publicKeyParameters = (RBACLLW15PublicKeySerParameter)params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element r = pairing.getZr().newRandomElement().getImmutable();
 

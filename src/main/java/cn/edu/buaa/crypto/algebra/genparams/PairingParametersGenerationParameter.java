@@ -1,5 +1,7 @@
 package cn.edu.buaa.crypto.algebra.genparams;
 
+import org.bouncycastle.crypto.CipherParameters;
+
 import java.security.SecureRandom;
 
 /**
@@ -7,10 +9,9 @@ import java.security.SecureRandom;
  *
  * Pairing-based scheme key pair generation parameters.
  */
-public class PairingParametersGenerationParameter {
+public class PairingParametersGenerationParameter implements CipherParameters {
     // Default strength for KeyPairGenerator, useless in Pairing based cryptography
-    public static final int DEFAULT_R_BIT_LENGTH = 160;
-    public static final int DEFAULT_Q_BIT_LENGTH = 512;
+    private static final int DEFAULT_Q_BIT_LENGTH = 512;
     public static final int STENGTH = DEFAULT_Q_BIT_LENGTH * 2;
 
     public enum PairingType {

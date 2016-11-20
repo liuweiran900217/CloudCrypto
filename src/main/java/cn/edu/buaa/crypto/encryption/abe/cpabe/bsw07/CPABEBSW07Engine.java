@@ -11,7 +11,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 /**
  * Created by Weiran Liu on 2016/11/18.
  *
- * Bethencourt-Sahai-Wtaers large-universe CP-ABE engine.
+ * Bethencourt-Sahai-Waters large-universe CP-ABE engine.
  */
 public class CPABEBSW07Engine extends CPABEEngine {
     //Scheme name, used for exceptions

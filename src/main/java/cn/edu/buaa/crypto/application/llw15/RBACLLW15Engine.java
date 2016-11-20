@@ -17,7 +17,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class RBACLLW15Engine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "LLW15RBAC";
+    public static final String SCHEME_NAME = "Liu-Liu-Wu-15 EHR Role-Based Access Control scheme";
 
     private static RBACLLW15Engine engine;
 

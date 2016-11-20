@@ -3,7 +3,6 @@ package com.example.encryption.hibbe.llw17;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.HIBBELLW17Engine;
 import com.example.TestUtils;
 import com.example.encryption.hibbe.HIBBEEngineTest;
-import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA256Digest;

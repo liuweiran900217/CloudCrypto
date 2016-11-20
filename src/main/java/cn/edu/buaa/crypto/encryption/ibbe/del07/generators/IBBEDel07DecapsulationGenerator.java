@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CipherSerParameter;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07DecapsulationParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07DecapsulationGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
@@ -19,10 +19,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Key decapsulation generator for Delerablée IBBE scheme.
  */
 public class IBBEDel07DecapsulationGenerator implements PairingDecapsulationGenerator {
-    private IBBEDel07DecapsulationParameter params;
+    private IBBEDel07DecapsulationGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (IBBEDel07DecapsulationParameter)params;
+        this.params = (IBBEDel07DecapsulationGenerationParameter)params;
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
@@ -66,9 +66,8 @@ public class IBBEDel07DecapsulationGenerator implements PairingDecapsulationGene
         }
         tempPow = tempPow.invert().getImmutable();
 
-        Element sessionKey = pairing.pairing(ciphertextParameters.getC1(), temp1)
+        return pairing.pairing(ciphertextParameters.getC1(), temp1)
                 .mul(pairing.pairing(secretKeyParameters.getSecretKey(), ciphertextParameters.getC2()))
-                .powZn(tempPow).getImmutable();
-        return sessionKey.toBytes();
+                .powZn(tempPow).getImmutable().toBytes();
     }
 }

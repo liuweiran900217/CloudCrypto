@@ -4,13 +4,13 @@ import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aDecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aEncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators.HIBBELLW16aSecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.*;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.*;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -83,21 +83,20 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids){
+    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof HIBBELLW16aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + HIBBELLW16aPublicKeySerParameter.class.getName());
         }
-        HIBBELLW16aEncapsulationPairGenerator keyEncapsulationPairGenerator = new HIBBELLW16aEncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new HIBBELLW16aCiphertextGenerationParameter(
-                publicKey, ids));
+        HIBBELLW16aEncryptionGenerator encryptionGenerator = new HIBBELLW16aEncryptionGenerator();
+        encryptionGenerator.init(new HIBBELLW16aEncryptionGenerationParameter(publicKey, ids, message));
 
-        return keyEncapsulationPairGenerator.generateEncryptionPair();
+        return encryptionGenerator.generateCiphertext();
     }
 
-    public byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
+    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBBELLW16aPublicKeySerParameter)){
             throw new IllegalArgumentException
@@ -117,10 +116,10 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
                             + ciphertext.getClass().getName() + ", require "
                             + HIBBELLW16aCipherSerParameter.class.getName());
         }
-        HIBBELLW16aDecapsulationGenerator keyDecapsulationGenerator = new HIBBELLW16aDecapsulationGenerator();
-        keyDecapsulationGenerator.init(new HIBBELLW16aDecapsulationParameter(
+        HIBBELLW16aDecryptionGenerator decryptionGenerator = new HIBBELLW16aDecryptionGenerator();
+        decryptionGenerator.init(new HIBBELLW16aDecryptionGenerationParameter(
                 publicKey, secretKey, ids, ciphertext));
-        return keyDecapsulationGenerator.recoverKey();
+        return decryptionGenerator.recoverMessage();
     }
 
     public String getEngineName() {

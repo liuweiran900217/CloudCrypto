@@ -25,7 +25,7 @@ public class RBACLLW15EncapsulationPairGenerator implements PairingEncapsulation
     }
 
     public PairingKeyEncapsulationSerPair generateEncryptionPair() {
-        RBACLLW15PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
+        RBACLLW15PublicKeySerParameter publicKeyParameters = (RBACLLW15PublicKeySerParameter) this.params.getPublicKeyParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         String[] roles = this.params.getRoles();
         Element[] elementRoles = PairingUtils.MapStringArrayToGroup(pairing, roles, PairingUtils.PairingGroupType.Zr);
@@ -57,7 +57,7 @@ public class RBACLLW15EncapsulationPairGenerator implements PairingEncapsulation
                     new RBACLLW15EncapsulationSerParameter(publicKeyParameters.getParameters(), C0, C1));
         } else {
             //encapsulate key using intermediate parameters
-            RBACLLW15IntermediateSerParameter intermediateParameters = params.getIntermediateParameters();
+            RBACLLW15IntermediateSerParameter intermediateParameters = params.getIntermediateParameter();
             Element sessionKey = pairing.pairing(publicKeyParameters.getG1(), publicKeyParameters.getG2())
                     .powZn(intermediateParameters.get_r()).getImmutable();
             byte[] byteArraySessionKey = sessionKey.toBytes();

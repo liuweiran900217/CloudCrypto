@@ -1,13 +1,14 @@
 package cn.edu.buaa.crypto.algebra.genparams;
 
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import org.bouncycastle.crypto.CipherParameters;
 
 /**
  * Created by Weiran Liu on 15-9-30.
  *
  * Generic pairing-based key encapsulation ciphertext / session key encapsulation pair.
  */
-public class PairingKeyEncapsulationSerPair {
+public class PairingKeyEncapsulationSerPair implements CipherParameters {
     private byte[] sessionKey;
     private PairingCipherSerParameter ciphertext;
 

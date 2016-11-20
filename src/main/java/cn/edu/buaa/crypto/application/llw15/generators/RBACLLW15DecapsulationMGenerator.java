@@ -23,9 +23,9 @@ public class RBACLLW15DecapsulationMGenerator implements PairingDecapsulationGen
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
-        RBACLLW15PublicKeySerParameter publicKeyParameters = this.params.getPublicKeyParameters();
-        RBACLLW15AccessCredentialMSerParameter secretKeyParameters = this.params.getSecretKeyParameters();
-        RBACLLW15EncapsulationSerParameter ciphertextParameters = this.params.getCiphertextParameters();
+        RBACLLW15PublicKeySerParameter publicKeyParameters = (RBACLLW15PublicKeySerParameter) this.params.getPublicKeyParameter();
+        RBACLLW15AccessCredentialMSerParameter secretKeyParameters = (RBACLLW15AccessCredentialMSerParameter)this.params.getSecretKeyParameter();
+        RBACLLW15EncapsulationSerParameter ciphertextParameters = (RBACLLW15EncapsulationSerParameter)this.params.getCiphertextParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementRolesCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getRoles(), PairingUtils.PairingGroupType.Zr);
@@ -59,7 +59,6 @@ public class RBACLLW15DecapsulationMGenerator implements PairingDecapsulationGen
 
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();
-        Element sessionKey = temp0.div(temp1).getImmutable();
-        return sessionKey.toBytes();
+        return temp0.div(temp1).getImmutable().toBytes();
     }
 }

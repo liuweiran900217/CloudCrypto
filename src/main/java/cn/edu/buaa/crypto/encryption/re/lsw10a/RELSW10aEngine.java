@@ -4,16 +4,16 @@ import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aDecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aEncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aSecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.params.*;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -66,23 +66,21 @@ public class RELSW10aEngine implements REEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids){
+    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + RELSW10aPublicKeySerParameter.class.getName());
         }
-        RELSW10aEncapsulationPairGenerator keyEncapsulationPairGenerator = new RELSW10aEncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new RELSW10aCiphertextGenerationParameter(
-                publicKey, ids));
+        RELSW10aEncryptionGenerator encryptionGenerator = new RELSW10aEncryptionGenerator();
+        encryptionGenerator.init(new RELSW10aEncryptionGenerationParameter(publicKey, ids, message));
 
-        return keyEncapsulationPairGenerator.generateEncryptionPair();
+        return encryptionGenerator.generateCiphertext();
     }
 
-    public byte[] decapsulation (
-            AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
-            String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
+    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+                              String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof RELSW10aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
@@ -101,10 +99,10 @@ public class RELSW10aEngine implements REEngine {
                             + ciphertext.getClass().getName() + ", require "
                             + RELSW10aCipherSerParameter.class.getName());
         }
-        RELSW10aDecapsulationGenerator keyDecapsulationGenerator = new RELSW10aDecapsulationGenerator();
-        keyDecapsulationGenerator.init(new RELSW10aDecapsulationParameter(
+        RELSW10aDecryptionGenerator decryptionGenerator = new RELSW10aDecryptionGenerator();
+        decryptionGenerator.init(new RELSW10aDecryptionGenerationParameter(
                 publicKey, secretKey, ids, ciphertext));
-        return keyDecapsulationGenerator.recoverKey();
+        return decryptionGenerator.recoverMessage();
     }
 
     public String getEngineName() {

@@ -1,12 +1,14 @@
 package com.example.encryption.hibe;
 
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import com.example.TestUtils;
+import it.unisa.dia.gas.jpbc.Element;
+import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.junit.Assert;
@@ -34,12 +36,12 @@ public class HIBEEngineTest {
         this.engine = engine;
     }
 
-    private void test_valid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_valid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
                                           String[] identityVector, String[] identityVectorSet) {
         try {
-            test_decapsulation(publicKey, masterKey, identityVector, identityVectorSet);
+            test_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
         } catch (Exception e) {
-            System.out.println("Valid decapsulation test failed, " +
+            System.out.println("Valid decryption test failed, " +
                     "identity vector  = " + Arrays.toString(identityVector) + ", " +
                     "iv encapsulation = " + Arrays.toString(identityVectorSet));
             e.printStackTrace();
@@ -47,14 +49,14 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_invalid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_invalid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
                                             String[] identityVector, String[] identityVectorSet) {
         try {
-            test_decapsulation(publicKey, masterKey, identityVector, identityVectorSet);
+            test_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
-            System.out.println("Invalid decapsulation test failed, " +
+            System.out.println("Invalid decryption test failed, " +
                     "identity vector  = " + Arrays.toString(identityVector) + ", " +
                     "iv encapsulation = " + Arrays.toString(identityVectorSet));
             e.printStackTrace();
@@ -62,7 +64,7 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
                                     String[] identityVector, String[] identityVectorEnc)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
@@ -73,20 +75,19 @@ public class HIBEEngineTest {
         secretKey = (AsymmetricKeySerParameter)anSecretKey;
 
         //Encryption and serialization
-        PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identityVectorEnc);
-        byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+        Element message = pairing.getGT().newRandomElement().getImmutable();
+        PairingCipherSerParameter ciphertext = engine.encryption(publicKey, identityVectorEnc, message);
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);
         ciphertext = (PairingCipherSerParameter)anCiphertext;
 
         //Decryption
-        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityVectorEnc, ciphertext);
-        Assert.assertArrayEquals(sessionKey, anSessionKey);
+        Element anMessage = engine.decryption(publicKey, secretKey, identityVectorEnc, ciphertext);
+        Assert.assertEquals(message, anMessage);
     }
 
-    private void test_delegation_valid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_delegation_valid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
                                                      String[] identityVector, String delegateId, String[] identityVectorEnc) {
         try {
             AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
@@ -97,19 +98,18 @@ public class HIBEEngineTest {
             delegateKey = (AsymmetricKeySerParameter)anDelegateKey;
 
             //Encryption and serialization
-            PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identityVectorEnc);
-            byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
-            PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+            Element message = pairing.getGT().newRandomElement().getImmutable();
+            PairingCipherSerParameter ciphertext = engine.encryption(publicKey, identityVectorEnc, message);
             byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
             CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
             Assert.assertEquals(ciphertext, anCiphertext);
             ciphertext = (PairingCipherSerParameter)anCiphertext;
 
             //Decryption
-            byte[] anSessionKey = engine.decapsulation(publicKey, delegateKey, identityVectorEnc, ciphertext);
-            Assert.assertArrayEquals(sessionKey, anSessionKey);
+            Element anMessage = engine.decryption(publicKey, delegateKey, identityVectorEnc, ciphertext);
+            Assert.assertEquals(message, anMessage);
         } catch (Exception e) {
-            System.out.println("Valid delegate decapsulation test failed, " +
+            System.out.println("Valid delegate decryption test failed, " +
                     "identity vector  = " + Arrays.toString(identityVector) + ", " +
                     "delegate ident. = " + delegateId + ", " +
                     "iv encapsulation = " + Arrays.toString(identityVectorEnc));
@@ -118,7 +118,7 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_delegation_invalid_decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
+    private void test_delegation_invalid_decryption(Pairing pairing, AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter masterKey,
                                                        String[] identityVector, String delegateId, String[] identityVectorEnc) {
         try {
             AsymmetricKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
@@ -129,21 +129,20 @@ public class HIBEEngineTest {
             delegateKey = (AsymmetricKeySerParameter)anDelegateKey;
 
             //Encryption and serialization
-            PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identityVectorEnc);
-            byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
-            PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+            Element message = pairing.getGT().newRandomElement().getImmutable();
+            PairingCipherSerParameter ciphertext = engine.encryption(publicKey, identityVectorEnc, message);
             byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
             CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
             Assert.assertEquals(ciphertext, anCiphertext);
             ciphertext = (PairingCipherSerParameter)anCiphertext;
 
             //Decryption
-            byte[] anSessionKey = engine.decapsulation(publicKey, delegateKey, identityVectorEnc, ciphertext);
-            Assert.assertArrayEquals(sessionKey, anSessionKey);
+            Element anMessage = engine.decryption(publicKey, delegateKey, identityVectorEnc, ciphertext);
+            Assert.assertEquals(message, anMessage);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
-            System.out.println("Invalid delegate decapsulation test failed, " +
+            System.out.println("Invalid delegate decryption test failed, " +
                     "identity vector = " + Arrays.toString(identityVector) + ", " +
                     "delegate ident. = " + delegateId + ", " +
                     "iv encapsulation = " + Arrays.toString(identityVectorEnc));
@@ -153,6 +152,7 @@ public class HIBEEngineTest {
     }
 
     public void processTest(PairingParameters pairingParameters) {
+        Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
             AsymmetricKeySerPair keyPair = engine.setup(pairingParameters, identityVector123.length);
@@ -170,22 +170,22 @@ public class HIBEEngineTest {
 
             //test valid example
             System.out.println("Test valid examples");
-            test_valid_decapsulation(publicKey, masterKey, identityVector1, identityVector12);
-            test_valid_decapsulation(publicKey, masterKey, identityVector1, identityVector123);
-            test_valid_decapsulation(publicKey, masterKey, identityVector12, identityVector123);
-            test_valid_decapsulation(publicKey, masterKey, identityVector123, identityVector123);
-            test_delegation_valid_decapsulation(publicKey, masterKey, identityVector1, "ID_2", identityVector12);
-            test_delegation_valid_decapsulation(publicKey, masterKey, identityVector1, "ID_2", identityVector123);
-            test_delegation_valid_decapsulation(publicKey, masterKey, identityVector12, "ID_3", identityVector123);
+            test_valid_decryption(pairing, publicKey, masterKey, identityVector1, identityVector12);
+            test_valid_decryption(pairing, publicKey, masterKey, identityVector1, identityVector123);
+            test_valid_decryption(pairing, publicKey, masterKey, identityVector12, identityVector123);
+            test_valid_decryption(pairing, publicKey, masterKey, identityVector123, identityVector123);
+            test_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector1, "ID_2", identityVector12);
+            test_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector1, "ID_2", identityVector123);
+            test_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector12, "ID_3", identityVector123);
 
             //test valid example
             System.out.println("Test invalid examples");
-            test_invalid_decapsulation(publicKey, masterKey, identityVector3, identityVector1);
-            test_invalid_decapsulation(publicKey, masterKey, identityVector31, identityVector1);
-            test_invalid_decapsulation(publicKey, masterKey, identityVector31, identityVector123);
-            test_invalid_decapsulation(publicKey, masterKey, identityVector132, identityVector123);
-            test_delegation_invalid_decapsulation(publicKey, masterKey, identityVector3, "ID_1", identityVector1);
-            test_delegation_invalid_decapsulation(publicKey, masterKey, identityVector12, "ID_3", identityVector132);
+            test_invalid_decryption(pairing, publicKey, masterKey, identityVector3, identityVector1);
+            test_invalid_decryption(pairing, publicKey, masterKey, identityVector31, identityVector1);
+            test_invalid_decryption(pairing, publicKey, masterKey, identityVector31, identityVector123);
+            test_invalid_decryption(pairing, publicKey, masterKey, identityVector132, identityVector123);
+            test_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector3, "ID_1", identityVector1);
+            test_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector12, "ID_3", identityVector132);
             System.out.println(engine.getEngineName() + " test passed");
         } catch (ClassNotFoundException e) {
             System.out.println("setup test failed.");

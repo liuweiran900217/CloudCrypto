@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/11/18.
  *
- * Bethencourt-Sahai-Wtaers large-universe CP-ABE public key parameter.
+ * Bethencourt-Sahai-Waters large-universe CP-ABE public key parameter.
  */
 public class CPABEBSW07PublicKeySerParameter extends PairingKeySerParameter {
     public transient Element g;

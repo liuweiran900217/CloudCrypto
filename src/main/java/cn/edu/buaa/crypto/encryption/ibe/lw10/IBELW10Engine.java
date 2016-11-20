@@ -4,16 +4,16 @@ import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10DecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10EncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10DecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10CiphertextGenerationParameters;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10DecapsulationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10EncryptionGenerationParameters;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10DecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10KeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10SecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.*;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -66,20 +66,20 @@ public class IBELW10Engine implements IBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String id){
+    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String id, Element message){
         if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + IBELW10PublicKeySerParameter.class.getName());
         }
-        IBELW10EncapsulationPairGenerator keyEncapsulationPairGenerator = new IBELW10EncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new IBELW10CiphertextGenerationParameters(publicKey, id));
+        IBELW10EncryptionGenerator encryptionGenerator = new IBELW10EncryptionGenerator();
+        encryptionGenerator.init(new IBELW10EncryptionGenerationParameters(publicKey, id, message));
 
-        return keyEncapsulationPairGenerator.generateEncryptionPair();
+        return encryptionGenerator.generateCiphertext();
     }
 
-    public byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
                                  String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof IBELW10PublicKeySerParameter)){
             throw new IllegalArgumentException
@@ -99,10 +99,10 @@ public class IBELW10Engine implements IBEEngine {
                             + ciphertext.getClass().getName() + ", require "
                             + IBELW10CipherSerParameter.class.getName());
         }
-        IBELW10DecapsulationGenerator keyDecapsulationGenerator = new IBELW10DecapsulationGenerator();
-        keyDecapsulationGenerator.init(new IBELW10DecapsulationParameter(
+        IBELW10DecryptionGenerator decryptionGenerator = new IBELW10DecryptionGenerator();
+        decryptionGenerator.init(new IBELW10DecryptionGenerationParameter(
                 publicKey, secretKey, id, ciphertext));
-        return keyDecapsulationGenerator.recoverKey();
+        return decryptionGenerator.recoverMessage();
     }
 
     public String getEngineName() {

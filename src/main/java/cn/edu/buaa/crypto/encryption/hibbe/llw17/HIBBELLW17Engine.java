@@ -1,12 +1,11 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw17;
 
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17DecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17EncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17DecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.genparams.*;
@@ -14,6 +13,7 @@ import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17CipherSerPa
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17SecretKeySerParameter;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -40,8 +40,6 @@ public class HIBBELLW17Engine implements HIBBEEngine {
         }
         return engine;
     }
-
-
 
     private HIBBELLW17Engine() {
 
@@ -94,21 +92,20 @@ public class HIBBELLW17Engine implements HIBBEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids){
+    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof HIBBELLW17PublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + HIBBELLW17PublicKeySerParameter.class.getName());
         }
-        HIBBELLW17EncapsulationPairGenerator keyEncapsulationPairGenerator = new HIBBELLW17EncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new HIBBELLW17CiphertextGenerationParameter(
-                digest, publicKey, ids));
+        HIBBELLW17EncryptionGenerator encryptionGenerator = new HIBBELLW17EncryptionGenerator();
+        encryptionGenerator.init(new HIBBELLW17EncryptionGenerationParameter(digest, publicKey, ids, message));
 
-        return keyEncapsulationPairGenerator.generateEncryptionPair();
+        return encryptionGenerator.generateCiphertext();
     }
 
-    public byte[] decapsulation (AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
+    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBBELLW17PublicKeySerParameter)){
             throw new IllegalArgumentException
@@ -128,10 +125,10 @@ public class HIBBELLW17Engine implements HIBBEEngine {
                             + ciphertext.getClass().getName() + ", require "
                             + HIBBELLW17CipherSerParameter.class.getName());
         }
-        HIBBELLW17DecapsulationGenerator keyDecapsulationGenerator = new HIBBELLW17DecapsulationGenerator();
-        keyDecapsulationGenerator.init(new HIBBELLW17DecapsulationParameter(
+        HIBBELLW17DecryptionGenerator decryptionGenerator = new HIBBELLW17DecryptionGenerator();
+        decryptionGenerator.init(new HIBBELLW17DecryptionGenerationParameter(
                 digest, publicKey, secretKey, ids, ciphertext));
-        return keyDecapsulationGenerator.recoverKey();
+        return decryptionGenerator.recoverMessage();
     }
 
     public String getEngineName() {

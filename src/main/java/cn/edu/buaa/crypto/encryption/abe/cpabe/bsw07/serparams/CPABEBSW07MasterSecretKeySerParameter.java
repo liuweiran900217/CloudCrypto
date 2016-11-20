@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/11/18.
  *
- * Bethencourt-Sahai-Wtaers large-universe CP-ABE master secret key parameter.
+ * Bethencourt-Sahai-Waters large-universe CP-ABE master secret key parameter.
  */
 public class CPABEBSW07MasterSecretKeySerParameter extends PairingKeySerParameter {
     private transient Element gAlpha;

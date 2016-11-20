@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by Weiran Liu on 2016/11/18.
  *
- * Bethencourt-Sahai-Wtaers large-universe CP-ABE secret key parameter.
+ * Bethencourt-Sahai-Waters large-universe CP-ABE secret key parameter.
  */
 public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
     private transient Map<String, Element> elementAttributes;

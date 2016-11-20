@@ -12,10 +12,11 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2015/11/3.
  *
- * Ciphertext parameters for Boneh-Boyen-Goh HIBE.
+ * Boneh-Boyen-Goh HIBE ciphertext parameter.
  */
 public class HIBEBBG05CipherSerParameter extends PairingCipherSerParameter {
-    private final int length;
+    private transient Element A;
+    private final byte[] byteArrayA;
 
     private transient Element B;
     private final byte[] byteArrayB;
@@ -23,9 +24,11 @@ public class HIBEBBG05CipherSerParameter extends PairingCipherSerParameter {
     private transient Element C;
     private final byte[] byteArrayC;
 
-    public HIBEBBG05CipherSerParameter(PairingParameters pairingParameters, int length, Element B, Element C) {
+    public HIBEBBG05CipherSerParameter(PairingParameters pairingParameters, Element A, Element B, Element C) {
         super(pairingParameters);
-        this.length = length;
+
+        this.A = A.getImmutable();
+        this.byteArrayA = this.A.toBytes();
 
         this.B = B.getImmutable();
         this.byteArrayB = this.B.toBytes();
@@ -34,7 +37,7 @@ public class HIBEBBG05CipherSerParameter extends PairingCipherSerParameter {
         this.byteArrayC = this.C.toBytes();
     }
 
-    public int getLength() { return this.length; }
+    public Element getA() { return this.A.duplicate(); }
 
     public Element getB() { return this.B.duplicate(); }
 
@@ -47,8 +50,11 @@ public class HIBEBBG05CipherSerParameter extends PairingCipherSerParameter {
         }
         if (anObject instanceof HIBEBBG05CipherSerParameter) {
             HIBEBBG05CipherSerParameter that = (HIBEBBG05CipherSerParameter)anObject;
-            //Compare length
-            if (this.length != that.getLength()) {
+            //Compare A
+            if (!PairingUtils.isEqualElement(this.A, that.getA())){
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayA, that.byteArrayA)) {
                 return false;
             }
             //Compare B
@@ -75,6 +81,7 @@ public class HIBEBBG05CipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
+        this.A = pairing.getGT().newElementFromBytes(this.byteArrayA).getImmutable();
         this.B = pairing.getG1().newElementFromBytes(this.byteArrayB).getImmutable();
         this.C = pairing.getG1().newElementFromBytes(this.byteArrayC).getImmutable();
     }

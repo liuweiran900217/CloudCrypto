@@ -2,9 +2,9 @@ package cn.edu.buaa.crypto.encryption.hibe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -42,26 +42,23 @@ public interface HIBEEngine extends Engine {
     AsymmetricKeySerParameter delegate(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey, String id);
 
     /**
-     * Key Encapsulation Algorithm for HIBE
+     * Encryption Algorithm for HIBE
      * @param publicKey public key
      * @param ids an identity vector
-     * @return session key / ciphertext pair associated with the identity vector ids
+     * @param message the message in GT
+     * @return ciphertext associated with the identity vector ids
      */
-    PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String... ids);
+    PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] ids, Element message);
 
     /**
-     * Key Decapsulation Algorithm for HIBE
+     * Decryption Algorithm for HIBE
      * @param publicKey public key
      * @param secretKey secret key associated with an identity vector
      * @param ids identity vector associating with the ciphertext
      * @param ciphertext ciphertext
-     * @return the decapsulated session key
-     * @throws InvalidCipherTextException if the decapsulation procedure is failure
+     * @return the message in GT
+     * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    byte[] decapsulation (
-            AsymmetricKeySerParameter publicKey,
-            AsymmetricKeySerParameter secretKey,
-            String[] ids,
-            PairingCipherSerParameter ciphertext
-    ) throws InvalidCipherTextException;
+    Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+            String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 }

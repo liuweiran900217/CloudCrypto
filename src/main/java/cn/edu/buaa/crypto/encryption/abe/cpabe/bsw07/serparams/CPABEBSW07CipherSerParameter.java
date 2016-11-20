@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams;
 
+import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
@@ -14,11 +15,10 @@ import java.util.Map;
 /**
  * Created by Weiran Liu on 2016/11/18.
  *
- * Bethencourt-Sahai-Wtaers large-universe CP-ABE ciphertext parameter.
+ * Bethencourt-Sahai-Waters large-universe CP-ABE ciphertext parameter.
  */
 public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
-    private transient Map<String, Element> elementRhos;
-    private final Map<String, byte[]> byteArraysElementRhos;
+    private final AccessControlParameter accessControlParameter;
 
     private transient Element C;
     private final byte[] byteArrayC;
@@ -29,29 +29,29 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
     private transient Map<String, Element> C2s;
     private final Map<String, byte[]> byteArraysC2s;
 
-    public CPABEBSW07CipherSerParameter(PairingParameters pairingParameters, Element C, Map<String, Element> elementRhos,
+    public CPABEBSW07CipherSerParameter(PairingParameters pairingParameters, AccessControlParameter accessControlParameter,
+                                        Element C, Map<String, Element> elementRhos,
                                         Map<String, Element> C1s, Map<String, Element> C2s) {
         super(pairingParameters);
 
+        this.accessControlParameter = accessControlParameter;
         this.C = C.getImmutable();
         this.byteArrayC = this.C.toBytes();
 
-        this.elementRhos = new HashMap<String, Element>();
-        this.byteArraysElementRhos = new HashMap<String, byte[]>();
         this.C1s = new HashMap<String, Element>();
         this.byteArraysC1s = new HashMap<String, byte[]>();
         this.C2s = new HashMap<String, Element>();
         this.byteArraysC2s = new HashMap<String, byte[]>();
 
         for (String attribute : elementRhos.keySet()) {
-            this.elementRhos.put(attribute, elementRhos.get(attribute).duplicate().getImmutable());
-            this.byteArraysElementRhos.put(attribute, elementRhos.get(attribute).duplicate().getImmutable().toBytes());
             this.C1s.put(attribute, C1s.get(attribute).duplicate().getImmutable());
             this.byteArraysC1s.put(attribute, C1s.get(attribute).duplicate().getImmutable().toBytes());
             this.C2s.put(attribute, C2s.get(attribute).duplicate().getImmutable());
             this.byteArraysC2s.put(attribute, C2s.get(attribute).duplicate().getImmutable().toBytes());
         }
     }
+
+    public AccessControlParameter getAccessControlParameter() { return this.accessControlParameter; }
 
     public Element getC() { return this.C.duplicate(); }
 
@@ -66,11 +66,8 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
         }
         if (anObject instanceof CPABEBSW07CipherSerParameter) {
             CPABEBSW07CipherSerParameter that = (CPABEBSW07CipherSerParameter)anObject;
-            //Compare rhos
-            if (!this.elementRhos.equals(that.elementRhos)){
-                return false;
-            }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysElementRhos, that.byteArraysElementRhos)) {
+            //Compare access control parameter
+            if (!this.accessControlParameter.equals(that.accessControlParameter)) {
                 return false;
             }
             //Compare C
@@ -105,11 +102,9 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.C = pairing.getG1().newElementFromBytes(this.byteArrayC);
-        this.elementRhos = new HashMap<String, Element>();
         this.C1s = new HashMap<String, Element>();
         this.C2s = new HashMap<String, Element>();
-        for (String attribute : byteArraysElementRhos.keySet()) {
-            this.elementRhos.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysElementRhos.get(attribute)).getImmutable());
+        for (String attribute : C1s.keySet()) {
             this.C1s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC1s.get(attribute)).getImmutable());
             this.C2s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC2s.get(attribute)).getImmutable());
         }

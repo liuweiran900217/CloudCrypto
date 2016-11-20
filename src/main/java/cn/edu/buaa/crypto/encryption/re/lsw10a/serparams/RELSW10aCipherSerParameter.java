@@ -6,9 +6,10 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
@@ -16,39 +17,46 @@ import java.util.Arrays;
  * Lewko-Sahai-Waters reovcation encryption ciphertext parameters.
  */
 public class RELSW10aCipherSerParameter extends PairingCipherSerParameter {
-    private final int length;
+    private transient Element C;
+    private final byte[] byteArrayC;
 
     private transient Element C0;
     private final byte[] byteArrayC0;
 
-    private transient Element[] C1s;
-    private final byte[][] byteArraysC1s;
+    private transient Map<String, Element> C1s;
+    private final Map<String, byte[]> byteArraysC1s;
 
-    private transient Element[] C2s;
-    private final byte[][] byteArraysC2s;
+    private transient Map<String, Element> C2s;
+    private final Map<String, byte[]> byteArraysC2s;
 
-    public RELSW10aCipherSerParameter(PairingParameters pairingParameters,
-                                      int length, Element C0, Element[] C1s, Element[] C2s) {
+    public RELSW10aCipherSerParameter(PairingParameters pairingParameters, Element C, Element C0, Map<String, Element> C1s, Map<String, Element> C2s) {
         super(pairingParameters);
-        this.length = length;
+
+        this.C = C.getImmutable();
+        this.byteArrayC = this.C.toBytes();
 
         this.C0 = C0.getImmutable();
         this.byteArrayC0 = this.C0.toBytes();
 
-        this.C1s = ElementUtils.cloneImmutable(C1s);
-        this.byteArraysC1s = PairingUtils.GetElementArrayBytes(this.C1s);
-
-        this.C2s = ElementUtils.cloneImmutable(C2s);
-        this.byteArraysC2s = PairingUtils.GetElementArrayBytes(this.C2s);
+        this.C1s = new HashMap<String, Element>();
+        this.byteArraysC1s = new HashMap<String, byte[]>();
+        this.C2s = new HashMap<String, Element>();
+        this.byteArraysC2s = new HashMap<String, byte[]>();
+        for (String revokeId : C1s.keySet()) {
+            this.C1s.put(revokeId, C1s.get(revokeId).duplicate().getImmutable());
+            this.byteArraysC1s.put(revokeId, C1s.get(revokeId).duplicate().getImmutable().toBytes());
+            this.C2s.put(revokeId, C2s.get(revokeId).duplicate().getImmutable());
+            this.byteArraysC2s.put(revokeId, C2s.get(revokeId).duplicate().getImmutable().toBytes());
+        }
     }
 
-    public int getLength() { return this.length; }
+    public Element getC() { return this.C.duplicate(); }
 
     public Element getC0() { return this.C0.duplicate(); }
 
-    public Element getC1sAt(int index) { return this.C1s[index].duplicate(); }
+    public Element getC1sAt(String revokeId) { return this.C1s.get(revokeId).duplicate(); }
 
-    public Element getC2sAt(int index) { return this.C2s[index].duplicate(); }
+    public Element getC2sAt(String revokeId) { return this.C2s.get(revokeId).duplicate(); }
 
     @Override
     public boolean equals(Object anObject) {
@@ -57,8 +65,11 @@ public class RELSW10aCipherSerParameter extends PairingCipherSerParameter {
         }
         if (anObject instanceof RELSW10aCipherSerParameter) {
             RELSW10aCipherSerParameter that = (RELSW10aCipherSerParameter) anObject;
-            //Compare length
-            if (this.length != that.getLength()) {
+            //Compre C
+            if (!PairingUtils.isEqualElement(this.C, that.C)) {
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayC, that.byteArrayC)) {
                 return false;
             }
             //Compre C0
@@ -69,17 +80,17 @@ public class RELSW10aCipherSerParameter extends PairingCipherSerParameter {
                 return false;
             }
             //Compare C1s
-            if (!PairingUtils.isEqualElementArray(this.C1s, that.C1s)) {
+            if (!this.C1s.equals(that.C1s)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrays(this.byteArraysC1s, that.byteArraysC1s)) {
+            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysC1s, that.byteArraysC1s)) {
                 return false;
             }
             //Compare C2s
-            if (!PairingUtils.isEqualElementArray(this.C2s, that.C2s)) {
+            if (!this.C2s.equals(that.C2s)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrays(this.byteArraysC2s, that.byteArraysC2s)) {
+            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysC2s, that.byteArraysC2s)) {
                 return false;
             }
             //Compare Pairing Parameters
@@ -92,8 +103,13 @@ public class RELSW10aCipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
+        this.C = pairing.getGT().newElementFromBytes(this.byteArrayC).getImmutable();
         this.C0 = pairing.getG1().newElementFromBytes(this.byteArrayC0).getImmutable();
-        this.C1s = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysC1s, PairingUtils.PairingGroupType.G1);
-        this.C2s = PairingUtils.GetElementArrayFromBytes(pairing, this.byteArraysC2s, PairingUtils.PairingGroupType.G1);
+        this.C1s = new HashMap<String, Element>();
+        this.C2s = new HashMap<String, Element>();
+        for (String revokeId : this.byteArraysC1s.keySet()) {
+            this.C1s.put(revokeId, pairing.getG1().newElementFromBytes(this.byteArraysC1s.get(revokeId)).getImmutable());
+            this.C2s.put(revokeId, pairing.getG1().newElementFromBytes(this.byteArraysC2s.get(revokeId)).getImmutable());
+        }
     }
 }

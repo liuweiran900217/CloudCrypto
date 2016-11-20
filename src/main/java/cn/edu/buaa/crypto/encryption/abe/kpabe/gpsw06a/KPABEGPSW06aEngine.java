@@ -1,22 +1,22 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a;
 
 import cn.edu.buaa.crypto.algebra.genparams.AsymmetricKeySerPair;
-import cn.edu.buaa.crypto.algebra.genparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aDecapsulationGenerator;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aEncapsulationPairGenerator;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aEncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aSecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aCiphertextGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aDecapsulationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aSecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aSecretKeySerParameter;
+import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -73,21 +73,20 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
         return secretKeyGenerator.generateKey();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(AsymmetricKeySerParameter publicKey, String[] attributes) {
+    public PairingCipherSerParameter encryption(AsymmetricKeySerParameter publicKey, String[] attributes, Element message) {
         if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
                             + publicKey.getClass().getName() + ", require "
                             + KPABEGPSW06aPublicKeySerParameter.class.getName());
         }
-        KPABEGPSW06aEncapsulationPairGenerator keyEncapsulationPairGenerator = new KPABEGPSW06aEncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new KPABEGPSW06aCiphertextGenerationParameter(
-                publicKey, attributes));
+        KPABEGPSW06aEncryptionGenerator encryptionGenerator = new KPABEGPSW06aEncryptionGenerator();
+        encryptionGenerator.init(new KPABEGPSW06aEncryptionGenerationParameter(publicKey, attributes, message));
 
-        return keyEncapsulationPairGenerator.generateEncryptionPair();
+        return encryptionGenerator.generateCiphertext();
     }
 
-    public byte[] decapsulation(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
+    public Element decryption(AsymmetricKeySerParameter publicKey, AsymmetricKeySerParameter secretKey,
                                 String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
             throw new IllegalArgumentException
@@ -107,9 +106,9 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
                             + ciphertext.getClass().getName() + ", require "
                             + KPABEGPSW06aCipherSerParameter.class.getName());
         }
-        KPABEGPSW06aDecapsulationGenerator keyDecapsulationGenerator = new KPABEGPSW06aDecapsulationGenerator();
-        keyDecapsulationGenerator.init(new KPABEGPSW06aDecapsulationParameter(
+        KPABEGPSW06aDecryptionGenerator decryptionGenerator = new KPABEGPSW06aDecryptionGenerator();
+        decryptionGenerator.init(new KPABEGPSW06aDecryptionGenerationParameter(
                 accessControlEngine, publicKey, secretKey, attributes, ciphertext));
-        return keyDecapsulationGenerator.recoverKey();
+        return decryptionGenerator.recoverMessage();
     }
 }
