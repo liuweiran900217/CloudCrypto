@@ -21,7 +21,7 @@ import java.util.Arrays;
  *
  * HIBE engine test procedures. All instances should pass this unit test.
  */
-public class HIBEEngineTest {
+public class HIBEEngineJUnitTest {
     private static final String[] identityVector1 = {"ID_1"};
     private static final String[] identityVector12 = {"ID_1", "ID_2"};
     private static final String[] identityVector123 = {"ID_1", "ID_2", "ID_3"};
@@ -32,14 +32,14 @@ public class HIBEEngineTest {
 
     private HIBEEngine engine;
 
-    public HIBEEngineTest(HIBEEngine engine) {
+    public HIBEEngineJUnitTest(HIBEEngine engine) {
         this.engine = engine;
     }
 
-    private void test_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String[] identityVector, String[] identityVectorSet) {
         try {
-            test_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
+            try_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
         } catch (Exception e) {
             System.out.println("Valid decryption test failed, " +
                     "identity vector  = " + Arrays.toString(identityVector) + ", " +
@@ -49,10 +49,10 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                          String[] identityVector, String[] identityVectorSet) {
         try {
-            test_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
+            try_decryption(pairing, publicKey, masterKey, identityVector, identityVectorSet);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                  String[] identityVector, String[] identityVectorEnc)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
@@ -87,7 +87,7 @@ public class HIBEEngineTest {
         Assert.assertEquals(message, anMessage);
     }
 
-    private void test_delegation_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_delegation_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                                   String[] identityVector, String delegateId, String[] identityVectorEnc) {
         try {
             PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
@@ -118,7 +118,7 @@ public class HIBEEngineTest {
         }
     }
 
-    private void test_delegation_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_delegation_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                                     String[] identityVector, String delegateId, String[] identityVectorEnc) {
         try {
             PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
@@ -151,7 +151,7 @@ public class HIBEEngineTest {
         }
     }
 
-    public void processTest(PairingParameters pairingParameters) {
+    public void runAllTests(PairingParameters pairingParameters) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
@@ -170,22 +170,22 @@ public class HIBEEngineTest {
 
             //test valid example
             System.out.println("Test valid examples");
-            test_valid_decryption(pairing, publicKey, masterKey, identityVector1, identityVector12);
-            test_valid_decryption(pairing, publicKey, masterKey, identityVector1, identityVector123);
-            test_valid_decryption(pairing, publicKey, masterKey, identityVector12, identityVector123);
-            test_valid_decryption(pairing, publicKey, masterKey, identityVector123, identityVector123);
-            test_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector1, "ID_2", identityVector12);
-            test_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector1, "ID_2", identityVector123);
-            test_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector12, "ID_3", identityVector123);
+            try_valid_decryption(pairing, publicKey, masterKey, identityVector1, identityVector12);
+            try_valid_decryption(pairing, publicKey, masterKey, identityVector1, identityVector123);
+            try_valid_decryption(pairing, publicKey, masterKey, identityVector12, identityVector123);
+            try_valid_decryption(pairing, publicKey, masterKey, identityVector123, identityVector123);
+            try_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector1, "ID_2", identityVector12);
+            try_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector1, "ID_2", identityVector123);
+            try_delegation_valid_decryption(pairing, publicKey, masterKey, identityVector12, "ID_3", identityVector123);
 
             //test valid example
             System.out.println("Test invalid examples");
-            test_invalid_decryption(pairing, publicKey, masterKey, identityVector3, identityVector1);
-            test_invalid_decryption(pairing, publicKey, masterKey, identityVector31, identityVector1);
-            test_invalid_decryption(pairing, publicKey, masterKey, identityVector31, identityVector123);
-            test_invalid_decryption(pairing, publicKey, masterKey, identityVector132, identityVector123);
-            test_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector3, "ID_1", identityVector1);
-            test_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector12, "ID_3", identityVector132);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityVector3, identityVector1);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityVector31, identityVector1);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityVector31, identityVector123);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityVector132, identityVector123);
+            try_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector3, "ID_1", identityVector1);
+            try_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector12, "ID_3", identityVector132);
             System.out.println(engine.getEngineName() + " test passed");
         } catch (ClassNotFoundException e) {
             System.out.println("setup test failed.");

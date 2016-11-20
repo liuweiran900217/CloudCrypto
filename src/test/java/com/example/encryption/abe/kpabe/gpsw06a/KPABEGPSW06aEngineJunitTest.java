@@ -5,27 +5,33 @@ import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.KPABEGPSW06aEngine;
 import com.example.TestUtils;
-import com.example.encryption.abe.kpabe.KPABEEngineTest;
+import com.example.encryption.abe.kpabe.KPABEEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 
 /**
  * Created by Weiran Liu on 2016/11/18.
  *
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE engine test.
  */
-public class KPABEGPSW06aEngineTest {
-    public static void main(String[] args) {
-        KPABEEngine engine = KPABEGPSW06aEngine.getInstance();
-        KPABEEngineTest engineTest = new KPABEEngineTest(engine);
+public class KPABEGPSW06aEngineJunitTest extends TestCase {
+    private KPABEEngine engine;
+    private KPABEEngineJUnitTest engineJUnitTest;
 
+    public void setUp() {
+        this.engine = KPABEGPSW06aEngine.getInstance();
+        this.engineJUnitTest = new KPABEEngineJUnitTest(engine);
+    }
+
+    public void testUsingAccessTree() {
         System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
         engine.setAccessControlEngine(AccessTreeEngine.getInstance());
-        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
-        System.out.println();
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
 
+    public void testUsingLSSS() {
         System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
         engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
-        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
-        System.out.println();
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

@@ -20,20 +20,20 @@ import java.io.IOException;
  *
  * IBE engine test.
  */
-public class IBEEngineTest {
+public class IBEEngineJUnitTest {
     private static final String identity_1 = "ID_1";
     private static final String identity_2 = "ID_2";
 
     private IBEEngine engine;
 
-    public IBEEngineTest(IBEEngine engine) {
+    public IBEEngineJUnitTest(IBEEngine engine) {
         this.engine = engine;
     }
 
-    private void test_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String identityForSecretKey, String identityForCiphertext) {
         try {
-            test_decryption(pairing, publicKey, masterKey, identityForSecretKey, identityForCiphertext);
+            try_decryption(pairing, publicKey, masterKey, identityForSecretKey, identityForCiphertext);
         } catch (Exception e) {
             System.out.println("Valid decryption test failed, " +
                     "secret key identity  = " + identityForSecretKey + ", " +
@@ -43,10 +43,10 @@ public class IBEEngineTest {
         }
     }
 
-    private void test_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                          String identityForSecretKey, String identityForCiphertext) {
         try {
-            test_decryption(pairing, publicKey, masterKey, identityForSecretKey, identityForCiphertext);
+            try_decryption(pairing, publicKey, masterKey, identityForSecretKey, identityForCiphertext);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class IBEEngineTest {
         }
     }
 
-    private void test_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                  String identityForSecretKey, String identityForCiphertext)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
@@ -81,7 +81,7 @@ public class IBEEngineTest {
         Assert.assertEquals(message, anMessage);
     }
 
-    public void processTest(PairingParameters pairingParameters) {
+    public void runAllTests(PairingParameters pairingParameters) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
@@ -100,13 +100,13 @@ public class IBEEngineTest {
 
             //test valid example
             System.out.println("Test valid examples");
-            test_valid_decryption(pairing, publicKey, masterKey, identity_1, identity_1);
-            test_valid_decryption(pairing, publicKey, masterKey, identity_2, identity_2);
+            try_valid_decryption(pairing, publicKey, masterKey, identity_1, identity_1);
+            try_valid_decryption(pairing, publicKey, masterKey, identity_2, identity_2);
 
             //test valid example
             System.out.println("Test invalid examples");
-            test_invalid_decryption(pairing, publicKey, masterKey, identity_1, identity_2);
-            test_invalid_decryption(pairing, publicKey, masterKey, identity_2, identity_1);
+            try_invalid_decryption(pairing, publicKey, masterKey, identity_1, identity_2);
+            try_invalid_decryption(pairing, publicKey, masterKey, identity_2, identity_1);
             System.out.println(engine.getEngineName() + " test passed");
         } catch (ClassNotFoundException e) {
             System.out.println("setup test failed.");

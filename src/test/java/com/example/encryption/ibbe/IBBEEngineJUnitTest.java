@@ -19,7 +19,7 @@ import java.util.Arrays;
  *
  * IBBE engine test procedures. All instances should pass this unit test.
  */
-public class IBBEEngineTest {
+public class IBBEEngineJUnitTest {
     private static final String identity_satisfied = "ID_0";
     private static final String identity_unsatisfied = "ID_9";
 
@@ -30,14 +30,14 @@ public class IBBEEngineTest {
 
     private IBBEEngine engine;
 
-    public IBBEEngineTest(IBBEEngine engine) {
+    public IBBEEngineJUnitTest(IBBEEngine engine) {
         this.engine = engine;
     }
 
-    private void test_valid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_valid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                           String identity, String[] identitySet) {
         try {
-            test_decapsulation(publicKey, masterKey, identity, identitySet);
+            try_decapsulation(publicKey, masterKey, identity, identitySet);
         } catch (Exception e) {
             System.out.println("Valid decapsulation test failed, " +
                     "identity  = " + identity + ", " +
@@ -47,10 +47,10 @@ public class IBBEEngineTest {
         }
     }
 
-    private void test_invalid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_invalid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                             String identity, String[] identitySet) {
         try {
-            test_decapsulation(publicKey, masterKey, identity, identitySet);
+            try_decapsulation(publicKey, masterKey, identity, identitySet);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class IBBEEngineTest {
         }
     }
 
-    private void test_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                     String identity, String[] identitySet)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
@@ -86,7 +86,7 @@ public class IBBEEngineTest {
         Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
-    public void processTest(PairingParameters pairingParameters) {
+    public void runAllTests(PairingParameters pairingParameters) {
         try {
             // Setup and serialization
             PairingKeySerPair keyPair = engine.setup(pairingParameters, identitySet4.length);
@@ -104,17 +104,17 @@ public class IBBEEngineTest {
 
             //test valid example
             System.out.println("Test valid examples");
-            test_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet1);
-            test_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet2);
-            test_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet3);
-            test_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet4);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet1);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet2);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet3);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet4);
 
             //test valid example
             System.out.println("Test invalid examples");
-            test_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet1);
-            test_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet2);
-            test_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet3);
-            test_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet4);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet1);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet2);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet3);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet4);
             System.out.println(engine.getEngineName() + " test passed");
         } catch (ClassNotFoundException e) {
             System.out.println("setup test failed.");

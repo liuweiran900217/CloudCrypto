@@ -11,8 +11,9 @@ import cn.edu.buaa.crypto.signature.pks.bls01.BLS01SignKeyPairGenerationParamete
 import cn.edu.buaa.crypto.signature.pks.bls01.BLS01SignKeyPairGenerator;
 import cn.edu.buaa.crypto.signature.pks.bls01.BLS01Signer;
 import com.example.TestUtils;
-import com.example.encryption.hibbe.HIBBEEngineTest;
+import com.example.encryption.hibbe.HIBBEEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 import org.bouncycastle.crypto.Signer;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -22,11 +23,16 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
  *
  * Liu-Liu-Wu prime-order CCA2-secure HIBBE engine test.
  */
-public class HIBBELLW16bEngineTest {
-    public static void main(String[] args) {
-        HIBBELLW16bEngine engine = HIBBELLW16bEngine.getInstance();
-        HIBBEEngineTest engineTest = new HIBBEEngineTest(engine);
+public class HIBBELLW16bEngineJUnitTest extends TestCase {
+    private HIBBELLW16bEngine engine;
+    private HIBBEEngineJUnitTest engineJUnitTest;
 
+    public void setUp() {
+        this.engine = HIBBELLW16bEngine.getInstance();
+        this.engineJUnitTest = new HIBBEEngineJUnitTest(engine);
+    }
+
+    public void testHIBBELLW16bEngineWithBB08() {
         PairingSigner bb08PairingSigner = new BB08Signer();
         Signer bb08Signer = new PairingDigestSigner(bb08PairingSigner, new SHA256Digest());
         PairingKeyPairGenerator bb08SignKeyPairGenerator = new BB08SignKeyPairGenerator();
@@ -34,9 +40,10 @@ public class HIBBELLW16bEngineTest {
                 new BB08SignKeyPairGenerationParameter(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
         System.out.println("Test " + engine.getEngineName() + " using " + bb08PairingSigner.getEngineName());
         engine.setSigner(bb08Signer, bb08SignKeyPairGenerator, bb08SignKeyPairGenerationParameter);
-        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
-        System.out.println();
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
 
+    public void testHIBBELLW16bEngineWithBLS01() {
         PairingSigner bls01PairingSigner = new BLS01Signer();
         Signer bls01Signer = new PairingDigestSigner(bls01PairingSigner, new SHA256Digest());
         PairingKeyPairGenerator bls01SignKeyPairGenerator = new BLS01SignKeyPairGenerator();
@@ -44,7 +51,6 @@ public class HIBBELLW16bEngineTest {
                 new BLS01SignKeyPairGenerationParameter(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
         System.out.println("Test " + engine.getEngineName() + " using " + bls01PairingSigner.getEngineName());
         engine.setSigner(bls01Signer, bls01SignKeyPairGenerator, bls01SignKeyPairGenerationParameter);
-        engineTest.processTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
-        System.out.println();
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

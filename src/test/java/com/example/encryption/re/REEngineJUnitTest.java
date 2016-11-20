@@ -21,7 +21,7 @@ import java.util.Arrays;
  *
  * Revocation encryption engine test.
  */
-public class REEngineTest {
+public class REEngineJUnitTest {
     private static final String identity = "ID";
     private static final String identityRevoke = "RevokeID";
 
@@ -32,14 +32,14 @@ public class REEngineTest {
 
     private REEngine engine;
 
-    public REEngineTest(REEngine engine) {
+    public REEngineJUnitTest(REEngine engine) {
         this.engine = engine;
     }
 
-    private void test_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String identity, String[] identityRevokeSet) {
         try {
-            test_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet);
+            try_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet);
         } catch (Exception e) {
             System.out.println("Valid decryption test failed, " +
                     "identity for secret key  = " + identity + ", " +
@@ -49,10 +49,10 @@ public class REEngineTest {
         }
     }
 
-    private void test_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                          String identity, String[] identityRevokeSet) {
         try {
-            test_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet);
+            try_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class REEngineTest {
         }
     }
 
-    private void test_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                  String identity, String[] identityRevokeSet)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
@@ -106,17 +106,17 @@ public class REEngineTest {
 
             //test valid example
             System.out.println("Test valid examples");
-            test_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet1);
-            test_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet2);
-            test_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet3);
-            test_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet4);
+            try_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet1);
+            try_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet2);
+            try_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet3);
+            try_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet4);
 
             //test valid example
             System.out.println("Test invalid examples");
-            test_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet1);
-            test_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet2);
-            test_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet3);
-            test_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet4);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet1);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet2);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet3);
+            try_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet4);
             System.out.println(engine.getEngineName() + " test passed");
         } catch (ClassNotFoundException e) {
             System.out.println("setup test failed.");

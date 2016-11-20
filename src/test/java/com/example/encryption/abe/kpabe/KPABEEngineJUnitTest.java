@@ -24,19 +24,19 @@ import java.util.Arrays;
  *
  * KP-ABE engine test.
  */
-public class KPABEEngineTest {
+public class KPABEEngineJUnitTest {
     private KPABEEngine engine;
 
-    public KPABEEngineTest(KPABEEngine engine) {
+    public KPABEEngineJUnitTest(KPABEEngine engine) {
         this.engine = engine;
     }
 
-    private void test_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                           final String accessPolicyString, final String[] attributes) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
-            test_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
         } catch (Exception e) {
             System.out.println("Access policy satisfied test failed, " +
                     "access policy = " + accessPolicyString + ", " +
@@ -46,10 +46,10 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                           final int[][] accessPolicy, final String[] rhos, final String[] attributes) {
         try {
-            test_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
         } catch (Exception e) {
             System.out.println("Access policy satisfied test failed, " +
                     "attributes = " + Arrays.toString(attributes));
@@ -58,12 +58,12 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_invalid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_invalid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                             final String accessPolicyString, final String[] attributes) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
-            test_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
         } catch (InvalidCipherTextException e) {
             //correct, expected exception, nothing to do.
         } catch (Exception e) {
@@ -75,10 +75,10 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_invalid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_invalid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                             final int[][] accessPolicy, final String[] rhos, final String[] attributes) {
         try {
-            test_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
         } catch (InvalidCipherTextException e) {
             //correct, expected exception, nothing to do.
         } catch (InvalidParameterException e) {
@@ -91,7 +91,7 @@ public class KPABEEngineTest {
         }
     }
 
-    private void test_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+    private void try_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                     final int[][] accessPolicy, final String[] rhos, final String[] attributes)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
@@ -114,7 +114,7 @@ public class KPABEEngineTest {
         Assert.assertEquals(message, anMessage);
     }
 
-    public void processTest(PairingParameters pairingParameters) {
+    public void runAllTests(PairingParameters pairingParameters) {
         try {
             Pairing pairing = PairingFactory.getPairing(pairingParameters);
             // Setup and serialization
@@ -133,53 +133,53 @@ public class KPABEEngineTest {
 
             //test examples
             System.out.println("Test example 1");
-            test_valid_access_policy(
+            try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_1,
                     AccessPolicyExamples.access_policy_exampe_1_satisfied_1);
-            test_valid_access_policy(
+            try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_1,
                     AccessPolicyExamples.access_policy_exampe_1_satisfied_2);
-            test_invalid_access_policy(
+            try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_1,
                     AccessPolicyExamples.access_policy_exampe_1_unsatisfied_1);
 
             //test example 2
             System.out.println("Test example 2");
-            test_valid_access_policy(
+            try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
                     AccessPolicyExamples.access_policy_exampe_2_satisfied_1);
-            test_valid_access_policy(
+            try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
                     AccessPolicyExamples.access_policy_exampe_2_satisfied_2);
-            test_invalid_access_policy(
+            try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
                     AccessPolicyExamples.access_policy_exampe_2_unsatisfied_1);
-            test_invalid_access_policy(
+            try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
                     AccessPolicyExamples.access_policy_exampe_2_unsatisfied_2);
-            test_invalid_access_policy(
+            try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
                     AccessPolicyExamples.access_policy_exampe_2_unsatisfied_3);
 
             //test example 3
             System.out.println("Test example 3");
-            test_valid_access_policy(
+            try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_3,
                     AccessPolicyExamples.access_policy_exampe_3_satisfied_1);
-            test_invalid_access_policy(
+            try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_3,
                     AccessPolicyExamples.access_policy_exampe_3_unsatisfied_1);
-            test_invalid_access_policy(
+            try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_3,
                     AccessPolicyExamples.access_policy_exampe_3_unsatisfied_2);
@@ -187,102 +187,102 @@ public class KPABEEngineTest {
             if (engine.isAccessControlEngineSupportThresholdGate()) {
                 //test threshold example 1
                 System.out.println("Test threshold example 1");
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied01);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied02);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied03);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied04);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied05);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied06);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied07);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied08);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied09);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied10);
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_satisfied11);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied01);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied02);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied03);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied04);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied05);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied06);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied07);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
                         AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied08);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_1_tree,
                         AccessPolicyExamples.access_policy_threshold_example_1_rho,
@@ -290,17 +290,17 @@ public class KPABEEngineTest {
 
                 //test threshold example 2
                 System.out.println("Test threshold example 2");
-                test_valid_access_policy(
+                try_valid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_2_tree,
                         AccessPolicyExamples.access_policy_threshold_example_2_rho,
                         AccessPolicyExamples.access_policy_threshold_example_2_satisfied01);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_2_tree,
                         AccessPolicyExamples.access_policy_threshold_example_2_rho,
                         AccessPolicyExamples.access_policy_threshold_example_2_unsatisfied01);
-                test_invalid_access_policy(
+                try_invalid_access_policy(
                         pairing, publicKey, masterKey,
                         AccessPolicyExamples.access_policy_threshold_example_2_tree,
                         AccessPolicyExamples.access_policy_threshold_example_2_rho,
