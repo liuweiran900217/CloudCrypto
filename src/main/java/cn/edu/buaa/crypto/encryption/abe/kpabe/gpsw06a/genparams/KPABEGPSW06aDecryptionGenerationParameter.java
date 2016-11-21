@@ -5,6 +5,7 @@ import cn.edu.buaa.crypto.algebra.genparams.PairingDecryptionGenerationParameter
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 
 /**
  * Created by Weiran Liu on 2016/11/17.
@@ -21,7 +22,7 @@ public class KPABEGPSW06aDecryptionGenerationParameter extends PairingDecryption
         super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
         assert(attributes.length <= ((KPABEGPSW06aPublicKeySerParameter)publicKeyParameter).getMaxAttributesNum());
         this.accessControlEngine = accessControlEngine;
-        this.attributes = attributes;
+        this.attributes = PairingUtils.removeDuplicates(attributes);
     }
 
     public String[] getAttributes() { return this.attributes; }

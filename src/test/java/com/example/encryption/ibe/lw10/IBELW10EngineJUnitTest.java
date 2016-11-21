@@ -6,12 +6,14 @@ import com.example.TestUtils;
 import com.example.encryption.ibe.IBEEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 16/5/7.
  *
  * Lewko-Sahai-Waters Online/Offline Revocation Encryption engine test.
  */
+@Ignore
 public class IBELW10EngineJUnitTest extends TestCase {
     private IBEEngineJUnitTest engineJUnitTest;
 

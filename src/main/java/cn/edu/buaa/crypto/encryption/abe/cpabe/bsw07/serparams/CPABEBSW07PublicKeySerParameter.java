@@ -14,7 +14,7 @@ import java.util.Arrays;
  *
  * Bethencourt-Sahai-Waters large-universe CP-ABE public key parameter.
  */
-public class CPABEBSW07PublicPairingKeySerParameter extends PairingKeySerParameter {
+public class CPABEBSW07PublicKeySerParameter extends PairingKeySerParameter {
     public transient Element g;
     private final byte[] byteArrayG;
 
@@ -27,7 +27,7 @@ public class CPABEBSW07PublicPairingKeySerParameter extends PairingKeySerParamet
     private transient Element eggAlpha;
     private final byte[] byteArrayEggAlpha;
 
-    public CPABEBSW07PublicPairingKeySerParameter(PairingParameters parameters, Element g, Element h, Element f, Element eggAlpha) {
+    public CPABEBSW07PublicKeySerParameter(PairingParameters parameters, Element g, Element h, Element f, Element eggAlpha) {
         super(false, parameters);
 
         this.g = g.getImmutable();
@@ -53,8 +53,8 @@ public class CPABEBSW07PublicPairingKeySerParameter extends PairingKeySerParamet
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof CPABEBSW07PublicPairingKeySerParameter) {
-            CPABEBSW07PublicPairingKeySerParameter that = (CPABEBSW07PublicPairingKeySerParameter)anObject;
+        if (anObject instanceof CPABEBSW07PublicKeySerParameter) {
+            CPABEBSW07PublicKeySerParameter that = (CPABEBSW07PublicKeySerParameter)anObject;
             //Compare g
             if (!PairingUtils.isEqualElement(this.g, that.g)) {
                 return false;

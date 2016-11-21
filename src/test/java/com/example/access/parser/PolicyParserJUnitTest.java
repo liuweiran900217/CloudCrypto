@@ -11,6 +11,7 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import java.util.Map;
  *
  * Policy parser test.
  */
+@Ignore
 public class PolicyParserJUnitTest extends TestCase {
     private static final String access_policy_example_1 = "school:pku and professor and (academy:software or academy:computer)";
     private static final String[] access_policy_exampe_1_satisfied_1 = new String[] {"school:pku", "professor", "academy:software"};

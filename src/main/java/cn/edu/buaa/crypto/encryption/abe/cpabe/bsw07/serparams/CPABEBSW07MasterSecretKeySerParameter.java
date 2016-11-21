@@ -14,14 +14,14 @@ import java.util.Arrays;
  *
  * Bethencourt-Sahai-Waters large-universe CP-ABE master secret key parameter.
  */
-public class CPABEBSW07MasterSecretPairingKeySerParameter extends PairingKeySerParameter {
+public class CPABEBSW07MasterSecretKeySerParameter extends PairingKeySerParameter {
     private transient Element gAlpha;
     private final byte[] byteArrayGAlpha;
 
     private transient Element beta;
     private final byte[] byteArrayBeta;
 
-    public CPABEBSW07MasterSecretPairingKeySerParameter(PairingParameters pairingParameters, Element gAlpha, Element beta) {
+    public CPABEBSW07MasterSecretKeySerParameter(PairingParameters pairingParameters, Element gAlpha, Element beta) {
         super(true, pairingParameters);
         this.gAlpha = gAlpha.getImmutable();
         this.byteArrayGAlpha = this.gAlpha.toBytes();
@@ -39,8 +39,8 @@ public class CPABEBSW07MasterSecretPairingKeySerParameter extends PairingKeySerP
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof CPABEBSW07MasterSecretPairingKeySerParameter) {
-            CPABEBSW07MasterSecretPairingKeySerParameter that = (CPABEBSW07MasterSecretPairingKeySerParameter)anObject;
+        if (anObject instanceof CPABEBSW07MasterSecretKeySerParameter) {
+            CPABEBSW07MasterSecretKeySerParameter that = (CPABEBSW07MasterSecretKeySerParameter)anObject;
             //compare gAlpha
             if (!(PairingUtils.isEqualElement(this.gAlpha, that.gAlpha))) {
                 return false;

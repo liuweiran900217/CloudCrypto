@@ -5,14 +5,16 @@ import com.example.TestUtils;
 import com.example.access.AccessControlEngineTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2016/7/20.
  *
  * Lewko-Waters LSSS engine test.
  */
+@Ignore
 public class LSSSLW10EngineJUnitTest extends TestCase {
-    AccessControlEngineTest accessControlEngineTest;
+    private AccessControlEngineTest accessControlEngineTest;
 
     public void setUp() {
         accessControlEngineTest = new AccessControlEngineTest(

@@ -6,12 +6,14 @@ import com.example.TestUtils;
 import com.example.encryption.ibbe.IBBEEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2016/8/24.
  *
  * Delerablée IBBE engine test.
  */
+@Ignore
 public class IBBEDel07EngineJUnitTest extends TestCase {
     private IBBEEngineJUnitTest engineJUnitTest;
 

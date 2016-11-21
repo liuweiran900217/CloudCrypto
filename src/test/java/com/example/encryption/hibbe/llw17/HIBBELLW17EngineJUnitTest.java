@@ -8,12 +8,14 @@ import junit.framework.TestCase;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.digests.SHA512Digest;
+import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2016/11/11.
  *
  * Liu-Liu-Wu composite-order CCA2-secure HIBBE engine test.
  */
+@Ignore
 public class HIBBELLW17EngineJUnitTest extends TestCase {
     private HIBBELLW17Engine engine;
     private HIBBEEngineJUnitTest engineJUnitTest;

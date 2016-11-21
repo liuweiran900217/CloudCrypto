@@ -5,12 +5,14 @@ import com.example.TestUtils;
 import com.example.access.AccessControlEngineTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2016/7/20.
  *
  * Access tree engine test.
  */
+@Ignore
 public class AccessTreeEngineJUnitTest extends TestCase {
     private AccessControlEngineTest accessControlEngineTest;
 

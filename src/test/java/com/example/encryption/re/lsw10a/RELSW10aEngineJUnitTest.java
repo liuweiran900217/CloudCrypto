@@ -6,12 +6,14 @@ import com.example.TestUtils;
 import com.example.encryption.re.REEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2016/4/4.
  *
  * Lewko-Sahai-Waters Revocation scheme test.
  */
+@Ignore
 public class RELSW10aEngineJUnitTest extends TestCase {
     private  REEngineJUnitTest engineJUnitTest;
 

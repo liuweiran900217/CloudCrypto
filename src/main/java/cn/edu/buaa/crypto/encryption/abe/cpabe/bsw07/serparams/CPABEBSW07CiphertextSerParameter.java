@@ -1,6 +1,5 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams;
 
-import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
@@ -17,8 +16,9 @@ import java.util.Map;
  *
  * Bethencourt-Sahai-Waters large-universe CP-ABE ciphertext parameter.
  */
-public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
-    private final AccessControlParameter accessControlParameter;
+public class CPABEBSW07CiphertextSerParameter extends PairingCipherSerParameter {
+    private transient Element CPrime;
+    private final byte[] byteArrayCPrime;
 
     private transient Element C;
     private final byte[] byteArrayC;
@@ -29,12 +29,14 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
     private transient Map<String, Element> C2s;
     private final Map<String, byte[]> byteArraysC2s;
 
-    public CPABEBSW07CipherSerParameter(PairingParameters pairingParameters, AccessControlParameter accessControlParameter,
-                                        Element C, Map<String, Element> elementRhos,
-                                        Map<String, Element> C1s, Map<String, Element> C2s) {
+    public CPABEBSW07CiphertextSerParameter(
+            PairingParameters pairingParameters, Element CPrime, Element C,
+            Map<String, Element> C1s, Map<String, Element> C2s) {
         super(pairingParameters);
 
-        this.accessControlParameter = accessControlParameter;
+        this.CPrime = CPrime.getImmutable();
+        this.byteArrayCPrime = this.CPrime.toBytes();
+
         this.C = C.getImmutable();
         this.byteArrayC = this.C.toBytes();
 
@@ -43,7 +45,7 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
         this.C2s = new HashMap<String, Element>();
         this.byteArraysC2s = new HashMap<String, byte[]>();
 
-        for (String attribute : elementRhos.keySet()) {
+        for (String attribute : C1s.keySet()) {
             this.C1s.put(attribute, C1s.get(attribute).duplicate().getImmutable());
             this.byteArraysC1s.put(attribute, C1s.get(attribute).duplicate().getImmutable().toBytes());
             this.C2s.put(attribute, C2s.get(attribute).duplicate().getImmutable());
@@ -51,7 +53,7 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
         }
     }
 
-    public AccessControlParameter getAccessControlParameter() { return this.accessControlParameter; }
+    public Element getCPrime() { return this.CPrime.duplicate(); }
 
     public Element getC() { return this.C.duplicate(); }
 
@@ -64,10 +66,13 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof CPABEBSW07CipherSerParameter) {
-            CPABEBSW07CipherSerParameter that = (CPABEBSW07CipherSerParameter)anObject;
-            //Compare access control parameter
-            if (!this.accessControlParameter.equals(that.accessControlParameter)) {
+        if (anObject instanceof CPABEBSW07CiphertextSerParameter) {
+            CPABEBSW07CiphertextSerParameter that = (CPABEBSW07CiphertextSerParameter)anObject;
+            //Compare CPrime
+            if (!PairingUtils.isEqualElement(this.CPrime, that.CPrime)) {
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayCPrime, that.byteArrayCPrime)) {
                 return false;
             }
             //Compare C
@@ -101,10 +106,11 @@ public class CPABEBSW07CipherSerParameter extends PairingCipherSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.C = pairing.getG1().newElementFromBytes(this.byteArrayC);
+        this.CPrime = pairing.getGT().newElementFromBytes(this.byteArrayCPrime).getImmutable();
+        this.C = pairing.getG1().newElementFromBytes(this.byteArrayC).getImmutable();
         this.C1s = new HashMap<String, Element>();
         this.C2s = new HashMap<String, Element>();
-        for (String attribute : C1s.keySet()) {
+        for (String attribute : byteArraysC1s.keySet()) {
             this.C1s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC1s.get(attribute)).getImmutable());
             this.C2s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC2s.get(attribute)).getImmutable());
         }

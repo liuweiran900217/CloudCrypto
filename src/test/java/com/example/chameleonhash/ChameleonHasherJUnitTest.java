@@ -23,7 +23,7 @@ import java.util.Arrays;
  *
  * Chameleon hash test.
  */
-public class ChameleonHasherJunitTest extends TestCase {
+public class ChameleonHasherJUnitTest extends TestCase {
 
     private AsymmetricKeySerPairGenerator asymmetricCipherKeyPairGenerator;
     private ChameleonHasher chameleonHasher;

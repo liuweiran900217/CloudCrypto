@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * Bethencourt-Sahai-Waters large-universe CP-ABE secret key parameter.
  */
-public class CPABEBSW07SecretPairingKeySerParameter extends PairingKeySerParameter {
+public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
     private transient Map<String, Element> elementAttributes;
     private final Map<String, byte[]> byteArraysElementAttributes;
 
@@ -29,8 +29,8 @@ public class CPABEBSW07SecretPairingKeySerParameter extends PairingKeySerParamet
     private transient Map<String, Element> D2s;
     private final Map<String, byte[]> byteArraysD2s;
 
-    public CPABEBSW07SecretPairingKeySerParameter(PairingParameters pairingParameters, Map<String, Element> elementAttributes,
-                                                  Element D, Map<String, Element> D1s, Map<String, Element> D2s) {
+    public CPABEBSW07SecretKeySerParameter(PairingParameters pairingParameters, Map<String, Element> elementAttributes,
+                                           Element D, Map<String, Element> D1s, Map<String, Element> D2s) {
         super(true, pairingParameters);
 
         this.D = D.getImmutable();
@@ -68,8 +68,8 @@ public class CPABEBSW07SecretPairingKeySerParameter extends PairingKeySerParamet
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof CPABEBSW07SecretPairingKeySerParameter) {
-            CPABEBSW07SecretPairingKeySerParameter that = (CPABEBSW07SecretPairingKeySerParameter)anObject;
+        if (anObject instanceof CPABEBSW07SecretKeySerParameter) {
+            CPABEBSW07SecretKeySerParameter that = (CPABEBSW07SecretKeySerParameter)anObject;
             //Compare attributes
             if (!this.elementAttributes.equals(that.elementAttributes)) {
                 return false;
