@@ -17,9 +17,6 @@ import java.util.Map;
  * Bethencourt-Sahai-Waters large-universe CP-ABE secret key parameter.
  */
 public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
-    private transient Map<String, Element> elementAttributes;
-    private final Map<String, byte[]> byteArraysElementAttributes;
-
     private transient Element D;
     private final byte[] byteArraysD;
 
@@ -29,23 +26,19 @@ public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
     private transient Map<String, Element> D2s;
     private final Map<String, byte[]> byteArraysD2s;
 
-    public CPABEBSW07SecretKeySerParameter(PairingParameters pairingParameters, Map<String, Element> elementAttributes,
+    public CPABEBSW07SecretKeySerParameter(PairingParameters pairingParameters,
                                            Element D, Map<String, Element> D1s, Map<String, Element> D2s) {
         super(true, pairingParameters);
 
         this.D = D.getImmutable();
         this.byteArraysD = this.D.toBytes();
 
-        this.elementAttributes = new HashMap<String, Element>();
-        this.byteArraysElementAttributes = new HashMap<String, byte[]>();
         this.D1s = new HashMap<String, Element>();
         this.byteArraysD1s = new HashMap<String, byte[]>();
         this.D2s = new HashMap<String, Element>();
         this.byteArraysD2s = new HashMap<String, byte[]>();
 
-        for (String attribute : elementAttributes.keySet()) {
-            this.elementAttributes.put(attribute, elementAttributes.get(attribute).duplicate().getImmutable());
-            this.byteArraysElementAttributes.put(attribute, elementAttributes.get(attribute).duplicate().getImmutable().toBytes());
+        for (String attribute : D1s.keySet()) {
             this.D1s.put(attribute, D1s.get(attribute).duplicate().getImmutable());
             this.byteArraysD1s.put(attribute, D1s.get(attribute).duplicate().getImmutable().toBytes());
             this.D2s.put(attribute, D2s.get(attribute).duplicate().getImmutable());
@@ -53,11 +46,9 @@ public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
         }
     }
 
-    public String[] getAttributes() { return this.elementAttributes.keySet().toArray(new String[1]); }
+    public String[] getAttributes() { return this.D1s.keySet().toArray(new String[1]); }
 
     public Element getD() { return this.D.duplicate(); }
-
-    public Element getElementAttributesAt(String attribute) { return this.elementAttributes.get(attribute).duplicate(); }
 
     public Element getD1sAt(String attribute) { return this.D1s.get(attribute).duplicate(); }
 
@@ -70,13 +61,6 @@ public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
         }
         if (anObject instanceof CPABEBSW07SecretKeySerParameter) {
             CPABEBSW07SecretKeySerParameter that = (CPABEBSW07SecretKeySerParameter)anObject;
-            //Compare attributes
-            if (!this.elementAttributes.equals(that.elementAttributes)) {
-                return false;
-            }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysElementAttributes, that.byteArraysElementAttributes)) {
-                return false;
-            }
             //Compare D
             if (!PairingUtils.isEqualElement(this.D, that.D)) {
                 return false;
@@ -109,11 +93,9 @@ public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.D = pairing.getG1().newElementFromBytes(this.byteArraysD);
-        this.elementAttributes = new HashMap<String, Element>();
         this.D1s = new HashMap<String, Element>();
         this.D2s = new HashMap<String, Element>();
-        for (String attribute : this.byteArraysElementAttributes.keySet()) {
-            this.elementAttributes.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysElementAttributes.get(attribute)).getImmutable());
+        for (String attribute : this.byteArraysD1s.keySet()) {
             this.D1s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysD1s.get(attribute)).getImmutable());
             this.D2s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysD2s.get(attribute)).getImmutable());
         }

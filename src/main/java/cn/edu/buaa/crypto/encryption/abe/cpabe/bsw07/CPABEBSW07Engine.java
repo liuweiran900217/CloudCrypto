@@ -27,7 +27,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class CPABEBSW07Engine extends CPABEEngine {
     //Scheme name, used for exceptions
-    private static final String SCHEME_NAME = "Bethencourt-Sahai-Wtaers large-universe CP-ABE";
+    private static final String SCHEME_NAME = "Bethencourt-Sahai-Waters large-universe CP-ABE";
 
     private static CPABEBSW07Engine engine;
 

@@ -28,30 +28,31 @@ public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerat
     }
 
     public PairingCipherSerParameter generateCiphertext() {
-        KPABEGPSW06aPublicKeySerParameter publicKeyParameters = (KPABEGPSW06aPublicKeySerParameter)this.params.getPublicKeyParameter();
-        Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
+        KPABEGPSW06aPublicKeySerParameter publicKeyParameter = (KPABEGPSW06aPublicKeySerParameter)this.params.getPublicKeyParameter();
+        Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         String[] attributes = this.params.getAttributes();
+        assert(attributes.length <= publicKeyParameter.getMaxAttributesNum());
         Element message = this.params.getMessage();
-        if (attributes.length > publicKeyParameters.getMaxAttributesNum()) {
+        if (attributes.length > publicKeyParameter.getMaxAttributesNum()) {
             throw new IllegalArgumentException("# of broadcast receiver set " + attributes.length +
-                    " is greater than the maximal number of receivers " + publicKeyParameters.getMaxAttributesNum());
+                    " is greater than the maximal number of receivers " + publicKeyParameter.getMaxAttributesNum());
         }
 
         try {
             Element s = pairing.getZr().newRandomElement().getImmutable();
-            Element sessionKey = publicKeyParameters.getY().powZn(s).getImmutable();
+            Element sessionKey = publicKeyParameter.getY().powZn(s).getImmutable();
             Element EPrime = sessionKey.mul(message).getImmutable();
             Map<String, Element> Es = new HashMap<String, Element>();
             for (String attribute : attributes) {
                 int index = Integer.parseInt(attribute);
-                if (index >= publicKeyParameters.getMaxAttributesNum() || index < 0) {
+                if (index >= publicKeyParameter.getMaxAttributesNum() || index < 0) {
                     throw new InvalidParameterException("Rho index greater than or equal to the max number of attributes supported");
                 }
-                Element E = publicKeyParameters.getTsAt(String.valueOf(index)).powZn(s).getImmutable();
+                Element E = publicKeyParameter.getTsAt(String.valueOf(index)).powZn(s).getImmutable();
                 Es.put(String.valueOf(index), E);
             }
 
-            return new KPABEGPSW06aCiphertextSerParameter(publicKeyParameters.getParameters(), EPrime, Es);
+            return new KPABEGPSW06aCiphertextSerParameter(publicKeyParameter.getParameters(), EPrime, Es);
         } catch (NumberFormatException e) {
             throw new InvalidParameterException("Invalid rhos, require rhos represented by integers");
         }

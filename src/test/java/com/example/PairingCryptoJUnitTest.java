@@ -32,10 +32,11 @@ public class PairingCryptoJUnitTest {
 //        junit.textui.TestRunner.run(com.example.application.llw15.RBACLLW15EngineJUnitTest.class);
 //        System.out.println();
 
-//        System.out.println("****************************************");
-//        System.out.println("Test KPABEEngine");
-//        junit.textui.TestRunner.run(com.example.encryption.abe.kpabe.gpsw06a.KPABEGPSW06aEngineJUnitTest.class);
-//        System.out.println();
+        System.out.println("****************************************");
+        System.out.println("Test KPABEEngine");
+        junit.textui.TestRunner.run(com.example.encryption.abe.kpabe.gpsw06a.KPABEGPSW06aEngineJUnitTest.class);
+        junit.textui.TestRunner.run(com.example.encryption.abe.kpabe.gpsw06b.KPABEGPSW06bEngineJUnitTest.class);
+        System.out.println();
 
         System.out.println("****************************************");
         System.out.println("Test CPABEEngine");

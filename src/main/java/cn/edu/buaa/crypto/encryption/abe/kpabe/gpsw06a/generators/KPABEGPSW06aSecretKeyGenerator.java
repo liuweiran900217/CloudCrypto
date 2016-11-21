@@ -31,7 +31,7 @@ public class KPABEGPSW06aSecretKeyGenerator implements PairingKeyParameterGenera
     public PairingKeySerParameter generateKey() {
         KPABEGPSW06aMasterSecretKeySerParameter masterSecretKeyParameter = (KPABEGPSW06aMasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
         KPABEGPSW06aPublicKeySerParameter publicKeyParameter = (KPABEGPSW06aPublicKeySerParameter)parameters.getPublicKeyParameter();
-
+        assert(parameters.getRhos().length <= publicKeyParameter.getMaxAttributesNum());
         int[][] accessPolicy = this.parameters.getAccessPolicy();
         String[] stringRhos = this.parameters.getRhos();
         Map<String, Element> Ds = new HashMap<String, Element>();

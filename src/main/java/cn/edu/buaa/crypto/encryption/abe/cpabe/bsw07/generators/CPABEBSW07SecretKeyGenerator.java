@@ -33,18 +33,16 @@ public class CPABEBSW07SecretKeyGenerator implements PairingKeyParameterGenerato
 
         String[] attributes = this.parameter.getAttributes();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
-        Map<String, Element> elementAttributes = new HashMap<String, Element>();
         Map<String, Element> D1s = new HashMap<String, Element>();
         Map<String, Element> D2s = new HashMap<String, Element>();
         Element r = pairing.getZr().newRandomElement().getImmutable();
         Element D = masterSecretKeyParameter.getGAlpha().mul(publicKeyParameter.getG().powZn(r)).powZn(masterSecretKeyParameter.getBeta().invert()).getImmutable();
         for (String attribute : attributes) {
             Element elementAttribute = PairingUtils.MapStringToGroup(pairing, attribute, PairingUtils.PairingGroupType.G1);
-            elementAttributes.put(attribute, elementAttribute);
             Element ri = pairing.getZr().newRandomElement().getImmutable();
             D1s.put(attribute, publicKeyParameter.getG().powZn(r).mul(elementAttribute.powZn(ri)).getImmutable());
             D2s.put(attribute, publicKeyParameter.getG().powZn(ri).getImmutable());
         }
-            return new CPABEBSW07SecretKeySerParameter(publicKeyParameter.getParameters(), elementAttributes, D, D1s, D2s);
+            return new CPABEBSW07SecretKeySerParameter(publicKeyParameter.getParameters(), D, D1s, D2s);
     }
 }

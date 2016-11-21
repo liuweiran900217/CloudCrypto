@@ -36,6 +36,7 @@ public class KPABEGPSW06aDecryptionGenerator implements PairingDecryptionGenerat
         AccessControlParameter accessControlParameter = secretKeyParameter.getAccessControlParameter();
         AccessControlEngine accessControlEngine = this.params.getAccessControlEngine();
         String[] attributes = this.params.getAttributes();
+        assert(attributes.length <= publicKeyParameter.getMaxAttributesNum());
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         try {
             Map<String, Element> omegaElementsMap = accessControlEngine.reconstructOmegas(pairing, attributes, accessControlParameter);
