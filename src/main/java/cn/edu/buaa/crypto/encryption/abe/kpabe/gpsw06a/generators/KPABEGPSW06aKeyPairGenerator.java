@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -19,10 +19,10 @@ import java.util.Map;
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE public key / master secret key pair generator.
  */
 public class KPABEGPSW06aKeyPairGenerator implements PairingKeyPairGenerator {
-    private KPABEGPSW06aKeyPairGenerationParameter parameters;
+    private KPABEKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (KPABEGPSW06aKeyPairGenerationParameter)keyGenerationParameters;
+        this.parameters = (KPABEKeyPairGenerationParameter)keyGenerationParameters;
     }
 
     public PairingKeySerPair generateKeyPair() {

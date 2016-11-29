@@ -8,11 +8,11 @@ import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04DecryptionGene
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.genparams.*;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.genparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -41,7 +41,7 @@ public class HIBEBB04Engine implements HIBEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxDepth) {
         HIBEBB04KeyPairGenerator keyPairGenerator = new HIBEBB04KeyPairGenerator();
-        keyPairGenerator.init(new HIBEBB04KeyPairGenerationParameter(pairingParameters, maxDepth));
+        keyPairGenerator.init(new HIBEKeyPairGenerationParameter(pairingParameters, maxDepth));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -60,7 +60,7 @@ public class HIBEBB04Engine implements HIBEEngine {
                             + HIBEBB04MasterSecretKeySerParameter.class.getName());
         }
         HIBEBB04SecretKeyGenerator secretKeyGenerator = new HIBEBB04SecretKeyGenerator();
-        secretKeyGenerator.init(new HIBEBB04SecretKeyGenerationParameter(
+        secretKeyGenerator.init(new HIBESecretKeyGenerationParameter(
                 publicKey, masterKey, ids));
 
         return secretKeyGenerator.generateKey();
@@ -80,7 +80,7 @@ public class HIBEBB04Engine implements HIBEEngine {
                             + HIBEBB04SecretKeySerParameter.class.getName());
         }
         HIBEBB04SecretKeyGenerator secretKeyGenerator = new HIBEBB04SecretKeyGenerator();
-        secretKeyGenerator.init(new HIBEBB04DelegateGenerationParameter(
+        secretKeyGenerator.init(new HIBEDelegateGenerationParameter(
                 publicKey, secretKey, id));
 
         return secretKeyGenerator.generateKey();
@@ -94,7 +94,7 @@ public class HIBEBB04Engine implements HIBEEngine {
                             + HIBEBB04PublicKeySerParameter.class.getName());
         }
         HIBEBB04EncryptionGenerator encryptionGenerator = new HIBEBB04EncryptionGenerator();
-        encryptionGenerator.init(new HIBEBB04EncryptionGenerationParameter(publicKey, ids, message));
+        encryptionGenerator.init(new HIBEEncryptionGenerationParameter(publicKey, ids, message));
 
         return encryptionGenerator.generateCiphertext();
     }
@@ -120,7 +120,7 @@ public class HIBEBB04Engine implements HIBEEngine {
                             + HIBEBB04CiphertextSerParameter.class.getName());
         }
         HIBEBB04DecryptionGenerator decryptionGenerator = new HIBEBB04DecryptionGenerator();
-        decryptionGenerator.init(new HIBEBB04DecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
+        decryptionGenerator.init(new HIBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
         return decryptionGenerator.recoverMessage();
     }
 

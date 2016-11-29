@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw17.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.genparams.HIBBELLW17DecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17SecretKeySerParameter;
@@ -19,10 +19,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Liu-Liu-Wu composite-order CCA2-secure HIBBE session key decapsulation generator.
  */
 public class HIBBELLW17DecryptionGenerator implements PairingDecryptionGenerator {
-    private HIBBELLW17DecryptionGenerationParameter params;
+    private HIBBEDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW17DecryptionGenerationParameter)params;
+        this.params = (HIBBEDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

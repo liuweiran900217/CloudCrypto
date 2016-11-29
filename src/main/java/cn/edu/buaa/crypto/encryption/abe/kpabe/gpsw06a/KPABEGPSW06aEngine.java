@@ -8,10 +8,10 @@ import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aDe
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aEncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aSecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aEncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aDecryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aKeyPairGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aSecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
@@ -48,7 +48,7 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         KPABEGPSW06aKeyPairGenerator keyPairGenerator = new KPABEGPSW06aKeyPairGenerator();
-        keyPairGenerator.init(new KPABEGPSW06aKeyPairGenerationParameter(pairingParameters, maxAttributesNum));
+        keyPairGenerator.init(new KPABEKeyPairGenerationParameter(pairingParameters, maxAttributesNum));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -67,7 +67,7 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
                             + KPABEGPSW06aMasterSecretKeySerParameter.class.getName());
         }
         KPABEGPSW06aSecretKeyGenerator secretKeyGenerator = new KPABEGPSW06aSecretKeyGenerator();
-        secretKeyGenerator.init(new KPABEGPSW06aSecretKeyGenerationParameter(
+        secretKeyGenerator.init(new KPABESecretKeyGenerationParameter(
                 accessControlEngine, publicKey, masterKey, accessPolicyIntArrays, rhos));
 
         return secretKeyGenerator.generateKey();
@@ -81,7 +81,7 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
                             + KPABEGPSW06aPublicKeySerParameter.class.getName());
         }
         KPABEGPSW06aEncryptionGenerator encryptionGenerator = new KPABEGPSW06aEncryptionGenerator();
-        encryptionGenerator.init(new KPABEGPSW06aEncryptionGenerationParameter(publicKey, attributes, message));
+        encryptionGenerator.init(new KPABEEncryptionGenerationParameter(publicKey, attributes, message));
 
         return encryptionGenerator.generateCiphertext();
     }
@@ -107,7 +107,7 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
                             + KPABEGPSW06aCiphertextSerParameter.class.getName());
         }
         KPABEGPSW06aDecryptionGenerator decryptionGenerator = new KPABEGPSW06aDecryptionGenerator();
-        decryptionGenerator.init(new KPABEGPSW06aDecryptionGenerationParameter(
+        decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
                 accessControlEngine, publicKey, secretKey, attributes, ciphertext));
         return decryptionGenerator.recoverMessage();
     }

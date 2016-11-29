@@ -8,7 +8,7 @@ import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aDecryptionGene
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aEncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.generators.RELSW10aSecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.*;
+import cn.edu.buaa.crypto.encryption.re.genparams.*;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
@@ -41,7 +41,7 @@ public class RELSW10aEngine implements REEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters) {
         RELSW10aKeyPairGenerator keyPairGenerator = new RELSW10aKeyPairGenerator();
-        keyPairGenerator.init(new RELSW10aKeyPairGenerationParameter(pairingParameters));
+        keyPairGenerator.init(new REKeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -60,7 +60,7 @@ public class RELSW10aEngine implements REEngine {
                             + RELSW10aMasterSecretKeySerParameter.class.getName());
         }
         RELSW10aSecretKeyGenerator secretKeyGenerator = new RELSW10aSecretKeyGenerator();
-        secretKeyGenerator.init(new RELSW10aSecretKeyGenerationParameter(
+        secretKeyGenerator.init(new RESecretKeyGenerationParameter(
                 publicKey, masterKey, id));
 
         return secretKeyGenerator.generateKey();
@@ -74,7 +74,7 @@ public class RELSW10aEngine implements REEngine {
                             + RELSW10aPublicKeySerParameter.class.getName());
         }
         RELSW10aEncryptionGenerator encryptionGenerator = new RELSW10aEncryptionGenerator();
-        encryptionGenerator.init(new RELSW10aEncryptionGenerationParameter(publicKey, ids, message));
+        encryptionGenerator.init(new REEncryptionGenerationParameter(publicKey, ids, message));
 
         return encryptionGenerator.generateCiphertext();
     }
@@ -100,7 +100,7 @@ public class RELSW10aEngine implements REEngine {
                             + RELSW10aCiphertextSerParameter.class.getName());
         }
         RELSW10aDecryptionGenerator decryptionGenerator = new RELSW10aDecryptionGenerator();
-        decryptionGenerator.init(new RELSW10aDecryptionGenerationParameter(
+        decryptionGenerator.init(new REDecryptionGenerationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return decryptionGenerator.recoverMessage();
     }

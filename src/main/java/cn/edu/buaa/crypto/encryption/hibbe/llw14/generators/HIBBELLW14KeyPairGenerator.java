@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14KeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Liu-Liu-Wu composite-order HIBBE public key / master secret key generator.
  */
 public class HIBBELLW14KeyPairGenerator implements PairingKeyPairGenerator {
-    private HIBBELLW14KeyPairGenerationParameter parameters;
+    private HIBBEKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (HIBBELLW14KeyPairGenerationParameter)keyGenerationParameters;
+        this.parameters = (HIBBEKeyPairGenerationParameter)keyGenerationParameters;
     }
 
     public PairingKeySerPair generateKeyPair() {

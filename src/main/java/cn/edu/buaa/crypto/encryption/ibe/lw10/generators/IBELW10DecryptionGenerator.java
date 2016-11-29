@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10CiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10DecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10SecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Lewko-Waters IBE decryption generator.
  */
 public class IBELW10DecryptionGenerator implements PairingDecryptionGenerator {
-    private IBELW10DecryptionGenerationParameter params;
+    private IBEDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (IBELW10DecryptionGenerationParameter)params;
+        this.params = (IBEDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

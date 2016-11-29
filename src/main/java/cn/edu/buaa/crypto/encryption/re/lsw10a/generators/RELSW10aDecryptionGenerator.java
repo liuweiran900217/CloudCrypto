@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.RELSW10aDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.re.genparams.REDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Lewko-Sahai-Waters revocation encryption decryption generator.
  */
 public class RELSW10aDecryptionGenerator implements PairingDecryptionGenerator {
-    private RELSW10aDecryptionGenerationParameter params;
+    private REDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (RELSW10aDecryptionGenerationParameter)params;
+        this.params = (REDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

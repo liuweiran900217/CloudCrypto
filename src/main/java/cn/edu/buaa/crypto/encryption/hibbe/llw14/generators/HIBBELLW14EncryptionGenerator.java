@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14EncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -17,10 +17,10 @@ import org.bouncycastle.crypto.CipherParameters;
  * Liu-Liu-Wu prime-order HIBBE encryption generator.
  */
 public class HIBBELLW14EncryptionGenerator implements PairingEncryptionGenerator {
-    private HIBBELLW14EncryptionGenerationParameter params;
+    private HIBBEEncryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW14EncryptionGenerationParameter)params;
+        this.params = (HIBBEEncryptionGenerationParameter)params;
     }
 
     public PairingCipherSerParameter generateCiphertext() {

@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16a.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aCiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16a.genparams.HIBBELLW16aDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.serparams.HIBBELLW16aSecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Liu-Liu-Wu prime-order HIBBE decryption generator.
  */
 public class HIBBELLW16aDecryptionGenerator implements PairingDecryptionGenerator {
-    private HIBBELLW16aDecryptionGenerationParameter params;
+    private HIBBEDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW16aDecryptionGenerationParameter)params;
+        this.params = (HIBBEDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

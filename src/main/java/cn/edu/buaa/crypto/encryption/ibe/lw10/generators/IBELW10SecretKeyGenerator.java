@@ -2,10 +2,10 @@ package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibe.genparams.IBESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10SecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10SecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Lewko-Waters secret key generator.
  */
 public class IBELW10SecretKeyGenerator implements PairingKeyParameterGenerator {
-    private IBELW10SecretKeyGenerationParameter parameters;
+    private IBESecretKeyGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (IBELW10SecretKeyGenerationParameter)keyGenerationParameters;
+        this.parameters = (IBESecretKeyGenerationParameter)keyGenerationParameters;
     }
 
     public PairingKeySerParameter generateKey() {

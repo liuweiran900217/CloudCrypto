@@ -6,14 +6,12 @@ import com.example.TestUtils;
 import com.example.encryption.hibe.HIBEEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
-import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2015/11/3.
  *
  * Boneh-Boyen HIBBE engine test.
  */
-@Ignore
 public class HIBEBB04EngineJUnitTest extends TestCase {
     private HIBEEngineJUnitTest engineJUnitTest;
 

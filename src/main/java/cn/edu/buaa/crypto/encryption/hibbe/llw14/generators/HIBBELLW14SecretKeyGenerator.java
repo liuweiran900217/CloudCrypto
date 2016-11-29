@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14DelegateGenerationParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.HIBBELLW14SecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEDelegateGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.*;
@@ -25,8 +25,8 @@ public class HIBBELLW14SecretKeyGenerator implements PairingKeyParameterGenerato
     }
 
     public PairingKeySerParameter generateKey() {
-        if (param instanceof HIBBELLW14SecretKeyGenerationParameter) {
-            HIBBELLW14SecretKeyGenerationParameter parameter = (HIBBELLW14SecretKeyGenerationParameter)param;
+        if (param instanceof HIBBESecretKeyGenerationParameter) {
+            HIBBESecretKeyGenerationParameter parameter = (HIBBESecretKeyGenerationParameter)param;
 
             HIBBELLW14PublicKeySerParameter publicKeyParameter = (HIBBELLW14PublicKeySerParameter)parameter.getPublicKeyParameter();
             HIBBELLW14MasterSecretKeySerParameter masterSecretKeyParameter = (HIBBELLW14MasterSecretKeySerParameter)parameter.getMasterSecretKeyParameter();
@@ -62,8 +62,8 @@ public class HIBBELLW14SecretKeyGenerator implements PairingKeyParameterGenerato
 
             return new HIBBELLW14SecretKeySerParameter(publicKeyParameter.getParameters(),
                     parameter.getIds(), elementIds, a0, a1, bs);
-        } else if (param instanceof HIBBELLW14DelegateGenerationParameter)  {
-            HIBBELLW14DelegateGenerationParameter parameter = (HIBBELLW14DelegateGenerationParameter)param;
+        } else if (param instanceof HIBBEDelegateGenerationParameter)  {
+            HIBBEDelegateGenerationParameter parameter = (HIBBEDelegateGenerationParameter)param;
 
             HIBBELLW14PublicKeySerParameter publicKeyParameter = (HIBBELLW14PublicKeySerParameter)parameter.getPublicKeyParameter();
             HIBBELLW14SecretKeySerParameter secretKeyParameter = (HIBBELLW14SecretKeySerParameter)parameter.getSecretKeyParameter();
@@ -120,8 +120,8 @@ public class HIBBELLW14SecretKeyGenerator implements PairingKeyParameterGenerato
                     ("Invalid KeyGenerationParameters for " + HIBBELLW14Engine.SCHEME_NAME
                             + " Secret Key Generatation, find "
                             + param.getClass().getName() + ", require "
-                            + HIBBELLW14SecretKeyGenerationParameter.class.getName() + " or "
-                            + HIBBELLW14DelegateGenerationParameter.class.getName());
+                            + HIBBESecretKeyGenerationParameter.class.getName() + " or "
+                            + HIBBEDelegateGenerationParameter.class.getName());
         }
     }
 }

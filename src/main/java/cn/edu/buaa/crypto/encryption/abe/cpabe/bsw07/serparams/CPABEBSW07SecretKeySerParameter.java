@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
     private transient Element D;
-    private final byte[] byteArraysD;
+    private final byte[] byteArrayD;
 
     private transient Map<String, Element> D1s;
     private final Map<String, byte[]> byteArraysD1s;
@@ -31,7 +31,7 @@ public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
         super(true, pairingParameters);
 
         this.D = D.getImmutable();
-        this.byteArraysD = this.D.toBytes();
+        this.byteArrayD = this.D.toBytes();
 
         this.D1s = new HashMap<String, Element>();
         this.byteArraysD1s = new HashMap<String, byte[]>();
@@ -65,7 +65,7 @@ public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
             if (!PairingUtils.isEqualElement(this.D, that.D)) {
                 return false;
             }
-            if (!Arrays.equals(this.byteArraysD, that.byteArraysD)) {
+            if (!Arrays.equals(this.byteArrayD, that.byteArrayD)) {
                 return false;
             }
             //compare D1s
@@ -92,7 +92,7 @@ public class CPABEBSW07SecretKeySerParameter extends PairingKeySerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
-        this.D = pairing.getG1().newElementFromBytes(this.byteArraysD);
+        this.D = pairing.getG1().newElementFromBytes(this.byteArrayD);
         this.D1s = new HashMap<String, Element>();
         this.D2s = new HashMap<String, Element>();
         for (String attribute : this.byteArraysD1s.keySet()) {

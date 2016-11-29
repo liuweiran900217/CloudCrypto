@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.generators;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.genparams.KPABEGPSW06bSecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bSecretKeySerParameter;
@@ -23,10 +23,10 @@ import java.util.Map;
  * Goyal-Pandey-Sahai-Waters large-universe KP-ABE with random oracles secret key generator.
  */
 public class KPABEGPSW06bSecretKeyGenerator implements PairingKeyParameterGenerator {
-    private KPABEGPSW06bSecretKeyGenerationParameter parameters;
+    private KPABESecretKeyGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (KPABEGPSW06bSecretKeyGenerationParameter)keyGenerationParameters;
+        this.parameters = (KPABESecretKeyGenerationParameter)keyGenerationParameters;
     }
 
     public PairingKeySerParameter generateKey() {

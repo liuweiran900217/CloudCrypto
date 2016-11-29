@@ -4,11 +4,11 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.*;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14DecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.generators.HIBBELLW14SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.genparams.*;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -38,7 +38,7 @@ public class HIBBELLW14Engine implements HIBBEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {
         HIBBELLW14KeyPairGenerator keyPairGenerator = new HIBBELLW14KeyPairGenerator();
-        keyPairGenerator.init(new HIBBELLW14KeyPairGenerationParameter(pairingParameters, maxUser));
+        keyPairGenerator.init(new HIBBEKeyPairGenerationParameter(pairingParameters, maxUser));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -57,7 +57,7 @@ public class HIBBELLW14Engine implements HIBBEEngine {
                             + HIBBELLW14MasterSecretKeySerParameter.class.getName());
         }
         HIBBELLW14SecretKeyGenerator secretKeyGenerator = new HIBBELLW14SecretKeyGenerator();
-        secretKeyGenerator.init(new HIBBELLW14SecretKeyGenerationParameter(
+        secretKeyGenerator.init(new HIBBESecretKeyGenerationParameter(
                 publicKey, masterKey, ids));
 
         return secretKeyGenerator.generateKey();
@@ -77,7 +77,7 @@ public class HIBBELLW14Engine implements HIBBEEngine {
                             + HIBBELLW14SecretKeySerParameter.class.getName());
         }
         HIBBELLW14SecretKeyGenerator secretKeyGenerator = new HIBBELLW14SecretKeyGenerator();
-        secretKeyGenerator.init(new HIBBELLW14DelegateGenerationParameter(
+        secretKeyGenerator.init(new HIBBEDelegateGenerationParameter(
                 publicKey, secretKey, index, id));
 
         return secretKeyGenerator.generateKey();
@@ -91,7 +91,7 @@ public class HIBBELLW14Engine implements HIBBEEngine {
                             + HIBBELLW14PublicKeySerParameter.class.getName());
         }
         HIBBELLW14EncryptionGenerator encryptionGenerator = new HIBBELLW14EncryptionGenerator();
-        encryptionGenerator.init(new HIBBELLW14EncryptionGenerationParameter(publicKey, ids, message));
+        encryptionGenerator.init(new HIBBEEncryptionGenerationParameter(publicKey, ids, message));
 
         return encryptionGenerator.generateCiphertext();
     }
@@ -117,7 +117,7 @@ public class HIBBELLW14Engine implements HIBBEEngine {
                             + HIBBELLW14CiphertextSerParameter.class.getName());
         }
         HIBBELLW14DecryptionGenerator decryptionGenerator = new HIBBELLW14DecryptionGenerator();
-        decryptionGenerator.init(new HIBBELLW14DecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
+        decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
         return decryptionGenerator.recoverMessage();
     }
 

@@ -8,10 +8,10 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07Decryp
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07DecryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07EncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07KeyPairGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07SecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
@@ -48,7 +48,7 @@ public class CPABEBSW07Engine extends CPABEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         CPABEBSW07KeyPairGenerator keyPairGenerator = new CPABEBSW07KeyPairGenerator();
-        keyPairGenerator.init(new CPABEBSW07KeyPairGenerationParameter(pairingParameters));
+        keyPairGenerator.init(new CPABEKeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -67,7 +67,7 @@ public class CPABEBSW07Engine extends CPABEEngine {
                             + CPABEBSW07MasterSecretKeySerParameter.class.getName());
         }
         CPABEBSW07SecretKeyGenerator secretKeyGenerator = new CPABEBSW07SecretKeyGenerator();
-        secretKeyGenerator.init(new CPABEBSW07SecretKeyGenerationParameter(publicKey, masterKey, attributes));
+        secretKeyGenerator.init(new CPABESecretKeyGenerationParameter(publicKey, masterKey, attributes));
 
         return secretKeyGenerator.generateKey();
     }
@@ -80,7 +80,7 @@ public class CPABEBSW07Engine extends CPABEEngine {
                             + CPABEBSW07PublicKeySerParameter.class.getName());
         }
         CPABEBSW07EncryptionGenerator encryptionGenerator = new CPABEBSW07EncryptionGenerator();
-        encryptionGenerator.init(new CPABEBSW07EncryptionGenerationParameter(
+        encryptionGenerator.init(new CPABEEncryptionGenerationParameter(
                 accessControlEngine, publicKey, accessPolicyIntArrays, rhos, message));
 
         return encryptionGenerator.generateCiphertext();
@@ -108,7 +108,7 @@ public class CPABEBSW07Engine extends CPABEEngine {
                             + CPABEBSW07CiphertextSerParameter.class.getName());
         }
         CPABEBSW07DecryptionGenerator decryptionGenerator = new CPABEBSW07DecryptionGenerator();
-        decryptionGenerator.init(new CPABEBSW07DecryptionGenerationParameter(
+        decryptionGenerator.init(new CPABEDecryptionGenerationParameter(
                 accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, ciphertext));
         return decryptionGenerator.recoverMessage();
     }

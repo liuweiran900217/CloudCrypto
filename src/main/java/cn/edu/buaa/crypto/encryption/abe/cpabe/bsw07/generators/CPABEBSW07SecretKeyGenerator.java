@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07SecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07SecretKeySerParameter;
@@ -21,10 +21,10 @@ import java.util.Map;
  * Bethencourt-Sahai-Waters large-universe CP-ABE secret key generator.
  */
 public class CPABEBSW07SecretKeyGenerator implements PairingKeyParameterGenerator {
-    private CPABEBSW07SecretKeyGenerationParameter parameter;
+    private CPABESecretKeyGenerationParameter parameter;
 
     public void init(KeyGenerationParameters keyGenerationParameter) {
-        this.parameter = (CPABEBSW07SecretKeyGenerationParameter)keyGenerationParameter;
+        this.parameter = (CPABESecretKeyGenerationParameter)keyGenerationParameter;
     }
 
     public PairingKeySerParameter generateKey() {

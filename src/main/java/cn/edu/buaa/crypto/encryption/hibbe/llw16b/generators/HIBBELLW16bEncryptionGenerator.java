@@ -5,7 +5,7 @@ import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16b.genparams.HIBBELLW16bEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bPublicKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -26,17 +26,16 @@ import java.io.ObjectOutputStream;
  * Liu-Liu-Wu prime-order CCA2-secure HIBBE encryption generator.
  */
 public class HIBBELLW16bEncryptionGenerator implements PairingEncryptionGenerator {
-    private HIBBELLW16bEncryptionGenerationParameter params;
+    private HIBBEEncryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW16bEncryptionGenerationParameter)params;
+        this.params = (HIBBEEncryptionGenerationParameter)params;
     }
 
     public PairingCipherSerParameter generateCiphertext() {
         //get sign key
         Signer signer = params.getSigner();
         PairingKeyPairGenerator signKeyPairGenerator = params.getSignKeyPairGenerator();
-        signKeyPairGenerator.init(params.getSignKeyGenerationParameters());
         PairingKeySerPair signKeySerPair = signKeyPairGenerator.generateKeyPair();
         PairingKeySerParameter signPublicKey = signKeySerPair.getPublic();
         PairingKeySerParameter signSecretKey = signKeySerPair.getPrivate();

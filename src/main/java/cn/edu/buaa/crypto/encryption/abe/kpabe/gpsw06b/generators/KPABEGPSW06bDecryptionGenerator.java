@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.genparams.KPABEGPSW06bDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bSecretKeySerParameter;
@@ -22,10 +22,10 @@ import java.util.Map;
  * oyal-Pandey-Sahai-Waters large-universe KP-ABE with random oracles decryption generator.
  */
 public class KPABEGPSW06bDecryptionGenerator implements PairingDecryptionGenerator {
-    private KPABEGPSW06bDecryptionGenerationParameter params;
+    private KPABEDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (KPABEGPSW06bDecryptionGenerationParameter)params;
+        this.params = (KPABEDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

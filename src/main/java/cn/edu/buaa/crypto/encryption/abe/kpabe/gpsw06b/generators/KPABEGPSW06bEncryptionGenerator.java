@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.genparams.KPABEGPSW06bEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.serparams.KPABEGPSW06bPublicKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -18,14 +18,14 @@ import java.util.Map;
 /**
  * Created by Weiran Liu on 2016/11/21.
  *
- * oyal-Pandey-Sahai-Waters large-universe KP-ABE with random oracles encryption generator.
+ * Goyal-Pandey-Sahai-Waters large-universe KP-ABE with random oracles encryption generator.
  */
 public class KPABEGPSW06bEncryptionGenerator implements PairingEncryptionGenerator {
 
-    private KPABEGPSW06bEncryptionGenerationParameter params;
+    private KPABEEncryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (KPABEGPSW06bEncryptionGenerationParameter)params;
+        this.params = (KPABEEncryptionGenerationParameter)params;
     }
 
     public PairingCipherSerParameter generateCiphertext() {

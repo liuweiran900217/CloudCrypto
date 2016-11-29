@@ -5,7 +5,7 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.RELSW10aSecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.re.genparams.RESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -18,11 +18,11 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Lewko-Sahai-Waters secret key generator.
  */
 public class RELSW10aSecretKeyGenerator implements PairingKeyParameterGenerator {
-    private RELSW10aSecretKeyGenerationParameter parameters;
+    private RESecretKeyGenerationParameter parameters;
 
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (RELSW10aSecretKeyGenerationParameter)keyGenerationParameters;
+        this.parameters = (RESecretKeyGenerationParameter)keyGenerationParameters;
     }
 
     public PairingKeySerParameter generateKey() {

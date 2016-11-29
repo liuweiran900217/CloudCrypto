@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16b.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw16b.genparams.HIBBELLW16bDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bSecretKeySerParameter;
@@ -23,10 +23,10 @@ import java.io.ObjectOutputStream;
  * Liu-Liu-Wu prime-order CCA2-secure HIBBE session key decapsulation generator.
  */
 public class HIBBELLW16bDecryptionGenerator implements PairingDecryptionGenerator {
-    private HIBBELLW16bDecryptionGenerationParameter params;
+    private HIBBEDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBBELLW16bDecryptionGenerationParameter)params;
+        this.params = (HIBBEDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

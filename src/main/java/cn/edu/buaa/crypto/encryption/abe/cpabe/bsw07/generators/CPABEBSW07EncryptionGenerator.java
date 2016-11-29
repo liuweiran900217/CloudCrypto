@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07EncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
@@ -23,10 +23,10 @@ import java.util.Map;
  */
 public class CPABEBSW07EncryptionGenerator implements PairingEncryptionGenerator {
 
-    private CPABEBSW07EncryptionGenerationParameter parameter;
+    private CPABEEncryptionGenerationParameter parameter;
 
     public void init(CipherParameters parameter) {
-        this.parameter = (CPABEBSW07EncryptionGenerationParameter) parameter;
+        this.parameter = (CPABEEncryptionGenerationParameter) parameter;
     }
 
     public PairingCipherSerParameter generateCiphertext() {

@@ -2,8 +2,8 @@ package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10EncryptionGenerationParameters;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.CipherParameters;
  */
 public class IBELW10EncryptionGenerator implements PairingEncryptionGenerator {
 
-    private IBELW10EncryptionGenerationParameters params;
+    private IBEEncryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (IBELW10EncryptionGenerationParameters)params;
+        this.params = (IBEEncryptionGenerationParameter)params;
     }
 
     public PairingCipherSerParameter generateCiphertext() {

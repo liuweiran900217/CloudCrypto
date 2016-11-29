@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07DecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07SecretKeySerParameter;
@@ -22,10 +22,10 @@ import java.util.Map;
  * Bethencourt-Sahai-Waters large-universe CP-ABE decryption generator.
  */
 public class CPABEBSW07DecryptionGenerator implements PairingDecryptionGenerator {
-    private CPABEBSW07DecryptionGenerationParameter parameter;
+    private CPABEDecryptionGenerationParameter parameter;
 
     public void init(CipherParameters parameter) {
-        this.parameter = (CPABEBSW07DecryptionGenerationParameter) parameter;
+        this.parameter = (CPABEDecryptionGenerationParameter) parameter;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

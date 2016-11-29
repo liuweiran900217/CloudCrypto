@@ -2,9 +2,9 @@ package cn.edu.buaa.crypto.encryption.hibbe.llw17.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEDelegateGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.HIBBELLW17Engine;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.genparams.HIBBELLW17DelegateGenerationParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.genparams.HIBBELLW17SecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17SecretKeySerParameter;
@@ -27,8 +27,8 @@ public class HIBBELLW17SecretKeyGenerator implements PairingKeyParameterGenerato
     }
 
     public PairingKeySerParameter generateKey() {
-        if (params instanceof HIBBELLW17SecretKeyGenerationParameter) {
-            HIBBELLW17SecretKeyGenerationParameter parameters = (HIBBELLW17SecretKeyGenerationParameter)params;
+        if (params instanceof HIBBESecretKeyGenerationParameter) {
+            HIBBESecretKeyGenerationParameter parameters = (HIBBESecretKeyGenerationParameter)params;
 
             HIBBELLW17PublicKeySerParameter publicKeyParameters = (HIBBELLW17PublicKeySerParameter)parameters.getPublicKeyParameter();
             HIBBELLW17MasterSecretKeySerParameter masterSecretKeyParameters = (HIBBELLW17MasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
@@ -66,8 +66,8 @@ public class HIBBELLW17SecretKeyGenerator implements PairingKeyParameterGenerato
 
             return new HIBBELLW17SecretKeySerParameter(publicKeyParameters.getParameters(),
                     parameters.getIds(), elementIds, a0, a1, bs, bv);
-        } else if (params instanceof HIBBELLW17DelegateGenerationParameter)  {
-            HIBBELLW17DelegateGenerationParameter parameters = (HIBBELLW17DelegateGenerationParameter)params;
+        } else if (params instanceof HIBBEDelegateGenerationParameter)  {
+            HIBBEDelegateGenerationParameter parameters = (HIBBEDelegateGenerationParameter)params;
 
             HIBBELLW17PublicKeySerParameter publicKeyParameters = (HIBBELLW17PublicKeySerParameter)parameters.getPublicKeyParameter();
             HIBBELLW17SecretKeySerParameter secretKeyParameters = (HIBBELLW17SecretKeySerParameter)parameters.getSecretKeyParameter();
@@ -126,8 +126,8 @@ public class HIBBELLW17SecretKeyGenerator implements PairingKeyParameterGenerato
                     ("Invalid KeyGenerationParameters for " + HIBBELLW17Engine.SCHEME_NAME
                             + " Secret Key Generatation, find "
                             + params.getClass().getName() + ", require "
-                            + HIBBELLW17SecretKeyGenerationParameter.class.getName() + " or "
-                            + HIBBELLW17DelegateGenerationParameter.class.getName());
+                            + HIBBESecretKeyGenerationParameter.class.getName() + " or "
+                            + HIBBEDelegateGenerationParameter.class.getName());
         }
     }
 }

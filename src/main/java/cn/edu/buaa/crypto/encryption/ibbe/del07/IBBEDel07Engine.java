@@ -8,12 +8,15 @@ import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07Decapsulatio
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07EncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.*;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.genparams.IBBEDecapsulationGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.genparams.IBBEEncapsulationGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.genparams.IBBEKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.genparams.IBBESecretKeyGenerationParameter;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -41,7 +44,7 @@ public class IBBEDel07Engine implements IBBEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver) {
         IBBEDel07KeyPairGenerator keyPairGenerator = new IBBEDel07KeyPairGenerator();
-        keyPairGenerator.init(new IBBEDel07KeyPairGenerationParameter(pairingParameters, maxBroadcastReceiver));
+        keyPairGenerator.init(new IBBEKeyPairGenerationParameter(pairingParameters, maxBroadcastReceiver));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -60,7 +63,7 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07MasterSecretKeySerParameter.class.getName());
         }
         IBBEDel07SecretKeyGenerator secretKeyGenerator = new IBBEDel07SecretKeyGenerator();
-        secretKeyGenerator.init(new IBBEDel07SecretKeyGenerationParameter(
+        secretKeyGenerator.init(new IBBESecretKeyGenerationParameter(
                 publicKey, masterKey, id));
 
         return secretKeyGenerator.generateKey();
@@ -74,7 +77,7 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07PublicKeySerParameter.class.getName());
         }
         IBBEDel07EncapsulationPairGenerator keyEncapsulationPairGenerator = new IBBEDel07EncapsulationPairGenerator();
-        keyEncapsulationPairGenerator.init(new IBBEDel07EncapsulationGenerationParameter(
+        keyEncapsulationPairGenerator.init(new IBBEEncapsulationGenerationParameter(
                 publicKey, ids));
 
         return keyEncapsulationPairGenerator.generateEncryptionPair();
@@ -101,7 +104,7 @@ public class IBBEDel07Engine implements IBBEEngine {
                             + IBBEDel07CiphertextSerParameter.class.getName());
         }
         IBBEDel07DecapsulationGenerator keyDecapsulationGenerator = new IBBEDel07DecapsulationGenerator();
-        keyDecapsulationGenerator.init(new IBBEDel07DecapsulationGenerationParameter(
+        keyDecapsulationGenerator.init(new IBBEDecapsulationGenerationParameter(
                 publicKey, secretKey, ids, ciphertext));
         return keyDecapsulationGenerator.recoverKey();
     }

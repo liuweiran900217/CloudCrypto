@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05CiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.genparams.HIBEBBG05DecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05SecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Session Key Decapsulation generator for Boneh-Boyen-Goh HIBE.
  */
 public class HIBEBBG05DecryptionGenerator implements PairingDecryptionGenerator {
-    private HIBEBBG05DecryptionGenerationParameter params;
+    private HIBEDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBEBBG05DecryptionGenerationParameter)params;
+        this.params = (HIBEDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

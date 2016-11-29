@@ -4,8 +4,8 @@ import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.genparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Boneh-Boyen HIBE decryption generator.
  */
 public class HIBEBB04DecryptionGenerator implements PairingDecryptionGenerator {
-    private HIBEBB04DecryptionGenerationParameter params;
+    private HIBEDecryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBEBB04DecryptionGenerationParameter)params;
+        this.params = (HIBEDecryptionGenerationParameter)params;
     }
 
     public Element recoverMessage() throws InvalidCipherTextException {

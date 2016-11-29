@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.genparams.KPABEGPSW06aEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -21,10 +21,10 @@ import java.util.Map;
  */
 public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerator {
 
-    private KPABEGPSW06aEncryptionGenerationParameter params;
+    private KPABEEncryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (KPABEGPSW06aEncryptionGenerationParameter)params;
+        this.params = (KPABEEncryptionGenerationParameter)params;
     }
 
     public PairingCipherSerParameter generateCiphertext() {

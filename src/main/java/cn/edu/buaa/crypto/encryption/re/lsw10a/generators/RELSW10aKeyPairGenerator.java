@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.RELSW10aKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.re.genparams.REKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -16,10 +16,10 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Lewko-Sahai-Waters revocation encryption public key / master secret key pair generator.
  */
 public class RELSW10aKeyPairGenerator implements PairingKeyPairGenerator {
-    private RELSW10aKeyPairGenerationParameter parameters;
+    private REKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters param) {
-        this.parameters = (RELSW10aKeyPairGenerationParameter)param;
+        this.parameters = (REKeyPairGenerationParameter)param;
     }
 
     public PairingKeySerPair generateKeyPair() {

@@ -17,14 +17,13 @@ import junit.framework.TestCase;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 import org.bouncycastle.crypto.Signer;
 import org.bouncycastle.crypto.digests.SHA256Digest;
-import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2016/11/11.
  *
  * Liu-Liu-Wu prime-order CCA2-secure HIBBE engine test.
  */
-@Ignore
+
 public class HIBBELLW16bEngineJUnitTest extends TestCase {
     private HIBBELLW16bEngine engine;
     private HIBBEEngineJUnitTest engineJUnitTest;

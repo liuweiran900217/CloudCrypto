@@ -2,9 +2,9 @@ package cn.edu.buaa.crypto.encryption.ibbe.del07.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.genparams.IBBEDel07KeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.genparams.IBBEKeyPairGenerationParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -16,10 +16,10 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Public key / master secret key generator for Delerablée IBBE scheme.
  */
 public class IBBEDel07KeyPairGenerator implements PairingKeyPairGenerator {
-    private IBBEDel07KeyPairGenerationParameter parameters;
+    private IBBEKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameters) {
-        this.parameters = (IBBEDel07KeyPairGenerationParameter)keyGenerationParameters;
+        this.parameters = (IBBEKeyPairGenerationParameter)keyGenerationParameters;
     }
 
     public PairingKeySerPair generateKeyPair() {

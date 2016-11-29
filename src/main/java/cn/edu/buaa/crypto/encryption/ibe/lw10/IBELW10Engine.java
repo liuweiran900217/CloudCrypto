@@ -4,14 +4,14 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
+import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.genparams.IBESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10DecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.generators.IBELW10SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10EncryptionGenerationParameters;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10DecryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10KeyPairGenerationParameter;
-import cn.edu.buaa.crypto.encryption.ibe.lw10.genparams.IBELW10SecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -41,7 +41,7 @@ public class IBELW10Engine implements IBEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters) {
         IBELW10KeyPairGenerator keyPairGenerator = new IBELW10KeyPairGenerator();
-        keyPairGenerator.init(new IBELW10KeyPairGenerationParameter(pairingParameters));
+        keyPairGenerator.init(new IBEKeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -60,7 +60,7 @@ public class IBELW10Engine implements IBEEngine {
                             + IBELW10MasterSecretKeySerParameter.class.getName());
         }
         IBELW10SecretKeyGenerator secretKeyGenerator = new IBELW10SecretKeyGenerator();
-        secretKeyGenerator.init(new IBELW10SecretKeyGenerationParameter(
+        secretKeyGenerator.init(new IBESecretKeyGenerationParameter(
                 publicKey, masterKey, id));
 
         return secretKeyGenerator.generateKey();
@@ -74,7 +74,7 @@ public class IBELW10Engine implements IBEEngine {
                             + IBELW10PublicKeySerParameter.class.getName());
         }
         IBELW10EncryptionGenerator encryptionGenerator = new IBELW10EncryptionGenerator();
-        encryptionGenerator.init(new IBELW10EncryptionGenerationParameters(publicKey, id, message));
+        encryptionGenerator.init(new IBEEncryptionGenerationParameter(publicKey, id, message));
 
         return encryptionGenerator.generateCiphertext();
     }
@@ -100,7 +100,7 @@ public class IBELW10Engine implements IBEEngine {
                             + IBELW10CiphertextSerParameter.class.getName());
         }
         IBELW10DecryptionGenerator decryptionGenerator = new IBELW10DecryptionGenerator();
-        decryptionGenerator.init(new IBELW10DecryptionGenerationParameter(
+        decryptionGenerator.init(new IBEDecryptionGenerationParameter(
                 publicKey, secretKey, id, ciphertext));
         return decryptionGenerator.recoverMessage();
     }

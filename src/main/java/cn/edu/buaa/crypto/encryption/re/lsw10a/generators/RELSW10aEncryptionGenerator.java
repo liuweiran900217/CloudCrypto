@@ -3,7 +3,7 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.re.lsw10a.genparams.RELSW10aEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.re.genparams.REEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -20,10 +20,10 @@ import java.util.Map;
  * Lewko-Sahai-Waters revocation encryption generator.
  */
 public class RELSW10aEncryptionGenerator implements PairingEncryptionGenerator {
-    private RELSW10aEncryptionGenerationParameter params;
+    private REEncryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (RELSW10aEncryptionGenerationParameter)params;
+        this.params = (REEncryptionGenerationParameter)params;
     }
 
     public PairingCipherSerParameter generateCiphertext() {

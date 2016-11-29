@@ -2,7 +2,7 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.genparams.CPABEBSW07KeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
@@ -16,10 +16,10 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Bethencourt-Sahai-Waters large-universe CP-ABE public key / master secret key pair generator.
  */
 public class CPABEBSW07KeyPairGenerator implements PairingKeyPairGenerator {
-    private CPABEBSW07KeyPairGenerationParameter parameters;
+    private CPABEKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameter) {
-        this.parameters = (CPABEBSW07KeyPairGenerationParameter) keyGenerationParameter;
+        this.parameters = (CPABEKeyPairGenerationParameter) keyGenerationParameter;
     }
 
     public PairingKeySerPair generateKeyPair() {

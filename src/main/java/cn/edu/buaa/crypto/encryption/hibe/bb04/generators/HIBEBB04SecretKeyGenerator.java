@@ -5,8 +5,9 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBEDelegateGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.genparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -25,8 +26,8 @@ public class HIBEBB04SecretKeyGenerator implements PairingKeyParameterGenerator 
     }
 
     public PairingKeySerParameter generateKey() {
-        if (params instanceof HIBEBB04SecretKeyGenerationParameter) {
-            HIBEBB04SecretKeyGenerationParameter parameters = (HIBEBB04SecretKeyGenerationParameter)params;
+        if (params instanceof HIBESecretKeyGenerationParameter) {
+            HIBESecretKeyGenerationParameter parameters = (HIBESecretKeyGenerationParameter)params;
 
             HIBEBB04MasterSecretKeySerParameter masterSecretKeyParameters = (HIBEBB04MasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
             HIBEBB04PublicKeySerParameter publicKeyParameters = (HIBEBB04PublicKeySerParameter)parameters.getPublicKeyParameter();
@@ -47,8 +48,8 @@ public class HIBEBB04SecretKeyGenerator implements PairingKeyParameterGenerator 
             }
 
             return new HIBEBB04SecretKeySerParameter(publicKeyParameters.getParameters(), parameters.getIds(), elementIds, d0, ds);
-        } else if (params instanceof HIBEBB04DelegateGenerationParameter)  {
-            HIBEBB04DelegateGenerationParameter parameters = (HIBEBB04DelegateGenerationParameter)params;
+        } else if (params instanceof HIBEDelegateGenerationParameter)  {
+            HIBEDelegateGenerationParameter parameters = (HIBEDelegateGenerationParameter)params;
 
             HIBEBB04PublicKeySerParameter publicKeyParameters = (HIBEBB04PublicKeySerParameter)parameters.getPublicKeyParameter();
             HIBEBB04SecretKeySerParameter secretKeyParameters = (HIBEBB04SecretKeySerParameter)parameters.getSecretKeyParameter();
@@ -79,8 +80,8 @@ public class HIBEBB04SecretKeyGenerator implements PairingKeyParameterGenerator 
             throw new IllegalArgumentException
                     ("Invalid KeyGenerationParameters for HIBEBB04Engine Secret Key Generatation, find "
                             + params.getClass().getName() + ", require "
-                            + HIBEBB04SecretKeyGenerationParameter.class.getName() + " or "
-                            + HIBEBB04DelegateGenerationParameter.class.getName());
+                            + HIBESecretKeyGenerationParameter.class.getName() + " or "
+                            + HIBEDelegateGenerationParameter.class.getName());
         }
     }
 }

@@ -2,9 +2,9 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.genparams.HIBEBB04EncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -18,10 +18,10 @@ import org.bouncycastle.crypto.CipherParameters;
  */
 public class HIBEBB04EncryptionGenerator implements PairingEncryptionGenerator {
 
-    private HIBEBB04EncryptionGenerationParameter params;
+    private HIBEEncryptionGenerationParameter params;
 
     public void init(CipherParameters params) {
-        this.params = (HIBEBB04EncryptionGenerationParameter)params;
+        this.params = (HIBEEncryptionGenerationParameter)params;
     }
 
     public PairingCipherSerParameter generateCiphertext() {

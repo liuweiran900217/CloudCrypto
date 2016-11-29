@@ -5,14 +5,13 @@ import com.example.TestUtils;
 import com.example.encryption.hibbe.HIBBEEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
-import org.junit.Ignore;
 
 /**
  * Created by Weiran Liu on 2016/5/17.
  *
  * Test Liu-Liu-Wu prime-order HIBBE scheme.
  */
-@Ignore
+
 public class HIBBELLW16aEngineJUnitTest extends TestCase {
     private HIBBELLW16aEngine engine;
     private HIBBEEngineJUnitTest engineJUnitTest;
