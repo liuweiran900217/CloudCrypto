@@ -16,9 +16,14 @@ public class HIBBEKeyPairGenerationParameter extends PairingKeyPairGenerationPar
     public HIBBEKeyPairGenerationParameter(PairingParameters pairingParameters, int maxUser) {
         super(pairingParameters);
         this.maxUser = maxUser;
+        this.signer = null;
     }
 
-    public void setSigner(Signer signer) { this.signer = signer; }
+    public HIBBEKeyPairGenerationParameter(PairingParameters pairingParameters, int maxUser, Signer signer) {
+        super(pairingParameters);
+        this.maxUser = maxUser;
+        this.signer = signer;
+    }
 
     public Signer getSigner() { return this.signer; }
 

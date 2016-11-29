@@ -48,7 +48,7 @@ public class KPABEGPSW06bEngine extends KPABEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         KPABEGPSW06bKeyPairGenerator keyPairGenerator = new KPABEGPSW06bKeyPairGenerator();
-        keyPairGenerator.init(new KPABEKeyPairGenerationParameter(pairingParameters, 0));
+        keyPairGenerator.init(new KPABEKeyPairGenerationParameter(pairingParameters));
 
         return keyPairGenerator.generateKeyPair();
     }

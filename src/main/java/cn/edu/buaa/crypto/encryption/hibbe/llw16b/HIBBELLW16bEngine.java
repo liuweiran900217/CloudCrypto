@@ -65,9 +65,7 @@ public class HIBBELLW16bEngine implements HIBBEEngine {
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {
         HIBBELLW16bKeyPairGenerator keyPairGenerator = new HIBBELLW16bKeyPairGenerator();
-        HIBBEKeyPairGenerationParameter keyPairGenerationParameter = new HIBBEKeyPairGenerationParameter(pairingParameters, maxUser);
-        keyPairGenerationParameter.setSigner(signer);
-        keyPairGenerator.init(keyPairGenerationParameter);
+        keyPairGenerator.init(new HIBBEKeyPairGenerationParameter(pairingParameters, maxUser, signer));
 
         return keyPairGenerator.generateKeyPair();
     }
@@ -120,9 +118,7 @@ public class HIBBELLW16bEngine implements HIBBEEngine {
                             + HIBBELLW16bPublicKeySerParameter.class.getName());
         }
         HIBBELLW16bEncryptionGenerator encryptionGenerator = new HIBBELLW16bEncryptionGenerator();
-        HIBBEEncryptionGenerationParameter encryptionGenerationParameter = new HIBBEEncryptionGenerationParameter(publicKey, ids, message);
-        encryptionGenerationParameter.setSigner(this.signer, this.signKeyPairGenerator);
-        encryptionGenerator.init(encryptionGenerationParameter);
+        encryptionGenerator.init(new HIBBEEncryptionGenerationParameter(publicKey, ids, message, signer, signKeyPairGenerator));
         return encryptionGenerator.generateCiphertext();
     }
 
@@ -147,10 +143,7 @@ public class HIBBELLW16bEngine implements HIBBEEngine {
                             + HIBBELLW16bCiphertextSerParameter.class.getName());
         }
         HIBBELLW16bDecryptionGenerator decryptionGenerator = new HIBBELLW16bDecryptionGenerator();
-        HIBBEDecryptionGenerationParameter decryptionGenerationParameter =
-                new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext);
-        decryptionGenerationParameter.setSigner(this.signer);
-        decryptionGenerator.init(decryptionGenerationParameter);
+        decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext, signer));
 
         return decryptionGenerator.recoverMessage();
     }

@@ -18,16 +18,32 @@ public class HIBBEEncryptionGenerationParameter extends PairingEncryptionGenerat
     private PairingKeyPairGenerator signKeyPairGenerator;
     private Digest digest;
 
-    public HIBBEEncryptionGenerationParameter(
-            PairingKeySerParameter publicKeyParameter, String[] ids, Element message) {
+    public HIBBEEncryptionGenerationParameter(PairingKeySerParameter publicKeyParameter, String[] ids, Element message) {
         super(publicKeyParameter, message);
         this.ids = ids;
+        this.signer = null;
+        this.signKeyPairGenerator = null;
+        this.digest = null;
     }
 
-    public void setSigner(Signer signer, PairingKeyPairGenerator pairingKeyPairGenerator) {
+    public HIBBEEncryptionGenerationParameter(PairingKeySerParameter publicKeyParameter, String[] ids, Element message,
+                                              Signer signer, PairingKeyPairGenerator signKeyPairGenerator) {
+        super(publicKeyParameter, message);
+        this.ids = ids;
         this.signer = signer;
-        this.signKeyPairGenerator = pairingKeyPairGenerator;
+        this.signKeyPairGenerator = signKeyPairGenerator;
+        this.digest = null;
     }
+
+    public HIBBEEncryptionGenerationParameter(PairingKeySerParameter publicKeyParameter, String[] ids, Element message,
+                                              Digest digest) {
+        super(publicKeyParameter, message);
+        this.ids = ids;
+        this.signer = null;
+        this.signKeyPairGenerator = null;
+        this.digest = digest;
+    }
+
 
     public PairingKeyPairGenerator getSignKeyPairGenerator() {
         return this.signKeyPairGenerator;
@@ -36,8 +52,6 @@ public class HIBBEEncryptionGenerationParameter extends PairingEncryptionGenerat
     public Signer getSigner() {
         return this.signer;
     }
-
-    public void setDigest(Digest digest) { this.digest = digest; }
 
     public Digest getDigest() { return this.digest; }
 

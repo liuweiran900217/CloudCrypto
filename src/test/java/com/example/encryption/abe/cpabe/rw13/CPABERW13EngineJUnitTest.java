@@ -1,27 +1,26 @@
-package com.example.encryption.abe.kpabe.gpsw06a;
+package com.example.encryption.abe.cpabe.rw13;
 
 import cn.edu.buaa.crypto.access.lsss.lw10.LSSSLW10Engine;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.KPABEGPSW06aEngine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.CPABERW13Engine;
 import com.example.TestUtils;
-import com.example.encryption.abe.kpabe.KPABEEngineJUnitTest;
+import com.example.encryption.abe.cpabe.CPABEEngineJUnitTest;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
 
 /**
- * Created by Weiran Liu on 2016/11/18.
+ * Created by Weiran Liu on 2016/11/29.
  *
- * Goyal-Pandey-Sahai-Waters small-universe KP-ABE engine test.
+ * Rouselakis-Waters CP-ABE engine JUnit test.
  */
-
-public class KPABEGPSW06aEngineJUnitTest extends TestCase {
-    private KPABEEngine engine;
-    private KPABEEngineJUnitTest engineJUnitTest;
+public class CPABERW13EngineJUnitTest extends TestCase {
+    private CPABEEngine engine;
+    private CPABEEngineJUnitTest engineJUnitTest;
 
     public void setUp() {
-        this.engine = KPABEGPSW06aEngine.getInstance();
-        this.engineJUnitTest = new KPABEEngineJUnitTest(engine);
+        this.engine = CPABERW13Engine.getInstance();
+        this.engineJUnitTest = new CPABEEngineJUnitTest(engine);
     }
 
     public void testUsingAccessTree() {

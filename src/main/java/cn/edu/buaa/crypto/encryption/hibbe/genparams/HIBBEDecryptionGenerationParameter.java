@@ -20,17 +20,29 @@ public class HIBBEDecryptionGenerationParameter extends PairingDecryptionGenerat
                                               String[] ids, PairingCipherSerParameter ciphertextParameter) {
         super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
         this.ids = ids;
+        this. signer = null;
+        this.digest = null;
     }
 
-    public void setSigner(Signer signer) {
+    public HIBBEDecryptionGenerationParameter(PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
+                                              String[] ids, PairingCipherSerParameter ciphertextParameter, Signer signer) {
+        super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
+        this.ids = ids;
         this.signer = signer;
+        this.digest = null;
+    }
+
+    public HIBBEDecryptionGenerationParameter(PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
+                                              String[] ids, PairingCipherSerParameter ciphertextParameter, Digest digest) {
+        super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
+        this.ids = ids;
+        this.signer = null;
+        this.digest = digest;
     }
 
     public Signer getSigner() {
         return this.signer;
     }
-
-    public void setDigest(Digest digest) { this.digest = digest; }
 
     public Digest getDigest() { return this.digest; }
 

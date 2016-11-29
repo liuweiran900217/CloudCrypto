@@ -11,6 +11,11 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 public class KPABEKeyPairGenerationParameter extends PairingKeyPairGenerationParameter {
     private int maxAttributesNum;
 
+    public KPABEKeyPairGenerationParameter(PairingParameters pairingParameters) {
+        super(pairingParameters);
+        this.maxAttributesNum = -1;
+    }
+
     public KPABEKeyPairGenerationParameter(PairingParameters pairingParameters, int maxAttributesNum) {
         super(pairingParameters);
 

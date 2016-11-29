@@ -132,7 +132,7 @@ public class CPABERW13PublicKeySerParameter extends PairingKeySerParameter {
         this.u = pairing.getG1().newElementFromBytes(this.byteArrayU).getImmutable();
         this.h = pairing.getG1().newElementFromBytes(this.byteArrayH).getImmutable();
         this.w = pairing.getG1().newElementFromBytes(this.byteArrayW).getImmutable();
-        this.v = pairing.getGT().newElementFromBytes(this.byteArrayV).getImmutable();
+        this.v = pairing.getG1().newElementFromBytes(this.byteArrayV).getImmutable();
         this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha).getImmutable();
     }
 }

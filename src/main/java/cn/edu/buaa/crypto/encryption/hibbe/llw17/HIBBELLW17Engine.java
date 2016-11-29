@@ -100,10 +100,7 @@ public class HIBBELLW17Engine implements HIBBEEngine {
                             + HIBBELLW17PublicKeySerParameter.class.getName());
         }
         HIBBELLW17EncryptionGenerator encryptionGenerator = new HIBBELLW17EncryptionGenerator();
-        HIBBEEncryptionGenerationParameter encryptionGenerationParameter =
-                new HIBBEEncryptionGenerationParameter(publicKey, ids, message);
-        encryptionGenerationParameter.setDigest(digest);
-        encryptionGenerator.init(encryptionGenerationParameter);
+        encryptionGenerator.init(new HIBBEEncryptionGenerationParameter(publicKey, ids, message, digest));
 
         return encryptionGenerator.generateCiphertext();
     }
@@ -129,10 +126,7 @@ public class HIBBELLW17Engine implements HIBBEEngine {
                             + HIBBELLW17CiphertextSerParameter.class.getName());
         }
         HIBBELLW17DecryptionGenerator decryptionGenerator = new HIBBELLW17DecryptionGenerator();
-        HIBBEDecryptionGenerationParameter decryptionGenerationParameter
-                = new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext);
-        decryptionGenerationParameter.setDigest(this.digest);
-        decryptionGenerator.init(decryptionGenerationParameter);
+        decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext, digest));
         return decryptionGenerator.recoverMessage();
     }
 
