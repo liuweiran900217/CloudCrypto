@@ -20,7 +20,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Boneh-Boyen HIBE engine.
  */
-public class HIBEBB04Engine implements HIBEEngine {
+public class HIBEBB04Engine extends HIBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Boneh-Boyen-04 HIBE scheme";
 
@@ -34,7 +34,7 @@ public class HIBEBB04Engine implements HIBEEngine {
     }
 
     private HIBEBB04Engine() {
-
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxDepth) {

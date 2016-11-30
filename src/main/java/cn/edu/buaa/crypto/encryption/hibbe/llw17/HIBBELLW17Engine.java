@@ -22,7 +22,7 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
  *
  * Liu-Liu-Wu composite-order CCA2-secure HIBBE engine.
  */
-public class HIBBELLW17Engine implements HIBBEEngine {
+public class HIBBELLW17Engine extends HIBBEEngine {
     public static final String SCHEME_NAME = "Liu-Liu-Wu-17 CCA2-secure composite-order HIBBE";
     private static HIBBELLW17Engine engine;
 
@@ -40,7 +40,7 @@ public class HIBBELLW17Engine implements HIBBEEngine {
     }
 
     private HIBBELLW17Engine() {
-
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CCA2);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {

@@ -19,10 +19,12 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Key-Policy Attribute-Based Encryption Engine.
  * All KP-ABE scheme should implement this engine.
  */
-public abstract class KPABEEngine implements Engine {
+public abstract class KPABEEngine extends Engine {
     protected AccessControlEngine accessControlEngine = AccessTreeEngine.getInstance();
 
-    public abstract String getEngineName();
+    protected KPABEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+        super(schemeName, securityModel, securityLevel);
+    }
 
     public void setAccessControlEngine(AccessControlEngine accessControlEngine) {
         this.accessControlEngine = accessControlEngine;

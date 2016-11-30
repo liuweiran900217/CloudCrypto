@@ -20,7 +20,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Liu-Liu-Wu prime-order HIBBE.
  */
-public class HIBBELLW16aEngine implements HIBBEEngine {
+public class HIBBELLW16aEngine extends HIBBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Liu-Liu-Wu-16 CPA-secure prime-order HIBBE";
 
@@ -34,7 +34,7 @@ public class HIBBELLW16aEngine implements HIBBEEngine {
     }
 
     private HIBBELLW16aEngine() {
-
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {

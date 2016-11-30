@@ -14,7 +14,10 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Generic HIBE Engine.
  */
-public interface HIBBEEngine extends Engine {
+public abstract class HIBBEEngine extends Engine {
+    protected HIBBEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+        super(schemeName, securityModel, securityLevel);
+    }
 
     /**
      * Setup Algorithm for HIBBE
@@ -22,7 +25,7 @@ public interface HIBBEEngine extends Engine {
      * @param maxUser maximal size of users, ignore if the scheme is unbounded
      * @return public key / master secret key pair of the scheme
      */
-    PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser);
+    public abstract PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser);
 
     /**
      * Secret Key Generation Algorithm for HIBBE
@@ -31,7 +34,7 @@ public interface HIBBEEngine extends Engine {
      * @param ids associated identity vector
      * @return secret key associated with the identity vector ids
     */
-    PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String[] ids);
+    public abstract PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String[] ids);
 
     /**
      * Secret Key Delegation Algorithm for HIBBE
@@ -41,7 +44,7 @@ public interface HIBBEEngine extends Engine {
      * @param id delegated identity
      * @return secret key associated with the identity vector (ids, id)
     */
-    PairingKeySerParameter delegate(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, int index, String id);
+    public abstract PairingKeySerParameter delegate(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, int index, String id);
 
     /**
      * Encryption Algorithm for HIBBE
@@ -50,7 +53,7 @@ public interface HIBBEEngine extends Engine {
      * @param message the message in GT
      * @return ciphertext associated with the identity vector set ids
     */
-    PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message);
+    public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message);
 
     /**
      * Encapsulation Algorithm for HIBBE
@@ -58,7 +61,7 @@ public interface HIBBEEngine extends Engine {
      * @param ids an identity vector set
      * @return header / session key pair
      */
-    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
 
     /**
      * Decryption Algorithm for HIBBE
@@ -69,7 +72,8 @@ public interface HIBBEEngine extends Engine {
      * @return the message in GT
      * @throws InvalidCipherTextException if the decryption procedure is failure
     */
-    Element decryption (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
+    public abstract Element decryption (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                                        String[] ids, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException;
 
     /**
@@ -81,6 +85,7 @@ public interface HIBBEEngine extends Engine {
      * @return the session key
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter header)
+    public abstract byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                                         String[] ids, PairingCipherSerParameter header)
             throws InvalidCipherTextException;
 }

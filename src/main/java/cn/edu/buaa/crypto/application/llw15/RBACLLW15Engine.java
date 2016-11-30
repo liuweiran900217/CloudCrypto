@@ -16,7 +16,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Liu-Liu-Wu EHR role-based access control engine.
  */
-public class RBACLLW15Engine implements Engine {
+public class RBACLLW15Engine extends Engine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Liu-Liu-Wu-15 EHR Role-Based Access Control scheme";
 
@@ -30,7 +30,7 @@ public class RBACLLW15Engine implements Engine {
     }
 
     private RBACLLW15Engine() {
-
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CCA2);
     }
 
     /**

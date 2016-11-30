@@ -23,7 +23,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Lewko-Waters IBE engine.
  */
-public class IBELW10Engine implements IBEEngine {
+public class IBELW10Engine extends IBEEngine {
     //Scheme name, used for exceptions
     private static final String SCHEME_NAME = "Lewko-Waters-10 IBE scheme";
 
@@ -37,7 +37,7 @@ public class IBELW10Engine implements IBEEngine {
     }
 
     private IBELW10Engine() {
-
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters) {

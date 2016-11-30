@@ -16,13 +16,17 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * This interface is an abstract of IBE definitions.
  */
-public interface IBEEngine extends Engine {
+public abstract class IBEEngine extends Engine {
+    protected IBEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+        super(schemeName, securityModel, securityLevel);
+    }
+
     /**
      * Setup Algorithm for IBE
      * @param pairingParameters pairingParameters
      * @return public key / master secret key pair of the scheme
      */
-    PairingKeySerPair setup(PairingParameters pairingParameters);
+    public abstract PairingKeySerPair setup(PairingParameters pairingParameters);
 
     /**
      * Secret Key Generation Algorithm for IBE
@@ -31,7 +35,7 @@ public interface IBEEngine extends Engine {
      * @param id associated identity
      * @return secret key associated with the identity id
      */
-    PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
+    public abstract PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
 
     /**
      * Encryption Algorithm for IBE
@@ -40,7 +44,7 @@ public interface IBEEngine extends Engine {
      * @param message the message in GT
      * @return ciphertext associated with the identity id
      */
-    PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String id, Element message);
+    public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String id, Element message);
 
     /**
      * Key Encapsulation Algorithm for IBE
@@ -48,7 +52,7 @@ public interface IBEEngine extends Engine {
      * @param id an identity
      * @return header / session key pair.
      */
-    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String id);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String id);
 
     /**
      * Decryption Algorithm for IBE
@@ -59,7 +63,7 @@ public interface IBEEngine extends Engine {
      * @return the message in GT
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+    public abstract Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                         String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 
     /**
@@ -71,6 +75,6 @@ public interface IBEEngine extends Engine {
      * @return the session key
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+    public abstract byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                         String id, PairingCipherSerParameter header) throws InvalidCipherTextException;
 }

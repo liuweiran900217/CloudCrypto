@@ -17,13 +17,17 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * This interface is an abstract definition of RE.
  */
 
-public interface REEngine extends Engine {
+public abstract class REEngine extends Engine {
+    protected REEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+        super(schemeName, securityModel, securityLevel);
+    }
+
     /**
      * Setup Algorithm for RE
      * @param pairingParameters Pairing Parameters
      * @return public key / master secret key pair of the scheme
      */
-    PairingKeySerPair setup(PairingParameters pairingParameters);
+    public abstract PairingKeySerPair setup(PairingParameters pairingParameters);
 
     /**
      * Secret Key Generation Algorithm for RE
@@ -32,7 +36,7 @@ public interface REEngine extends Engine {
      * @param id associated identity
      * @return secret key associated with the identity id
      */
-    PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
+    public abstract PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
 
     /**
      * Encryption Algorithm for RE
@@ -41,7 +45,7 @@ public interface REEngine extends Engine {
      * @param message the message in GT
      * @return ciphertext associated with the revocation identity set ids
      */
-    PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message);
+    public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message);
 
     /**
      * Encapsulation Algorithm for RE
@@ -49,7 +53,7 @@ public interface REEngine extends Engine {
      * @param ids revocation identity set
      * @return header / session key pair
      */
-    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
 
     /**
      * Decryption Algorithm for RE
@@ -60,7 +64,7 @@ public interface REEngine extends Engine {
      * @return the message in GT
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+    public abstract Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                        String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 
     /**
@@ -72,6 +76,6 @@ public interface REEngine extends Engine {
      * @return session key
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+    public abstract byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                        String[] ids, PairingCipherSerParameter header) throws InvalidCipherTextException;
 }

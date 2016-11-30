@@ -9,14 +9,18 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
  *
  * Generic Online/Offline Revocation Encryption engine.
  */
-public interface OOREEngine extends REEngine {
+public abstract class OOREEngine extends REEngine {
+    protected OOREEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+        super(schemeName, securityModel, securityLevel);
+    }
+
     /**
      * Offline Key Encapsulation Algorithm for RE
      * @param publicKey public key
      * @param n number of revocation identity set
      * @return session key / offline ciphertext pair associated with n
      */
-    PairingKeyEncapsulationSerPair offlineEncapsulation(PairingKeySerParameter publicKey, int n);
+    public abstract PairingKeyEncapsulationSerPair offlineEncapsulation(PairingKeySerParameter publicKey, int n);
 
     /**
      * Online Key Encapsulation Algorithm for RE
@@ -24,5 +28,5 @@ public interface OOREEngine extends REEngine {
      * @param ids revocation identity set
      * @return session key / ciphertext pair associated with the revocation identity set
      */
-    PairingKeyEncapsulationSerPair onlineEncapsulation(PairingKeySerParameter publicKey, PairingCipherSerParameter iCiphertext, String... ids);
+    public abstract PairingKeyEncapsulationSerPair onlineEncapsulation(PairingKeySerParameter publicKey, PairingCipherSerParameter iCiphertext, String... ids);
 }

@@ -25,7 +25,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Engine for Delerablée IBBE scheme.
  */
-public class IBBEDel07Engine implements IBBEEngine {
+public class IBBEDel07Engine extends IBBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Delerablée-7 IBBE scheme";
 
@@ -39,7 +39,7 @@ public class IBBEDel07Engine implements IBBEEngine {
     }
 
     private IBBEDel07Engine() {
-
+        super(SCHEME_NAME, SecurityModel.RandomOracle, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver) {

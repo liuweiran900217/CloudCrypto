@@ -5,12 +5,34 @@ package cn.edu.buaa.crypto.algebra;
  *
  * Generic engine
  */
-public interface Engine {
-    enum SecurityLevel {
+public abstract class Engine {
+    private final SecurityModel security_model;
+    private final SecurityLevel security_level;
+    private final String scheme_name;
+
+    public enum SecurityModel {
+        RandomOracle, Standard
+    }
+
+    public enum SecurityLevel {
         CPA, CCA2
     }
 
-    String getEngineName();
+    public Engine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+        this.scheme_name = schemeName;
+        this.security_model = securityModel;
+        this.security_level = securityLevel;
+    }
 
-//    SecurityLevel getSecurityLevel();
+    public String getEngineName() {
+        return this.scheme_name;
+    }
+
+    SecurityLevel getSecurityLevel() {
+        return this.security_level;
+    }
+
+    SecurityModel getSecurityModel() {
+        return this.security_model;
+    }
 }

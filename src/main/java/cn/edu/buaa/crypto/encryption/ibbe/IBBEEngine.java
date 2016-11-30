@@ -14,14 +14,18 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Identity-Based Broadcast Encryption Engine.
  * All instances should implement this Interface.
  */
-public interface IBBEEngine extends Engine {
+public abstract class IBBEEngine extends Engine {
+    protected IBBEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+        super(schemeName, securityModel, securityLevel);
+    }
+
     /**
      * Setup Algorithm for IBBE
      * @param pairingParameters Pairing Parameters.
      * @param maxBroadcastReceiver maximal broadcast receivers, ignore if the scheme is unbounded
      * @return public key / master secret key pair of the scheme
      */
-    PairingKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver);
+    public abstract PairingKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver);
 
     /**
      * Secret Key Generation Algorithm for IBBE
@@ -30,7 +34,7 @@ public interface IBBEEngine extends Engine {
      * @param id associated identity
      * @return secret key associated with the identity id
      */
-    PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
+    public abstract PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id);
 
     /**
      * Key Encapsulation Algorithm for IBBE
@@ -38,7 +42,7 @@ public interface IBBEEngine extends Engine {
      * @param ids a broadcast identity set
      * @return session key / ciphertext pair associated with the broadcast identity set ids
      */
-    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
 
     /**
      * Key Decapsulation Algorithm for IBBE
@@ -49,7 +53,7 @@ public interface IBBEEngine extends Engine {
      * @return the decapsulated session key
      * @throws InvalidCipherTextException if the decapsulation procedure is failure
      */
-    byte[] decapsulation (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+    public abstract byte[] decapsulation (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                           String[] ids, PairingCipherSerParameter ciphertext
         ) throws InvalidCipherTextException;
     }

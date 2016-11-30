@@ -24,7 +24,6 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Goyal-Pandey-Sahai-Waters large-universe KP-ABE with random oracles engine.
  */
 public class KPABEGPSW06bEngine extends KPABEEngine {
-    //Scheme name, used for exceptions
     private static final String SCHEME_NAME = "Goyal-Pandey-Sahai-Waters-06 large-universe KP-ABE";
 
     private static KPABEGPSW06bEngine engine;
@@ -37,11 +36,7 @@ public class KPABEGPSW06bEngine extends KPABEEngine {
     }
 
     private KPABEGPSW06bEngine() {
-
-    }
-
-    public String getEngineName() {
-        return SCHEME_NAME;
+        super(SCHEME_NAME, SecurityModel.RandomOracle, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {

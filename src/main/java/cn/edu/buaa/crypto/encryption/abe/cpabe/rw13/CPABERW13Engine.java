@@ -24,9 +24,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Rouselakis-Waters large-universe CP-ABE engine.
  */
 public class CPABERW13Engine extends CPABEEngine {
-    //Scheme name, used for exceptions
     private static final String SCHEME_NAME = "Rousekalis-Waters-13 large-universe CP-ABE";
-
     private static CPABERW13Engine engine;
 
     public static CPABERW13Engine getInstance() {
@@ -37,11 +35,7 @@ public class CPABERW13Engine extends CPABEEngine {
     }
 
     private CPABERW13Engine() {
-
-    }
-
-    public String getEngineName() {
-        return SCHEME_NAME;
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {

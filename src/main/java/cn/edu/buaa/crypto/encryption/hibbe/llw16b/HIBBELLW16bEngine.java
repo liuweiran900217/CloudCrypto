@@ -31,7 +31,7 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
  *
  * Liu-Liu-Wu prime-order CCA2-secure HIBBE engine.
  */
-public class HIBBELLW16bEngine implements HIBBEEngine {
+public class HIBBELLW16bEngine extends HIBBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Liu-Liu-Wu-16 CCA2-secure prime-order HIBBE";
 
@@ -51,6 +51,7 @@ public class HIBBELLW16bEngine implements HIBBEEngine {
     }
 
     private HIBBELLW16bEngine() {
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CCA2);
         this.signKeyPairGenerator.init(
                 new BB08SignKeyPairGenerationParameter(PairingFactory.getPairingParameters(PairingUtils.PATH_a_160_512)));
     }

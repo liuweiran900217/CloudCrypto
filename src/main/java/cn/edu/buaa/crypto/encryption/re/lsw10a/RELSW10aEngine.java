@@ -20,7 +20,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Lewko-Sahai-Waters Revocation Encryption engine.
  */
-public class RELSW10aEngine implements REEngine {
+public class RELSW10aEngine extends REEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Lewko-Waters-08a Revocation Encryption";
 
@@ -34,7 +34,7 @@ public class RELSW10aEngine implements REEngine {
     }
 
     private RELSW10aEngine() {
-
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters) {

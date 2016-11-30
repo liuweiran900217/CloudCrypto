@@ -20,7 +20,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Liu-Liu-Wu HIBBE engine published in 2014.
  */
-public class HIBBELLW14Engine implements HIBBEEngine {
+public class HIBBELLW14Engine extends HIBBEEngine {
     //Scheme name, used for exceptions
     public static final String SCHEME_NAME = "Liu-Liu-Wu-14 CPA-secure composite-order HIBBE";
 
@@ -34,7 +34,7 @@ public class HIBBELLW14Engine implements HIBBEEngine {
     }
 
     private HIBBELLW14Engine() {
-
+        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {
@@ -158,9 +158,5 @@ public class HIBBELLW14Engine implements HIBBEEngine {
         HIBBELLW14DecryptionGenerator decryptionGenerator = new HIBBELLW14DecryptionGenerator();
         decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
         return decryptionGenerator.recoverKey();
-    }
-
-    public String getEngineName() {
-        return SCHEME_NAME;
     }
 }

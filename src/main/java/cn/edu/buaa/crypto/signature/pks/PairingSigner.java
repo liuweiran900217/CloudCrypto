@@ -1,6 +1,5 @@
 package cn.edu.buaa.crypto.signature.pks;
 
-import cn.edu.buaa.crypto.algebra.Engine;
 import it.unisa.dia.gas.jpbc.Element;
 import org.bouncycastle.crypto.*;
 
@@ -11,7 +10,8 @@ import java.io.IOException;
  *
  * Pairing-based signature scheme interface.
  */
-public interface PairingSigner extends java.io.Serializable, Engine {
+public interface PairingSigner extends java.io.Serializable {
+    String getEngineName();
 
     /**
      * Initialise the signer for signing or verification.

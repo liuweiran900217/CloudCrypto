@@ -13,7 +13,6 @@ import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.junit.Assert;
-import org.junit.Ignore;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,7 +22,7 @@ import java.util.Arrays;
  *
  * Liu-Liu-Wu EHR role-based access control engine test.
  */
-@Ignore
+
 public class RBACLLW15EngineJUnitTest extends TestCase {
     // Access Credential Generation for Medical Staff
     private static final String[] role4    =    {null,      null,   null,       "Role_4",   null,       null,       null,       null};
