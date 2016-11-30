@@ -25,7 +25,7 @@ public class KPABERW13MasterSecretKeySerParameter extends PairingKeySerParameter
         this.byteArrayAlpha = this.alpha.toBytes();
     }
 
-    public Element getY() { return this.alpha.duplicate(); }
+    public Element getAlpha() { return this.alpha.duplicate(); }
 
     @Override
     public boolean equals(Object anObject) {

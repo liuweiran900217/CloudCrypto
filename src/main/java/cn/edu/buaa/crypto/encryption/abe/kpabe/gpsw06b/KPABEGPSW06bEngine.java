@@ -145,5 +145,4 @@ public class KPABEGPSW06bEngine extends KPABEEngine {
                 accessControlEngine, publicKey, secretKey, attributes, header));
         return decryptionGenerator.recoverKey();
     }
-
 }
