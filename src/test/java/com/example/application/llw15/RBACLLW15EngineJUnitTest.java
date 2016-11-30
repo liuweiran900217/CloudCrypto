@@ -117,7 +117,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         //encapsulation and serialization without intermediate ciphertext
         PairingKeyEncapsulationSerPair encapsulationSerPair = engine.EHREnc(publicKey, encIdentity, roles, encTime);
         byte[] sessionKey = encapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = encapsulationSerPair.getCiphertext();
+        PairingCipherSerParameter ciphertext = encapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);
@@ -148,7 +148,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         //encapsulation and serialization without intermediate ciphertext
         PairingKeyEncapsulationSerPair encapsulationSerPair = engine.EHREnc(publicKey, intermediateParameter, encIdentity, roles, encTime);
         byte[] sessionKey = encapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = encapsulationSerPair.getCiphertext();
+        PairingCipherSerParameter ciphertext = encapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);
@@ -235,7 +235,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         //encapsulation and serialization without intermediate ciphertext
         PairingKeyEncapsulationSerPair encapsulationSerPair = engine.EHREnc(publicKey, encIdentity, roles, encTime);
         byte[] sessionKey = encapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = encapsulationSerPair.getCiphertext();
+        PairingCipherSerParameter ciphertext = encapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);
@@ -266,7 +266,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         //encapsulation and serialization without intermediate ciphertext
         PairingKeyEncapsulationSerPair encapsulationSerPair = engine.EHREnc(publicKey, intermediateParameter, encIdentity, roles, encTime);
         byte[] sessionKey = encapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = encapsulationSerPair.getCiphertext();
+        PairingCipherSerParameter ciphertext = encapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);
@@ -359,7 +359,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         //encapsulation and serialization without intermediate ciphertext
         PairingKeyEncapsulationSerPair encapsulationSerPair = engine.EHREnc(publicKey, encIdentity, roles, encTime);
         byte[] sessionKey = encapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = encapsulationSerPair.getCiphertext();
+        PairingCipherSerParameter ciphertext = encapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);
@@ -392,7 +392,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         //encapsulation and serialization without intermediate ciphertext
         PairingKeyEncapsulationSerPair encapsulationSerPair = engine.EHREnc(publicKey, intermediateParameter, encIdentity, roles, encTime);
         byte[] sessionKey = encapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = encapsulationSerPair.getCiphertext();
+        PairingCipherSerParameter ciphertext = encapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);
@@ -406,7 +406,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
     private void try_invalid_audit(PairingKeySerParameter publicKey, String[] roles, String identity, String time,
                                    String[] encRoles, String encIdentity, String encTime) {
         PairingKeyEncapsulationSerPair encapsulationSerPair = engine.EHREnc(publicKey, encIdentity, encRoles, encTime);
-        Assert.assertFalse(engine.EHRAudit(publicKey, identity, roles, time, encapsulationSerPair.getCiphertext()));
+        Assert.assertFalse(engine.EHRAudit(publicKey, identity, roles, time, encapsulationSerPair.getHeader()));
     }
 
     private void runAllTests() {

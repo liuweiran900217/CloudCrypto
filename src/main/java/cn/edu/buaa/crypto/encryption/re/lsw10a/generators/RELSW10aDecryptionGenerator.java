@@ -1,6 +1,8 @@
 package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aHeaderSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.re.genparams.REDecryptionGenerationParameter;
@@ -17,17 +19,18 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Lewko-Sahai-Waters revocation encryption decryption generator.
  */
-public class RELSW10aDecryptionGenerator implements PairingDecryptionGenerator {
+public class RELSW10aDecryptionGenerator implements PairingDecryptionGenerator, PairingDecapsulationGenerator {
     private REDecryptionGenerationParameter params;
+    private Element sessionKey;
 
     public void init(CipherParameters params) {
         this.params = (REDecryptionGenerationParameter)params;
     }
 
-    public Element recoverMessage() throws InvalidCipherTextException {
+    private void computeDecapsulation() throws InvalidCipherTextException {
         RELSW10aPublicKeySerParameter publicKeyParameters = (RELSW10aPublicKeySerParameter)this.params.getPublicKeyParameter();
         RELSW10aSecretKeySerParameter secretKeyParameters = (RELSW10aSecretKeySerParameter)this.params.getSecretKeyParameter();
-        RELSW10aCiphertextSerParameter ciphertextParameters = (RELSW10aCiphertextSerParameter)this.params.getCiphertextParameter();
+        RELSW10aHeaderSerParameter ciphertextParameters = (RELSW10aHeaderSerParameter)this.params.getCiphertextParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         //remove repeated ids
         String[] ids = PairingUtils.removeDuplicates(this.params.getIds());
@@ -43,8 +46,18 @@ public class RELSW10aDecryptionGenerator implements PairingDecryptionGenerator {
             C1 = C1.mul(ciphertextParameters.getC1sAt(revokeId).powZn(secretKeyParameters.getElementId().sub(elementId).invert())).getImmutable();
             C2 = C2.mul(ciphertextParameters.getC2sAt(revokeId).powZn(secretKeyParameters.getElementId().sub(elementId).invert())).getImmutable();
         }
-        Element sessionKey = pairing.pairing(ciphertextParameters.getC0(), secretKeyParameters.getD0())
+        this.sessionKey = pairing.pairing(ciphertextParameters.getC0(), secretKeyParameters.getD0())
                 .mul(pairing.pairing(secretKeyParameters.getD1(), C1).mul(pairing.pairing(secretKeyParameters.getD2(), C2)).invert()).getImmutable();
+    }
+
+    public Element recoverMessage() throws InvalidCipherTextException {
+        computeDecapsulation();
+        RELSW10aCiphertextSerParameter ciphertextParameters = (RELSW10aCiphertextSerParameter)this.params.getCiphertextParameter();
         return ciphertextParameters.getC().div(sessionKey).getImmutable();
+    }
+
+    public byte[] recoverKey() throws InvalidCipherTextException {
+        computeDecapsulation();
+        return this.sessionKey.toBytes();
     }
 }

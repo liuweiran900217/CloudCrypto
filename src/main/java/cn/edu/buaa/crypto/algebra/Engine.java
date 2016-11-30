@@ -6,5 +6,11 @@ package cn.edu.buaa.crypto.algebra;
  * Generic engine
  */
 public interface Engine {
+    enum SecurityLevel {
+        CPA, CCA2
+    }
+
     String getEngineName();
+
+//    SecurityLevel getSecurityLevel();
 }

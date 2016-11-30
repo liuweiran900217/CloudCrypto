@@ -1,7 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14HeaderSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14PublicKeySerParameter;
@@ -17,17 +19,18 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Liu-Liu-Wu prime-order HIBBE decryption generator.
  */
-public class HIBBELLW14DecryptionGenerator implements PairingDecryptionGenerator {
+public class HIBBELLW14DecryptionGenerator implements PairingDecryptionGenerator, PairingDecapsulationGenerator {
     private HIBBEDecryptionGenerationParameter params;
+    private Element sessionKey;
 
     public void init(CipherParameters params) {
         this.params = (HIBBEDecryptionGenerationParameter)params;
     }
 
-    public Element recoverMessage() throws InvalidCipherTextException {
+    private void computeDecapsulation() throws InvalidCipherTextException {
         HIBBELLW14PublicKeySerParameter publicKeyParameters = (HIBBELLW14PublicKeySerParameter)this.params.getPublicKeyParameter();
         HIBBELLW14SecretKeySerParameter secretKeyParameters = (HIBBELLW14SecretKeySerParameter)this.params.getSecretKeyParameter();
-        HIBBELLW14CiphertextSerParameter ciphertextParameters = (HIBBELLW14CiphertextSerParameter)this.params.getCiphertextParameter();
+        HIBBELLW14HeaderSerParameter ciphertextParameters = (HIBBELLW14HeaderSerParameter)this.params.getCiphertextParameter();
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         Element[] elementIdsCT = PairingUtils.MapStringArrayToGroup(pairing, this.params.getIds(), PairingUtils.PairingGroupType.Zr);
@@ -56,7 +59,17 @@ public class HIBBELLW14DecryptionGenerator implements PairingDecryptionGenerator
         }
         Element temp0 = pairing.pairing(C0, a0).getImmutable();
         Element temp1 = pairing.pairing(a1, C1).getImmutable();
-        Element sessionKey = temp0.div(temp1).getImmutable();
-        return ciphertextParameters.getC2().div(sessionKey).getImmutable();
+        this.sessionKey = temp0.div(temp1).getImmutable();
+    }
+
+    public Element recoverMessage() throws InvalidCipherTextException {
+        computeDecapsulation();
+        HIBBELLW14CiphertextSerParameter ciphertextParameter = (HIBBELLW14CiphertextSerParameter)this.params.getCiphertextParameter();
+        return ciphertextParameter.getC2().div(sessionKey).getImmutable();
+    }
+
+    public byte[] recoverKey() throws InvalidCipherTextException {
+        computeDecapsulation();
+        return this.sessionKey.toBytes();
     }
 }

@@ -4,7 +4,7 @@ import cn.edu.buaa.crypto.algebra.algorithms.HornerRule;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.ibbe.genparams.IBBEEncapsulationGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07CiphertextSerParameter;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07HeaderSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import it.unisa.dia.gas.jpbc.Element;
@@ -54,6 +54,6 @@ public class IBBEDel07EncapsulationPairGenerator implements PairingEncapsulation
 
         return new PairingKeyEncapsulationSerPair(
                 byteArraySessionKey,
-                new IBBEDel07CiphertextSerParameter(publicKeyParameters.getParameters(), C1, C2));
+                new IBBEDel07HeaderSerParameter(publicKeyParameters.getParameters(), C1, C2));
     }
 }

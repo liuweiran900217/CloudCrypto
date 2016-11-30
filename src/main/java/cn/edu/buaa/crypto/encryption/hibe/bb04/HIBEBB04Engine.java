@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -8,10 +9,7 @@ import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04DecryptionGene
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.generators.HIBEBB04SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04MasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.*;
 import cn.edu.buaa.crypto.encryption.hibe.genparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -99,6 +97,19 @@ public class HIBEBB04Engine implements HIBEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids) {
+        if (!(publicKey instanceof HIBEBB04PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + HIBEBB04PublicKeySerParameter.class.getName());
+        }
+        HIBEBB04EncryptionGenerator encryptionGenerator = new HIBEBB04EncryptionGenerator();
+        encryptionGenerator.init(new HIBEEncryptionGenerationParameter(publicKey, ids, null));
+
+        return encryptionGenerator.generateEncryptionPair();
+    }
+
     public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBEBB04PublicKeySerParameter)){
@@ -122,6 +133,31 @@ public class HIBEBB04Engine implements HIBEEngine {
         HIBEBB04DecryptionGenerator decryptionGenerator = new HIBEBB04DecryptionGenerator();
         decryptionGenerator.init(new HIBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
         return decryptionGenerator.recoverMessage();
+    }
+
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                              String[] ids, PairingCipherSerParameter header) throws InvalidCipherTextException {
+        if (!(publicKey instanceof HIBEBB04PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + HIBEBB04PublicKeySerParameter.class.getName());
+        }
+        if (!(secretKey instanceof HIBEBB04SecretKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + secretKey.getClass().getName() + ", require "
+                            + HIBEBB04SecretKeySerParameter.class.getName());
+        }
+        if (!(header instanceof HIBEBB04HeaderSerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + header.getClass().getName() + ", require "
+                            + HIBEBB04HeaderSerParameter.class.getName());
+        }
+        HIBEBB04DecryptionGenerator decryptionGenerator = new HIBEBB04DecryptionGenerator();
+        decryptionGenerator.init(new HIBEDecryptionGenerationParameter(publicKey, secretKey, ids, header));
+        return decryptionGenerator.recoverKey();
     }
 
     public String getEngineName() {

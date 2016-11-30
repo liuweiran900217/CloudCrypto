@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw17;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -9,10 +10,7 @@ import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17Decryption
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17CiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17MasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.HIBBELLW17SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw17.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.Digest;
@@ -105,6 +103,19 @@ public class HIBBELLW17Engine implements HIBBEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids) {
+        if (!(publicKey instanceof HIBBELLW17PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + HIBBELLW17PublicKeySerParameter.class.getName());
+        }
+        HIBBELLW17EncryptionGenerator encryptionGenerator = new HIBBELLW17EncryptionGenerator();
+        encryptionGenerator.init(new HIBBEEncryptionGenerationParameter(publicKey, ids, null, digest));
+
+        return encryptionGenerator.generateEncryptionPair();
+    }
+
     public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBBELLW17PublicKeySerParameter)){
@@ -128,6 +139,31 @@ public class HIBBELLW17Engine implements HIBBEEngine {
         HIBBELLW17DecryptionGenerator decryptionGenerator = new HIBBELLW17DecryptionGenerator();
         decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext, digest));
         return decryptionGenerator.recoverMessage();
+    }
+
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter header)
+            throws InvalidCipherTextException {
+        if (!(publicKey instanceof HIBBELLW17PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + HIBBELLW17PublicKeySerParameter.class.getName());
+        }
+        if (!(secretKey instanceof HIBBELLW17SecretKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + secretKey.getClass().getName() + ", require "
+                            + HIBBELLW17SecretKeySerParameter.class.getName());
+        }
+        if (!(header instanceof HIBBELLW17HeaderSerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + header.getClass().getName() + ", require "
+                            + HIBBELLW17HeaderSerParameter.class.getName());
+        }
+        HIBBELLW17DecryptionGenerator decryptionGenerator = new HIBBELLW17DecryptionGenerator();
+        decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, header, digest));
+        return decryptionGenerator.recoverKey();
     }
 
     public String getEngineName() {

@@ -5,6 +5,7 @@ import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
 import cn.edu.buaa.crypto.algebra.Engine;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -73,6 +74,14 @@ public abstract class KPABEEngine implements Engine {
     public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] attributes, Element message);
 
     /**
+     * Encapsulation algorithm for KP-ABE
+     * @param publicKey public key
+     * @param attributes associated attribute set
+     * @return header / session key pair
+     */
+    public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] attributes);
+
+    /**
      * Decryption Algorithm for KP-ABE
      * @param publicKey public key
      * @param secretKey secret key associated with an access policy
@@ -83,4 +92,16 @@ public abstract class KPABEEngine implements Engine {
      */
     public abstract Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                                        String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
+
+    /**
+     * Decapsulation Algorithm for KP-ABE
+     * @param publicKey public key
+     * @param secretKey secret key associated with an access policy
+     * @param attributes attribute set associating with the ciphertext
+     * @param header header
+     * @return session key
+     * @throws InvalidCipherTextException if the decapsulation procedure is failure
+     */
+    public abstract byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                                       String[] attributes, PairingCipherSerParameter header) throws InvalidCipherTextException;
 }

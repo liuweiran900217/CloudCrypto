@@ -1,7 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04CiphertextSerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04HeaderSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBEDecryptionGenerationParameter;
@@ -17,17 +19,19 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  *
  * Boneh-Boyen HIBE decryption generator.
  */
-public class HIBEBB04DecryptionGenerator implements PairingDecryptionGenerator {
+public class HIBEBB04DecryptionGenerator implements PairingDecryptionGenerator, PairingDecapsulationGenerator {
     private HIBEDecryptionGenerationParameter params;
+
+    private Element sessionKey;
 
     public void init(CipherParameters params) {
         this.params = (HIBEDecryptionGenerationParameter)params;
     }
 
-    public Element recoverMessage() throws InvalidCipherTextException {
+    private void computeDecapsulation() throws InvalidCipherTextException {
         HIBEBB04PublicKeySerParameter publicKeyParameters = (HIBEBB04PublicKeySerParameter)this.params.getPublicKeyParameter();
         HIBEBB04SecretKeySerParameter secretKeyParameters = (HIBEBB04SecretKeySerParameter)this.params.getSecretKeyParameter();
-        HIBEBB04CiphertextSerParameter ciphertextParameters = (HIBEBB04CiphertextSerParameter)this.params.getCiphertextParameter();
+        HIBEBB04HeaderSerParameter ciphertextParameters = (HIBEBB04HeaderSerParameter)this.params.getCiphertextParameter();
 
         int secretKeyLength = secretKeyParameters.getLength();
 
@@ -56,7 +60,17 @@ public class HIBEBB04DecryptionGenerator implements PairingDecryptionGenerator {
             temp1 = temp1.mul(pairing.pairing(Cs[i], ds[i])).getImmutable();
         }
         Element temp0 = pairing.pairing(B, d0).getImmutable();
-        Element sessionKey = temp0.div(temp1).getImmutable();
+        this.sessionKey = temp0.div(temp1).getImmutable();
+    }
+
+    public Element recoverMessage() throws InvalidCipherTextException {
+        computeDecapsulation();
+        HIBEBB04CiphertextSerParameter ciphertextParameters = (HIBEBB04CiphertextSerParameter)this.params.getCiphertextParameter();
         return ciphertextParameters.getA().div(sessionKey).getImmutable();
+    }
+
+    public byte[] recoverKey() throws InvalidCipherTextException {
+        computeDecapsulation();
+        return this.sessionKey.toBytes();
     }
 }

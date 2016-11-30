@@ -1,9 +1,12 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCiphertextSerParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aHeaderSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -19,20 +22,22 @@ import java.util.Map;
  *
  * Goyal-Pandey-Sahai-Waters small-universe KP-ABE encryption generator.
  */
-public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerator {
-
+public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
     private KPABEEncryptionGenerationParameter params;
+
+    private KPABEGPSW06aPublicKeySerParameter publicKeyParameter;
+    private Element sessionKey;
+    private Map<String, Element> Es;
 
     public void init(CipherParameters params) {
         this.params = (KPABEEncryptionGenerationParameter)params;
+        this.publicKeyParameter = (KPABEGPSW06aPublicKeySerParameter)this.params.getPublicKeyParameter();
     }
 
-    public PairingCipherSerParameter generateCiphertext() {
-        KPABEGPSW06aPublicKeySerParameter publicKeyParameter = (KPABEGPSW06aPublicKeySerParameter)this.params.getPublicKeyParameter();
+    private void computeEncapsulation() {
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         String[] attributes = this.params.getAttributes();
         assert(attributes.length <= publicKeyParameter.getMaxAttributesNum());
-        Element message = this.params.getMessage();
         if (attributes.length > publicKeyParameter.getMaxAttributesNum()) {
             throw new IllegalArgumentException("# of broadcast receiver set " + attributes.length +
                     " is greater than the maximal number of receivers " + publicKeyParameter.getMaxAttributesNum());
@@ -40,9 +45,8 @@ public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerat
 
         try {
             Element s = pairing.getZr().newRandomElement().getImmutable();
-            Element sessionKey = publicKeyParameter.getY().powZn(s).getImmutable();
-            Element EPrime = sessionKey.mul(message).getImmutable();
-            Map<String, Element> Es = new HashMap<String, Element>();
+            this.sessionKey = publicKeyParameter.getY().powZn(s).getImmutable();
+            this.Es = new HashMap<String, Element>();
             for (String attribute : attributes) {
                 int index = Integer.parseInt(attribute);
                 if (index >= publicKeyParameter.getMaxAttributesNum() || index < 0) {
@@ -51,10 +55,22 @@ public class KPABEGPSW06aEncryptionGenerator implements PairingEncryptionGenerat
                 Element E = publicKeyParameter.getTsAt(String.valueOf(index)).powZn(s).getImmutable();
                 Es.put(String.valueOf(index), E);
             }
-
-            return new KPABEGPSW06aCiphertextSerParameter(publicKeyParameter.getParameters(), EPrime, Es);
         } catch (NumberFormatException e) {
             throw new InvalidParameterException("Invalid rhos, require rhos represented by integers");
         }
+    }
+
+    public PairingCipherSerParameter generateCiphertext() {
+        computeEncapsulation();
+        Element EPrime = sessionKey.mul(this.params.getMessage()).getImmutable();
+        return new KPABEGPSW06aCiphertextSerParameter(publicKeyParameter.getParameters(), EPrime, Es);
+    }
+
+    public PairingKeyEncapsulationSerPair generateEncryptionPair() {
+        computeEncapsulation();
+        return new PairingKeyEncapsulationSerPair(
+                this.sessionKey.toBytes(),
+                new KPABEGPSW06aHeaderSerParameter(publicKeyParameter.getParameters(), Es)
+        );
     }
 }

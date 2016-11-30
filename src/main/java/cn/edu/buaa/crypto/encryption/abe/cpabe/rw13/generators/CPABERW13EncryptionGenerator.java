@@ -2,10 +2,13 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
+import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13CiphertextSerParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13HeaderSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13PublicKeySerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
@@ -21,16 +24,22 @@ import java.util.Map;
  *
  * Rouselakis-Waters CP-ABE encryption generator.
  */
-public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator {
-
+public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
     private CPABEEncryptionGenerationParameter parameter;
+
+    private CPABERW13PublicKeySerParameter publicKeyParameter;
+    private Element sessionKey;
+    private Element C0;
+    private Map<String, Element> C1s;
+    private Map<String, Element> C2s;
+    private Map<String, Element> C3s;
 
     public void init(CipherParameters parameter) {
         this.parameter = (CPABEEncryptionGenerationParameter) parameter;
+        this.publicKeyParameter = (CPABERW13PublicKeySerParameter) this.parameter.getPublicKeyParameter();
     }
 
-    public PairingCipherSerParameter generateCiphertext() {
-        CPABERW13PublicKeySerParameter publicKeyParameter = (CPABERW13PublicKeySerParameter) this.parameter.getPublicKeyParameter();
+    private void computeEncapsulation() {
         int[][] accessPolicy = this.parameter.getAccessPolicy();
         String[] rhos = this.parameter.getRhos();
         AccessControlEngine accessControlEngine = this.parameter.getAccessControlEngine();
@@ -38,13 +47,13 @@ public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator 
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         Element s = pairing.getZr().newRandomElement().getImmutable();
-        Element C = publicKeyParameter.getEggAlpha().powZn(s).mul(this.parameter.getMessage()).getImmutable();
-        Element C0 = publicKeyParameter.getG().powZn(s).getImmutable();
+        this.sessionKey = publicKeyParameter.getEggAlpha().powZn(s).getImmutable();
+        this.C0 = publicKeyParameter.getG().powZn(s).getImmutable();
 
         Map<String, Element> lambdas = accessControlEngine.secretSharing(pairing, s, accessControlParameter);
-        Map<String, Element> C1s = new HashMap<String, Element>();
-        Map<String, Element> C2s = new HashMap<String, Element>();
-        Map<String, Element> C3s = new HashMap<String, Element>();
+        this.C1s = new HashMap<String, Element>();
+        this.C2s = new HashMap<String, Element>();
+        this.C3s = new HashMap<String, Element>();
         for (String rho : lambdas.keySet()) {
             Element elementRho = PairingUtils.MapStringToGroup(pairing, rho, PairingUtils.PairingGroupType.Zr);
             Element ti = pairing.getZr().newRandomElement().getImmutable();
@@ -52,6 +61,19 @@ public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator 
             C2s.put(rho, publicKeyParameter.getU().powZn(elementRho).mul(publicKeyParameter.getH()).powZn(ti.negate()).getImmutable());
             C3s.put(rho, publicKeyParameter.getG().powZn(ti).getImmutable());
         }
+    }
+
+    public PairingCipherSerParameter generateCiphertext() {
+        computeEncapsulation();
+        Element C = this.sessionKey.mul(this.parameter.getMessage()).getImmutable();
         return new CPABERW13CiphertextSerParameter(publicKeyParameter.getParameters(), C, C0, C1s, C2s, C3s);
+    }
+
+    public PairingKeyEncapsulationSerPair generateEncryptionPair() {
+        computeEncapsulation();
+        return new PairingKeyEncapsulationSerPair(
+                this.sessionKey.toBytes(),
+                new CPABERW13HeaderSerParameter(publicKeyParameter.getParameters(), C0, C1s, C2s, C3s)
+        );
     }
 }

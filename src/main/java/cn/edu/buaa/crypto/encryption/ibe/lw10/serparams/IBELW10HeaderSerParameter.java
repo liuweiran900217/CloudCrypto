@@ -1,7 +1,7 @@
-package cn.edu.buaa.crypto.encryption.ibbe.del07.serparams;
+package cn.edu.buaa.crypto.encryption.ibe.lw10.serparams;
 
-import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -10,18 +10,18 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import java.util.Arrays;
 
 /**
- * Created by Weiran Liu on 2016/8/24.
+ * Created by Weiran Liu on 2016/11/30.
  *
- * Ciphertext Parameters for Delerablée IBBE scheme.
+ * Lewko-Waters IBE header parameter.
  */
-public class IBBEDel07CiphertextSerParameter extends PairingCipherSerParameter {
+public class IBELW10HeaderSerParameter extends PairingCipherSerParameter {
     private transient Element C1;
     private final byte[] byteArrayC1;
 
     private transient Element C2;
     private final byte[] byteArrayC2;
 
-    public IBBEDel07CiphertextSerParameter(PairingParameters pairingParameters, Element C1, Element C2) {
+    public IBELW10HeaderSerParameter(PairingParameters pairingParameters, Element C1, Element C2) {
         super(pairingParameters);
         this.C1 = C1.getImmutable();
         this.byteArrayC1 = this.C1.toBytes();
@@ -39,8 +39,8 @@ public class IBBEDel07CiphertextSerParameter extends PairingCipherSerParameter {
         if (this == anObject) {
             return true;
         }
-        if (anObject instanceof IBBEDel07CiphertextSerParameter) {
-            IBBEDel07CiphertextSerParameter that = (IBBEDel07CiphertextSerParameter)anObject;
+        if (anObject instanceof IBELW10HeaderSerParameter) {
+            IBELW10HeaderSerParameter that = (IBELW10HeaderSerParameter)anObject;
             //Compare C1
             if (!PairingUtils.isEqualElement(this.C1, that.getC1())){
                 return false;

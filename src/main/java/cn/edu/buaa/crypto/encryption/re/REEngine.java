@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.re;
 
 import cn.edu.buaa.crypto.algebra.Engine;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -43,6 +44,14 @@ public interface REEngine extends Engine {
     PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message);
 
     /**
+     * Encapsulation Algorithm for RE
+     * @param publicKey public key
+     * @param ids revocation identity set
+     * @return header / session key pair
+     */
+    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
+
+    /**
      * Decryption Algorithm for RE
      * @param publicKey public key
      * @param secretKey secret key associated with an identity
@@ -52,6 +61,17 @@ public interface REEngine extends Engine {
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
     Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
-                       String[] ids, PairingCipherSerParameter ciphertext
-    ) throws InvalidCipherTextException;
+                       String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
+
+    /**
+     * Decryption Algorithm for RE
+     * @param publicKey public key
+     * @param secretKey secret key associated with an identity
+     * @param ids revocation identity set associated with the ciphertext
+     * @param header header
+     * @return session key
+     * @throws InvalidCipherTextException if the decryption procedure is failure
+     */
+    byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                       String[] ids, PairingCipherSerParameter header) throws InvalidCipherTextException;
 }

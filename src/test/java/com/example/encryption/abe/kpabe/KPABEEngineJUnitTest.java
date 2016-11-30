@@ -1,6 +1,7 @@
 package com.example.encryption.abe.kpabe;
 
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -112,6 +113,19 @@ public class KPABEEngineJUnitTest {
         //Decryption
         Element anMessage = engine.decryption(publicKey, secretKey, attributes, ciphertext);
         Assert.assertEquals(message, anMessage);
+
+        //Encapsulation and serialization
+        PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, attributes);
+        byte[] sessionKey = encapsulationPair.getSessionKey();
+        PairingCipherSerParameter header = encapsulationPair.getHeader();
+        byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+        CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+        Assert.assertEquals(header, anHeader);
+        header = (PairingCipherSerParameter)anHeader;
+
+        //Decryption
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, attributes, header);
+        Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
     public void runAllTests(PairingParameters pairingParameters) {

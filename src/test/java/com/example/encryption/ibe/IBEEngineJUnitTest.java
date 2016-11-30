@@ -1,5 +1,6 @@
 package com.example.encryption.ibe;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -79,6 +80,19 @@ public class IBEEngineJUnitTest {
         //Decryption
         Element anMessage = engine.decryption(publicKey, secretKey, identityForCiphertext, ciphertext);
         Assert.assertEquals(message, anMessage);
+
+        //Encapsulation and serialization
+        PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, identityForCiphertext);
+        byte[] sessionKey = encapsulationPair.getSessionKey();
+        PairingCipherSerParameter header = encapsulationPair.getHeader();
+        byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+        CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+        Assert.assertEquals(header, anHeader);
+        header = (PairingCipherSerParameter)anHeader;
+
+        //Decapsulation
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityForCiphertext, header);
+        Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
     public void runAllTests(PairingParameters pairingParameters) {

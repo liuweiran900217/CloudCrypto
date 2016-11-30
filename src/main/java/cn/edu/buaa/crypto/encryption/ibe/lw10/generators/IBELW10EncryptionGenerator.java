@@ -1,8 +1,11 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10HeaderSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.lw10.serparams.IBELW10PublicKeySerParameter;
@@ -16,27 +19,40 @@ import org.bouncycastle.crypto.CipherParameters;
  *
  * Lewko-Waters IBE encryption generator.
  */
-public class IBELW10EncryptionGenerator implements PairingEncryptionGenerator {
+public class IBELW10EncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
 
     private IBEEncryptionGenerationParameter params;
+    private IBELW10PublicKeySerParameter publicKeyParameter;
+    private Element sessionKey;
+    private Element C1;
+    private Element C2;
 
     public void init(CipherParameters params) {
-        this.params = (IBEEncryptionGenerationParameter)params;
+        this.params = (IBEEncryptionGenerationParameter) params;
+        this.publicKeyParameter = (IBELW10PublicKeySerParameter) this.params.getPublicKeyParameter();
     }
 
-    public PairingCipherSerParameter generateCiphertext() {
-        IBELW10PublicKeySerParameter publicKeyParameters = (IBELW10PublicKeySerParameter)this.params.getPublicKeyParameter();
-        Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
+    private void computeEncapsulation() {
+        Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         String id = this.params.getId();
         Element elementId = PairingUtils.MapStringToGroup(pairing, id, PairingUtils.PairingGroupType.Zr).getImmutable();
 
         Element s = pairing.getZr().newRandomElement().getImmutable();
-        Element sessionKey = publicKeyParameters.getEggAlpha().powZn(s).getImmutable();
+        this.sessionKey = publicKeyParameter.getEggAlpha().powZn(s).getImmutable();
+
+        this.C1 = publicKeyParameter.getU().powZn(elementId).mul(publicKeyParameter.getH()).powZn(s).getImmutable();
+        this.C2 = publicKeyParameter.getG().powZn(s).getImmutable();
+    }
+
+    public PairingKeyEncapsulationSerPair generateEncryptionPair() {
+        computeEncapsulation();
+        return new PairingKeyEncapsulationSerPair(this.sessionKey.toBytes(),
+                new IBELW10HeaderSerParameter(publicKeyParameter.getParameters(), C1, C2));
+    }
+
+    public PairingCipherSerParameter generateCiphertext() {
+        computeEncapsulation();
         Element C0 = sessionKey.mul(this.params.getMessage()).getImmutable();
-
-        Element C1 = publicKeyParameters.getU().powZn(elementId).mul(publicKeyParameters.getH()).powZn(s).getImmutable();
-        Element C2 = publicKeyParameters.getG().powZn(s).getImmutable();
-
-        return new IBELW10CiphertextSerParameter(publicKeyParameters.getParameters(), C0, C1, C2);
+        return new IBELW10CiphertextSerParameter(publicKeyParameter.getParameters(), C0, C1, C2);
     }
 }

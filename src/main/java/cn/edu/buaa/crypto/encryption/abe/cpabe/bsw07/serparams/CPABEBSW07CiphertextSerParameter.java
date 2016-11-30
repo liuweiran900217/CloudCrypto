@@ -1,6 +1,5 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams;
 
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -8,7 +7,6 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,50 +14,20 @@ import java.util.Map;
  *
  * Bethencourt-Sahai-Waters large-universe CP-ABE ciphertext parameter.
  */
-public class CPABEBSW07CiphertextSerParameter extends PairingCipherSerParameter {
+public class CPABEBSW07CiphertextSerParameter extends CPABEBSW07HeaderSerParameter {
     private transient Element CPrime;
     private final byte[] byteArrayCPrime;
-
-    private transient Element C;
-    private final byte[] byteArrayC;
-
-    private transient Map<String, Element> C1s;
-    private final Map<String, byte[]> byteArraysC1s;
-
-    private transient Map<String, Element> C2s;
-    private final Map<String, byte[]> byteArraysC2s;
 
     public CPABEBSW07CiphertextSerParameter(
             PairingParameters pairingParameters, Element CPrime, Element C,
             Map<String, Element> C1s, Map<String, Element> C2s) {
-        super(pairingParameters);
+        super(pairingParameters, C, C1s, C2s);
 
         this.CPrime = CPrime.getImmutable();
         this.byteArrayCPrime = this.CPrime.toBytes();
-
-        this.C = C.getImmutable();
-        this.byteArrayC = this.C.toBytes();
-
-        this.C1s = new HashMap<String, Element>();
-        this.byteArraysC1s = new HashMap<String, byte[]>();
-        this.C2s = new HashMap<String, Element>();
-        this.byteArraysC2s = new HashMap<String, byte[]>();
-
-        for (String attribute : C1s.keySet()) {
-            this.C1s.put(attribute, C1s.get(attribute).duplicate().getImmutable());
-            this.byteArraysC1s.put(attribute, C1s.get(attribute).duplicate().getImmutable().toBytes());
-            this.C2s.put(attribute, C2s.get(attribute).duplicate().getImmutable());
-            this.byteArraysC2s.put(attribute, C2s.get(attribute).duplicate().getImmutable().toBytes());
-        }
     }
 
     public Element getCPrime() { return this.CPrime.duplicate(); }
-
-    public Element getC() { return this.C.duplicate(); }
-
-    public Element getC1sAt(String rho) { return this.C1s.get(rho).duplicate(); }
-
-    public Element getC2sAt(String rho) { return this.C2s.get(rho).duplicate(); }
 
     @Override
     public boolean equals(Object anObject) {
@@ -67,37 +35,10 @@ public class CPABEBSW07CiphertextSerParameter extends PairingCipherSerParameter 
             return true;
         }
         if (anObject instanceof CPABEBSW07CiphertextSerParameter) {
-            CPABEBSW07CiphertextSerParameter that = (CPABEBSW07CiphertextSerParameter)anObject;
-            //Compare CPrime
-            if (!PairingUtils.isEqualElement(this.CPrime, that.CPrime)) {
-                return false;
-            }
-            if (!Arrays.equals(this.byteArrayCPrime, that.byteArrayCPrime)) {
-                return false;
-            }
-            //Compare C
-            if (!PairingUtils.isEqualElement(this.C, that.C)) {
-                return false;
-            }
-            if (!Arrays.equals(this.byteArrayC, that.byteArrayC)) {
-                return false;
-            }
-            //Compare C1s
-            if (!this.C1s.equals(that.C1s)) {
-                return false;
-            }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysC1s, that.byteArraysC1s)) {
-                return false;
-            }
-            //Compare C2s
-            if (!this.C2s.equals(that.C2s)) {
-                return false;
-            }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysC2s, that.byteArraysC2s)) {
-                return false;
-            }
-            //Compare Pairing Parameters
-            return this.getParameters().toString().equals(that.getParameters().toString());
+            CPABEBSW07CiphertextSerParameter that = (CPABEBSW07CiphertextSerParameter) anObject;
+            return PairingUtils.isEqualElement(this.CPrime, that.CPrime)
+                    && Arrays.equals(this.byteArrayCPrime, that.byteArrayCPrime)
+                    && super.equals(anObject);
         }
         return false;
     }
@@ -107,12 +48,5 @@ public class CPABEBSW07CiphertextSerParameter extends PairingCipherSerParameter 
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.CPrime = pairing.getGT().newElementFromBytes(this.byteArrayCPrime).getImmutable();
-        this.C = pairing.getG1().newElementFromBytes(this.byteArrayC).getImmutable();
-        this.C1s = new HashMap<String, Element>();
-        this.C2s = new HashMap<String, Element>();
-        for (String attribute : byteArraysC1s.keySet()) {
-            this.C1s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC1s.get(attribute)).getImmutable());
-            this.C2s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC2s.get(attribute)).getImmutable());
-        }
     }
 }

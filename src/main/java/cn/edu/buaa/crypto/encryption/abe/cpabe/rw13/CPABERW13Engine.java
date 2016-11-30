@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.rw13;
 
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
@@ -12,10 +13,7 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13Decrypti
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.generators.CPABERW13SecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13CiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13MasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13SecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -86,6 +84,20 @@ public class CPABERW13Engine extends CPABEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos) {
+        if (!(publicKey instanceof CPABERW13PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + CPABERW13PublicKeySerParameter.class.getName());
+        }
+        CPABERW13EncryptionGenerator encryptionGenerator = new CPABERW13EncryptionGenerator();
+        encryptionGenerator.init(new CPABEEncryptionGenerationParameter(
+                accessControlEngine, publicKey, accessPolicyIntArrays, rhos, null));
+
+        return encryptionGenerator.generateEncryptionPair();
+    }
+
     public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
@@ -111,5 +123,32 @@ public class CPABERW13Engine extends CPABEEngine {
         decryptionGenerator.init(new CPABEDecryptionGenerationParameter(
                 accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, ciphertext));
         return decryptionGenerator.recoverMessage();
+    }
+
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                                int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter header)
+            throws InvalidCipherTextException {
+        if (!(publicKey instanceof CPABERW13PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + CPABERW13PublicKeySerParameter.class.getName());
+        }
+        if (!(secretKey instanceof CPABERW13SecretKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + secretKey.getClass().getName() + ", require "
+                            + CPABERW13SecretKeySerParameter.class.getName());
+        }
+        if (!(header instanceof CPABERW13HeaderSerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + header.getClass().getName() + ", require "
+                            + CPABERW13HeaderSerParameter.class.getName());
+        }
+        CPABERW13DecryptionGenerator decryptionGenerator = new CPABERW13DecryptionGenerator();
+        decryptionGenerator.init(new CPABEDecryptionGenerationParameter(
+                accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, header));
+        return decryptionGenerator.recoverKey();
     }
 }

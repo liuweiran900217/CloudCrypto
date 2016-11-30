@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw14;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -96,6 +97,19 @@ public class HIBBELLW14Engine implements HIBBEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids) {
+        if (!(publicKey instanceof HIBBELLW14PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + HIBBELLW14PublicKeySerParameter.class.getName());
+        }
+        HIBBELLW14EncryptionGenerator encryptionGenerator = new HIBBELLW14EncryptionGenerator();
+        encryptionGenerator.init(new HIBBEEncryptionGenerationParameter(publicKey, ids, null));
+
+        return encryptionGenerator.generateEncryptionPair();
+    }
+
     public Element decryption (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBBELLW14PublicKeySerParameter)){
@@ -119,6 +133,31 @@ public class HIBBELLW14Engine implements HIBBEEngine {
         HIBBELLW14DecryptionGenerator decryptionGenerator = new HIBBELLW14DecryptionGenerator();
         decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
         return decryptionGenerator.recoverMessage();
+    }
+
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
+            throws InvalidCipherTextException {
+        if (!(publicKey instanceof HIBBELLW14PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + HIBBELLW14PublicKeySerParameter.class.getName());
+        }
+        if (!(secretKey instanceof HIBBELLW14SecretKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + secretKey.getClass().getName() + ", require "
+                            + HIBBELLW14SecretKeySerParameter.class.getName());
+        }
+        if (!(ciphertext instanceof HIBBELLW14HeaderSerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + ciphertext.getClass().getName() + ", require "
+                            + HIBBELLW14HeaderSerParameter.class.getName());
+        }
+        HIBBELLW14DecryptionGenerator decryptionGenerator = new HIBBELLW14DecryptionGenerator();
+        decryptionGenerator.init(new HIBBEDecryptionGenerationParameter(publicKey, secretKey, ids, ciphertext));
+        return decryptionGenerator.recoverKey();
     }
 
     public String getEngineName() {

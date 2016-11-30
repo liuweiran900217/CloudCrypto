@@ -75,7 +75,7 @@ public class IBBEEngineJUnitTest {
         //Encryption and serialization
         PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identitySet);
         byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
-        PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getCiphertext();
+        PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
         Assert.assertEquals(ciphertext, anCiphertext);

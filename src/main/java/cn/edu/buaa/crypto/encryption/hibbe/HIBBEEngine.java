@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.hibbe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -52,6 +53,14 @@ public interface HIBBEEngine extends Engine {
     PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message);
 
     /**
+     * Encapsulation Algorithm for HIBBE
+     * @param publicKey public key
+     * @param ids an identity vector set
+     * @return header / session key pair
+     */
+    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids);
+
+    /**
      * Decryption Algorithm for HIBBE
      * @param publicKey public key
      * @param secretKey secret key associated with an identity vector
@@ -61,5 +70,17 @@ public interface HIBBEEngine extends Engine {
      * @throws InvalidCipherTextException if the decryption procedure is failure
     */
     Element decryption (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter ciphertext)
+            throws InvalidCipherTextException;
+
+    /**
+     * Decapsulation Algorithm for HIBBE
+     * @param publicKey public key
+     * @param secretKey secret key associated with an identity vector
+     * @param ids identity vector set associated with the ciphertext
+     * @param header header
+     * @return the session key
+     * @throws InvalidCipherTextException if the decryption procedure is failure
+     */
+    byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] ids, PairingCipherSerParameter header)
             throws InvalidCipherTextException;
 }

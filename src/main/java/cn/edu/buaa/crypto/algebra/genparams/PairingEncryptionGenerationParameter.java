@@ -13,8 +13,16 @@ public abstract class PairingEncryptionGenerationParameter extends PairingEncaps
 
     public PairingEncryptionGenerationParameter(PairingKeySerParameter publicKeyParameter, Element message) {
         super(publicKeyParameter);
-        this.message = message.getImmutable();
+        if (message != null) {
+            //parameter for encryption.
+            this.message = message.getImmutable();
+        }
     }
 
-    public Element getMessage() { return this.message.duplicate(); }
+    public Element getMessage() {
+        if (message == null) {
+            return null;
+        }
+        return this.message.duplicate();
+    }
 }

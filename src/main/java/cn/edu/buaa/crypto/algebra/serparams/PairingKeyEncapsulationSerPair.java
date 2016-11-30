@@ -9,7 +9,7 @@ import org.bouncycastle.crypto.CipherParameters;
  */
 public class PairingKeyEncapsulationSerPair implements CipherParameters {
     private byte[] sessionKey;
-    private PairingCipherSerParameter ciphertext;
+    private PairingCipherSerParameter header;
 
     /**
      * basic constructor.
@@ -19,7 +19,7 @@ public class PairingKeyEncapsulationSerPair implements CipherParameters {
      */
     public PairingKeyEncapsulationSerPair(byte[] sessionKey, PairingCipherSerParameter ciphertextParam) {
         this.sessionKey = sessionKey;
-        this.ciphertext = ciphertextParam;
+        this.header = ciphertextParam;
     }
 
     /**
@@ -30,12 +30,12 @@ public class PairingKeyEncapsulationSerPair implements CipherParameters {
     public byte[] getSessionKey() { return this.sessionKey; }
 
     /**
-     * return the ciphertext parameters.
+     * return the header parameters.
      *
-     * @return the ciphertext parameters.
+     * @return the header parameters.
      */
-    public PairingCipherSerParameter getCiphertext()
+    public PairingCipherSerParameter getHeader()
     {
-        return this.ciphertext;
+        return this.header;
     }
 }

@@ -3,7 +3,9 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators;
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
+import cn.edu.buaa.crypto.algebra.generators.PairingDecapsulationGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingDecryptionGenerator;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07HeaderSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07CiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
@@ -21,17 +23,18 @@ import java.util.Map;
  *
  * Bethencourt-Sahai-Waters large-universe CP-ABE decryption generator.
  */
-public class CPABEBSW07DecryptionGenerator implements PairingDecryptionGenerator {
+public class CPABEBSW07DecryptionGenerator implements PairingDecryptionGenerator, PairingDecapsulationGenerator {
     private CPABEDecryptionGenerationParameter parameter;
+    private Element sessionKey;
 
     public void init(CipherParameters parameter) {
         this.parameter = (CPABEDecryptionGenerationParameter) parameter;
     }
 
-    public Element recoverMessage() throws InvalidCipherTextException {
+    private void computeDecapsulation() throws InvalidCipherTextException {
         CPABEBSW07PublicKeySerParameter publicKeyParameter = (CPABEBSW07PublicKeySerParameter) this.parameter.getPublicKeyParameter();
         CPABEBSW07SecretKeySerParameter secretKeyParameter = (CPABEBSW07SecretKeySerParameter) this.parameter.getSecretKeyParameter();
-        CPABEBSW07CiphertextSerParameter ciphertextParameter = (CPABEBSW07CiphertextSerParameter) this.parameter.getCiphertextParameter();
+        CPABEBSW07HeaderSerParameter ciphertextParameter = (CPABEBSW07HeaderSerParameter) this.parameter.getCiphertextParameter();
         AccessControlEngine accessControlEngine = this.parameter.getAccessControlEngine();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         try {
@@ -47,10 +50,20 @@ public class CPABEBSW07DecryptionGenerator implements PairingDecryptionGenerator
                 Element lambda = omegaElementsMap.get(attribute);
                 A = A.mul(pairing.pairing(D1, C1).div(pairing.pairing(D2, C2)).powZn(lambda)).getImmutable();
             }
-            Element sessionKey = pairing.pairing(ciphertextParameter.getC(), secretKeyParameter.getD()).div(A).getImmutable();
-            return ciphertextParameter.getCPrime().div(sessionKey).getImmutable();
+            this.sessionKey = pairing.pairing(ciphertextParameter.getC(), secretKeyParameter.getD()).div(A).getImmutable();
         } catch (UnsatisfiedAccessControlException e) {
             throw new InvalidCipherTextException("Attributes associated with the ciphertext do not satisfy access policy associated with the secret key.");
         }
+    }
+
+    public Element recoverMessage() throws InvalidCipherTextException {
+        computeDecapsulation();
+        CPABEBSW07CiphertextSerParameter ciphertextParameter = (CPABEBSW07CiphertextSerParameter) this.parameter.getCiphertextParameter();
+        return ciphertextParameter.getCPrime().div(sessionKey).getImmutable();
+    }
+
+    public byte[] recoverKey() throws InvalidCipherTextException {
+        computeDecapsulation();
+        return this.sessionKey.toBytes();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.encryption.hibbe;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -70,6 +71,19 @@ public class HIBBEEngineJUnitTest {
             //Decryption
             Element anMessage = engine.decryption(publicKey, delegateKey, identityVectorSet, ciphertext);
             Assert.assertEquals(message, anMessage);
+
+            //Encapsulation and serialization
+            PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, identityVectorSet);
+            byte[] sessionKey = encapsulationPair.getSessionKey();
+            PairingCipherSerParameter header = encapsulationPair.getHeader();
+            byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+            CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+            Assert.assertEquals(header, anHeader);
+            header = (PairingCipherSerParameter)anHeader;
+
+            //Decapsulation
+            byte[] anSessionKey = engine.decapsulation(publicKey, delegateKey, identityVectorSet, header);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
         } catch (Exception e) {
             System.out.println("Valid decryption decryption test failed, " +
                     "identity vector = " + Arrays.toString(identityVector) + ", " +
@@ -116,6 +130,19 @@ public class HIBBEEngineJUnitTest {
             //Decryption
             Element anMessage = engine.decryption(publicKey, delegateKey, identityVectorSet, ciphertext);
             Assert.assertEquals(message, anMessage);
+
+            //Encapsulation and serialization
+            PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, identityVectorSet);
+            byte[] sessionKey = encapsulationPair.getSessionKey();
+            PairingCipherSerParameter header = encapsulationPair.getHeader();
+            byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+            CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+            Assert.assertEquals(header, anHeader);
+            header = (PairingCipherSerParameter)anHeader;
+
+            //Decapsulation
+            byte[] anSessionKey = engine.decapsulation(publicKey, delegateKey, identityVectorSet, header);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
@@ -149,6 +176,19 @@ public class HIBBEEngineJUnitTest {
         //Decryption
         Element anMessage = engine.decryption(publicKey, secretKey, identityVectorSet, ciphertext);
         Assert.assertEquals(message, anMessage);
+
+        //Encapsulation and serialization
+        PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, identityVectorSet);
+        byte[] sessionKey = encapsulationPair.getSessionKey();
+        PairingCipherSerParameter header = encapsulationPair.getHeader();
+        byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+        CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+        Assert.assertEquals(header, anHeader);
+        header = (PairingCipherSerParameter)anHeader;
+
+        //Decapsulation
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityVectorSet, header);
+        Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
     public void runAllTests(PairingParameters pairingParameters) {

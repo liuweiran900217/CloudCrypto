@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -12,10 +13,7 @@ import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEEncryptionGenerati
 import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABESecretKeyGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aCiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aMasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aPublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.KPABEGPSW06aSecretKeySerParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -86,6 +84,19 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] attributes) {
+        if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + KPABEGPSW06aPublicKeySerParameter.class.getName());
+        }
+        KPABEGPSW06aEncryptionGenerator encryptionGenerator = new KPABEGPSW06aEncryptionGenerator();
+        encryptionGenerator.init(new KPABEEncryptionGenerationParameter(publicKey, attributes, null));
+
+        return encryptionGenerator.generateEncryptionPair();
+    }
+
     public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               String[] attributes, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
@@ -110,5 +121,31 @@ public class KPABEGPSW06aEngine extends KPABEEngine {
         decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
                 accessControlEngine, publicKey, secretKey, attributes, ciphertext));
         return decryptionGenerator.recoverMessage();
+    }
+
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                                String[] attributes, PairingCipherSerParameter header) throws InvalidCipherTextException {
+        if (!(publicKey instanceof KPABEGPSW06aPublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + KPABEGPSW06aPublicKeySerParameter.class.getName());
+        }
+        if (!(secretKey instanceof KPABEGPSW06aSecretKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + secretKey.getClass().getName() + ", require "
+                            + KPABEGPSW06aSecretKeySerParameter.class.getName());
+        }
+        if (!(header instanceof KPABEGPSW06aHeaderSerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + header.getClass().getName() + ", require "
+                            + KPABEGPSW06aHeaderSerParameter.class.getName());
+        }
+        KPABEGPSW06aDecryptionGenerator decryptionGenerator = new KPABEGPSW06aDecryptionGenerator();
+        decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
+                accessControlEngine, publicKey, secretKey, attributes, header));
+        return decryptionGenerator.recoverKey();
     }
 }

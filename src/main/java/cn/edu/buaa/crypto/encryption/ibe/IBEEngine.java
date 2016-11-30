@@ -1,6 +1,7 @@
 package cn.edu.buaa.crypto.encryption.ibe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -42,6 +43,14 @@ public interface IBEEngine extends Engine {
     PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String id, Element message);
 
     /**
+     * Key Encapsulation Algorithm for IBE
+     * @param publicKey public key
+     * @param id an identity
+     * @return header / session key pair.
+     */
+    PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String id);
+
+    /**
      * Decryption Algorithm for IBE
      * @param publicKey public key
      * @param secretKey secret key associated with an identity
@@ -50,6 +59,18 @@ public interface IBEEngine extends Engine {
      * @return the message in GT
      * @throws InvalidCipherTextException if the decryption procedure is failure
      */
-    Element decryption (PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+    Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                         String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
+
+    /**
+     * Key Decapsulation Algorithm for IBE
+     * @param publicKey public key
+     * @param secretKey secret key associated with an identity
+     * @param id identity associating with the ciphertext
+     * @param header ciphertext
+     * @return the session key
+     * @throws InvalidCipherTextException if the decryption procedure is failure
+     */
+    byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                        String id, PairingCipherSerParameter header) throws InvalidCipherTextException;
 }

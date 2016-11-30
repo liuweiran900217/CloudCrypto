@@ -1,5 +1,6 @@
 package com.example.encryption.hibe;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -85,6 +86,19 @@ public class HIBEEngineJUnitTest {
         //Decryption
         Element anMessage = engine.decryption(publicKey, secretKey, identityVectorEnc, ciphertext);
         Assert.assertEquals(message, anMessage);
+
+        //Encapsulation and serialization
+        PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, identityVectorEnc);
+        byte[] sessionKey = encapsulationPair.getSessionKey();
+        PairingCipherSerParameter header = encapsulationPair.getHeader();
+        byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+        CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+        Assert.assertEquals(anHeader, anHeader);
+        header = (PairingCipherSerParameter)anHeader;
+
+        //Decapsulation
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityVectorEnc, header);
+        Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
     private void try_delegation_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
@@ -108,6 +122,19 @@ public class HIBEEngineJUnitTest {
             //Decryption
             Element anMessage = engine.decryption(publicKey, delegateKey, identityVectorEnc, ciphertext);
             Assert.assertEquals(message, anMessage);
+
+            //Encapsulation and serialization
+            PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, identityVectorEnc);
+            byte[] sessionKey = encapsulationPair.getSessionKey();
+            PairingCipherSerParameter header = encapsulationPair.getHeader();
+            byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+            CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+            Assert.assertEquals(anHeader, anHeader);
+            header = (PairingCipherSerParameter)anHeader;
+
+            //Decapsulation
+            byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityVectorEnc, header);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
         } catch (Exception e) {
             System.out.println("Valid delegate decryption test failed, " +
                     "identity vector  = " + Arrays.toString(identityVector) + ", " +
@@ -139,6 +166,19 @@ public class HIBEEngineJUnitTest {
             //Decryption
             Element anMessage = engine.decryption(publicKey, delegateKey, identityVectorEnc, ciphertext);
             Assert.assertEquals(message, anMessage);
+
+            //Encapsulation and serialization
+            PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, identityVectorEnc);
+            byte[] sessionKey = encapsulationPair.getSessionKey();
+            PairingCipherSerParameter header = encapsulationPair.getHeader();
+            byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+            CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+            Assert.assertEquals(anHeader, anHeader);
+            header = (PairingCipherSerParameter)anHeader;
+
+            //Decapsulation
+            byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityVectorEnc, header);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {

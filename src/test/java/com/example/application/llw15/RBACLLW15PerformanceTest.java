@@ -294,7 +294,7 @@ public class RBACLLW15PerformanceTest {
         for (int i = 0; i < maximal_roles; i++) {
             timer.start(i);
             PairingKeyEncapsulationSerPair encapsulationPair = engine.EHREnc(publicKey, patientId, encapsulationRoleVectorSets[i], timeT);
-            encapsulations[i] = encapsulationPair.getCiphertext();
+            encapsulations[i] = encapsulationPair.getHeader();
             temperTime = timer.stop(i);
             out.print("\t" + temperTime);
             this.timeEHREncapsulation[i] += temperTime;
@@ -308,7 +308,7 @@ public class RBACLLW15PerformanceTest {
             timer.start(i);
             PairingKeyEncapsulationSerPair encapsulationPair = engine.EHREnc(publicKey, encapsulationsIntermedicateParameters[i],
                     patientId, encapsulationRoleVectorSets[i], timeT);
-            encapsulations[i] = encapsulationPair.getCiphertext();
+            encapsulations[i] = encapsulationPair.getHeader();
             temperTime = timer.stop(i);
             out.print("\t" + temperTime);
             this.timeEHREncapsulationWithIntermediate[i] += temperTime;

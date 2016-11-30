@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -8,14 +9,11 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07Decryp
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07EncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07SecretKeyGenerator;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.*;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABESecretKeyGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07CiphertextSerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07MasterSecretKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07PublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.serparams.CPABEBSW07SecretKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -86,6 +84,20 @@ public class CPABEBSW07Engine extends CPABEEngine {
         return encryptionGenerator.generateCiphertext();
     }
 
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos) {
+        if (!(publicKey instanceof CPABEBSW07PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + CPABEBSW07PublicKeySerParameter.class.getName());
+        }
+        CPABEBSW07EncryptionGenerator encryptionGenerator = new CPABEBSW07EncryptionGenerator();
+        encryptionGenerator.init(new CPABEEncryptionGenerationParameter(
+                accessControlEngine, publicKey, accessPolicyIntArrays, rhos, null));
+
+        return encryptionGenerator.generateEncryptionPair();
+    }
+
     public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
@@ -111,5 +123,32 @@ public class CPABEBSW07Engine extends CPABEEngine {
         decryptionGenerator.init(new CPABEDecryptionGenerationParameter(
                 accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, ciphertext));
         return decryptionGenerator.recoverMessage();
+    }
+
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                                int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter header)
+            throws InvalidCipherTextException {
+        if (!(publicKey instanceof CPABEBSW07PublicKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + publicKey.getClass().getName() + ", require "
+                            + CPABEBSW07PublicKeySerParameter.class.getName());
+        }
+        if (!(secretKey instanceof CPABEBSW07SecretKeySerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + secretKey.getClass().getName() + ", require "
+                            + CPABEBSW07SecretKeySerParameter.class.getName());
+        }
+        if (!(header instanceof CPABEBSW07HeaderSerParameter)){
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
+                            + header.getClass().getName() + ", require "
+                            + CPABEBSW07HeaderSerParameter.class.getName());
+        }
+        CPABEBSW07DecryptionGenerator decryptionGenerator = new CPABEBSW07DecryptionGenerator();
+        decryptionGenerator.init(new CPABEDecryptionGenerationParameter(
+                accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, header));
+        return decryptionGenerator.recoverKey();
     }
 }
