@@ -37,7 +37,10 @@ public class IBEBF01aEncryptionGenerator implements PairingEncryptionGenerator, 
         Element elementId = PairingUtils.MapStringToGroup(pairing, id, PairingUtils.PairingGroupType.G1).getImmutable();
 
         Element r = pairing.getZr().newRandomElement().getImmutable();
-        this.sessionKey = pairing.pairing(elementId, publicKeyParameter.getGs()).powZn(r).getImmutable();
+        this.sessionKey = PairingUtils.MapByteArrayToGroup(
+                pairing,
+                pairing.pairing(elementId, publicKeyParameter.getGs()).powZn(r).toBytes(),
+                PairingUtils.PairingGroupType.GT);
         this.U = publicKeyParameter.getG().powZn(r).getImmutable();
     }
 

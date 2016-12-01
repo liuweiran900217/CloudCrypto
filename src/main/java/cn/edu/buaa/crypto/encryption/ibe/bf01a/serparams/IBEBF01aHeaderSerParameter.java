@@ -33,7 +33,7 @@ public class IBEBF01aHeaderSerParameter extends PairingCipherSerParameter {
         }
         if (anObject instanceof IBEBF01aHeaderSerParameter) {
             IBEBF01aHeaderSerParameter that = (IBEBF01aHeaderSerParameter)anObject;
-            //Compare C1
+            //Compare U
             if (!PairingUtils.isEqualElement(this.U, that.U)){
                 return false;
             }

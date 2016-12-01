@@ -39,7 +39,10 @@ public class IBEBF01aDecryptionGenerator implements PairingDecryptionGenerator, 
             throw new InvalidCipherTextException("Secret Key identity vector does not match Ciphertext identity vector");
         }
 
-        this.sessionKey = pairing.pairing(secretKeyParameter.getD(), headerParameter.getU()).getImmutable();
+        this.sessionKey = PairingUtils.MapByteArrayToGroup(
+                pairing,
+                pairing.pairing(secretKeyParameter.getD(), headerParameter.getU()).toBytes(),
+                PairingUtils.PairingGroupType.GT);
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
