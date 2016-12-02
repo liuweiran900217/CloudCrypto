@@ -103,6 +103,13 @@ public class KPABERW13PublicKeySerParameter extends PairingKeySerParameter {
             if (!Arrays.equals(this.byteArrayW, that.byteArrayW)) {
                 return false;
             }
+            //compare eggAlpha
+            if (!PairingUtils.isEqualElement(this.eggAlpha, that.eggAlpha)) {
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayEggAlpha, that.byteArrayEggAlpha)) {
+                return false;
+            }
             //Compare Pairing Parameters
             return this.getParameters().toString().equals(that.getParameters().toString());
         }
