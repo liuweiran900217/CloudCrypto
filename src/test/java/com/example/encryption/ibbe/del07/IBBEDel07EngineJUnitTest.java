@@ -21,7 +21,7 @@ public class IBBEDel07EngineJUnitTest extends TestCase {
         this.engineJUnitTest = new IBBEEngineJUnitTest(engine);
     }
 
-    public void testIBBEDel07Engine() {
+    public void testEngine() {
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

@@ -37,33 +37,12 @@ public abstract class BEEngine extends Engine {
     public abstract PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int index);
 
     /**
-     * Encryption Algorithm for BE
-     * @param publicKey public key
-     * @param indexSet the set of indexes
-     * @param message the message in GT
-     * @return ciphertext for the index set
-     */
-    public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, int[] indexSet, Element message);
-
-    /**
      * Key Encapsulation Algorithm for BE
      * @param publicKey public key
      * @param indexSet the set of indexes
      * @return header / session key pair.
      */
     public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[] indexSet);
-
-    /**
-     * Decryption Algorithm for BE
-     * @param publicKey public key
-     * @param secretKey secret key associated with an index
-     * @param indexSet the set of indexes
-     * @param ciphertext ciphertext
-     * @return the message in GT
-     * @throws InvalidCipherTextException if the decryption procedure is failure
-     */
-    public abstract Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
-                                       int[] indexSet, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException;
 
     /**
      * Key Decapsulation Algorithm for BE

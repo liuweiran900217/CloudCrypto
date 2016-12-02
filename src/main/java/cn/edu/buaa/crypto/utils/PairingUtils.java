@@ -291,4 +291,18 @@ public class PairingUtils {
         Collections.addAll(stringSet, orginalArray);
         return stringSet.toArray(new String[1]);
     }
+
+    public static int[] removeDuplicates(int[] originalArray) {
+        Set<Integer> intSet = new HashSet<Integer>();
+        for (int i : originalArray) {
+            intSet.add(i);
+        }
+        int[] resultSet = new int[intSet.size()];
+        int label = 0;
+        for (Integer setInteger : intSet) {
+            resultSet[label] = setInteger;
+            label++;
+        }
+        return resultSet;
+    }
 }

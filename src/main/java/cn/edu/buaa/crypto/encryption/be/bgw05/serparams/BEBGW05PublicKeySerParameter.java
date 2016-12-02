@@ -16,6 +16,8 @@ import java.util.Arrays;
  * Boneh-Gentry-Waters BE public key parameter.
  */
 public class BEBGW05PublicKeySerParameter extends PairingKeySerParameter {
+    private final int maxUserNum;
+
     private transient Element g;
     private final byte[] byteArrayG;
 
@@ -25,8 +27,10 @@ public class BEBGW05PublicKeySerParameter extends PairingKeySerParameter {
     private transient Element v;
     private final byte[] byteArrayV;
 
-    public BEBGW05PublicKeySerParameter(PairingParameters pairingParameters, Element g, Element[] gs, Element v) {
+    public BEBGW05PublicKeySerParameter(PairingParameters pairingParameters, int maxUserNum, Element g, Element[] gs, Element v) {
         super(true, pairingParameters);
+
+        this.maxUserNum = maxUserNum;
 
         this.g = g.getImmutable();
         this.byteArrayG = this.g.toBytes();
@@ -37,6 +41,8 @@ public class BEBGW05PublicKeySerParameter extends PairingKeySerParameter {
         this.v = v.getImmutable();
         this.byteArrayV = this.v.toBytes();
     }
+
+    public int getMaxUserNum() { return this.maxUserNum; }
 
     public Element getG() { return this.g.duplicate(); }
 
@@ -55,6 +61,10 @@ public class BEBGW05PublicKeySerParameter extends PairingKeySerParameter {
         }
         if (anObject instanceof BEBGW05PublicKeySerParameter) {
             BEBGW05PublicKeySerParameter that = (BEBGW05PublicKeySerParameter) anObject;
+            //compare maxUserNum
+            if (this.maxUserNum != that.maxUserNum) {
+                return false;
+            }
             //compare g
             if (!PairingUtils.isEqualElement(this.g, that.g)) {
                 return false;
@@ -67,6 +77,13 @@ public class BEBGW05PublicKeySerParameter extends PairingKeySerParameter {
                 return false;
             }
             if (!PairingUtils.isEqualByteArrays(this.byteArraysGs, that.byteArraysGs)) {
+                return false;
+            }
+            //compare v
+            if (!PairingUtils.isEqualElement(this.v, that.v)) {
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayV, that.byteArrayV)) {
                 return false;
             }
             //Compare Pairing Parameters
