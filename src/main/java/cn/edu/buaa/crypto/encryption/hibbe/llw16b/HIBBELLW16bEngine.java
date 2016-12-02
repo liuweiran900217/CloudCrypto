@@ -51,7 +51,7 @@ public class HIBBELLW16bEngine extends HIBBEEngine {
     }
 
     private HIBBELLW16bEngine() {
-        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CCA2);
+        super(SCHEME_NAME, ProveSecModel.Standard, PayloadSecLevel.CCA2, PredicateSecLevel.NON_ANON);
         this.signKeyPairGenerator.init(
                 new BB08SignKeyPairGenerationParameter(PairingFactory.getPairingParameters(PairingUtils.PATH_a_160_512)));
     }

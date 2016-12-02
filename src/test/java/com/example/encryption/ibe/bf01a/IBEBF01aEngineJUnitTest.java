@@ -20,7 +20,7 @@ public class IBEBF01aEngineJUnitTest extends TestCase {
         engineJUnitTest = new IBEEngineJUnitTest(engine);
     }
 
-    public void testIBELW10Engine() {
+    public void tesEngine() {
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

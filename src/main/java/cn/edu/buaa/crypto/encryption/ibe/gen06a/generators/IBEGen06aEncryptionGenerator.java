@@ -19,7 +19,7 @@ import org.bouncycastle.crypto.CipherParameters;
  *
  * Gentry CPA-secure IBE encryption generator.
  */
-public class IBEGen06aEncryptionGenerator  implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
+public class IBEGen06aEncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
 
     private IBEEncryptionGenerationParameter params;
     private IBEGen06aPublicKeySerParameter publicKeyParameter;

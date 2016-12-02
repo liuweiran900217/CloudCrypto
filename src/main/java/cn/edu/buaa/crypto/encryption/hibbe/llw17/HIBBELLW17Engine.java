@@ -40,7 +40,7 @@ public class HIBBELLW17Engine extends HIBBEEngine {
     }
 
     private HIBBELLW17Engine() {
-        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CCA2);
+        super(SCHEME_NAME, ProveSecModel.Standard, PayloadSecLevel.CCA2, PredicateSecLevel.NON_ANON);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {

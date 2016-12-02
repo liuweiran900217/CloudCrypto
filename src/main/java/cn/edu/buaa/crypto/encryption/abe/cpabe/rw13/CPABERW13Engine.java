@@ -35,7 +35,7 @@ public class CPABERW13Engine extends CPABEEngine {
     }
 
     private CPABERW13Engine() {
-        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
+        super(SCHEME_NAME, ProveSecModel.Standard, PayloadSecLevel.CPA, PredicateSecLevel.NON_ANON);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {

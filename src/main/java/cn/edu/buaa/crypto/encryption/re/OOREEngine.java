@@ -10,8 +10,8 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
  * Generic Online/Offline Revocation Encryption engine.
  */
 public abstract class OOREEngine extends REEngine {
-    protected OOREEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
-        super(schemeName, securityModel, securityLevel);
+    protected OOREEngine(String schemeName, ProveSecModel proveSecModel, PayloadSecLevel payloadSecLevel, PredicateSecLevel predicateSecLevel) {
+        super(schemeName, proveSecModel, payloadSecLevel, predicateSecLevel);
     }
 
     /**

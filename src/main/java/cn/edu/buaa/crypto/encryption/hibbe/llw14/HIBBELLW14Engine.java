@@ -34,7 +34,7 @@ public class HIBBELLW14Engine extends HIBBEEngine {
     }
 
     private HIBBELLW14Engine() {
-        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
+        super(SCHEME_NAME, ProveSecModel.Standard, PayloadSecLevel.CPA, PredicateSecLevel.NON_ANON);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxUser) {

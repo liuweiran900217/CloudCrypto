@@ -39,7 +39,7 @@ public class IBBEDel07Engine extends IBBEEngine {
     }
 
     private IBBEDel07Engine() {
-        super(SCHEME_NAME, SecurityModel.RandomOracle, SecurityLevel.CPA);
+        super(SCHEME_NAME, ProveSecModel.RandomOracle, PayloadSecLevel.CPA, PredicateSecLevel.NON_ANON);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxBroadcastReceiver) {

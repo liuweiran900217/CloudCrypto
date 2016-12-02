@@ -36,7 +36,7 @@ public class KPABEGPSW06bEngine extends KPABEEngine {
     }
 
     private KPABEGPSW06bEngine() {
-        super(SCHEME_NAME, SecurityModel.RandomOracle, SecurityLevel.CPA);
+        super(SCHEME_NAME, ProveSecModel.RandomOracle, PayloadSecLevel.CPA, PredicateSecLevel.NON_ANON);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {

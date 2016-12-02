@@ -41,7 +41,7 @@ public class IBEBF01bEngine extends IBEEngine {
     }
 
     private IBEBF01bEngine() {
-        super(SCHEME_NAME, SecurityModel.RandomOracle, SecurityLevel.CCA2);
+        super(SCHEME_NAME, ProveSecModel.RandomOracle, PayloadSecLevel.CCA2, PredicateSecLevel.ANON);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters) {

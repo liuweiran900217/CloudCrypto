@@ -34,7 +34,7 @@ public class RELSW10aEngine extends REEngine {
     }
 
     private RELSW10aEngine() {
-        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA);
+        super(SCHEME_NAME, ProveSecModel.Standard, PayloadSecLevel.CPA, PredicateSecLevel.NON_ANON);
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters) {

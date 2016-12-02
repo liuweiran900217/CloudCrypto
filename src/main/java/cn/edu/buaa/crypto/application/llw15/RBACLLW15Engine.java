@@ -30,7 +30,7 @@ public class RBACLLW15Engine extends Engine {
     }
 
     private RBACLLW15Engine() {
-        super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CCA2);
+        super(SCHEME_NAME, ProveSecModel.Standard, PayloadSecLevel.CCA2, PredicateSecLevel.NON_ANON);
     }
 
     /**

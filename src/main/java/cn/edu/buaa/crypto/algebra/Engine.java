@@ -6,33 +6,41 @@ package cn.edu.buaa.crypto.algebra;
  * Generic engine
  */
 public abstract class Engine {
-    private final SecurityModel security_model;
-    private final SecurityLevel security_level;
+    private final ProveSecModel provable_security_model;
+    private final PayloadSecLevel payload_security_level;
+    private final PredicateSecLevel predicate_security_level;
     private final String scheme_name;
 
-    public enum SecurityModel {
+    public enum ProveSecModel {
         RandomOracle, Standard
     }
 
-    public enum SecurityLevel {
+    public enum PayloadSecLevel {
         CPA, CCA2
     }
 
-    public Engine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
+    public enum PredicateSecLevel {
+        NON_ANON, ANON,
+    }
+
+    public Engine(String schemeName, ProveSecModel proveSecModel, PayloadSecLevel payloadSecLevel, PredicateSecLevel predicateSecLevel) {
         this.scheme_name = schemeName;
-        this.security_model = securityModel;
-        this.security_level = securityLevel;
+        this.provable_security_model = proveSecModel;
+        this.payload_security_level = payloadSecLevel;
+        this.predicate_security_level = predicateSecLevel;
     }
 
     public String getEngineName() {
         return this.scheme_name;
     }
 
-    SecurityLevel getSecurityLevel() {
-        return this.security_level;
+    PayloadSecLevel getPayloadSecLevel() {
+        return this.payload_security_level;
     }
 
-    SecurityModel getSecurityModel() {
-        return this.security_model;
+    ProveSecModel getProveSecModel() {
+        return this.provable_security_model;
     }
+
+    PredicateSecLevel getPredicateSecLevel() { return this.predicate_security_level; }
 }

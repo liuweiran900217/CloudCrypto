@@ -22,8 +22,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 public abstract class CPABEEngine extends Engine {
     protected AccessControlEngine accessControlEngine = AccessTreeEngine.getInstance();
 
-    protected CPABEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
-        super(schemeName, securityModel, securityLevel);
+    protected CPABEEngine(String schemeName, ProveSecModel proveSecModel, PayloadSecLevel payloadSecLevel, PredicateSecLevel predicateSecLevel) {
+        super(schemeName, proveSecModel, payloadSecLevel, predicateSecLevel);
     }
 
     public void setAccessControlEngine(AccessControlEngine accessControlEngine) {

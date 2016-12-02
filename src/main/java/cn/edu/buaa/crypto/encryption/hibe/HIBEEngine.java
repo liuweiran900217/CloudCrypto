@@ -16,8 +16,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * All instances should implement this Interface.
  */
 public abstract class HIBEEngine extends Engine {
-    protected HIBEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
-        super(schemeName, securityModel, securityLevel);
+    protected HIBEEngine(String schemeName, ProveSecModel proveSecModel, PayloadSecLevel payloadSecLevel, PredicateSecLevel predicateSecLevel) {
+        super(schemeName, proveSecModel, payloadSecLevel, predicateSecLevel);
     }
 
     /**

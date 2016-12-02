@@ -18,8 +18,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 
 public abstract class REEngine extends Engine {
-    protected REEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
-        super(schemeName, securityModel, securityLevel);
+    protected REEngine(String schemeName, ProveSecModel proveSecModel, PayloadSecLevel payloadSecLevel, PredicateSecLevel predicateSecLevel) {
+        super(schemeName, proveSecModel, payloadSecLevel, predicateSecLevel);
     }
 
     /**

@@ -15,8 +15,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Generic HIBE Engine.
  */
 public abstract class HIBBEEngine extends Engine {
-    protected HIBBEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
-        super(schemeName, securityModel, securityLevel);
+    protected HIBBEEngine(String schemeName, ProveSecModel proveSecModel, PayloadSecLevel payloadSecLevel, PredicateSecLevel predicateSecLevel) {
+        super(schemeName, proveSecModel, payloadSecLevel, predicateSecLevel);
     }
 
     /**

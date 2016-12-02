@@ -17,8 +17,8 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * This interface is an abstract of IBE definitions.
  */
 public abstract class IBEEngine extends Engine {
-    protected IBEEngine(String schemeName, SecurityModel securityModel, SecurityLevel securityLevel) {
-        super(schemeName, securityModel, securityLevel);
+    protected IBEEngine(String schemeName, ProveSecModel proveSecModel, PayloadSecLevel payloadSecLevel, PredicateSecLevel predicateSecLevel) {
+        super(schemeName, proveSecModel, payloadSecLevel, predicateSecLevel);
     }
 
     /**

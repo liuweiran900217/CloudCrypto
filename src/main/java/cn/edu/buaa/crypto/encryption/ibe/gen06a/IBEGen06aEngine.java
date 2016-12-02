@@ -25,7 +25,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class IBEGen06aEngine extends IBEEngine {
     //Scheme name, used for exceptions
-    private static final String SCHEME_NAME = "Boneh-Franklin CPA-secure IBE scheme";
+    private static final String SCHEME_NAME = "Gentry-06 CPA-secure IBE scheme";
 
     private static IBEGen06aEngine engine;
 
@@ -36,7 +36,7 @@ public class IBEGen06aEngine extends IBEEngine {
         return engine;
     }
 
-    private IBEGen06aEngine() { super(SCHEME_NAME, SecurityModel.Standard, SecurityLevel.CPA); }
+    private IBEGen06aEngine() { super(SCHEME_NAME, ProveSecModel.Standard, PayloadSecLevel.CPA, PredicateSecLevel.ANON); }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters) {
         IBEGen06aKeyPairGenerator keyPairGenerator = new IBEGen06aKeyPairGenerator();
