@@ -5,11 +5,13 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
+import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.junit.Assert;
@@ -22,7 +24,7 @@ import java.util.Arrays;
  *
  * Revocation encryption engine test.
  */
-public class REEngineJUnitTest {
+public class REEngineJUnitTest extends TestCase {
     private static final String identity = "ID";
     private static final String identityRevoke = "RevokeID";
 
@@ -32,10 +34,6 @@ public class REEngineJUnitTest {
     private static final String[] identityRevokeSet4 = {"ID_2", "ID_2", "ID_2", "ID_3", "RevokeID", "ID_5", "ID_5", "ID_5", "ID_5", "ID_9"};
 
     private REEngine engine;
-
-    public REEngineJUnitTest(REEngine engine) {
-        this.engine = engine;
-    }
 
     private void try_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String identity, String[] identityRevokeSet) {
@@ -101,7 +99,7 @@ public class REEngineJUnitTest {
         Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
-    public void processTest(PairingParameters pairingParameters) {
+    private void runAllTest(PairingParameters pairingParameters) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
@@ -141,5 +139,10 @@ public class REEngineJUnitTest {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public void testRELSW10aEngine() {
+        this.engine = RELSW10aEngine.getInstance();
+        runAllTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

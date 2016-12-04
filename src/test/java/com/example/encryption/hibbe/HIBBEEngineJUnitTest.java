@@ -5,11 +5,16 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
+import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16a.HIBBELLW16aEngine;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16b.HIBBELLW16bEngine;
+import cn.edu.buaa.crypto.encryption.hibbe.llw17.HIBBELLW17Engine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.junit.Assert;
@@ -22,7 +27,7 @@ import java.util.Arrays;
  *
  * HIBBE engine test procedures. All instances should pass this unit test.
  */
-public class HIBBEEngineJUnitTest {
+public class HIBBEEngineJUnitTest extends TestCase {
     private static final String[] identityVector4_satisfied    = {null,    null,   null,   "ID_4", null,   null,   null,   null};
     private static final String[] identityVector46_satisfied   = {null,    null,   null,   "ID_4", null,   "ID_6", null,   null};
     private static final String[] identityVector467_satisfied  = {null,    null,   null,   "ID_4", null,   "ID_6", "ID_7", null};
@@ -32,10 +37,6 @@ public class HIBBEEngineJUnitTest {
     private static final String[] identityVectorSet13467  = {"ID_1",  null,   "ID_3", "ID_4", null,   "ID_6", "ID_7", null};
 
     private HIBBEEngine engine;
-
-    public HIBBEEngineJUnitTest(HIBBEEngine engine) {
-        this.engine = engine;
-    }
 
     private void try_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String[] identityVector, String[] identityVectorSet) {
@@ -191,7 +192,7 @@ public class HIBBEEngineJUnitTest {
         Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
-    public void runAllTests(PairingParameters pairingParameters) {
+    private void runAllTests(PairingParameters pairingParameters) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
@@ -232,5 +233,25 @@ public class HIBBEEngineJUnitTest {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public void testHIBBELLW14Engine() {
+        this.engine = HIBBELLW14Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128));
+    }
+
+    public void testHIBBELLW16aEngine() {
+        this.engine = HIBBELLW16aEngine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testHIBBELLW16bEngine() {
+        this.engine = HIBBELLW16bEngine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testHIBBELLW17Engine() {
+        this.engine = HIBBELLW17Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128));
     }
 }

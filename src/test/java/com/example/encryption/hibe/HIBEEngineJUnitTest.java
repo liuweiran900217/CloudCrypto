@@ -5,11 +5,14 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.junit.Assert;
@@ -22,7 +25,7 @@ import java.util.Arrays;
  *
  * HIBE engine test procedures. All instances should pass this unit test.
  */
-public class HIBEEngineJUnitTest {
+public class HIBEEngineJUnitTest extends TestCase {
     private static final String[] identityVector1 = {"ID_1"};
     private static final String[] identityVector12 = {"ID_1", "ID_2"};
     private static final String[] identityVector123 = {"ID_1", "ID_2", "ID_3"};
@@ -32,10 +35,6 @@ public class HIBEEngineJUnitTest {
     private static final String[] identityVector132 = {"ID_1", "ID_3", "ID_2"};
 
     private HIBEEngine engine;
-
-    public HIBEEngineJUnitTest(HIBEEngine engine) {
-        this.engine = engine;
-    }
 
     private void try_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String[] identityVector, String[] identityVectorSet) {
@@ -191,7 +190,7 @@ public class HIBEEngineJUnitTest {
         }
     }
 
-    public void runAllTests(PairingParameters pairingParameters) {
+    private void runAllTests(PairingParameters pairingParameters) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
@@ -236,5 +235,15 @@ public class HIBEEngineJUnitTest {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public void testHIBEBB04Engine() {
+        this.engine = HIBEBB04Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testHIBEBBG05Engine() {
+        this.engine = HIBEBBG05Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

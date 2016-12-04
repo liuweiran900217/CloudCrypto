@@ -78,6 +78,19 @@ public abstract class CPABEEngine extends Engine {
     /**
      * Encapsulation Algorithm for CP-ABE
      * @param publicKey public key
+     * @param accessPolicy associated access policy, given by string
+     * @return header / session key
+     * @throws PolicySyntaxException  if error occurs when parsing the access policy string
+     */
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String accessPolicy) throws PolicySyntaxException {
+        int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
+        String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
+        return encapsulation(publicKey, accessPolicyIntArrays, rhos);
+    }
+
+    /**
+     * Encapsulation Algorithm for CP-ABE
+     * @param publicKey public key
      * @param accessPolicyIntArrays associated access policy, given by 2D int arrays
      * @param rhos associated rhos, given by string array
      * @return header / session key
@@ -115,6 +128,24 @@ public abstract class CPABEEngine extends Engine {
     public abstract Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                                           int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException;
+
+    /**
+     * Decapsulation Algorithm for CP-ABE
+     * @param publicKey public key
+     * @param secretKey secret key associated with an attribute set
+     * @param accessPolicy access policy associating with the ciphertext, given by string
+     * @param ciphertext ciphertext
+     * @return the session key
+     * @throws PolicySyntaxException if error occurs when parsing the access policy string
+     * @throws InvalidCipherTextException if the decryption procedure is failure
+     */
+    public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
+                              String accessPolicy, PairingCipherSerParameter ciphertext)
+            throws PolicySyntaxException, InvalidCipherTextException {
+        int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
+        String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
+        return decapsulation(publicKey, secretKey, accessPolicyIntArrays, rhos, ciphertext);
+    }
 
     /**
      * Decapsulation Algorithm for CP-ABE

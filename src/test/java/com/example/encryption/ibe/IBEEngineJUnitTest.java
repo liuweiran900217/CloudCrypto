@@ -5,11 +5,17 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
+import cn.edu.buaa.crypto.encryption.ibe.bf01a.IBEBF01aEngine;
+import cn.edu.buaa.crypto.encryption.ibe.bf01b.IBEBF01bEngine;
+import cn.edu.buaa.crypto.encryption.ibe.gen06a.IBEGen06aEngine;
+import cn.edu.buaa.crypto.encryption.ibe.gen06b.IBEGen06bEngine;
+import cn.edu.buaa.crypto.encryption.ibe.lw10.IBELW10Engine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.junit.Assert;
@@ -21,15 +27,11 @@ import java.io.IOException;
  *
  * IBE engine test.
  */
-public class IBEEngineJUnitTest {
+public class IBEEngineJUnitTest extends TestCase {
     private static final String identity_1 = "ID_1";
     private static final String identity_2 = "ID_2";
 
     private IBEEngine engine;
-
-    public IBEEngineJUnitTest(IBEEngine engine) {
-        this.engine = engine;
-    }
 
     private void try_valid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                        String identityForSecretKey, String identityForCiphertext) {
@@ -95,7 +97,7 @@ public class IBEEngineJUnitTest {
         Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
-    public void runAllTests(PairingParameters pairingParameters) {
+    private void runAllTests(PairingParameters pairingParameters) {
         Pairing pairing = PairingFactory.getPairing(pairingParameters);
         try {
             // Setup and serialization
@@ -131,5 +133,30 @@ public class IBEEngineJUnitTest {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public void testIBEBF01aEngine() {
+        this.engine = IBEBF01aEngine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testIBEBF01bEngine() {
+        this.engine = IBEBF01bEngine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testIBEGen06aEngine() {
+        this.engine = IBEGen06aEngine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testIBEGen06bEngine() {
+        this.engine = IBEGen06bEngine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testIBELW10Engine() {
+        this.engine = IBELW10Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128));
     }
 }

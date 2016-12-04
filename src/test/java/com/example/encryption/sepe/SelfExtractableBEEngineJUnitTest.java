@@ -1,4 +1,4 @@
-package com.example.encryption.be;
+package com.example.encryption.sepe;
 
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
@@ -6,23 +6,29 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.be.BEEngine;
 import cn.edu.buaa.crypto.encryption.be.bgw05.BEBGW05Engine;
+import cn.edu.buaa.crypto.encryption.sepe.SelfExtractableBEEngine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
-import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.crypto.InvalidCipherTextException;
+import org.bouncycastle.crypto.*;
+import org.bouncycastle.crypto.digests.SHA256Digest;
+import org.bouncycastle.crypto.digests.SHA512Digest;
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.generators.PKCS12ParametersGenerator;
+import org.bouncycastle.crypto.generators.PKCS5S1ParametersGenerator;
+import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.junit.Assert;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Created by Weiran Liu on 2016/12/3.
+ * Created by Weiran Liu on 2016/12/4.
  *
- * BE engine JUnit test.
+ * Self-extractable BE unit test.
  */
-public class BEEngineJUnitTest extends TestCase {
+public class SelfExtractableBEEngineJUnitTest extends TestCase {
     private static final int maxNumUser = 8;
     private static final int index1_valid = 1;
     private static final int index8_valid = 8;
@@ -40,7 +46,11 @@ public class BEEngineJUnitTest extends TestCase {
         indexSet3 = new int[]{1, 1, 5, 2, 2, 5, 8, 7, 7};
     }
 
-    private BEEngine engine;
+    private SelfExtractableBEEngine engine;
+
+    public void setEngine(SelfExtractableBEEngine engine) {
+        this.engine = engine;
+    }
 
     private void try_valid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int index, int[] indexSet) {
         try {
@@ -80,8 +90,11 @@ public class BEEngineJUnitTest extends TestCase {
         Assert.assertEquals(secretKey, anSecretKey);
         secretKey = (PairingKeySerParameter)anSecretKey;
 
+        //self KeyGen
+        byte[] ek = engine.selfKeyGen();
+
         //Encryption and serialization
-        PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, indexSet);
+        PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, indexSet, ek);
         byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
         PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
@@ -92,6 +105,9 @@ public class BEEngineJUnitTest extends TestCase {
         //Decryption
         byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, indexSet, ciphertext);
         Assert.assertArrayEquals(sessionKey, anSessionKey);
+        //Self decapsulation
+        byte[] anSelfSessionKey = engine.selfDecapsulation(ek, ciphertext);
+        Assert.assertArrayEquals(sessionKey, anSelfSessionKey);
     }
 
     public void runAllTests(PairingParameters pairingParameters) {
@@ -138,8 +154,47 @@ public class BEEngineJUnitTest extends TestCase {
         }
     }
 
-    public void testBEBGW05Engine() {
-        this.engine = BEBGW05Engine.getInstance();
-        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    public void testSEBEEngineBaseCase() {
+        Digest digest = new SHA256Digest();
+        BEEngine beEngine = BEBGW05Engine.getInstance();
+        BlockCipher blockCipher = new AESEngine();
+        PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
+        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
+        engineJUnitTest.setEngine(seBEEngine);
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testSEIBEEngineWithPKCS5S2() {
+        Digest digest = new SHA256Digest();
+        BEEngine beEngine = BEBGW05Engine.getInstance();
+        BlockCipher blockCipher = new AESEngine();
+        PBEParametersGenerator pbeParametersGenerator = new PKCS5S2ParametersGenerator(digest);
+        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
+        engineJUnitTest.setEngine(seBEEngine);
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testSEIBEEngineWithPKCS12() {
+        Digest digest = new SHA256Digest();
+        BEEngine beEngine = BEBGW05Engine.getInstance();
+        BlockCipher blockCipher = new AESEngine();
+        PBEParametersGenerator pbeParametersGenerator = new PKCS12ParametersGenerator(digest);
+        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
+        engineJUnitTest.setEngine(seBEEngine);
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testSEIBEEngineWithSHA512() {
+        Digest digest = new SHA512Digest();
+        BEEngine beEngine = BEBGW05Engine.getInstance();
+        BlockCipher blockCipher = new AESEngine();
+        PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
+        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
+        engineJUnitTest.setEngine(seBEEngine);
+        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

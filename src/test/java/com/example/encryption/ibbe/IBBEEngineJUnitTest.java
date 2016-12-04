@@ -5,8 +5,11 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.IBBEDel07Engine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.junit.Assert;
@@ -19,7 +22,7 @@ import java.util.Arrays;
  *
  * IBBE engine test procedures. All instances should pass this unit test.
  */
-public class IBBEEngineJUnitTest {
+public class IBBEEngineJUnitTest extends TestCase {
     private static final String identity_satisfied = "ID_0";
     private static final String identity_unsatisfied = "ID_9";
 
@@ -29,10 +32,6 @@ public class IBBEEngineJUnitTest {
     private static final String[] identitySet4 = {"ID_1", "ID_2", "ID_3", "ID_4", "ID_5", "ID_6", "ID_7", "ID_0", "ID_8"};
 
     private IBBEEngine engine;
-
-    public IBBEEngineJUnitTest(IBBEEngine engine) {
-        this.engine = engine;
-    }
 
     private void try_valid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                           String identity, String[] identitySet) {
@@ -86,7 +85,7 @@ public class IBBEEngineJUnitTest {
         Assert.assertArrayEquals(sessionKey, anSessionKey);
     }
 
-    public void runAllTests(PairingParameters pairingParameters) {
+    private void runAllTests(PairingParameters pairingParameters) {
         try {
             // Setup and serialization
             PairingKeySerPair keyPair = engine.setup(pairingParameters, identitySet4.length);
@@ -125,5 +124,10 @@ public class IBBEEngineJUnitTest {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public void testIBBEDel07Engine() {
+        this.engine = IBBEDel07Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

@@ -34,13 +34,13 @@ public abstract class Engine {
         return this.scheme_name;
     }
 
-    PayloadSecLevel getPayloadSecLevel() {
+    public PayloadSecLevel getPayloadSecLevel() {
         return this.payload_security_level;
     }
 
-    ProveSecModel getProveSecModel() {
+    public ProveSecModel getProveSecModel() {
         return this.provable_security_model;
     }
 
-    PredicateSecLevel getPredicateSecLevel() { return this.predicate_security_level; }
+    public PredicateSecLevel getPredicateSecLevel() { return this.predicate_security_level; }
 }

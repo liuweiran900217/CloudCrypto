@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 /**
  * Created by Weiran Liu on 2016/7/20.
+ *
+ * Binary tree node
  */
 public class BinaryTreeNode {
     public enum NodeType {

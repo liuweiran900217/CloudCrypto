@@ -58,6 +58,11 @@ public class ParserUtils {
                 }
             }
         }
+        if (accessPolicyLinkedList.size() == 0) {
+            int[][] accessPolicy = new int[1][];
+            accessPolicy[0] = new int[] {1, 1, -1};
+            return accessPolicy;
+        }
         int[][] accessPolicy = new int[accessPolicyLinkedList.size()][];
         for (int i = 0; i < accessPolicyLinkedList.size(); i++) {
             accessPolicy[i] = accessPolicyLinkedList.get(i);

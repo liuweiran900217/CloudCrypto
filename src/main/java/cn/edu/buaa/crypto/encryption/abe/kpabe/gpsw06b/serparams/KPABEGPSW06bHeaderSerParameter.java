@@ -17,11 +17,13 @@ import java.util.Map;
  * Goyal-Pandey-Sahai-Waters large-universe KP-ABE with random oracles header parameter.
  */
 public class KPABEGPSW06bHeaderSerParameter extends PairingCipherSerParameter {
+    private final String[] attributes;
+
     private transient Element E2;
     private final byte[] byteArrayE2;
 
     private transient Map<String, Element> Es;
-    private final Map<String, byte[]> byteArraysEs;
+    private final byte[][] byteArraysEs;
 
     public KPABEGPSW06bHeaderSerParameter(PairingParameters pairingParameters, Element E2, Map<String, Element> Es) {
         super(pairingParameters);
@@ -30,11 +32,12 @@ public class KPABEGPSW06bHeaderSerParameter extends PairingCipherSerParameter {
         this.byteArrayE2 = this.E2.toBytes();
 
         this.Es = new HashMap<String, Element>();
-        this.byteArraysEs = new HashMap<String, byte[]>();
-        for (String attribute : Es.keySet()) {
-            Element E = Es.get(attribute).duplicate().getImmutable();
-            this.Es.put(attribute, E);
-            this.byteArraysEs.put(attribute, E.toBytes());
+        this.attributes = Es.keySet().toArray(new String[1]);
+        this.byteArraysEs = new byte[this.attributes.length][];
+        for (int i = 0; i < this.attributes.length; i++) {
+            Element E = Es.get(this.attributes[i]).duplicate().getImmutable();
+            this.Es.put(this.attributes[i], E);
+            this.byteArraysEs[i] = E.toBytes();
         }
     }
 
@@ -60,7 +63,7 @@ public class KPABEGPSW06bHeaderSerParameter extends PairingCipherSerParameter {
             if (!this.Es.equals(that.Es)){
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysEs, that.byteArraysEs)) {
+            if (!PairingUtils.isEqualByteArrays(this.byteArraysEs, that.byteArraysEs)) {
                 return false;
             }
             //Compare Pairing Parameters
@@ -75,8 +78,8 @@ public class KPABEGPSW06bHeaderSerParameter extends PairingCipherSerParameter {
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
         this.E2 = pairing.getG1().newElementFromBytes(this.byteArrayE2);
         this.Es = new HashMap<String, Element>();
-        for (String attribute : this.byteArraysEs.keySet()) {
-            this.Es.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysEs.get(attribute)).getImmutable());
+        for (int i = 0; i < this.attributes.length; i++) {
+            this.Es.put(this.attributes[i], pairing.getG1().newElementFromBytes(this.byteArraysEs[i]).getImmutable());
         }
     }
 }

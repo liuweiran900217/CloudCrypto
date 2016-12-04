@@ -17,39 +17,46 @@ import java.util.Map;
  * Rouselakis-Waters CP-ABE header parameter.
  */
 public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
+    private final String[] rhos;
     private transient Element C0;
     private final byte[] byteArrayC0;
 
     private transient Map<String, Element> C1s;
-    private final Map<String, byte[]> byteArraysC1s;
+    private final byte[][] byteArraysC1s;
 
     private transient Map<String, Element> C2s;
-    private final Map<String, byte[]> byteArraysC2s;
+    private final byte[][] byteArraysC2s;
 
     private transient Map<String, Element> C3s;
-    private final Map<String, byte[]> byteArraysC3s;
+    private final byte[][] byteArraysC3s;
 
     public CPABERW13HeaderSerParameter(PairingParameters pairingParameters, Element C0,
                                        Map<String, Element> C1s, Map<String, Element> C2s, Map<String, Element> C3s) {
         super(pairingParameters);
 
+        this.rhos = C1s.keySet().toArray(new String[1]);
         this.C0 = C0.getImmutable();
         this.byteArrayC0 = this.C0.toBytes();
 
         this.C1s = new HashMap<String, Element>();
-        this.byteArraysC1s = new HashMap<String, byte[]>();
+        this.byteArraysC1s = new byte[this.rhos.length][];
         this.C2s = new HashMap<String, Element>();
-        this.byteArraysC2s = new HashMap<String, byte[]>();
+        this.byteArraysC2s = new byte[this.rhos.length][];
         this.C3s = new HashMap<String, Element>();
-        this.byteArraysC3s = new HashMap<String, byte[]>();
+        this.byteArraysC3s = new byte[this.rhos.length][];
 
-        for (String attribute : C1s.keySet()) {
-            this.C1s.put(attribute, C1s.get(attribute).duplicate().getImmutable());
-            this.byteArraysC1s.put(attribute, C1s.get(attribute).duplicate().getImmutable().toBytes());
-            this.C2s.put(attribute, C2s.get(attribute).duplicate().getImmutable());
-            this.byteArraysC2s.put(attribute, C2s.get(attribute).duplicate().getImmutable().toBytes());
-            this.C3s.put(attribute, C3s.get(attribute).duplicate().getImmutable());
-            this.byteArraysC3s.put(attribute, C3s.get(attribute).duplicate().getImmutable().toBytes());
+        for (int i = 0; i < this.rhos.length; i++) {
+            Element C1 = C1s.get(this.rhos[i]).duplicate().getImmutable();
+            this.C1s.put(this.rhos[i], C1);
+            this.byteArraysC1s[i] = C1.toBytes();
+
+            Element C2 = C2s.get(this.rhos[i]).duplicate().getImmutable();
+            this.C2s.put(this.rhos[i], C2);
+            this.byteArraysC2s[i] = C2.toBytes();
+
+            Element C3 = C3s.get(this.rhos[i]).duplicate().getImmutable();
+            this.C3s.put(this.rhos[i], C3);
+            this.byteArraysC3s[i] = C3.toBytes();
         }
     }
 
@@ -79,21 +86,21 @@ public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
             if (!this.C1s.equals(that.C1s)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysC1s, that.byteArraysC1s)) {
+            if (!PairingUtils.isEqualByteArrays(this.byteArraysC1s, that.byteArraysC1s)) {
                 return false;
             }
             //Compare C2s
             if (!this.C2s.equals(that.C2s)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysC2s, that.byteArraysC2s)) {
+            if (!PairingUtils.isEqualByteArrays(this.byteArraysC2s, that.byteArraysC2s)) {
                 return false;
             }
             //Compare C3s
             if (!this.C3s.equals(that.C3s)) {
                 return false;
             }
-            if (!PairingUtils.isEqualByteArrayMaps(this.byteArraysC3s, that.byteArraysC3s)) {
+            if (!PairingUtils.isEqualByteArrays(this.byteArraysC3s, that.byteArraysC3s)) {
                 return false;
             }
             //Compare Pairing Parameters
@@ -110,10 +117,10 @@ public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
         this.C1s = new HashMap<String, Element>();
         this.C2s = new HashMap<String, Element>();
         this.C3s = new HashMap<String, Element>();
-        for (String attribute : byteArraysC1s.keySet()) {
-            this.C1s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC1s.get(attribute)).getImmutable());
-            this.C2s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC2s.get(attribute)).getImmutable());
-            this.C3s.put(attribute, pairing.getG1().newElementFromBytes(this.byteArraysC3s.get(attribute)).getImmutable());
+        for (int i = 0; i < this.rhos.length; i++) {
+            this.C1s.put(this.rhos[i], pairing.getG1().newElementFromBytes(this.byteArraysC1s[i]).getImmutable());
+            this.C2s.put(this.rhos[i], pairing.getG1().newElementFromBytes(this.byteArraysC2s[i]).getImmutable());
+            this.C3s.put(this.rhos[i], pairing.getG1().newElementFromBytes(this.byteArraysC3s[i]).getImmutable());
         }
     }
 }
