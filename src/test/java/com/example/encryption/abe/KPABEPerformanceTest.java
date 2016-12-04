@@ -4,8 +4,8 @@ import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
-import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.CPABERW13Engine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.KPABERW13Engine;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.utils.Timer;
 import com.example.TestUtils;
@@ -20,12 +20,12 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 /**
  * Created by Weiran Liu on 2016/12/4.
  *
- * CP-ABE engine performance test.
+ * Generic KP-ABE performance test.
  */
-public class CPABEPerformanceTest extends TestCase {
+public class KPABEPerformanceTest extends TestCase {
     private String pairingParameterPath;
     //file path for performance test result
-    private static final String default_path = "benchmarks/encryption/cpabe/";
+    private static final String default_path = "benchmarks/encryption/kpabe/";
     //test round
     private int test_round;
     //the maximal number of role index is chosen
@@ -49,7 +49,7 @@ public class CPABEPerformanceTest extends TestCase {
     private double[] timeDecapsulation;
     private double[] timeDecryption;
 
-    private CPABEEngine engine;
+    private KPABEEngine engine;
 
     private Out out;
 
@@ -176,7 +176,7 @@ public class CPABEPerformanceTest extends TestCase {
             for (int i = 0; i < maximal_attributes; i++) {
                 System.out.print("KeyGen " + i + "; ");
                 timer.start(i);
-                secretKeys[i] = engine.keyGen(publicKey, masterKey, attributeSets[i]);
+                secretKeys[i] = engine.keyGen(publicKey, masterKey, accessPolicies[i]);
                 temperTime = timer.stop(i);
                 out.print("\t" + temperTime);
                 this.timeKeyGen[i] += temperTime;
@@ -191,7 +191,7 @@ public class CPABEPerformanceTest extends TestCase {
                 Element message = pairing.getGT().newRandomElement().getImmutable();
                 System.out.print("Encryption " + i + "; ");
                 timer.start(i);
-                ciphertexts[i] = engine.encryption(publicKey, accessPolicies[i], message);
+                ciphertexts[i] = engine.encryption(publicKey, attributeSets[i], message);
                 temperTime = timer.stop(i);
                 out.print("\t" + temperTime);
                 this.timeEncryption[i] += temperTime;
@@ -205,7 +205,7 @@ public class CPABEPerformanceTest extends TestCase {
             for (int i = 0; i < maximal_attributes; i++) {
                 System.out.print("Encapsulation " + i + "; ");
                 timer.start(i);
-                headers[i] = engine.encapsulation(publicKey, accessPolicies[i]).getHeader();
+                headers[i] = engine.encapsulation(publicKey, attributeSets[i]).getHeader();
                 temperTime = timer.stop(i);
                 out.print("\t" + temperTime);
                 this.timeEncapsulation[i] += temperTime;
@@ -218,7 +218,7 @@ public class CPABEPerformanceTest extends TestCase {
             for (int i = 0; i < maximal_attributes; i++) {
                 System.out.print("Decryption " + i + "; ");
                 timer.start(i);
-                engine.decryption(publicKey, secretKeys[i], accessPolicies[i], ciphertexts[i]);
+                engine.decryption(publicKey, secretKeys[i], attributeSets[i], ciphertexts[i]);
                 temperTime = timer.stop(i);
                 out.print("\t" + temperTime);
                 this.timeDecryption[i] += temperTime;
@@ -231,7 +231,7 @@ public class CPABEPerformanceTest extends TestCase {
             for (int i = 0; i < maximal_attributes; i++) {
                 System.out.print("Decapsulation " + i + "; ");
                 timer.start(i);
-                engine.decapsulation(publicKey, secretKeys[i], accessPolicies[i], headers[i]);
+                engine.decapsulation(publicKey, secretKeys[i], attributeSets[i], headers[i]);
                 temperTime = timer.stop(i);
                 out.print("\t" + temperTime);
                 this.timeDecapsulation[i] += temperTime;
@@ -246,15 +246,15 @@ public class CPABEPerformanceTest extends TestCase {
     }
 
     public void testRW13Performance() {
-        CPABEPerformanceTest cpabePerformanceTest = new CPABEPerformanceTest();
-//        cpabePerformanceTest.maximal_attributes = 10;
-//        cpabePerformanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
-//        cpabePerformanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-        cpabePerformanceTest.maximal_attributes = 50;
-        cpabePerformanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
-        cpabePerformanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
-        cpabePerformanceTest.engine = CPABERW13Engine.getInstance();
-        cpabePerformanceTest.init();
-        cpabePerformanceTest.runPerformanceTest();
+        KPABEPerformanceTest kpabePerformanceTest = new KPABEPerformanceTest();
+//        kpabePerformanceTest.maximal_attributes = 10;
+//        kpabePerformanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        kpabePerformanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        kpabePerformanceTest.maximal_attributes = 50;
+        kpabePerformanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        kpabePerformanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+        kpabePerformanceTest.engine = KPABERW13Engine.getInstance();
+        kpabePerformanceTest.init();
+        kpabePerformanceTest.runPerformanceTest();
     }
 }
