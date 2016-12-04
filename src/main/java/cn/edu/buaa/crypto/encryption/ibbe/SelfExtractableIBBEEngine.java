@@ -1,11 +1,11 @@
-package cn.edu.buaa.crypto.encryption.sepe;
+package cn.edu.buaa.crypto.encryption.ibbe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.be.BEEngine;
+import cn.edu.buaa.crypto.encryption.sepe.SelfExtractableBaseEngine;
 import cn.edu.buaa.crypto.encryption.sepe.serparams.SEPEHeaderParameter;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.BlockCipher;
@@ -14,15 +14,15 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.crypto.PBEParametersGenerator;
 
 /**
- * Created by Weiran Liu on 2016/12/4.
+ * Created by Weiran Liu on 2016/12/5.
  *
- * Self-extractable BE engine.
+ * Self-extractable IBBE engine.
  */
-public class SelfExtractableBEEngine extends Engine {
-    private final BEEngine engine;
+public class SelfExtractableIBBEEngine extends Engine {
+    private final IBBEEngine engine;
     private final SelfExtractableBaseEngine selfExtractableBaseEngine;
 
-    public SelfExtractableBEEngine(BEEngine engine, PBEParametersGenerator pbeParametersGenerator, BlockCipher blockCipher, Digest digest) {
+    public SelfExtractableIBBEEngine(IBBEEngine engine, PBEParametersGenerator pbeParametersGenerator, BlockCipher blockCipher, Digest digest) {
         super(engine.getEngineName(), engine.getProveSecModel(), engine.getPayloadSecLevel(), engine.getPredicateSecLevel());
 
         this.engine = engine;
@@ -33,21 +33,21 @@ public class SelfExtractableBEEngine extends Engine {
         return engine.setup(pairingParameters, maxUserNum);
     }
 
-    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int index) {
-        return engine.keyGen(publicKey, masterKey, index);
+    public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String identity) {
+        return engine.keyGen(publicKey, masterKey, identity);
     }
 
     public byte[] selfKeyGen() {
         return this.selfExtractableBaseEngine.selfKeyGen();
     }
 
-    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[] indexSet, byte[] ek){
-        PairingKeyEncapsulationSerPair encapsulationPair = this.engine.encapsulation(publicKey, indexSet);
+    public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] identitySet, byte[] ek){
+        PairingKeyEncapsulationSerPair encapsulationPair = this.engine.encapsulation(publicKey, identitySet);
         return this.selfExtractableBaseEngine.encapsulation(encapsulationPair, ek);
     }
 
     public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
-                                int[] indexSet, PairingCipherSerParameter header) throws InvalidCipherTextException {
+                                String[] identitySet, PairingCipherSerParameter header) throws InvalidCipherTextException {
         if (!(header instanceof SEPEHeaderParameter)) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + this.selfExtractableBaseEngine.getEngineName()  + ", find "
@@ -57,7 +57,7 @@ public class SelfExtractableBEEngine extends Engine {
         SEPEHeaderParameter seHeaderParameter = (SEPEHeaderParameter)header;
         PairingCipherSerParameter headerParameter = seHeaderParameter.getCtY();
         byte[] ct_k = seHeaderParameter.getCtK();
-        byte[] k_prime_temp = this.engine.decapsulation(publicKey, secretKey, indexSet, headerParameter);
+        byte[] k_prime_temp = this.engine.decapsulation(publicKey, secretKey, identitySet, headerParameter);
         return this.selfExtractableBaseEngine.decapsulation(k_prime_temp, ct_k);
     }
 

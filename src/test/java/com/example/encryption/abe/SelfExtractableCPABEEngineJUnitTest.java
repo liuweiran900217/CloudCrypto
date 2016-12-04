@@ -1,15 +1,14 @@
-package com.example.encryption.sepe;
+package com.example.encryption.abe;
 
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.KPABEGPSW06aEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.KPABEGPSW06bEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.KPABERW13Engine;
-import cn.edu.buaa.crypto.encryption.sepe.SelfExtractableKPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.CPABEBSW07Engine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.CPABERW13Engine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.SelfExtractableCPABEEngine;
 import com.example.TestUtils;
 import com.example.access.AccessPolicyExamples;
 import it.unisa.dia.gas.jpbc.PairingParameters;
@@ -31,12 +30,12 @@ import java.util.Arrays;
 /**
  * Created by Weiran Liu on 2016/12/4.
  *
- * Self-extractable KP-ABE engine unit test.
+ * Self-extractable CP-ABE engine unit test.
  */
-public class SelfExtractableKPABEEngineJUnitTest extends TestCase {
-    private SelfExtractableKPABEEngine engine;
+public class SelfExtractableCPABEEngineJUnitTest extends TestCase {
+    private SelfExtractableCPABEEngine engine;
 
-    public void setEngine(SelfExtractableKPABEEngine engine) {
+    public void setEngine(SelfExtractableCPABEEngine engine) {
         this.engine = engine;
     }
 
@@ -104,7 +103,7 @@ public class SelfExtractableKPABEEngineJUnitTest extends TestCase {
                                    final int[][] accessPolicy, final String[] rhos, final String[] attributes)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
-        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, accessPolicy, rhos);
+        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, attributes);
         byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
         CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
         Assert.assertEquals(secretKey, anSecretKey);
@@ -114,7 +113,7 @@ public class SelfExtractableKPABEEngineJUnitTest extends TestCase {
         byte[] ek = engine.selfKeyGen();
 
         //Encapsulation and serialization
-        PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, attributes, ek);
+        PairingKeyEncapsulationSerPair encapsulationPair = engine.encapsulation(publicKey, accessPolicy, rhos, ek);
         byte[] sessionKey = encapsulationPair.getSessionKey();
         PairingCipherSerParameter header = encapsulationPair.getHeader();
         byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
@@ -122,10 +121,9 @@ public class SelfExtractableKPABEEngineJUnitTest extends TestCase {
         Assert.assertEquals(header, anHeader);
         header = (PairingCipherSerParameter)anHeader;
 
-        //Decryption
-        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, attributes, header);
+        //Decapsulation
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, accessPolicy, rhos, header);
         Assert.assertArrayEquals(sessionKey, anSessionKey);
-        //Self decapsulation
         byte[] anSelfSessionKey = engine.selfDecapsulation(ek, header);
         Assert.assertArrayEquals(sessionKey, anSelfSessionKey);
     }
@@ -335,67 +333,56 @@ public class SelfExtractableKPABEEngineJUnitTest extends TestCase {
 
     public void testSEKPABEEngineBaseCase() {
         Digest digest = new SHA256Digest();
-        KPABEEngine kpabeEngine = KPABERW13Engine.getInstance();
+        CPABEEngine cpabeEngine = CPABERW13Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
-        SelfExtractableKPABEEngine seKPABEEngine = new SelfExtractableKPABEEngine(kpabeEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableKPABEEngineJUnitTest engineJUnitTest = new SelfExtractableKPABEEngineJUnitTest();
-        engineJUnitTest.setEngine(seKPABEEngine);
+        SelfExtractableCPABEEngine seCPABEEngine = new SelfExtractableCPABEEngine(cpabeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableCPABEEngineJUnitTest engineJUnitTest = new SelfExtractableCPABEEngineJUnitTest();
+        engineJUnitTest.setEngine(seCPABEEngine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
-    public void testSEKPABEEngineWithGPSW06a() {
+    public void testSEKPABEEngineWithBSW07() {
         Digest digest = new SHA256Digest();
-        KPABEEngine kpabeEngine = KPABEGPSW06aEngine.getInstance();
+        CPABEEngine cpabeEngine = CPABEBSW07Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
-        SelfExtractableKPABEEngine seKPABEEngine = new SelfExtractableKPABEEngine(kpabeEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableKPABEEngineJUnitTest engineJUnitTest = new SelfExtractableKPABEEngineJUnitTest();
-        engineJUnitTest.setEngine(seKPABEEngine);
-        engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
-    }
-
-    public void testSEKPABEEngineWithGPSW06b() {
-        Digest digest = new SHA256Digest();
-        KPABEEngine kpabeEngine = KPABEGPSW06bEngine.getInstance();
-        BlockCipher blockCipher = new AESEngine();
-        PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
-        SelfExtractableKPABEEngine seKPABEEngine = new SelfExtractableKPABEEngine(kpabeEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableKPABEEngineJUnitTest engineJUnitTest = new SelfExtractableKPABEEngineJUnitTest();
-        engineJUnitTest.setEngine(seKPABEEngine);
+        SelfExtractableCPABEEngine seCPABEEngine = new SelfExtractableCPABEEngine(cpabeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableCPABEEngineJUnitTest engineJUnitTest = new SelfExtractableCPABEEngineJUnitTest();
+        engineJUnitTest.setEngine(seCPABEEngine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
     public void testSEKPABEEngineWithPKCS5S2() {
         Digest digest = new SHA256Digest();
-        KPABEEngine kpabeEngine = KPABERW13Engine.getInstance();
+        CPABEEngine cpabeEngine = CPABERW13Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS5S2ParametersGenerator(digest);
-        SelfExtractableKPABEEngine seKPABEEngine = new SelfExtractableKPABEEngine(kpabeEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableKPABEEngineJUnitTest engineJUnitTest = new SelfExtractableKPABEEngineJUnitTest();
-        engineJUnitTest.setEngine(seKPABEEngine);
+        SelfExtractableCPABEEngine seCPABEEngine = new SelfExtractableCPABEEngine(cpabeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableCPABEEngineJUnitTest engineJUnitTest = new SelfExtractableCPABEEngineJUnitTest();
+        engineJUnitTest.setEngine(seCPABEEngine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
     public void testSEKPABEEngineWithPKCS12() {
         Digest digest = new SHA256Digest();
-        KPABEEngine kpabeEngine = KPABERW13Engine.getInstance();
+        CPABEEngine cpabeEngine = CPABERW13Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS12ParametersGenerator(digest);
-        SelfExtractableKPABEEngine seKPABEEngine = new SelfExtractableKPABEEngine(kpabeEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableKPABEEngineJUnitTest engineJUnitTest = new SelfExtractableKPABEEngineJUnitTest();
-        engineJUnitTest.setEngine(seKPABEEngine);
+        SelfExtractableCPABEEngine seCPABEEngine = new SelfExtractableCPABEEngine(cpabeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableCPABEEngineJUnitTest engineJUnitTest = new SelfExtractableCPABEEngineJUnitTest();
+        engineJUnitTest.setEngine(seCPABEEngine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
     public void testSEKPABEEngineWithSHA512() {
         Digest digest = new SHA512Digest();
-        KPABEEngine kpabeEngine = KPABERW13Engine.getInstance();
+        CPABEEngine cpabeEngine = CPABERW13Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
-        SelfExtractableKPABEEngine seKPABEEngine = new SelfExtractableKPABEEngine(kpabeEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableKPABEEngineJUnitTest engineJUnitTest = new SelfExtractableKPABEEngineJUnitTest();
-        engineJUnitTest.setEngine(seKPABEEngine);
+        SelfExtractableCPABEEngine seCPABEEngine = new SelfExtractableCPABEEngine(cpabeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableCPABEEngineJUnitTest engineJUnitTest = new SelfExtractableCPABEEngineJUnitTest();
+        engineJUnitTest.setEngine(seCPABEEngine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

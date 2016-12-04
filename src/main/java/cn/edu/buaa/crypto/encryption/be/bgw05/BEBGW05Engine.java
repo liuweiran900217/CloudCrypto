@@ -27,7 +27,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class BEBGW05Engine extends BEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "Boneh-Gentry-Waters BE scheme";
+    public static final String SCHEME_NAME = "Boneh-Gentry-Waters BE";
 
     private static BEBGW05Engine engine;
 

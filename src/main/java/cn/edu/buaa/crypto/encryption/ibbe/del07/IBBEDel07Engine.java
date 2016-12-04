@@ -27,7 +27,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class IBBEDel07Engine extends IBBEEngine {
     //Scheme name, used for exceptions
-    public static final String SCHEME_NAME = "Delerablée-7 IBBE scheme";
+    public static final String SCHEME_NAME = "Delerablée-07 IBBE";
 
     private static IBBEDel07Engine engine;
 

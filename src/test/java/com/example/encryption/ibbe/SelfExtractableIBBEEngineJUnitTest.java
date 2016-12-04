@@ -1,12 +1,12 @@
-package com.example.encryption.sepe;
+package com.example.encryption.ibbe;
 
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.be.BEEngine;
-import cn.edu.buaa.crypto.encryption.be.bgw05.BEBGW05Engine;
-import cn.edu.buaa.crypto.encryption.sepe.SelfExtractableBEEngine;
+import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
+import cn.edu.buaa.crypto.encryption.ibbe.SelfExtractableIBBEEngine;
+import cn.edu.buaa.crypto.encryption.ibbe.del07.IBBEDel07Engine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
@@ -24,77 +24,68 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Created by Weiran Liu on 2016/12/4.
+ * Created by Weiran Liu on 2016/12/5.
  *
- * Self-extractable BE unit test.
+ * Self-extractable IBBE engine unit test.
  */
-public class SelfExtractableBEEngineJUnitTest extends TestCase {
-    private static final int maxNumUser = 8;
-    private static final int index1_valid = 1;
-    private static final int index8_valid = 8;
-    private static final int index6_invalid = 6;
-    private static final int index0_invalid = 0;
-    private static final int index9_invalid = 9;
+public class SelfExtractableIBBEEngineJUnitTest extends TestCase {
+    private static final String identity_satisfied = "ID_0";
+    private static final String identity_unsatisfied = "ID_9";
 
-    private static final int[] indexSet1;
-    private static final int[] indexSet2;
-    private static final int[] indexSet3;
+    private static final String[] identitySet1 = {"ID_0"};
+    private static final String[] identitySet2 = {"ID_2", "ID_3", "ID_1", "ID_0"};
+    private static final String[] identitySet3 = {"ID_1", "ID_2", "ID_3", "ID_4", "ID_5", "ID_6", "ID_7", "ID_0"};
+    private static final String[] identitySet4 = {"ID_1", "ID_2", "ID_3", "ID_4", "ID_5", "ID_6", "ID_7", "ID_0", "ID_8"};
 
-    static {
-        indexSet1 = new int[]{1};
-        indexSet2 = new int[] {1, 2, 5, 7, 8};
-        indexSet3 = new int[]{1, 1, 5, 2, 2, 5, 8, 7, 7};
-    }
+    private SelfExtractableIBBEEngine engine;
 
-    private SelfExtractableBEEngine engine;
-
-    public void setEngine(SelfExtractableBEEngine engine) {
+    private void setEngine(SelfExtractableIBBEEngine engine) {
         this.engine = engine;
     }
 
-    private void try_valid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int index, int[] indexSet) {
+    private void try_valid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                         String identity, String[] identitySet) {
         try {
-            try_decapsulation(publicKey, masterKey, index, indexSet);
+            try_decapsulation(publicKey, masterKey, identity, identitySet);
         } catch (Exception e) {
             System.out.println("Valid decapsulation test failed, " +
-                    "index  = " + index + ", " +
-                    "indexSet = " + Arrays.toString(indexSet));
+                    "identity  = " + identity + ", " +
+                    "id vector = " + Arrays.toString(identitySet));
             e.printStackTrace();
             System.exit(1);
         }
     }
 
-    private void try_invalid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int index, int[] indexSet) {
+    private void try_invalid_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                           String identity, String[] identitySet) {
         try {
-            try_decapsulation(publicKey, masterKey, index, indexSet);
+            try_decapsulation(publicKey, masterKey, identity, identitySet);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
-        } catch (IllegalArgumentException e) {
-            //correct if getting there, nothing to do
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Invalid decapsulation test failed, " +
-                    "index  = " + index + ", " +
-                    "indexSet = " + Arrays.toString(indexSet));
+                    "identity  = " + identity + ", " +
+                    "id vector = " + Arrays.toString(identitySet));
             e.printStackTrace();
             System.exit(1);
         }
     }
 
-    private void try_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int index, int[] indexSet)
+    private void try_decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
+                                   String identity, String[] identitySet)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
-        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, index);
+        PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identity);
         byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
         CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
         Assert.assertEquals(secretKey, anSecretKey);
         secretKey = (PairingKeySerParameter)anSecretKey;
 
-        //self KeyGen
+        //SelfKeyGen
         byte[] ek = engine.selfKeyGen();
 
         //Encryption and serialization
-        PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, indexSet, ek);
+        PairingKeyEncapsulationSerPair keyEncapsulationSerPair = engine.encapsulation(publicKey, identitySet, ek);
         byte[] sessionKey = keyEncapsulationSerPair.getSessionKey();
         PairingCipherSerParameter ciphertext = keyEncapsulationSerPair.getHeader();
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
@@ -103,17 +94,17 @@ public class SelfExtractableBEEngineJUnitTest extends TestCase {
         ciphertext = (PairingCipherSerParameter)anCiphertext;
 
         //Decryption
-        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, indexSet, ciphertext);
+        byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identitySet, ciphertext);
         Assert.assertArrayEquals(sessionKey, anSessionKey);
-        //Self decapsulation
+        //SelfDecapsulation
         byte[] anSelfSessionKey = engine.selfDecapsulation(ek, ciphertext);
         Assert.assertArrayEquals(sessionKey, anSelfSessionKey);
     }
 
-    public void runAllTests(PairingParameters pairingParameters) {
+    private void runAllTests(PairingParameters pairingParameters) {
         try {
             // Setup and serialization
-            PairingKeySerPair keyPair = engine.setup(pairingParameters, maxNumUser);
+            PairingKeySerPair keyPair = engine.setup(pairingParameters, identitySet4.length);
             PairingKeySerParameter publicKey = keyPair.getPublic();
             byte[] byteArrayPublicKey = TestUtils.SerCipherParameter(publicKey);
             CipherParameters anPublicKey = TestUtils.deserCipherParameters(byteArrayPublicKey);
@@ -128,20 +119,17 @@ public class SelfExtractableBEEngineJUnitTest extends TestCase {
 
             //test valid example
             System.out.println("Test valid examples");
-            try_valid_decapsulation(publicKey, masterKey, index1_valid, indexSet1);
-            try_valid_decapsulation(publicKey, masterKey, index1_valid, indexSet2);
-            try_valid_decapsulation(publicKey, masterKey, index8_valid, indexSet2);
-            try_valid_decapsulation(publicKey, masterKey, index1_valid, indexSet3);
-            try_valid_decapsulation(publicKey, masterKey, index8_valid, indexSet3);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet1);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet2);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet3);
+            try_valid_decapsulation(publicKey, masterKey, identity_satisfied, identitySet4);
 
             //test valid example
             System.out.println("Test invalid examples");
-            try_invalid_decapsulation(publicKey, masterKey, index0_invalid, indexSet2);
-            try_invalid_decapsulation(publicKey, masterKey, index6_invalid, indexSet2);
-            try_invalid_decapsulation(publicKey, masterKey, index9_invalid, indexSet2);
-            try_invalid_decapsulation(publicKey, masterKey, index0_invalid, indexSet3);
-            try_invalid_decapsulation(publicKey, masterKey, index6_invalid, indexSet3);
-            try_invalid_decapsulation(publicKey, masterKey, index9_invalid, indexSet3);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet1);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet2);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet3);
+            try_invalid_decapsulation(publicKey, masterKey, identity_unsatisfied, identitySet4);
             System.out.println(engine.getEngineName() + " test passed");
         } catch (ClassNotFoundException e) {
             System.out.println("setup test failed.");
@@ -154,47 +142,47 @@ public class SelfExtractableBEEngineJUnitTest extends TestCase {
         }
     }
 
-    public void testSEBEEngineBaseCase() {
+    public void testSEIBBEEngineBaseCase() {
         Digest digest = new SHA256Digest();
-        BEEngine beEngine = BEBGW05Engine.getInstance();
+        IBBEEngine ibbeEngine = IBBEDel07Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
-        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
-        engineJUnitTest.setEngine(seBEEngine);
+        SelfExtractableIBBEEngine engine = new SelfExtractableIBBEEngine(ibbeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableIBBEEngineJUnitTest engineJUnitTest = new SelfExtractableIBBEEngineJUnitTest();
+        engineJUnitTest.setEngine(engine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
-    public void testSEIBEEngineWithPKCS5S2() {
+    public void testSEIBBEEngineWithPKCS5S2() {
         Digest digest = new SHA256Digest();
-        BEEngine beEngine = BEBGW05Engine.getInstance();
+        IBBEEngine ibbeEngine = IBBEDel07Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS5S2ParametersGenerator(digest);
-        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
-        engineJUnitTest.setEngine(seBEEngine);
+        SelfExtractableIBBEEngine engine = new SelfExtractableIBBEEngine(ibbeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableIBBEEngineJUnitTest engineJUnitTest = new SelfExtractableIBBEEngineJUnitTest();
+        engineJUnitTest.setEngine(engine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
-    public void testSEIBEEngineWithPKCS12() {
+    public void testSEIBBEEngineWithPKCS12() {
         Digest digest = new SHA256Digest();
-        BEEngine beEngine = BEBGW05Engine.getInstance();
+        IBBEEngine ibbeEngine = IBBEDel07Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS12ParametersGenerator(digest);
-        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
-        engineJUnitTest.setEngine(seBEEngine);
+        SelfExtractableIBBEEngine engine = new SelfExtractableIBBEEngine(ibbeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableIBBEEngineJUnitTest engineJUnitTest = new SelfExtractableIBBEEngineJUnitTest();
+        engineJUnitTest.setEngine(engine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
-    public void testSEIBEEngineWithSHA512() {
+    public void testSEIBBEEngineWithSHA512() {
         Digest digest = new SHA512Digest();
-        BEEngine beEngine = BEBGW05Engine.getInstance();
+        IBBEEngine ibbeEngine = IBBEDel07Engine.getInstance();
         BlockCipher blockCipher = new AESEngine();
         PBEParametersGenerator pbeParametersGenerator = new PKCS5S1ParametersGenerator(digest);
-        SelfExtractableBEEngine seBEEngine = new SelfExtractableBEEngine(beEngine, pbeParametersGenerator, blockCipher, digest);
-        SelfExtractableBEEngineJUnitTest engineJUnitTest = new SelfExtractableBEEngineJUnitTest();
-        engineJUnitTest.setEngine(seBEEngine);
+        SelfExtractableIBBEEngine engine = new SelfExtractableIBBEEngine(ibbeEngine, pbeParametersGenerator, blockCipher, digest);
+        SelfExtractableIBBEEngineJUnitTest engineJUnitTest = new SelfExtractableIBBEEngineJUnitTest();
+        engineJUnitTest.setEngine(engine);
         engineJUnitTest.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

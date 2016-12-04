@@ -1,4 +1,4 @@
-package com.example.encryption.sepe;
+package com.example.encryption.ibe;
 
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;

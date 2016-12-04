@@ -5,6 +5,7 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.CPABEBSW07Engine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.CPABERW13Engine;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.utils.Timer;
@@ -31,7 +32,7 @@ public class CPABEPerformanceTest extends TestCase {
     //the maximal number of role index is chosen
     private int maximal_attributes;
     //setup time
-    private double timeSetep;
+    private double timeSetup;
 
     //attributeSets
     private String[][] attributeSets;
@@ -110,7 +111,7 @@ public class CPABEPerformanceTest extends TestCase {
         //write results to the file
         //write setup time
         out.print("Setup : ");
-        out.print("\t" + this.timeSetep / test_round);
+        out.print("\t" + this.timeSetup / test_round);
         out.println();
 
         //write KeyGen
@@ -163,7 +164,7 @@ public class CPABEPerformanceTest extends TestCase {
             PairingKeySerPair keyPair = engine.setup(pairingParameters, maximal_attributes);
             temperTime = timer.stop(0);
             out.print("\t" + temperTime);
-            this.timeSetep += temperTime;
+            this.timeSetup += temperTime;
             out.println();
             System.out.println();
 
@@ -246,15 +247,28 @@ public class CPABEPerformanceTest extends TestCase {
     }
 
     public void testRW13Performance() {
-        CPABEPerformanceTest cpabePerformanceTest = new CPABEPerformanceTest();
-//        cpabePerformanceTest.maximal_attributes = 10;
-//        cpabePerformanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
-//        cpabePerformanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-        cpabePerformanceTest.maximal_attributes = 50;
-        cpabePerformanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
-        cpabePerformanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
-        cpabePerformanceTest.engine = CPABERW13Engine.getInstance();
-        cpabePerformanceTest.init();
-        cpabePerformanceTest.runPerformanceTest();
+        CPABEPerformanceTest performanceTest = new CPABEPerformanceTest();
+//        performanceTest.maximal_attributes = 10;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_attributes = 50;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+        performanceTest.engine = CPABERW13Engine.getInstance();
+        performanceTest.init();
+        performanceTest.runPerformanceTest();
+    }
+
+    public void testBSW07Performance() {
+        CPABEPerformanceTest performanceTest = new CPABEPerformanceTest();
+//        performanceTest.maximal_attributes = 10;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_attributes = 50;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+        performanceTest.engine = CPABEBSW07Engine.getInstance();
+        performanceTest.init();
+        performanceTest.runPerformanceTest();
     }
 }
