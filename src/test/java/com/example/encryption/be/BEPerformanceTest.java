@@ -185,7 +185,7 @@ public class BEPerformanceTest extends TestCase {
         }
     }
 
-    public void testSelfExtractableRW13Performance() {
+    public void testBGW05Performance() {
         BEPerformanceTest performanceTest = new BEPerformanceTest();
 //        performanceTest.maximal_users = 10;
 //        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;

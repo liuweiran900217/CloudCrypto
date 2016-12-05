@@ -7,7 +7,7 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import cn.edu.buaa.crypto.encryption.ibe.bf01a.IBEBF01aEngine;
 import cn.edu.buaa.crypto.encryption.ibe.gen06a.IBEGen06aEngine;
-import cn.edu.buaa.crypto.encryption.sepe.SelfExtractableIBEEngine;
+import cn.edu.buaa.crypto.encryption.ibe.SelfExtractableIBEEngine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

@@ -94,7 +94,7 @@ public class SelfExtractableIBBEPerformanceTest extends TestCase {
 
     private void runPerformanceTest() {
         out = new Out(default_path + engine.getEngineName());
-        out.println("Test IBBE engine: " + engine.getEngineName());
+        out.println("Test Self-Extractable IBBE engine: " + engine.getEngineName());
         out.println("All test rounds: " + this.test_round);
 
         for (int i = 0; i < test_round; i++) {

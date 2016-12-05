@@ -1,4 +1,4 @@
-package cn.edu.buaa.crypto.encryption.sepe;
+package cn.edu.buaa.crypto.encryption.ibe;
 
 import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
@@ -6,6 +6,7 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
+import cn.edu.buaa.crypto.encryption.sepe.SelfExtractableBaseEngine;
 import cn.edu.buaa.crypto.encryption.sepe.serparams.SEPEHeaderParameter;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.BlockCipher;

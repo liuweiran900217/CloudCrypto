@@ -185,7 +185,7 @@ public class IBBEPerformanceTest extends TestCase {
         }
     }
 
-    public void testSelfExtractableRW13Performance() {
+    public void testDel07Performance() {
         IBBEPerformanceTest performanceTest = new IBBEPerformanceTest();
 //        performanceTest.maximal_users = 10;
 //        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;

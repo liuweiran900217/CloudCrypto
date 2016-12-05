@@ -25,7 +25,7 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  */
 public class IBEBF01aEngine extends IBEEngine {
     //Scheme name, used for exceptions
-    private static final String SCHEME_NAME = "Boneh-Franklin CPA-secure IBE scheme";
+    private static final String SCHEME_NAME = "Boneh-Franklin CPA-secure IBE";
 
     private static IBEBF01aEngine engine;
 

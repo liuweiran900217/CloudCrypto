@@ -250,7 +250,7 @@ public class SelfExtractableCPABEPerformanceTest extends TestCase {
         }
     }
 
-    public void testRW13Performance() {
+    public void testSelfExtractableRW13Performance() {
         SelfExtractableCPABEPerformanceTest performanceTest = new SelfExtractableCPABEPerformanceTest();
 //        performanceTest.maximal_attributes = 10;
 //        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
@@ -267,7 +267,7 @@ public class SelfExtractableCPABEPerformanceTest extends TestCase {
         performanceTest.runPerformanceTest();
     }
 
-    public void testBSW07Performance() {
+    public void testSelfExtractableBSW07Performance() {
         SelfExtractableCPABEPerformanceTest performanceTest = new SelfExtractableCPABEPerformanceTest();
 //        performanceTest.maximal_attributes = 10;
 //        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
