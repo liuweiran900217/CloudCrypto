@@ -1,0 +1,710 @@
+Test Self-Extractable IBE engine: Self-Extractable Boneh-Franklin CPA-secure IBE, with BlockCipher AES, with Digest SHA-256
+All test rounds: 100
+Test round: 1
+Setup : 	199.206384
+KeyGen: 	44.459119
+SelfKeyGen: 	0.036337
+Encapsulation: 	80.951833
+Decapsulation: 	49.395135
+SelfDecapsulation: 	17.349726
+Test round: 2
+Setup : 	14.349703
+KeyGen: 	37.507818
+SelfKeyGen: 	0.039695
+Encapsulation: 	48.281194
+Decapsulation: 	30.860777
+SelfDecapsulation: 	2.124935
+Test round: 3
+Setup : 	16.016805
+KeyGen: 	34.17953
+SelfKeyGen: 	0.027742
+Encapsulation: 	45.435114
+Decapsulation: 	33.033997
+SelfDecapsulation: 	2.003379
+Test round: 4
+Setup : 	13.348379
+KeyGen: 	34.947582
+SelfKeyGen: 	0.029207
+Encapsulation: 	41.341611
+Decapsulation: 	32.583232
+SelfDecapsulation: 	2.015581
+Test round: 5
+Setup : 	15.061107
+KeyGen: 	37.343494
+SelfKeyGen: 	0.032526
+Encapsulation: 	49.078888
+Decapsulation: 	29.572045
+SelfDecapsulation: 	2.269813
+Test round: 6
+Setup : 	11.374506
+KeyGen: 	33.771458
+SelfKeyGen: 	0.022657
+Encapsulation: 	49.93119
+Decapsulation: 	32.731471
+SelfDecapsulation: 	2.113306
+Test round: 7
+Setup : 	11.373877
+KeyGen: 	36.305375
+SelfKeyGen: 	0.016479
+Encapsulation: 	42.482457
+Decapsulation: 	30.66303
+SelfDecapsulation: 	2.047714
+Test round: 8
+Setup : 	10.886783
+KeyGen: 	30.850836
+SelfKeyGen: 	0.02696
+Encapsulation: 	43.523896
+Decapsulation: 	29.488407
+SelfDecapsulation: 	1.844931
+Test round: 9
+Setup : 	11.470469
+KeyGen: 	34.966945
+SelfKeyGen: 	0.046705
+Encapsulation: 	41.96515
+Decapsulation: 	32.568212
+SelfDecapsulation: 	1.807269
+Test round: 10
+Setup : 	11.189919
+KeyGen: 	30.146899
+SelfKeyGen: 	0.041611
+Encapsulation: 	49.055439
+Decapsulation: 	31.196582
+SelfDecapsulation: 	1.989172
+Test round: 11
+Setup : 	11.242992
+KeyGen: 	36.078876
+SelfKeyGen: 	0.018647
+Encapsulation: 	45.068087
+Decapsulation: 	29.694488
+SelfDecapsulation: 	1.864774
+Test round: 12
+Setup : 	10.867049
+KeyGen: 	30.032415
+SelfKeyGen: 	0.005893
+Encapsulation: 	46.891093
+Decapsulation: 	29.593128
+SelfDecapsulation: 	1.80495
+Test round: 13
+Setup : 	11.432683
+KeyGen: 	31.547552
+SelfKeyGen: 	0.016087
+Encapsulation: 	39.957097
+Decapsulation: 	28.138444
+SelfDecapsulation: 	1.852013
+Test round: 14
+Setup : 	10.815282
+KeyGen: 	33.632182
+SelfKeyGen: 	0.02888
+Encapsulation: 	45.132147
+Decapsulation: 	30.42817
+SelfDecapsulation: 	1.915013
+Test round: 15
+Setup : 	11.281774
+KeyGen: 	30.709456
+SelfKeyGen: 	0.034019
+Encapsulation: 	40.673592
+Decapsulation: 	29.14844
+SelfDecapsulation: 	1.899453
+Test round: 16
+Setup : 	11.629052
+KeyGen: 	33.473088
+SelfKeyGen: 	0.013808
+Encapsulation: 	42.574777
+Decapsulation: 	32.585915
+SelfDecapsulation: 	1.874317
+Test round: 17
+Setup : 	10.616567
+KeyGen: 	29.892182
+SelfKeyGen: 	0.019145
+Encapsulation: 	41.405719
+Decapsulation: 	31.556769
+SelfDecapsulation: 	1.801539
+Test round: 18
+Setup : 	11.127631
+KeyGen: 	31.623656
+SelfKeyGen: 	0.019245
+Encapsulation: 	42.638768
+Decapsulation: 	27.8378
+SelfDecapsulation: 	1.798902
+Test round: 19
+Setup : 	11.359967
+KeyGen: 	31.174507
+SelfKeyGen: 	0.063085
+Encapsulation: 	44.296114
+Decapsulation: 	29.865063
+SelfDecapsulation: 	1.806272
+Test round: 20
+Setup : 	11.231714
+KeyGen: 	35.146548
+SelfKeyGen: 	0.023099
+Encapsulation: 	41.42115
+Decapsulation: 	27.887388
+SelfDecapsulation: 	2.120637
+Test round: 21
+Setup : 	11.110784
+KeyGen: 	29.778168
+SelfKeyGen: 	0.029866
+Encapsulation: 	43.207153
+Decapsulation: 	29.607554
+SelfDecapsulation: 	1.780578
+Test round: 22
+Setup : 	11.439302
+KeyGen: 	31.843534
+SelfKeyGen: 	0.00915
+Encapsulation: 	45.211209
+Decapsulation: 	28.364632
+SelfDecapsulation: 	1.809133
+Test round: 23
+Setup : 	10.6171
+KeyGen: 	32.731759
+SelfKeyGen: 	0.011514
+Encapsulation: 	44.5827
+Decapsulation: 	33.385198
+SelfDecapsulation: 	1.833714
+Test round: 24
+Setup : 	10.990363
+KeyGen: 	34.075398
+SelfKeyGen: 	0.008672
+Encapsulation: 	41.44245
+Decapsulation: 	27.868603
+SelfDecapsulation: 	1.698769
+Test round: 25
+Setup : 	10.827623
+KeyGen: 	30.47471
+SelfKeyGen: 	0.00989
+Encapsulation: 	41.737973
+Decapsulation: 	30.957484
+SelfDecapsulation: 	2.462991
+Test round: 26
+Setup : 	12.03287
+KeyGen: 	32.021041
+SelfKeyGen: 	0.008024
+Encapsulation: 	39.93534
+Decapsulation: 	27.953039
+SelfDecapsulation: 	1.776863
+Test round: 27
+Setup : 	11.131329
+KeyGen: 	34.703133
+SelfKeyGen: 	0.011623
+Encapsulation: 	43.353389
+Decapsulation: 	30.467328
+SelfDecapsulation: 	1.769827
+Test round: 28
+Setup : 	11.165894
+KeyGen: 	31.431211
+SelfKeyGen: 	0.014409
+Encapsulation: 	40.092853
+Decapsulation: 	28.447871
+SelfDecapsulation: 	1.763553
+Test round: 29
+Setup : 	10.713273
+KeyGen: 	30.064177
+SelfKeyGen: 	0.005981
+Encapsulation: 	42.104309
+Decapsulation: 	33.077685
+SelfDecapsulation: 	1.823074
+Test round: 30
+Setup : 	11.269033
+KeyGen: 	32.019205
+SelfKeyGen: 	0.016697
+Encapsulation: 	40.836603
+Decapsulation: 	28.075798
+SelfDecapsulation: 	1.806112
+Test round: 31
+Setup : 	10.872436
+KeyGen: 	31.16676
+SelfKeyGen: 	0.016983
+Encapsulation: 	45.733203
+Decapsulation: 	30.743305
+SelfDecapsulation: 	1.831163
+Test round: 32
+Setup : 	11.519594
+KeyGen: 	34.472275
+SelfKeyGen: 	0.016944
+Encapsulation: 	40.940221
+Decapsulation: 	27.961919
+SelfDecapsulation: 	1.824871
+Test round: 33
+Setup : 	11.251862
+KeyGen: 	31.422094
+SelfKeyGen: 	0.008936
+Encapsulation: 	44.154778
+Decapsulation: 	32.482887
+SelfDecapsulation: 	1.767033
+Test round: 34
+Setup : 	11.211254
+KeyGen: 	34.369692
+SelfKeyGen: 	0.019539
+Encapsulation: 	45.133867
+Decapsulation: 	28.489011
+SelfDecapsulation: 	1.697466
+Test round: 35
+Setup : 	11.018662
+KeyGen: 	33.776073
+SelfKeyGen: 	0.016358
+Encapsulation: 	43.577432
+Decapsulation: 	29.180978
+SelfDecapsulation: 	1.854805
+Test round: 36
+Setup : 	11.69093
+KeyGen: 	31.981815
+SelfKeyGen: 	0.02548
+Encapsulation: 	41.353063
+Decapsulation: 	28.120255
+SelfDecapsulation: 	1.76328
+Test round: 37
+Setup : 	10.919781
+KeyGen: 	34.499447
+SelfKeyGen: 	0.020166
+Encapsulation: 	46.123469
+Decapsulation: 	34.285687
+SelfDecapsulation: 	2.029463
+Test round: 38
+Setup : 	12.904616
+KeyGen: 	29.855842
+SelfKeyGen: 	0.006857
+Encapsulation: 	39.045449
+Decapsulation: 	28.303397
+SelfDecapsulation: 	1.76637
+Test round: 39
+Setup : 	11.02144
+KeyGen: 	33.491454
+SelfKeyGen: 	0.008104
+Encapsulation: 	42.10729
+Decapsulation: 	31.604911
+SelfDecapsulation: 	1.824283
+Test round: 40
+Setup : 	11.119629
+KeyGen: 	31.055728
+SelfKeyGen: 	0.019313
+Encapsulation: 	43.792892
+Decapsulation: 	32.403366
+SelfDecapsulation: 	1.82401
+Test round: 41
+Setup : 	11.443461
+KeyGen: 	34.598562
+SelfKeyGen: 	0.007736
+Encapsulation: 	45.056783
+Decapsulation: 	27.742286
+SelfDecapsulation: 	1.769379
+Test round: 42
+Setup : 	10.712231
+KeyGen: 	30.334694
+SelfKeyGen: 	0.018295
+Encapsulation: 	39.649403
+Decapsulation: 	32.585492
+SelfDecapsulation: 	1.883839
+Test round: 43
+Setup : 	13.140369
+KeyGen: 	32.719492
+SelfKeyGen: 	0.017025
+Encapsulation: 	42.980602
+Decapsulation: 	27.675831
+SelfDecapsulation: 	1.811146
+Test round: 44
+Setup : 	11.282556
+KeyGen: 	31.214768
+SelfKeyGen: 	0.007714
+Encapsulation: 	43.342253
+Decapsulation: 	32.12029
+SelfDecapsulation: 	1.805162
+Test round: 45
+Setup : 	10.966627
+KeyGen: 	31.701302
+SelfKeyGen: 	0.01672
+Encapsulation: 	41.51874
+Decapsulation: 	29.310203
+SelfDecapsulation: 	1.693329
+Test round: 46
+Setup : 	10.630341
+KeyGen: 	29.650027
+SelfKeyGen: 	0.011867
+Encapsulation: 	47.002634
+Decapsulation: 	30.297687
+SelfDecapsulation: 	1.75943
+Test round: 47
+Setup : 	11.362892
+KeyGen: 	32.610918
+SelfKeyGen: 	0.006214
+Encapsulation: 	40.338671
+Decapsulation: 	27.60544
+SelfDecapsulation: 	1.774253
+Test round: 48
+Setup : 	10.752448
+KeyGen: 	30.817088
+SelfKeyGen: 	0.008463
+Encapsulation: 	41.319592
+Decapsulation: 	30.932798
+SelfDecapsulation: 	1.821755
+Test round: 49
+Setup : 	11.965854
+KeyGen: 	37.464871
+SelfKeyGen: 	0.007681
+Encapsulation: 	39.981932
+Decapsulation: 	27.511958
+SelfDecapsulation: 	1.713724
+Test round: 50
+Setup : 	11.631167
+KeyGen: 	30.523665
+SelfKeyGen: 	0.003911
+Encapsulation: 	44.262237
+Decapsulation: 	29.923589
+SelfDecapsulation: 	1.750414
+Test round: 51
+Setup : 	14.84502
+KeyGen: 	31.109843
+SelfKeyGen: 	0.003706
+Encapsulation: 	40.92996
+Decapsulation: 	28.337929
+SelfDecapsulation: 	1.680434
+Test round: 52
+Setup : 	10.805781
+KeyGen: 	29.834961
+SelfKeyGen: 	0.006371
+Encapsulation: 	42.686806
+Decapsulation: 	29.259254
+SelfDecapsulation: 	1.987284
+Test round: 53
+Setup : 	12.690091
+KeyGen: 	34.095226
+SelfKeyGen: 	0.015532
+Encapsulation: 	40.686042
+Decapsulation: 	28.385369
+SelfDecapsulation: 	1.691304
+Test round: 54
+Setup : 	10.687473
+KeyGen: 	29.903504
+SelfKeyGen: 	0.013961
+Encapsulation: 	42.550442
+Decapsulation: 	30.77522
+SelfDecapsulation: 	1.923542
+Test round: 55
+Setup : 	11.501602
+KeyGen: 	34.387199
+SelfKeyGen: 	0.01341
+Encapsulation: 	39.280743
+Decapsulation: 	28.80341
+SelfDecapsulation: 	1.72607
+Test round: 56
+Setup : 	10.968701
+KeyGen: 	36.072342
+SelfKeyGen: 	0.01705
+Encapsulation: 	40.748332
+Decapsulation: 	29.32695
+SelfDecapsulation: 	1.763713
+Test round: 57
+Setup : 	11.205446
+KeyGen: 	34.603558
+SelfKeyGen: 	0.02903
+Encapsulation: 	40.082118
+Decapsulation: 	28.667818
+SelfDecapsulation: 	1.782369
+Test round: 58
+Setup : 	10.716794
+KeyGen: 	29.614764
+SelfKeyGen: 	0.012544
+Encapsulation: 	41.702692
+Decapsulation: 	28.930125
+SelfDecapsulation: 	1.715792
+Test round: 59
+Setup : 	13.501626
+KeyGen: 	32.230385
+SelfKeyGen: 	0.007431
+Encapsulation: 	41.39649
+Decapsulation: 	28.17917
+SelfDecapsulation: 	1.72152
+Test round: 60
+Setup : 	10.725133
+KeyGen: 	29.905785
+SelfKeyGen: 	0.012466
+Encapsulation: 	42.111612
+Decapsulation: 	28.848862
+SelfDecapsulation: 	1.822753
+Test round: 61
+Setup : 	12.159463
+KeyGen: 	32.347638
+SelfKeyGen: 	0.003675
+Encapsulation: 	42.850119
+Decapsulation: 	27.890613
+SelfDecapsulation: 	1.752008
+Test round: 62
+Setup : 	11.137382
+KeyGen: 	30.775916
+SelfKeyGen: 	0.005066
+Encapsulation: 	44.258709
+Decapsulation: 	28.889247
+SelfDecapsulation: 	1.785419
+Test round: 63
+Setup : 	11.500452
+KeyGen: 	34.784672
+SelfKeyGen: 	0.013551
+Encapsulation: 	41.709105
+Decapsulation: 	29.148055
+SelfDecapsulation: 	1.682932
+Test round: 64
+Setup : 	12.821761
+KeyGen: 	29.948713
+SelfKeyGen: 	0.015036
+Encapsulation: 	40.772187
+Decapsulation: 	29.570767
+SelfDecapsulation: 	1.810916
+Test round: 65
+Setup : 	11.445884
+KeyGen: 	33.658441
+SelfKeyGen: 	0.006482
+Encapsulation: 	39.63153
+Decapsulation: 	29.226255
+SelfDecapsulation: 	1.71689
+Test round: 66
+Setup : 	11.024654
+KeyGen: 	29.790946
+SelfKeyGen: 	0.025794
+Encapsulation: 	42.288801
+Decapsulation: 	33.526501
+SelfDecapsulation: 	2.394648
+Test round: 67
+Setup : 	11.665195
+KeyGen: 	34.305939
+SelfKeyGen: 	0.011319
+Encapsulation: 	41.059462
+Decapsulation: 	28.319175
+SelfDecapsulation: 	1.699137
+Test round: 68
+Setup : 	10.504975
+KeyGen: 	30.614835
+SelfKeyGen: 	0.014527
+Encapsulation: 	41.107916
+Decapsulation: 	29.805165
+SelfDecapsulation: 	2.233122
+Test round: 69
+Setup : 	11.758266
+KeyGen: 	31.75586
+SelfKeyGen: 	0.014772
+Encapsulation: 	43.292841
+Decapsulation: 	27.421395
+SelfDecapsulation: 	1.660941
+Test round: 70
+Setup : 	11.819173
+KeyGen: 	31.390395
+SelfKeyGen: 	0.009878
+Encapsulation: 	40.680642
+Decapsulation: 	34.591467
+SelfDecapsulation: 	1.849782
+Test round: 71
+Setup : 	11.861699
+KeyGen: 	32.892936
+SelfKeyGen: 	0.012466
+Encapsulation: 	41.056853
+Decapsulation: 	27.722164
+SelfDecapsulation: 	1.71243
+Test round: 72
+Setup : 	10.645846
+KeyGen: 	29.715268
+SelfKeyGen: 	0.012768
+Encapsulation: 	44.958472
+Decapsulation: 	32.317247
+SelfDecapsulation: 	1.751602
+Test round: 73
+Setup : 	11.190334
+KeyGen: 	34.447643
+SelfKeyGen: 	0.007537
+Encapsulation: 	41.346603
+Decapsulation: 	31.890866
+SelfDecapsulation: 	1.738717
+Test round: 74
+Setup : 	10.614099
+KeyGen: 	30.588573
+SelfKeyGen: 	0.007312
+Encapsulation: 	44.940027
+Decapsulation: 	32.776607
+SelfDecapsulation: 	1.720131
+Test round: 75
+Setup : 	13.875827
+KeyGen: 	36.022152
+SelfKeyGen: 	0.011909
+Encapsulation: 	39.220807
+Decapsulation: 	28.522676
+SelfDecapsulation: 	1.81964
+Test round: 76
+Setup : 	10.966356
+KeyGen: 	29.773812
+SelfKeyGen: 	0.011369
+Encapsulation: 	44.360564
+Decapsulation: 	33.650258
+SelfDecapsulation: 	1.788632
+Test round: 77
+Setup : 	12.948123
+KeyGen: 	34.653447
+SelfKeyGen: 	0.011886
+Encapsulation: 	40.462623
+Decapsulation: 	28.248544
+SelfDecapsulation: 	1.794937
+Test round: 78
+Setup : 	10.79452
+KeyGen: 	29.946353
+SelfKeyGen: 	0.009087
+Encapsulation: 	47.444634
+Decapsulation: 	30.047045
+SelfDecapsulation: 	1.800659
+Test round: 79
+Setup : 	11.703948
+KeyGen: 	31.556744
+SelfKeyGen: 	0.007821
+Encapsulation: 	39.622917
+Decapsulation: 	27.350616
+SelfDecapsulation: 	1.753451
+Test round: 80
+Setup : 	10.668041
+KeyGen: 	31.194786
+SelfKeyGen: 	0.007667
+Encapsulation: 	41.070097
+Decapsulation: 	28.93788
+SelfDecapsulation: 	1.910695
+Test round: 81
+Setup : 	10.979355
+KeyGen: 	32.053503
+SelfKeyGen: 	0.015489
+Encapsulation: 	39.877273
+Decapsulation: 	27.397047
+SelfDecapsulation: 	1.835798
+Test round: 82
+Setup : 	11.324495
+KeyGen: 	30.740553
+SelfKeyGen: 	0.019713
+Encapsulation: 	42.642817
+Decapsulation: 	29.518797
+SelfDecapsulation: 	1.915635
+Test round: 83
+Setup : 	13.577154
+KeyGen: 	33.323955
+SelfKeyGen: 	0.00688
+Encapsulation: 	40.792863
+Decapsulation: 	29.069283
+SelfDecapsulation: 	1.729594
+Test round: 84
+Setup : 	13.986169
+KeyGen: 	31.994788
+SelfKeyGen: 	0.011367
+Encapsulation: 	44.438069
+Decapsulation: 	32.29058
+SelfDecapsulation: 	1.800128
+Test round: 85
+Setup : 	11.667498
+KeyGen: 	36.077069
+SelfKeyGen: 	0.013168
+Encapsulation: 	39.835139
+Decapsulation: 	30.743008
+SelfDecapsulation: 	2.206456
+Test round: 86
+Setup : 	11.033786
+KeyGen: 	31.201511
+SelfKeyGen: 	0.014279
+Encapsulation: 	41.385384
+Decapsulation: 	32.34098
+SelfDecapsulation: 	1.75149
+Test round: 87
+Setup : 	11.291901
+KeyGen: 	31.659776
+SelfKeyGen: 	0.016515
+Encapsulation: 	39.761604
+Decapsulation: 	27.917
+SelfDecapsulation: 	1.6994
+Test round: 88
+Setup : 	11.011076
+KeyGen: 	29.831326
+SelfKeyGen: 	0.007297
+Encapsulation: 	43.664963
+Decapsulation: 	30.358587
+SelfDecapsulation: 	1.729361
+Test round: 89
+Setup : 	12.199892
+KeyGen: 	31.175478
+SelfKeyGen: 	0.024469
+Encapsulation: 	40.491977
+Decapsulation: 	27.987848
+SelfDecapsulation: 	1.736088
+Test round: 90
+Setup : 	10.604194
+KeyGen: 	30.072459
+SelfKeyGen: 	0.011172
+Encapsulation: 	41.251424
+Decapsulation: 	32.647109
+SelfDecapsulation: 	1.718218
+Test round: 91
+Setup : 	11.483252
+KeyGen: 	31.05746
+SelfKeyGen: 	0.011246
+Encapsulation: 	42.251318
+Decapsulation: 	27.543476
+SelfDecapsulation: 	1.67621
+Test round: 92
+Setup : 	10.631947
+KeyGen: 	29.694139
+SelfKeyGen: 	0.012053
+Encapsulation: 	44.174527
+Decapsulation: 	28.99873
+SelfDecapsulation: 	1.846306
+Test round: 93
+Setup : 	11.055474
+KeyGen: 	32.359328
+SelfKeyGen: 	0.006913
+Encapsulation: 	44.833707
+Decapsulation: 	27.332788
+SelfDecapsulation: 	1.667922
+Test round: 94
+Setup : 	10.511627
+KeyGen: 	30.894461
+SelfKeyGen: 	0.015071
+Encapsulation: 	43.853804
+Decapsulation: 	29.0896
+SelfDecapsulation: 	1.743627
+Test round: 95
+Setup : 	11.0859
+KeyGen: 	31.110522
+SelfKeyGen: 	0.004043
+Encapsulation: 	41.063401
+Decapsulation: 	29.132321
+SelfDecapsulation: 	1.794241
+Test round: 96
+Setup : 	10.787905
+KeyGen: 	29.917718
+SelfKeyGen: 	0.011615
+Encapsulation: 	41.159748
+Decapsulation: 	29.403197
+SelfDecapsulation: 	1.995623
+Test round: 97
+Setup : 	11.808268
+KeyGen: 	31.520553
+SelfKeyGen: 	0.005871
+Encapsulation: 	41.079674
+Decapsulation: 	27.555643
+SelfDecapsulation: 	1.737638
+Test round: 98
+Setup : 	10.663447
+KeyGen: 	29.750638
+SelfKeyGen: 	0.005156
+Encapsulation: 	41.441644
+Decapsulation: 	32.585147
+SelfDecapsulation: 	2.026535
+Test round: 99
+Setup : 	11.257821
+KeyGen: 	31.093026
+SelfKeyGen: 	0.014752
+Encapsulation: 	45.043221
+Decapsulation: 	27.979245
+SelfDecapsulation: 	1.660435
+Test round: 100
+Setup : 	10.317146
+KeyGen: 	33.157672
+SelfKeyGen: 	0.007701
+Encapsulation: 	42.434051
+Decapsulation: 	33.884119
+SelfDecapsulation: 	1.965889
+
+Final performance test:
+Setup : 	13.406303359999999
+KeyGen: 	32.35266992
+SelfKeyGen: 	0.015381520000000008
+Encapsulation: 	42.9781056
+Decapsulation: 	30.094561299999995
+SelfDecapsulation: 	1.9922154900000006
