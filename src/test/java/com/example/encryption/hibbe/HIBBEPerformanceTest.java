@@ -281,14 +281,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW14Performance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
+        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW14Engine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
@@ -296,14 +296,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW16aPerformance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW16aEngine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
@@ -311,14 +311,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW16bPerformance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW16bEngine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
@@ -326,14 +326,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW17Performance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
+        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW17Engine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
