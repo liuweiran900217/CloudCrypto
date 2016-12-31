@@ -58,7 +58,11 @@ public class CPABERW13SecretKeySerParameter extends PairingKeySerParameter {
 
     public Element getK1() { return this.K1.duplicate(); }
 
+    public Map<String, Element> getK2s() { return this.K2s; }
+
     public Element getK2sAt(String attribute) { return this.K2s.get(attribute).duplicate(); }
+
+    public Map<String, Element> getK3s() { return this.K3s; }
 
     public Element getK3sAt(String attribute) { return this.K3s.get(attribute).duplicate(); }
 
