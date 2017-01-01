@@ -31,7 +31,7 @@ public class CPABERW13DecryptionGenerator implements PairingDecryptionGenerator,
         this.parameter = (CPABEDecryptionGenerationParameter) parameter;
     }
 
-    private void computeDecapsulation() throws InvalidCipherTextException {
+    protected void computeDecapsulation() throws InvalidCipherTextException {
         CPABERW13PublicKeySerParameter publicKeyParameter = (CPABERW13PublicKeySerParameter) this.parameter.getPublicKeyParameter();
         CPABERW13SecretKeySerParameter secretKeyParameter = (CPABERW13SecretKeySerParameter) this.parameter.getSecretKeyParameter();
         CPABERW13HeaderSerParameter ciphertextParameter = (CPABERW13HeaderSerParameter) this.parameter.getCiphertextParameter();

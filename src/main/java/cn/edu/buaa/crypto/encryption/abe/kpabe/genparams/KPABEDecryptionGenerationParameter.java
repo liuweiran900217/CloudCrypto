@@ -4,6 +4,7 @@ import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.algebra.genparams.PairingDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 
 /**
@@ -14,6 +15,7 @@ import cn.edu.buaa.crypto.utils.PairingUtils;
 public class KPABEDecryptionGenerationParameter extends PairingDecryptionGenerationParameter {
     private String[] attributes;
     private AccessControlEngine accessControlEngine;
+    private ChameleonHasher chameleonHasher;
 
     public KPABEDecryptionGenerationParameter(
             AccessControlEngine accessControlEngine, PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
@@ -23,7 +25,18 @@ public class KPABEDecryptionGenerationParameter extends PairingDecryptionGenerat
         this.attributes = PairingUtils.removeDuplicates(attributes);
     }
 
+    public KPABEDecryptionGenerationParameter(ChameleonHasher chameleonHasher,
+            AccessControlEngine accessControlEngine, PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
+            String[] attributes, PairingCipherSerParameter ciphertextParameter) {
+        super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
+        this.accessControlEngine = accessControlEngine;
+        this.attributes = PairingUtils.removeDuplicates(attributes);
+        this.chameleonHasher = chameleonHasher;
+    }
+
     public String[] getAttributes() { return this.attributes; }
 
     public AccessControlEngine getAccessControlEngine() { return this.accessControlEngine; }
+
+    public ChameleonHasher getChameleonHasher() { return this.chameleonHasher; }
 }

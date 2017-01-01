@@ -25,28 +25,29 @@ import java.util.Map;
  * Rouselakis-Waters CP-ABE encryption generator.
  */
 public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
-    protected CPABEEncryptionGenerationParameter parameter;
-
     private CPABERW13PublicKeySerParameter publicKeyParameter;
-    private Element sessionKey;
-    private Element C0;
-    private Map<String, Element> C1s;
-    private Map<String, Element> C2s;
-    private Map<String, Element> C3s;
+    protected CPABEEncryptionGenerationParameter parameter;
+    protected AccessControlParameter accessControlParameter;
+    protected Element s;
+    protected Element sessionKey;
+    protected Element C0;
+    protected Map<String, Element> C1s;
+    protected Map<String, Element> C2s;
+    protected Map<String, Element> C3s;
 
     public void init(CipherParameters parameter) {
         this.parameter = (CPABEEncryptionGenerationParameter) parameter;
         this.publicKeyParameter = (CPABERW13PublicKeySerParameter) this.parameter.getPublicKeyParameter();
     }
 
-    private void computeEncapsulation() {
+    protected void computeEncapsulation() {
         int[][] accessPolicy = this.parameter.getAccessPolicy();
         String[] rhos = this.parameter.getRhos();
         AccessControlEngine accessControlEngine = this.parameter.getAccessControlEngine();
-        AccessControlParameter accessControlParameter = accessControlEngine.generateAccessControl(accessPolicy, rhos);
+        this.accessControlParameter = accessControlEngine.generateAccessControl(accessPolicy, rhos);
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
-        Element s = pairing.getZr().newRandomElement().getImmutable();
+        this.s = pairing.getZr().newRandomElement().getImmutable();
         this.sessionKey = publicKeyParameter.getEggAlpha().powZn(s).getImmutable();
         this.C0 = publicKeyParameter.getG().powZn(s).getImmutable();
 
