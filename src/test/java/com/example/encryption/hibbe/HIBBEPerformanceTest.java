@@ -47,9 +47,9 @@ public class HIBBEPerformanceTest extends TestCase {
     //identity vector sets for key encapsulation
     private String[][] encapsulationIdentityVectorSets;
 
-    private double[] timeEncapsulation;
+//    private double[] timeEncapsulation;
     private double[] timeEncryption;
-    private double[][] timeDecapsulation;
+//    private double[][] timeDecapsulation;
     private double[][] timeDecryption;
 
     private HIBBEEngine engine;
@@ -61,9 +61,9 @@ public class HIBBEPerformanceTest extends TestCase {
         timeKeyGen = new double[maximal_depth];
         timeKeyDele = new double[maximal_depth];
         encapsulationIdentityVectorSets = new String[maximal_users][maximal_users];
-        timeEncapsulation = new double[maximal_users];
+//        timeEncapsulation = new double[maximal_users];
         timeEncryption = new double[maximal_users];
-        timeDecapsulation = new double[maximal_depth][maximal_users];
+//        timeDecapsulation = new double[maximal_depth][maximal_users];
         timeDecryption = new double[maximal_depth][maximal_users];
 
         //create identity vectors
@@ -125,12 +125,12 @@ public class HIBBEPerformanceTest extends TestCase {
         }
         out.println();
 
-        //write encapsulation
-        out.print("Encapsulation: ");
-        for (int i = 0; i < maximal_users; i++) {
-            out.print("\t" + this.timeEncapsulation[i] / test_round);
-        }
-        out.println();
+//        //write encapsulation
+//        out.print("Encapsulation: ");
+//        for (int i = 0; i < maximal_users; i++) {
+//            out.print("\t" + this.timeEncapsulation[i] / test_round);
+//        }
+//        out.println();
 
         //write encryption
         out.print("Encryption: ");
@@ -139,15 +139,15 @@ public class HIBBEPerformanceTest extends TestCase {
         }
         out.println();
 
-        //write decapsulation
-        for (int i = 0; i < maximal_depth; i++) {
-            out.print("Decapsulation " + i + ": ");
-            for (int j = i; j < maximal_users; j++) {
-                out.print("\t" + this.timeDecapsulation[i][j] / test_round);
-            }
-            out.println();
-        }
-        out.println();
+//        //write decapsulation
+//        for (int i = 0; i < maximal_depth; i++) {
+//            out.print("Decapsulation " + i + ": ");
+//            for (int j = i; j < maximal_users; j++) {
+//                out.print("\t" + this.timeDecapsulation[i][j] / test_round);
+//            }
+//            out.println();
+//        }
+//        out.println();
 
         //write decryption
         for (int i = 0; i < maximal_depth; i++) {
@@ -207,19 +207,19 @@ public class HIBBEPerformanceTest extends TestCase {
         out.println();
         System.out.println();
 
-        out.print("Encapsulation: ");
-        //test encryption performance
-        PairingCipherSerParameter[] headers = new PairingCipherSerParameter[maximal_users];
-        for (int i = 0; i < maximal_users; i++) {
-            System.out.print("Encapsulation " + i + "; ");
-            timer.start(i);
-            headers[i] = engine.encapsulation(publicKey, encapsulationIdentityVectorSets[i]).getHeader();
-            temperTime = timer.stop(i);
-            out.print("\t" + temperTime);
-            this.timeEncapsulation[i] += temperTime;
-        }
-        out.println();
-        System.out.println();
+//        out.print("Encapsulation: ");
+//        //test encryption performance
+//        PairingCipherSerParameter[] headers = new PairingCipherSerParameter[maximal_users];
+//        for (int i = 0; i < maximal_users; i++) {
+//            System.out.print("Encapsulation " + i + "; ");
+//            timer.start(i);
+//            headers[i] = engine.encapsulation(publicKey, encapsulationIdentityVectorSets[i]).getHeader();
+//            temperTime = timer.stop(i);
+//            out.print("\t" + temperTime);
+//            this.timeEncapsulation[i] += temperTime;
+//        }
+//        out.println();
+//        System.out.println();
 
         out.print("Encryption: ");
         //test encryption performance
@@ -236,26 +236,26 @@ public class HIBBEPerformanceTest extends TestCase {
         out.println();
         System.out.println();
 
-        //test decapsulation performance
-        for (int i = 0; i < maximal_depth; i++) {
-            System.out.print("Decapsulation " + i + "; ");
-            out.print("Decapsulation " + i + ": ");
-            for (int j = i; j < maximal_users; j++) {
-                try {
-                    timer.start(i);
-                    engine.decapsulation(publicKey, secretKeys[i], encapsulationIdentityVectorSets[j], headers[j]);
-                    temperTime = timer.stop(i);
-                    out.print("\t" + temperTime);
-                    this.timeDecapsulation[i][j] += temperTime;
-                } catch (InvalidCipherTextException e) {
-                    e.printStackTrace();
-                    System.exit(0);
-                }
-            }
-            out.println();
-        }
-        out.println();
-        System.out.println();
+//        //test decapsulation performance
+//        for (int i = 0; i < maximal_depth; i++) {
+//            System.out.print("Decapsulation " + i + "; ");
+//            out.print("Decapsulation " + i + ": ");
+//            for (int j = i; j < maximal_users; j++) {
+//                try {
+//                    timer.start(i);
+//                    engine.decapsulation(publicKey, secretKeys[i], encapsulationIdentityVectorSets[j], headers[j]);
+//                    temperTime = timer.stop(i);
+//                    out.print("\t" + temperTime);
+//                    this.timeDecapsulation[i][j] += temperTime;
+//                } catch (InvalidCipherTextException e) {
+//                    e.printStackTrace();
+//                    System.exit(0);
+//                }
+//            }
+//            out.println();
+//        }
+//        out.println();
+//        System.out.println();
 
         //test decryption performance
         for (int i = 0; i < maximal_depth; i++) {
@@ -281,14 +281,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW14Performance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
+        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW14Engine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
@@ -296,14 +296,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW16aPerformance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW16aEngine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
@@ -311,14 +311,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW16bPerformance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW16bEngine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
@@ -326,14 +326,14 @@ public class HIBBEPerformanceTest extends TestCase {
 
     public void testLLW17Performance() {
         HIBBEPerformanceTest performanceTest = new HIBBEPerformanceTest();
-        performanceTest.maximal_users = 10;
-        performanceTest.maximal_depth = 2;
-        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
-        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
-//        performanceTest.maximal_users = 100;
-//        performanceTest.maximal_depth = 10;
-//        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
-//        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
+//        performanceTest.maximal_users = 10;
+//        performanceTest.maximal_depth = 2;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a1_3_128;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_users = 100;
+        performanceTest.maximal_depth = 10;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a1_3_512;
+        performanceTest.test_round = TestUtils.DEFAULT_COMPOSITE_ORDER_TEST_ROUND;
         performanceTest.engine = HIBBELLW17Engine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
