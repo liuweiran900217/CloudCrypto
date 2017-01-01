@@ -24,20 +24,20 @@ import java.util.Map;
  * Rouselakis-Waters KP-ABE decryption generator.
  */
 public class KPABERW13DecryptionGenerator implements PairingDecryptionGenerator, PairingDecapsulationGenerator {
-    private KPABEDecryptionGenerationParameter params;
-    private Element sessionKey;
+    protected KPABEDecryptionGenerationParameter parameter;
+    protected Element sessionKey;
 
     public void init(CipherParameters params) {
-        this.params = (KPABEDecryptionGenerationParameter)params;
+        this.parameter = (KPABEDecryptionGenerationParameter)params;
     }
 
-    private void computeDecapsulation() throws InvalidCipherTextException {
-        KPABERW13PublicKeySerParameter publicKeyParameter = (KPABERW13PublicKeySerParameter)this.params.getPublicKeyParameter();
-        KPABERW13SecretKeySerParameter secretKeyParameter = (KPABERW13SecretKeySerParameter)this.params.getSecretKeyParameter();
-        KPABERW13HeaderSerParameter ciphertextParameter = (KPABERW13HeaderSerParameter)this.params.getCiphertextParameter();
+    protected void computeDecapsulation() throws InvalidCipherTextException {
+        KPABERW13PublicKeySerParameter publicKeyParameter = (KPABERW13PublicKeySerParameter)this.parameter.getPublicKeyParameter();
+        KPABERW13SecretKeySerParameter secretKeyParameter = (KPABERW13SecretKeySerParameter)this.parameter.getSecretKeyParameter();
+        KPABERW13HeaderSerParameter ciphertextParameter = (KPABERW13HeaderSerParameter)this.parameter.getCiphertextParameter();
         AccessControlParameter accessControlParameter = secretKeyParameter.getAccessControlParameter();
-        AccessControlEngine accessControlEngine = this.params.getAccessControlEngine();
-        String[] attributes = this.params.getAttributes();
+        AccessControlEngine accessControlEngine = this.parameter.getAccessControlEngine();
+        String[] attributes = this.parameter.getAttributes();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         try {
             Map<String, Element> omegaElementsMap = accessControlEngine.reconstructOmegas(pairing, attributes, accessControlParameter);
@@ -59,7 +59,7 @@ public class KPABERW13DecryptionGenerator implements PairingDecryptionGenerator,
 
     public Element recoverMessage() throws InvalidCipherTextException {
         computeDecapsulation();
-        KPABERW13CiphertextSerParameter ciphertextParameter = (KPABERW13CiphertextSerParameter)this.params.getCiphertextParameter();
+        KPABERW13CiphertextSerParameter ciphertextParameter = (KPABERW13CiphertextSerParameter)this.parameter.getCiphertextParameter();
         return ciphertextParameter.getC().div(sessionKey).getImmutable();
     }
 

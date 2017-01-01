@@ -54,9 +54,15 @@ public class KPABERW13SecretKeySerParameter extends PairingKeySerParameter {
 
     public String[] getRhos() { return this.K0s.keySet().toArray(new String[1]); }
 
+    public Map<String, Element> getK0s() { return this.K0s; }
+
     public Element getK0sAt(String rho) { return this.K0s.get(rho).duplicate(); }
 
+    public Map<String, Element> getK1s() { return this.K1s; }
+
     public Element getK1sAt(String rho) { return this.K1s.get(rho).duplicate(); }
+
+    public Map<String, Element> getK2s() { return this.K2s; }
 
     public Element getK2sAt(String rho) { return this.K2s.get(rho).duplicate(); }
 

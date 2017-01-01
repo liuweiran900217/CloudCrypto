@@ -145,5 +145,4 @@ public class KPABERW13Engine extends KPABEEngine {
                 accessControlEngine, publicKey, secretKey, attributes, header));
         return decryptionGenerator.recoverKey();
     }
-
 }

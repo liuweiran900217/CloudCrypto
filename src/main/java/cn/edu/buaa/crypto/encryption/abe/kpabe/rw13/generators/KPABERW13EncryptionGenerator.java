@@ -24,22 +24,23 @@ import java.util.Map;
  */
 public class KPABERW13EncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
 
-    private KPABEEncryptionGenerationParameter params;
+    protected KPABEEncryptionGenerationParameter parameter;
     private KPABERW13PublicKeySerParameter publicKeyParameter;
-    private Element sessionKey;
-    private Element C0;
-    private Map<String, Element> C1s;
-    private Map<String, Element> C2s;
+    protected Element s;
+    protected Element sessionKey;
+    protected Element C0;
+    protected Map<String, Element> C1s;
+    protected Map<String, Element> C2s;
 
     public void init(CipherParameters params) {
-        this.params = (KPABEEncryptionGenerationParameter)params;
-        this.publicKeyParameter = (KPABERW13PublicKeySerParameter)this.params.getPublicKeyParameter();
+        this.parameter = (KPABEEncryptionGenerationParameter)params;
+        this.publicKeyParameter = (KPABERW13PublicKeySerParameter)this.parameter.getPublicKeyParameter();
     }
 
-    private void computeEncapsulation() {
+    protected void computeEncapsulation() {
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
-        String[] attributes = this.params.getAttributes();
-        Element s = pairing.getZr().newRandomElement().getImmutable();
+        String[] attributes = this.parameter.getAttributes();
+        this.s = pairing.getZr().newRandomElement().getImmutable();
         this.sessionKey = publicKeyParameter.getEggAlpha().powZn(s).getImmutable();
         this.C0 = publicKeyParameter.getG().powZn(s).getImmutable();
         this.C1s = new HashMap<String, Element>();
@@ -57,7 +58,7 @@ public class KPABERW13EncryptionGenerator implements PairingEncryptionGenerator,
 
     public PairingCipherSerParameter generateCiphertext() {
         computeEncapsulation();
-        Element C = this.sessionKey.mul(this.params.getMessage()).getImmutable();
+        Element C = this.sessionKey.mul(this.parameter.getMessage()).getImmutable();
         return new KPABERW13CiphertextSerParameter(publicKeyParameter.getParameters(), C, C0, C1s, C2s);
     }
 

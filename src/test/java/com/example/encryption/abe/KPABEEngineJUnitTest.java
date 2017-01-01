@@ -3,13 +3,17 @@ package com.example.encryption.abe;
 import cn.edu.buaa.crypto.access.lsss.lw10.LSSSLW10Engine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.*;
+import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00bDigestHasher;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bHasher;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyGenerationParameters;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.KPABEGPSW06aEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.KPABEGPSW06bEngine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.llw14.KPABELLW14Engine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.KPABERW13Engine;
 import com.example.TestUtils;
 import com.example.access.AccessPolicyExamples;
@@ -20,10 +24,13 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
+import org.bouncycastle.crypto.KeyGenerationParameters;
+import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.junit.Assert;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 
 /**
@@ -360,6 +367,23 @@ public class KPABEEngineJUnitTest extends TestCase {
         this.engine = KPABERW13Engine.getInstance();
         System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
         engine.setAccessControlEngine(AccessTreeEngine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+
+        System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
+        engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testKPABELLW14Engine() {
+        this.engine = KPABELLW14Engine.getInstance();
+        System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
+        engine.setAccessControlEngine(AccessTreeEngine.getInstance());
+
+        ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
+        AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
+        KeyGenerationParameters keyGenerationParameters = new DLogKR00bKeyGenerationParameters(new SecureRandom(),
+                SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);
+        ((KPABELLW14Engine)this.engine).setChameleonHasher(chameleonHasher, chKeyPairGenerator, keyGenerationParameters);
         runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
 
         System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
