@@ -16,7 +16,7 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
  * Rouselakis-Waters CP-ABE public key / master secret key generator.
  */
 public class CPABERW13KeyPairGenerator implements PairingKeyPairGenerator {
-    private CPABEKeyPairGenerationParameter parameters;
+    protected CPABEKeyPairGenerationParameter parameters;
 
     public void init(KeyGenerationParameters keyGenerationParameter) {
         this.parameters = (CPABEKeyPairGenerationParameter) keyGenerationParameter;

@@ -8,8 +8,10 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.a1.TypeA1CurveGenerator;
 import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
+import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.util.encoders.Hex;
 
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -174,6 +176,14 @@ public class PairingUtils {
         return elements;
     }
 
+    public static String[] MapElementArrayToStringArray(Element[] message) {
+        String[] strings = new String[message.length];
+        for (int i = 0; i < message.length; i++) {
+            strings[i] = message[i].toString();
+        }
+        return strings;
+    }
+
     public static boolean isEqualElement(final Element thisElement, final Element thatElement) {
         if (thisElement == null && thatElement != null) {
             return false;
@@ -304,5 +314,24 @@ public class PairingUtils {
             label++;
         }
         return resultSet;
+    }
+
+    public static byte[] SerCipherParameter(CipherParameters cipherParameters) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(cipherParameters);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        objectOutputStream.close();
+        byteArrayOutputStream.close();
+        return byteArray;
+    }
+
+    public static CipherParameters deserCipherParameters(byte[] byteArrays) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrays);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        CipherParameters cipherParameters = (CipherParameters)objectInputStream.readObject();
+        objectInputStream.close();
+        byteArrayInputStream.close();
+        return cipherParameters;
     }
 }

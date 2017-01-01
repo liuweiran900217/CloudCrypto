@@ -21,7 +21,7 @@ import java.util.Map;
  * Rouselakia-Waters CP-ABE secret key generator.
  */
 public class CPABERW13SecretKeyGenerator implements PairingKeyParameterGenerator {
-    private CPABESecretKeyGenerationParameter parameter;
+    protected CPABESecretKeyGenerationParameter parameter;
 
     public void init(KeyGenerationParameters keyGenerationParameter) {
         this.parameter = (CPABESecretKeyGenerationParameter)keyGenerationParameter;

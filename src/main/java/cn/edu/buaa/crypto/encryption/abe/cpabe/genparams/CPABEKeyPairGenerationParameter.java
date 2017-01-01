@@ -1,6 +1,8 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.genparams;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 
 /**
@@ -10,6 +12,7 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
  */
 public class CPABEKeyPairGenerationParameter extends PairingKeyPairGenerationParameter {
     private int maxAttributesNum;
+    private AsymmetricKeySerPairGenerator chameleonHashKeyPairGenerator;
 
     public CPABEKeyPairGenerationParameter(PairingParameters pairingParameters) {
         super(pairingParameters);
@@ -21,7 +24,18 @@ public class CPABEKeyPairGenerationParameter extends PairingKeyPairGenerationPar
         this.maxAttributesNum = maxAttributesNum;
     }
 
+    public CPABEKeyPairGenerationParameter(PairingParameters pairingParameters,
+                                           AsymmetricKeySerPairGenerator chameleonHashKeyPairGenerator) {
+        super(pairingParameters);
+        this.maxAttributesNum = -1;
+        this.chameleonHashKeyPairGenerator = chameleonHashKeyPairGenerator;
+    }
+
     public int getMaxAttributesNum() {
         return this.maxAttributesNum;
+    }
+
+    public AsymmetricKeySerPairGenerator getChameleonHashKeyPairGenerator() {
+        return this.chameleonHashKeyPairGenerator;
     }
 }

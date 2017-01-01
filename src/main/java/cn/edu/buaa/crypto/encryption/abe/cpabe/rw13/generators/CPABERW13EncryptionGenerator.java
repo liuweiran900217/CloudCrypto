@@ -25,7 +25,7 @@ import java.util.Map;
  * Rouselakis-Waters CP-ABE encryption generator.
  */
 public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
-    private CPABEEncryptionGenerationParameter parameter;
+    protected CPABEEncryptionGenerationParameter parameter;
 
     private CPABERW13PublicKeySerParameter publicKeyParameter;
     private Element sessionKey;
