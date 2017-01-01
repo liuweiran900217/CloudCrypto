@@ -36,6 +36,8 @@ public class CPABELLW14Engine extends CPABEEngine {
     private static CPABELLW14Engine engine;
     private ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
     private AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
+    private KeyGenerationParameters chKeyPairGenerationParameter
+            = new DLogKR00bKeyGenerationParameters(new SecureRandom(), SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);
 
     public static CPABELLW14Engine getInstance() {
         if (engine == null) {
@@ -46,8 +48,6 @@ public class CPABELLW14Engine extends CPABEEngine {
 
     private CPABELLW14Engine() {
         super(SCHEME_NAME, Engine.ProveSecModel.Standard, Engine.PayloadSecLevel.CCA2, Engine.PredicateSecLevel.NON_ANON);
-        this.chKeyPairGenerator.init(new DLogKR00bKeyGenerationParameters(new SecureRandom(),
-                SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP));
     }
 
     public void setChameleonHasher(ChameleonHasher chameleonHasher,
@@ -55,12 +55,13 @@ public class CPABELLW14Engine extends CPABEEngine {
                                    KeyGenerationParameters keyGenerationParameters) {
         this.chameleonHasher = chameleonHasher;
         this.chKeyPairGenerator = chKeyPairGenerator;
-        this.chKeyPairGenerator.init(keyGenerationParameters);
+        this.chKeyPairGenerationParameter = keyGenerationParameters;
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         CPABELLW14KeyPairGenerator keyPairGenerator = new CPABELLW14KeyPairGenerator();
-        keyPairGenerator.init(new CPABEKeyPairGenerationParameter(pairingParameters, this.chKeyPairGenerator));
+        keyPairGenerator.init(new CPABEKeyPairGenerationParameter(
+                pairingParameters, this.chKeyPairGenerator, this.chKeyPairGenerationParameter));
         return keyPairGenerator.generateKeyPair();
     }
 

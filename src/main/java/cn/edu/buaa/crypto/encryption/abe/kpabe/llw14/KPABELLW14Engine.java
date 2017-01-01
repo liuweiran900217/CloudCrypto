@@ -36,6 +36,8 @@ public class KPABELLW14Engine extends KPABEEngine {
     private static KPABELLW14Engine engine;
     private ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
     private AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
+    private KeyGenerationParameters chKeyGenerationParameter
+            = new DLogKR00bKeyGenerationParameters(new SecureRandom(), SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);
 
     public static KPABELLW14Engine getInstance() {
         if (engine == null) {
@@ -46,21 +48,20 @@ public class KPABELLW14Engine extends KPABEEngine {
 
     private KPABELLW14Engine() {
         super(SCHEME_NAME, Engine.ProveSecModel.Standard, Engine.PayloadSecLevel.CCA2, Engine.PredicateSecLevel.NON_ANON);
-        this.chKeyPairGenerator.init(new DLogKR00bKeyGenerationParameters(new SecureRandom(),
-                SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP));
     }
 
     public void setChameleonHasher(ChameleonHasher chameleonHasher,
                                    AsymmetricKeySerPairGenerator chKeyPairGenerator,
-                                   KeyGenerationParameters keyGenerationParameters) {
+                                   KeyGenerationParameters keyGenerationParameter) {
         this.chameleonHasher = chameleonHasher;
         this.chKeyPairGenerator = chKeyPairGenerator;
-        this.chKeyPairGenerator.init(keyGenerationParameters);
+        this.chKeyGenerationParameter = keyGenerationParameter;
     }
 
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributesNum) {
         KPABELLW14KeyPairGenerator keyPairGenerator = new KPABELLW14KeyPairGenerator();
-        keyPairGenerator.init(new KPABEKeyPairGenerationParameter(pairingParameters, this.chKeyPairGenerator));
+        keyPairGenerator.init(new KPABEKeyPairGenerationParameter(
+                pairingParameters, this.chKeyPairGenerator, this.chKeyGenerationParameter));
         return keyPairGenerator.generateKeyPair();
     }
 

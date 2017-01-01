@@ -1,5 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.llw14.generators;
 
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
@@ -8,6 +9,7 @@ import cn.edu.buaa.crypto.encryption.abe.kpabe.llw14.serparams.KPABELLW14PublicK
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.generators.KPABERW13KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.serparams.KPABERW13MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.serparams.KPABERW13PublicKeySerParameter;
+import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**
  * Created by Weiran Liu on 2017/1/1.
@@ -19,7 +21,10 @@ public class KPABELLW14KeyPairGenerator extends KPABERW13KeyPairGenerator {
         PairingKeySerPair pairingKeySerPair = super.generateKeyPair();
         KPABERW13PublicKeySerParameter publicKeyRW13Parameter = (KPABERW13PublicKeySerParameter) pairingKeySerPair.getPublic();
         KPABERW13MasterSecretKeySerParameter masterKeyRW13Parameter = (KPABERW13MasterSecretKeySerParameter) pairingKeySerPair.getPrivate();
-        AsymmetricKeySerPair keyPair = this.parameters.getChameleonHashKeyPairGenerator().generateKeyPair();
+        AsymmetricKeySerPairGenerator chameleonHashKeyPairGenerator = this.parameters.getChameleonHashKeyPairGenerator();
+        KeyGenerationParameters chameleonHashKeyGenerationParameter = this.parameters.getChameleonHashKeyGenerationParameter();
+        chameleonHashKeyPairGenerator.init(chameleonHashKeyGenerationParameter);
+        AsymmetricKeySerPair keyPair = chameleonHashKeyPairGenerator.generateKeyPair();
         AsymmetricKeySerParameter chameleonHashPublicKey = keyPair.getPublic();
 
         KPABELLW14PublicKeySerParameter publicKeyParameter = new KPABELLW14PublicKeySerParameter(

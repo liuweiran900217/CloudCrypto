@@ -2,8 +2,10 @@ package cn.edu.buaa.crypto.encryption.abe.cpabe.genparams;
 
 import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyPairGenerationParameter;
-import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import org.bouncycastle.crypto.KeyGenerationParameters;
+
+import java.security.Key;
 
 /**
  * Created by Weiran Liu on 2016/11/19.
@@ -13,6 +15,7 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 public class CPABEKeyPairGenerationParameter extends PairingKeyPairGenerationParameter {
     private int maxAttributesNum;
     private AsymmetricKeySerPairGenerator chameleonHashKeyPairGenerator;
+    private KeyGenerationParameters chameleonHashKeyGenerationParameter;
 
     public CPABEKeyPairGenerationParameter(PairingParameters pairingParameters) {
         super(pairingParameters);
@@ -24,11 +27,14 @@ public class CPABEKeyPairGenerationParameter extends PairingKeyPairGenerationPar
         this.maxAttributesNum = maxAttributesNum;
     }
 
-    public CPABEKeyPairGenerationParameter(PairingParameters pairingParameters,
-                                           AsymmetricKeySerPairGenerator chameleonHashKeyPairGenerator) {
+    public CPABEKeyPairGenerationParameter(
+            PairingParameters pairingParameters,
+            AsymmetricKeySerPairGenerator chameleonHashKeyPairGenerator,
+            KeyGenerationParameters chameleonHashKeyGenerationParameter) {
         super(pairingParameters);
         this.maxAttributesNum = -1;
         this.chameleonHashKeyPairGenerator = chameleonHashKeyPairGenerator;
+        this.chameleonHashKeyGenerationParameter = chameleonHashKeyGenerationParameter;
     }
 
     public int getMaxAttributesNum() {
@@ -37,5 +43,9 @@ public class CPABEKeyPairGenerationParameter extends PairingKeyPairGenerationPar
 
     public AsymmetricKeySerPairGenerator getChameleonHashKeyPairGenerator() {
         return this.chameleonHashKeyPairGenerator;
+    }
+
+    public KeyGenerationParameters getChameleonHashKeyGenerationParameter() {
+        return this.chameleonHashKeyGenerationParameter;
     }
 }
