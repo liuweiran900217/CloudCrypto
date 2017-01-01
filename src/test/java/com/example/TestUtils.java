@@ -15,7 +15,7 @@ public class TestUtils {
 
     public static final int DEFAULT_SIMU_TEST_ROUND = 2;
     public static final int DEFAULT_PRIME_ORDER_TEST_ROUND = 100;
-    public static final int DEFAULT_COMPOSITE_ORDER_TEST_ROUND = 50;
+    public static final int DEFAULT_COMPOSITE_ORDER_TEST_ROUND = 20;
 
     public static byte[] SerCipherParameter(CipherParameters cipherParameters) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
