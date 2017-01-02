@@ -20,16 +20,16 @@ import java.util.Map;
 public class CPABEHW14IntermediateGenerator implements PairingEncryptionGenerator {
     private CPABEIntermediateGenerationParameter parameter;
     private CPABEHW14PublicKeySerParameter publicKeyParameter;
-    private int n;
-    private Element sessionKey;
-    private Element s;
-    private Element C0;
-    private Element[] lambdas;
-    private Element[] ts;
-    private Element[] xs;
-    private Element[] C1s;
-    private Element[] C2s;
-    private Element[] C3s;
+    protected int n;
+    protected Element sessionKey;
+    protected Element s;
+    protected Element C0;
+    protected Element[] lambdas;
+    protected Element[] ts;
+    protected Element[] xs;
+    protected Element[] C1s;
+    protected Element[] C2s;
+    protected Element[] C3s;
 
     public void init(CipherParameters parameter) {
         this.parameter = (CPABEIntermediateGenerationParameter) parameter;
