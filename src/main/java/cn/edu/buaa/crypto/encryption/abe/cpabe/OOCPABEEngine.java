@@ -20,31 +20,31 @@ public abstract class OOCPABEEngine extends CPABEEngine {
      * Offline Key Encapsulation Algorithm
      * @param publicKey public key
      * @param n maximal number of ciphertext attribute
-     * @return session key / offline ciphertext pair associated with n
+     * @return intermedaite ciphertext associated with n
      */
-    public abstract PairingKeyEncapsulationSerPair offlineEncapsulation(PairingKeySerParameter publicKey, int n);
+    public abstract PairingCipherSerParameter offlineEncryption(PairingKeySerParameter publicKey, int n);
 
     /**
      * Online Key Encapsulation Algorithm
      * @param publicKey public key
-     * @param iCiphertext intermediate ciphertext
+     * @param intermediate intermediate ciphertext
      * @param accessPolicyIntArrays access policy
      * @param rhos rhos
-     * @return session key / ciphertext pair associated with the revocation identity set
+     * @return session key / ciphertext pair associated with the access policy and rhos
      */
-    public abstract PairingKeyEncapsulationSerPair onlineEncapsulation(
-            PairingKeySerParameter publicKey, PairingCipherSerParameter iCiphertext, int[][] accessPolicyIntArrays, String[] rhos);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(
+            PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate, int[][] accessPolicyIntArrays, String[] rhos);
 
     /**
      * Encryption Algorithm for CP-ABE
      * @param publicKey public key
-     * @param iCiphertext intermediate ciphertext
+     * @param intermediate intermediate ciphertext
      * @param accessPolicyIntArrays associated access policy, given by 2D int arrays
      * @param rhos associated rhos, given by string array
      * @param message the message in GT
-     * @return ciphertext associated with the access policy
+     * @return ciphertext associated with the access policy and rhos
      */
-    public abstract PairingCipherSerParameter encryption(PairingCipherSerParameter iCiphertext,
-            PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos, Element message);
+    public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate,
+                                                         int[][] accessPolicyIntArrays, String[] rhos, Element message);
 
 }

@@ -24,6 +24,10 @@ public class SelfExtractableCPABEEngine extends Engine {
     private final CPABEEngine engine;
     private final SelfExtractableBaseEngine selfExtractableBaseEngine;
 
+    public boolean isSupportIntermediate() {
+        return (this.engine instanceof OOCPABEEngine);
+    }
+
     public SelfExtractableCPABEEngine(CPABEEngine engine, PBEParametersGenerator pbeParametersGenerator, BlockCipher blockCipher, Digest digest) {
         super(engine.getEngineName(), engine.getProveSecModel(), engine.getPayloadSecLevel(), engine.getPredicateSecLevel());
         this.engine = engine;
@@ -40,6 +44,36 @@ public class SelfExtractableCPABEEngine extends Engine {
 
     public byte[] selfKeyGen() {
         return this.selfExtractableBaseEngine.selfKeyGen();
+    }
+
+    public PairingCipherSerParameter offlineEncryption(PairingKeySerParameter publicKey, int n) {
+        if (!(this.engine instanceof OOCPABEEngine)) {
+            throw new IllegalArgumentException("Engine does not support online/offline mechanism");
+        }
+        OOCPABEEngine ooEngine = (OOCPABEEngine)this.engine;
+        return ooEngine.offlineEncryption(publicKey, n);
+    }
+
+    public PairingKeyEncapsulationSerPair encapsulation(
+            PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate,
+            String accessPolicy, byte[] ek) throws PolicySyntaxException {
+        if (!(this.engine instanceof OOCPABEEngine)) {
+            throw new IllegalArgumentException("Engine does not support online/offline mechanism");
+        }
+        int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
+        String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
+        return this.encapsulation(publicKey, intermediate, accessPolicyIntArrays, rhos, ek);
+    }
+
+    public PairingKeyEncapsulationSerPair encapsulation(
+            PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate,
+            int[][] accessPolicyIntArrays, String[] rhos, byte[] ek) {
+        if (!(this.engine instanceof OOCPABEEngine)) {
+            throw new IllegalArgumentException("Engine does not support online/offline mechanism");
+        }
+        OOCPABEEngine ooEngine = (OOCPABEEngine)this.engine;
+        PairingKeyEncapsulationSerPair encapsulationPair = ooEngine.encapsulation(publicKey, intermediate, accessPolicyIntArrays, rhos);
+        return this.selfExtractableBaseEngine.encapsulation(encapsulationPair, ek);
     }
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String accessPolicy, byte[] ek) throws PolicySyntaxException {

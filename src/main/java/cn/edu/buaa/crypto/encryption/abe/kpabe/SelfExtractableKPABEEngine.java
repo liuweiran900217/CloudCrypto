@@ -29,6 +29,10 @@ public class SelfExtractableKPABEEngine extends Engine {
         this.selfExtractableBaseEngine = new SelfExtractableBaseEngine(engine, pbeParametersGenerator, blockCipher, digest);
     }
 
+    public boolean isSupportIntermediate() {
+        return (this.engine instanceof OOKPABEEngine);
+    }
+
     public PairingKeySerPair setup(PairingParameters pairingParameters, int maxAttributeNum) {
         return engine.setup(pairingParameters, maxAttributeNum);
     }
@@ -43,6 +47,25 @@ public class SelfExtractableKPABEEngine extends Engine {
 
     public byte[] selfKeyGen() {
         return this.selfExtractableBaseEngine.selfKeyGen();
+    }
+
+    public PairingCipherSerParameter offlineEncryption(PairingKeySerParameter publicKey, int n) {
+        if (!(this.engine instanceof OOKPABEEngine)) {
+            throw new IllegalArgumentException("Engine does not support online/offline mechanism");
+        }
+        OOKPABEEngine ooEngine = (OOKPABEEngine)this.engine;
+        return ooEngine.offlineEncryption(publicKey, n);
+    }
+
+    public PairingKeyEncapsulationSerPair encapsulation(
+            PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate,
+            String[] attributes, byte[] ek) {
+        if (!(this.engine instanceof OOKPABEEngine)) {
+            throw new IllegalArgumentException("Engine does not support online/offline mechanism");
+        }
+        OOKPABEEngine ooEngine = (OOKPABEEngine)this.engine;
+        PairingKeyEncapsulationSerPair encapsulationPair = ooEngine.encapsulation(publicKey, intermediate, attributes);
+        return this.selfExtractableBaseEngine.encapsulation(encapsulationPair, ek);
     }
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] attributes, byte[] ek){

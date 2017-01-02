@@ -40,13 +40,13 @@ public class CPABELLW14DecryptionGenerator extends CPABERW13DecryptionGenerator 
         String[] mappedStringRhos = PairingUtils.MapElementArrayToStringArray(mappedElementRhos);
         CPABEDecryptionGenerationParameter decryptionGenerationParameter
                 = new CPABEDecryptionGenerationParameter(
-                    oriDecryptionGenerationParameter.getChameleonHasher(),
                     oriDecryptionGenerationParameter.getAccessControlEngine(),
                     oriDecryptionGenerationParameter.getPublicKeyParameter(),
                     oriDecryptionGenerationParameter.getSecretKeyParameter(),
                     oriDecryptionGenerationParameter.getAccessPolicy(),
                     mappedStringRhos,
                     oriDecryptionGenerationParameter.getCiphertextParameter());
+        decryptionGenerationParameter.setChameleonHasher(chameleonHasher);
         super.init(decryptionGenerationParameter);
     }
 

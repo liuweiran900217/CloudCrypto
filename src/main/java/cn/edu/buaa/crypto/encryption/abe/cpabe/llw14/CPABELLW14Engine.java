@@ -32,7 +32,7 @@ import java.security.SecureRandom;
  * Liu-Liu-Wu CCA2-secure CP-ABE engine.
  */
 public class CPABELLW14Engine extends CPABEEngine {
-    private static final String SCHEME_NAME = "Liu-Liu-Wu-14 large-universe CP-ABE";
+    private static final String SCHEME_NAME = "Liu-Liu-Wu-14 CCA2-secure large-universe CP-ABE";
     private static CPABELLW14Engine engine;
     private ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
     private AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
@@ -92,8 +92,10 @@ public class CPABELLW14Engine extends CPABEEngine {
                             + CPABELLW14PublicKeySerParameter.class.getName());
         }
         CPABELLW14EncryptionGenerator encryptionGenerator = new CPABELLW14EncryptionGenerator();
-        encryptionGenerator.init(new CPABEEncryptionGenerationParameter(
-                chameleonHasher, accessControlEngine, publicKey, accessPolicyIntArrays, rhos, message));
+        CPABEEncryptionGenerationParameter encryptionGenerationParameter
+                = new CPABEEncryptionGenerationParameter(accessControlEngine, publicKey, accessPolicyIntArrays, rhos, message);
+        encryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
+        encryptionGenerator.init(encryptionGenerationParameter);
 
         return encryptionGenerator.generateCiphertext();
     }
@@ -106,8 +108,10 @@ public class CPABELLW14Engine extends CPABEEngine {
                             + CPABELLW14PublicKeySerParameter.class.getName());
         }
         CPABELLW14EncryptionGenerator encryptionGenerator = new CPABELLW14EncryptionGenerator();
-        encryptionGenerator.init(new CPABEEncryptionGenerationParameter(
-                chameleonHasher, accessControlEngine, publicKey, accessPolicyIntArrays, rhos, null));
+        CPABEEncryptionGenerationParameter encryptionGenerationParameter
+                = new CPABEEncryptionGenerationParameter(accessControlEngine, publicKey, accessPolicyIntArrays, rhos, null);
+        encryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
+        encryptionGenerator.init(encryptionGenerationParameter);
 
         return encryptionGenerator.generateEncryptionPair();
     }
@@ -134,8 +138,11 @@ public class CPABELLW14Engine extends CPABEEngine {
                             + CPABELLW14CiphertextSerParameter.class.getName());
         }
         CPABELLW14DecryptionGenerator decryptionGenerator = new CPABELLW14DecryptionGenerator();
-        decryptionGenerator.init(new CPABEDecryptionGenerationParameter(
-                chameleonHasher, accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, ciphertext));
+        CPABEDecryptionGenerationParameter decryptionGenerationParameter
+                = new CPABEDecryptionGenerationParameter(
+                        accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, ciphertext);
+        decryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
+        decryptionGenerator.init(decryptionGenerationParameter);
         return decryptionGenerator.recoverMessage();
     }
 
@@ -161,8 +168,11 @@ public class CPABELLW14Engine extends CPABEEngine {
                             + CPABELLW14HeaderSerParameter.class.getName());
         }
         CPABELLW14DecryptionGenerator decryptionGenerator = new CPABELLW14DecryptionGenerator();
-        decryptionGenerator.init(new CPABEDecryptionGenerationParameter(
-                this.chameleonHasher, accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, header));
+        CPABEDecryptionGenerationParameter decryptionGenerationParameter
+                = new CPABEDecryptionGenerationParameter(
+                        accessControlEngine, publicKey, secretKey, accessPolicyIntArrays, rhos, header);
+        decryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
+        decryptionGenerator.init(decryptionGenerationParameter);
         return decryptionGenerator.recoverKey();
     }
 }

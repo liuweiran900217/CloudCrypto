@@ -8,7 +8,7 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.rw13.serparams.CPABERW13SecretKey
 /**
  * Created by Weiran Liu on 2017/1/1.
  *
- * Hohenberger-Waters-14 OO-CP-ABE secret key generator.
+ * Hohenberger-Waters-14 CPA-secure OO-CP-ABE secret key generator.
  */
 public class CPABEHW14SecretKeyGenerator extends CPABERW13SecretKeyGenerator {
     public PairingKeySerParameter generateKey() {

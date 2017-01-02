@@ -39,12 +39,12 @@ public class KPABELLW14DecryptionGenerator extends KPABERW13DecryptionGenerator 
         String[] mappedStringAttributes = PairingUtils.MapElementArrayToStringArray(mappedElementAttributes);
         KPABEDecryptionGenerationParameter decryptionGenerationParameter
                 = new KPABEDecryptionGenerationParameter(
-                oriDecryptionGenerationParameter.getChameleonHasher(),
                 oriDecryptionGenerationParameter.getAccessControlEngine(),
                 oriDecryptionGenerationParameter.getPublicKeyParameter(),
                 oriDecryptionGenerationParameter.getSecretKeyParameter(),
                 mappedStringAttributes,
                 oriDecryptionGenerationParameter.getCiphertextParameter());
+        decryptionGenerationParameter.setChameleonHasher(chameleonHasher);
         super.init(decryptionGenerationParameter);
     }
 

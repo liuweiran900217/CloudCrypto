@@ -25,12 +25,7 @@ public class KPABEDecryptionGenerationParameter extends PairingDecryptionGenerat
         this.attributes = PairingUtils.removeDuplicates(attributes);
     }
 
-    public KPABEDecryptionGenerationParameter(ChameleonHasher chameleonHasher,
-            AccessControlEngine accessControlEngine, PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
-            String[] attributes, PairingCipherSerParameter ciphertextParameter) {
-        super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
-        this.accessControlEngine = accessControlEngine;
-        this.attributes = PairingUtils.removeDuplicates(attributes);
+    public void setChameleonHasher(ChameleonHasher chameleonHasher) {
         this.chameleonHasher = chameleonHasher;
     }
 

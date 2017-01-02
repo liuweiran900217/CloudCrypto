@@ -26,13 +26,7 @@ public class CPABEDecryptionGenerationParameter extends PairingDecryptionGenerat
         this.rhos = rhos;
     }
 
-    public CPABEDecryptionGenerationParameter(ChameleonHasher chameleonHasher,
-            AccessControlEngine accessControlEngine, PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
-            int[][] accessPolicy, String[] rhos, PairingCipherSerParameter ciphertextParameter) {
-        super(publicKeyParameter, secretKeyParameter, ciphertextParameter);
-        this.accessControlEngine = accessControlEngine;
-        this.accessPolicy = accessPolicy;
-        this.rhos = rhos;
+    public void setChameleonHasher(ChameleonHasher chameleonHasher) {
         this.chameleonHasher = chameleonHasher;
     }
 

@@ -11,8 +11,10 @@ import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyGenerationParameters;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.OOKPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.KPABEGPSW06aEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.KPABEGPSW06bEngine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.hw14.OOKPABEHW14Engine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.llw14.KPABELLW14Engine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.KPABERW13Engine;
 import com.example.TestUtils;
@@ -135,6 +137,40 @@ public class KPABEEngineJUnitTest extends TestCase {
         //Decryption
         byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, attributes, header);
         Assert.assertArrayEquals(sessionKey, anSessionKey);
+
+        if (this.engine instanceof OOKPABEEngine) {
+            OOKPABEEngine ooEngine = (OOKPABEEngine)this.engine;
+            //offline encryption and serialization
+            PairingCipherSerParameter intermediate = ooEngine.offlineEncryption(publicKey, rhos.length);
+            byte[] byteArrayIntermediate = TestUtils.SerCipherParameter(intermediate);
+            CipherParameters anIntermediate = TestUtils.deserCipherParameters(byteArrayIntermediate);
+            Assert.assertEquals(intermediate, anIntermediate);
+            intermediate = (PairingCipherSerParameter)anIntermediate;
+
+            //Encryption and serialization
+            ciphertext = ooEngine.encryption(publicKey, intermediate, attributes, message);
+            byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
+            anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
+            Assert.assertEquals(ciphertext, anCiphertext);
+            ciphertext = (PairingCipherSerParameter)anCiphertext;
+
+            //Decryption
+            anMessage = engine.decryption(publicKey, secretKey, attributes, ciphertext);
+            Assert.assertEquals(message, anMessage);
+
+            //Encapsulation and serialization
+            encapsulationPair = ooEngine.encapsulation(publicKey, intermediate, attributes);
+            sessionKey = encapsulationPair.getSessionKey();
+            header = encapsulationPair.getHeader();
+            byteArrayHeader = TestUtils.SerCipherParameter(header);
+            anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+            Assert.assertEquals(header, anHeader);
+            header = (PairingCipherSerParameter)anHeader;
+
+            //Decapsulation
+            anSessionKey = engine.decapsulation(publicKey, secretKey, attributes, header);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
+        }
     }
 
     public void runAllTests(PairingParameters pairingParameters) {
@@ -365,6 +401,17 @@ public class KPABEEngineJUnitTest extends TestCase {
 
     public void testKPABERW13Engine() {
         this.engine = KPABERW13Engine.getInstance();
+        System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
+        engine.setAccessControlEngine(AccessTreeEngine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+
+        System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
+        engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testKPABEHW14Engine() {
+        this.engine = OOKPABEHW14Engine.getInstance();
         System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
         engine.setAccessControlEngine(AccessTreeEngine.getInstance());
         runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));

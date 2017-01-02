@@ -31,7 +31,7 @@ import java.security.SecureRandom;
  * Liu-Liu-Wu-14 CCA2-secure KP-ABE engine.
  */
 public class KPABELLW14Engine extends KPABEEngine {
-    private static final String SCHEME_NAME = "Liu-Liu-Wu-14 large-universe KP-ABE";
+    private static final String SCHEME_NAME = "Liu-Liu-Wu-14 CCA2-secure large-universe KP-ABE";
 
     private static KPABELLW14Engine engine;
     private ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
@@ -93,8 +93,10 @@ public class KPABELLW14Engine extends KPABEEngine {
                             + KPABELLW14PublicKeySerParameter.class.getName());
         }
         KPABELLW14EncryptionGenerator encryptionGenerator = new KPABELLW14EncryptionGenerator();
-        encryptionGenerator.init(new KPABEEncryptionGenerationParameter(chameleonHasher, publicKey, attributes, message));
-
+        KPABEEncryptionGenerationParameter encryptionGenerationParameter
+                = new KPABEEncryptionGenerationParameter(publicKey, attributes, message);
+        encryptionGenerationParameter.setChameleonHasher(chameleonHasher);
+        encryptionGenerator.init(encryptionGenerationParameter);
         return encryptionGenerator.generateCiphertext();
     }
 
@@ -106,7 +108,10 @@ public class KPABELLW14Engine extends KPABEEngine {
                             + KPABELLW14PublicKeySerParameter.class.getName());
         }
         KPABELLW14EncryptionGenerator encryptionGenerator = new KPABELLW14EncryptionGenerator();
-        encryptionGenerator.init(new KPABEEncryptionGenerationParameter(chameleonHasher, publicKey, attributes, null));
+        KPABEEncryptionGenerationParameter encryptionGenerationParameter
+                = new KPABEEncryptionGenerationParameter(publicKey, attributes, null);
+        encryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
+        encryptionGenerator.init(encryptionGenerationParameter);
 
         return encryptionGenerator.generateEncryptionPair();
     }
@@ -133,8 +138,10 @@ public class KPABELLW14Engine extends KPABEEngine {
                             + KPABELLW14CiphertextSerParameter.class.getName());
         }
         KPABELLW14DecryptionGenerator decryptionGenerator = new KPABELLW14DecryptionGenerator();
-        decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
-                chameleonHasher, accessControlEngine, publicKey, secretKey, attributes, ciphertext));
+        KPABEDecryptionGenerationParameter decryptionGenerationParameter
+                = new KPABEDecryptionGenerationParameter(accessControlEngine, publicKey, secretKey, attributes, ciphertext);
+        decryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
+        decryptionGenerator.init(decryptionGenerationParameter);
         return decryptionGenerator.recoverMessage();
     }
 
@@ -160,8 +167,10 @@ public class KPABELLW14Engine extends KPABEEngine {
                             + KPABELLW14HeaderSerParameter.class.getName());
         }
         KPABELLW14DecryptionGenerator decryptionGenerator = new KPABELLW14DecryptionGenerator();
-        decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
-                chameleonHasher, accessControlEngine, publicKey, secretKey, attributes, header));
+        KPABEDecryptionGenerationParameter decryptionGenerationParameter
+                = new KPABEDecryptionGenerationParameter(accessControlEngine, publicKey, secretKey, attributes, header);
+        decryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
+        decryptionGenerator.init(decryptionGenerationParameter);
         return decryptionGenerator.recoverKey();
     }
 }
