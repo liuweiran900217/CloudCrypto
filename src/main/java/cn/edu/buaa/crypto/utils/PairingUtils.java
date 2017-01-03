@@ -334,4 +334,12 @@ public class PairingUtils {
         byteArrayInputStream.close();
         return cipherParameters;
     }
+
+    public static void NotVerifyCipherParameterInstance(String schemeName, CipherParameters cipherParameters,
+                                                     String className) {
+            throw new IllegalArgumentException
+                    ("Invalid CipherParameter Instance of " + schemeName  + ", find "
+                            + cipherParameters.getClass().getName() + ", require"
+                            + className);
+    }
 }

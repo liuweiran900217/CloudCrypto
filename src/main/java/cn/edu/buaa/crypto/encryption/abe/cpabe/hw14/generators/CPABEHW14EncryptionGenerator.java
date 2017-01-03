@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class CPABEHW14EncryptionGenerator  implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
     private CPABEHW14PublicKeySerParameter publicKeyParameter;
-    private CPABEHW14IntermediateSerParameter intermedate;
+    private CPABEHW14IntermediateSerParameter intermediate;
     protected CPABEEncryptionGenerationParameter parameter;
     protected AccessControlParameter accessControlParameter;
     protected Element s;
@@ -36,14 +36,14 @@ public class CPABEHW14EncryptionGenerator  implements PairingEncryptionGenerator
     protected Map<String, Element> C1s;
     protected Map<String, Element> C2s;
     protected Map<String, Element> C3s;
-    private Map<String, Element> C4s;
-    private Map<String, Element> C5s;
+    protected Map<String, Element> C4s;
+    protected Map<String, Element> C5s;
 
     public void init(CipherParameters parameter) {
         this.parameter = (CPABEEncryptionGenerationParameter) parameter;
         this.publicKeyParameter = (CPABEHW14PublicKeySerParameter) this.parameter.getPublicKeyParameter();
         if (this.parameter.isIntermediateGeneration()) {
-            this.intermedate = (CPABEHW14IntermediateSerParameter)this.parameter.getIntermediate();
+            this.intermediate = (CPABEHW14IntermediateSerParameter)this.parameter.getIntermediate();
         }
     }
 
@@ -55,11 +55,11 @@ public class CPABEHW14EncryptionGenerator  implements PairingEncryptionGenerator
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         if (this.parameter.isIntermediateGeneration()) {
-            this.s = this.intermedate.getS().getImmutable();
-            this.sessionKey = this.intermedate.getSessionKey().getImmutable();
-            this.C0 = this.intermedate.getC0().getImmutable();
+            this.s = this.intermediate.getS().getImmutable();
+            this.sessionKey = this.intermediate.getSessionKey().getImmutable();
+            this.C0 = this.intermediate.getC0().getImmutable();
             Map<String, Element> lambdas = accessControlEngine.secretSharing(pairing, s, accessControlParameter);
-            if (lambdas.keySet().size() > this.intermedate.getN()) {
+            if (lambdas.keySet().size() > this.intermediate.getN()) {
                 throw new IllegalArgumentException("Intermediate size smaller than the number of rhos");
             }
             this.C1s = new HashMap<String, Element>();
@@ -70,11 +70,11 @@ public class CPABEHW14EncryptionGenerator  implements PairingEncryptionGenerator
             int index = 0;
             for (String rho : lambdas.keySet()) {
                 Element elementRho = PairingUtils.MapStringToGroup(pairing, rho, PairingUtils.PairingGroupType.Zr);
-                C1s.put(rho, this.intermedate.getC1sAt(index).getImmutable());
-                C2s.put(rho, this.intermedate.getC2sAt(index).getImmutable());
-                C3s.put(rho, this.intermedate.getC3sAt(index).getImmutable());
-                C4s.put(rho, lambdas.get(rho).sub(this.intermedate.getLambdasAt(index)).getImmutable());
-                C5s.put(rho, this.intermedate.getTsAt(index).mulZn(this.intermedate.getXsAt(index).sub(elementRho)).getImmutable());
+                C1s.put(rho, this.intermediate.getC1sAt(index).getImmutable());
+                C2s.put(rho, this.intermediate.getC2sAt(index).getImmutable());
+                C3s.put(rho, this.intermediate.getC3sAt(index).getImmutable());
+                C4s.put(rho, lambdas.get(rho).sub(this.intermediate.getLambdasAt(index)).getImmutable());
+                C5s.put(rho, this.intermediate.getTsAt(index).mulZn(this.intermediate.getXsAt(index).sub(elementRho)).getImmutable());
                 index++;
             }
 

@@ -75,11 +75,19 @@ public class KPABEHW14IntermediateSerParameter extends PairingCipherSerParameter
 
     public Element getC0() { return this.C0.duplicate(); }
 
+    public Element[] getRs() { return this.rs; }
+
     public Element getRsAt(int index) { return this.rs[index].duplicate(); }
+
+    public Element[] getXs() { return this.xs; }
 
     public Element getXsAt(int index) { return this.xs[index].duplicate(); }
 
+    public Element[] getC1s() { return this.C1s; }
+
     public Element getC1sAt(int index) { return this.C1s[index].duplicate(); }
+
+    public Element[] getC2s() { return this.C2s; }
 
     public Element getC2sAt(int index) { return this.C2s[index].duplicate(); }
 

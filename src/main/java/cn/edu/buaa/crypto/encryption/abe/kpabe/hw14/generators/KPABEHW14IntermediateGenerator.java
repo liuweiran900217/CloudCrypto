@@ -18,14 +18,14 @@ import org.bouncycastle.crypto.CipherParameters;
 public class KPABEHW14IntermediateGenerator implements PairingEncryptionGenerator {
     private KPABEIntermediateGenerationParameter parameter;
     private KPABEHW14PublicKeySerParameter publicKeyParameter;
-    private int n;
-    private Element sessionKey;
-    private Element s;
-    private Element C0;
-    private Element[] rs;
-    private Element[] xs;
-    private Element[] C1s;
-    private Element[] C2s;
+    protected int n;
+    protected Element sessionKey;
+    protected Element s;
+    protected Element C0;
+    protected Element[] rs;
+    protected Element[] xs;
+    protected Element[] C1s;
+    protected Element[] C2s;
 
     public void init(CipherParameters parameter) {
         this.parameter = (KPABEIntermediateGenerationParameter) parameter;

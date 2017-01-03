@@ -9,6 +9,7 @@ import cn.edu.buaa.crypto.encryption.abe.kpabe.OOKPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.*;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.hw14.generators.*;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.hw14.serparams.*;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -42,16 +43,10 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
 
     public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos) {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         if (!(masterKey instanceof KPABEHW14MasterSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + KPABEHW14MasterSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, masterKey, KPABEHW14MasterSecretKeySerParameter.class.getName());
         }
         KPABEHW14SecretKeyGenerator secretKeyGenerator = new KPABEHW14SecretKeyGenerator();
         secretKeyGenerator.init(new KPABESecretKeyGenerationParameter(
@@ -62,10 +57,7 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
 
     public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] attributes, Element message) {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         KPABEHW14EncryptionGenerator encryptionGenerator = new KPABEHW14EncryptionGenerator();
         encryptionGenerator.init(new KPABEEncryptionGenerationParameter(publicKey, attributes, message));
@@ -75,10 +67,7 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] attributes) {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         KPABEHW14EncryptionGenerator encryptionGenerator = new KPABEHW14EncryptionGenerator();
         encryptionGenerator.init(new KPABEEncryptionGenerationParameter(publicKey, attributes, null));
@@ -90,22 +79,13 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
             PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] attributes,
             PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof KPABEHW14SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + KPABEHW14SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, KPABEHW14SecretKeySerParameter.class.getName());
         }
         if (!(ciphertext instanceof KPABEHW14CiphertextSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + ciphertext.getClass().getName() + ", require "
-                            + KPABEHW14CiphertextSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, ciphertext, KPABEHW14CiphertextSerParameter.class.getName());
         }
         KPABEHW14DecryptionGenerator decryptionGenerator = new KPABEHW14DecryptionGenerator();
         decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
@@ -117,22 +97,13 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
             PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] attributes,
             PairingCipherSerParameter header) throws InvalidCipherTextException {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof KPABEHW14SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + KPABEHW14SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, KPABEHW14SecretKeySerParameter.class.getName());
         }
         if (!(header instanceof KPABEHW14HeaderSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + header.getClass().getName() + ", require "
-                            + KPABEHW14HeaderSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, header, KPABEHW14HeaderSerParameter.class.getName());
         }
         KPABEHW14DecryptionGenerator decryptionGenerator = new KPABEHW14DecryptionGenerator();
         decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
@@ -142,10 +113,7 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
 
     public PairingCipherSerParameter offlineEncryption(PairingKeySerParameter publicKey, int n) {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         KPABEHW14IntermediateGenerator intermediateGenerator = new KPABEHW14IntermediateGenerator();
         intermediateGenerator.init(new KPABEIntermediateGenerationParameter(publicKey, n));
@@ -154,16 +122,10 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
 
     public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate, String[] attributes, Element message) {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         if (!(intermediate instanceof KPABEHW14IntermediateSerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                    + intermediate.getClass().getName() + ", require "
-                    + KPABEHW14IntermediateSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, intermediate, KPABEHW14IntermediateSerParameter.class.getName());
         }
         KPABEHW14EncryptionGenerator encryptionGenerator = new KPABEHW14EncryptionGenerator();
         KPABEEncryptionGenerationParameter encryptionGenerationParameter
@@ -175,16 +137,10 @@ public class OOKPABEHW14Engine extends OOKPABEEngine {
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate, String[] attributes) {
         if (!(publicKey instanceof KPABEHW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABEHW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABEHW14PublicKeySerParameter.class.getName());
         }
         if (!(intermediate instanceof KPABEHW14IntermediateSerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + intermediate.getClass().getName() + ", require "
-                            + KPABEHW14IntermediateSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, intermediate, KPABEHW14IntermediateSerParameter.class.getName());
         }
         KPABEHW14EncryptionGenerator encryptionGenerator = new KPABEHW14EncryptionGenerator();
         KPABEEncryptionGenerationParameter encryptionGenerationParameter

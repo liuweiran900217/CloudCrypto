@@ -33,7 +33,7 @@ public class KPABEHW14EncryptionGenerator implements PairingEncryptionGenerator,
     protected Element C0;
     protected Map<String, Element> C1s;
     protected Map<String, Element> C2s;
-    private Map<String, Element> C3s;
+    protected Map<String, Element> C3s;
 
     public void init(CipherParameters params) {
         this.parameter = (KPABEEncryptionGenerationParameter)params;

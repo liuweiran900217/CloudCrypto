@@ -22,16 +22,16 @@ public class KPABEIntermediateGenerationParameter extends PairingEncapsulationGe
         this.n = n;
     }
 
-    public KPABEIntermediateGenerationParameter(
-            ChameleonHasher chameleonHasher,
-            AsymmetricKeySerPairGenerator chameleonHashKeyPairGenerator,
-            KeyGenerationParameters chameleonHashKeyGenerationParameter,
-            PairingKeySerParameter publicKeyParameter, int n) {
-        super(publicKeyParameter);
-        this.n = n;
+    public void setChameleonHasher(ChameleonHasher chameleonHasher) {
         this.chameleonHasher = chameleonHasher;
-        this.chameleonHashKeyPairGenerator = chameleonHashKeyPairGenerator;
-        this.chameleonHashKeyGenerationParameter = chameleonHashKeyGenerationParameter;
+    }
+
+    public void setChameleonHashKeyPairGenerator(AsymmetricKeySerPairGenerator keyPairGenerator) {
+        this.chameleonHashKeyPairGenerator = keyPairGenerator;
+    }
+
+    public void setChameleonHashKeyGenerationParameter(KeyGenerationParameters keyGenerationParameter) {
+        this.chameleonHashKeyGenerationParameter = keyGenerationParameter;
     }
 
     public ChameleonHasher getChameleonHasher() {

@@ -88,15 +88,27 @@ public class CPABEHW14IntermediateSerParameter extends PairingCipherSerParameter
 
     public Element getC0() { return this.C0.duplicate(); }
 
+    public Element[] getLambdas() { return ElementUtils.duplicate(lambdas); }
+
     public Element getLambdasAt(int index) { return this.lambdas[index].duplicate(); }
+
+    public Element[] getTs() { return ElementUtils.duplicate(this.ts); }
 
     public Element getTsAt(int index) { return this.ts[index].duplicate(); }
 
+    public Element[] getXs() { return ElementUtils.duplicate(this.xs); }
+
     public Element getXsAt(int index) { return this.xs[index].duplicate(); }
+
+    public Element[] getC1s() { return ElementUtils.duplicate(this.C1s); }
 
     public Element getC1sAt(int index) { return this.C1s[index].duplicate(); }
 
+    public Element[] getC2s() { return ElementUtils.duplicate(this.C2s); }
+
     public Element getC2sAt(int index) { return this.C2s[index].duplicate(); }
+
+    public Element[] getC3s() { return ElementUtils.duplicate(this.C3s); }
 
     public Element getC3sAt(int index) { return this.C3s[index].duplicate(); }
 
