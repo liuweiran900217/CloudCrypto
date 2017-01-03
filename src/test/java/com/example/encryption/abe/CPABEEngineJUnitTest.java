@@ -10,6 +10,7 @@ import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00bDigestHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyGenerationParameters;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyPairGenerator;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bUniversalHasher;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.OOCPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.CPABEBSW07Engine;
@@ -433,7 +434,7 @@ public class CPABEEngineJUnitTest extends TestCase {
         System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
         engine.setAccessControlEngine(AccessTreeEngine.getInstance());
 
-        ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
+        ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bUniversalHasher(new SHA256Digest()), new SHA256Digest());
         AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
         KeyGenerationParameters keyGenerationParameters = new DLogKR00bKeyGenerationParameters(new SecureRandom(),
                 SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);

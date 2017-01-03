@@ -6,7 +6,6 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.RBACLLW15Engine;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import com.example.TestUtils;
-import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
@@ -42,7 +41,6 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
     private static final String[] roles13467  = {"Role_1",  null,   "Role_3",   "Role_4",   null,       "Role_6",   "Role_7",   null};
 
     private RBACLLW15Engine engine;
-    private PairingParameters pairingParameters;
 
     private void try_patient_valid_decapsulation(
             PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
@@ -309,9 +307,9 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
 
     private void try_medical_invalid_delegation(
             PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
-            String[] medicalRoles, String medicalTime, int index, String role, String[] roles, String encIdentity, String encTime) {
+            String[] medicalRoles, String medicalTime, int index, String[] roles, String encIdentity, String encTime) {
         try {
-            try_medical_delegation(publicKey, masterKey, medicalRoles, medicalTime, index, role, roles, encIdentity, encTime);
+            try_medical_delegation(publicKey, masterKey, medicalRoles, medicalTime, index, "Role_1", roles, encIdentity, encTime);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
@@ -319,14 +317,14 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
                     "medical staff roles = " + Arrays.toString(medicalRoles) + ", " +
                     "medical staff time  = " + medicalTime + ", " +
                     "delegation index    = " + index + ", " +
-                    "delegation role     = " + role + ", " +
+                    "delegation role     = " + "Role_1" + ", " +
                     "encapsulation id.   = " + encIdentity + ", " +
                     "encapsulation time  = " + encTime);
             e.printStackTrace();
             System.exit(1);
         }
         try {
-            try_medical_delegation_with_intermediate(publicKey, masterKey, medicalRoles, medicalTime, index, role, roles, encIdentity, encTime);
+            try_medical_delegation_with_intermediate(publicKey, masterKey, medicalRoles, medicalTime, index, "Role_1", roles, encIdentity, encTime);
         } catch (InvalidCipherTextException e) {
             //correct if getting there, nothing to do.
         } catch (Exception e) {
@@ -334,7 +332,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
                     "medical staff roles = " + Arrays.toString(medicalRoles) + ", " +
                     "medical staff time  = " + medicalTime + ", " +
                     "delegation index    = " + index + ", " +
-                    "delegation role     = " + role + ", " +
+                    "delegation role     = " + "Role_1" + ", " +
                     "encapsulation id.   = " + encIdentity + ", " +
                     "encapsulation time  = " + encTime);
             e.printStackTrace();
@@ -408,8 +406,7 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         Assert.assertFalse(engine.EHRAudit(publicKey, identity, roles, time, encapsulationSerPair.getHeader()));
     }
 
-    private void runAllTests() {
-        Pairing pairing = PairingFactory.getPairing(pairingParameters);
+    private void runAllTests(PairingParameters pairingParameters) {
         try {
             // Setup and serialization
             PairingKeySerPair keyPair = engine.Setup(pairingParameters, roles13467.length);
@@ -443,7 +440,8 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
             try_medical_invalid_decapsulation(publicKey, masterKey, role4, timeF, roles13467, idT, timeT);
             try_medical_invalid_decapsulation(publicKey, masterKey, role46, timeF, roles13467, idT, timeT);
             try_medical_invalid_decapsulation(publicKey, masterKey, role467, timeF, roles13467, idT, timeT);
-            try_medical_invalid_delegation(publicKey, masterKey, role3, timeT, 2, "Role_1", roles13467, idT, timeT);
+            try_medical_invalid_delegation(publicKey, masterKey, role3, timeT, 2, roles13467, idT, timeT);
+            try_medical_invalid_delegation(publicKey, masterKey, role3, timeT, 5, roles13467, idT, timeT);
             try_invalid_audit(publicKey, roles13467, idT, timeF, roles13467, idT, timeT);
             try_invalid_audit(publicKey, roles13467, idF, timeT, roles13467, idT, timeT);
             try_invalid_audit(publicKey, roles13467, idT, timeT, role467, idT, timeT);
@@ -459,12 +457,8 @@ public class RBACLLW15EngineJUnitTest extends TestCase {
         }
     }
 
-    public void setUp() {
-        this.engine = RBACLLW15Engine.getInstance();
-        this.pairingParameters = PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
-    }
-
     public void testRBACLLW15Engine() {
-        this.runAllTests();
+        this.engine = RBACLLW15Engine.getInstance();
+        this.runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

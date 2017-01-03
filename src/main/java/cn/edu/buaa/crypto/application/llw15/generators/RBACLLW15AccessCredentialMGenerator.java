@@ -172,12 +172,10 @@ public class RBACLLW15AccessCredentialMGenerator implements PairingKeyParameterG
                         a0, a1, a2, bv, bs);
             }
         } else {
-            throw new IllegalArgumentException
-                    ("Invalid KeyGenerationParameters for " + RBACLLW15Engine.SCHEME_NAME
-                            + " Secret Key Generatation, find "
-                            + params.getClass().getName() + ", require "
-                            + RBACLLW15AccessCredentialMGenParameter.class.getName() + " or "
-                            + RBACLLW15AccessCredentialMDeleParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(RBACLLW15Engine.SCHEME_NAME, params,
+                    RBACLLW15AccessCredentialMGenParameter.class.getName() + " or "
+                    + RBACLLW15AccessCredentialMDeleParameter.class.getName());
+            return null;
         }
     }
 }

@@ -5,9 +5,9 @@ import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.*;
 import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00bDigestHasher;
-import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bHasher;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyGenerationParameters;
 import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyPairGenerator;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bUniversalHasher;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.OOKPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.*;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.llw16.generators.*;
@@ -30,7 +30,7 @@ public class OOKPABELLW16Engine extends OOKPABEEngine {
     private static final String SCHEME_NAME = "Liu-Liu-Wu-16 CCA2-secure large-universe OO-KP-ABE";
 
     private static OOKPABELLW16Engine engine;
-    private ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bHasher(), new SHA256Digest());
+    private ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bUniversalHasher(new SHA256Digest()), new SHA256Digest());
     private AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
     private KeyGenerationParameters chKeyPairGenerationParameter
             = new DLogKR00bKeyGenerationParameters(new SecureRandom(), SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);

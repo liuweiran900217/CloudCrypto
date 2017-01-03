@@ -1,5 +1,6 @@
 package com.example.encryption.hibbe;
 
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
@@ -9,6 +10,11 @@ import cn.edu.buaa.crypto.encryption.hibbe.llw14.HIBBELLW14Engine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16a.HIBBELLW16aEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.HIBBELLW16bEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.HIBBELLW17Engine;
+import cn.edu.buaa.crypto.signature.pks.PairingDigestSigner;
+import cn.edu.buaa.crypto.signature.pks.bb08.BB08SignKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.signature.pks.bb08.BB08SignKeyPairGenerator;
+import cn.edu.buaa.crypto.signature.pks.bb08.BB08Signer;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -17,6 +23,8 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
+import org.bouncycastle.crypto.Signer;
+import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -111,10 +119,10 @@ public class HIBBEEngineJUnitTest extends TestCase {
     }
 
     private void try_delegation_invalid_decryption(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
-                                                    String[] identityVector, int index, String delegateId, String[] identityVectorSet) {
+                                                   String[] identityVector, String[] identityVectorSet) {
         try {
             PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, identityVector);
-            PairingKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, index, delegateId);
+            PairingKeySerParameter delegateKey = engine.delegate(publicKey, secretKey, 2, "ID_1");
             byte[] byteArrayDelegateKey = TestUtils.SerCipherParameter(delegateKey);
             CipherParameters anDelegateKey = TestUtils.deserCipherParameters(byteArrayDelegateKey);
             Assert.assertEquals(delegateKey, anDelegateKey);
@@ -149,7 +157,7 @@ public class HIBBEEngineJUnitTest extends TestCase {
         } catch (Exception e) {
             System.out.println("Invalid delegate decryption test failed, " +
                     "identity vector = " + Arrays.toString(identityVector) + ", " +
-                    "delegate ident. = " + delegateId + ", " +
+                    "delegate ident. = " + "ID_1" + ", " +
                     "identity v. set = " + Arrays.toString(identityVectorSet));
             e.printStackTrace();
             System.exit(1);
@@ -222,7 +230,9 @@ public class HIBBEEngineJUnitTest extends TestCase {
             try_invalid_decryption(pairing, publicKey, masterKey, identityVector45_unsatisfied, identityVectorSet13467);
             try_invalid_decryption(pairing, publicKey, masterKey, identityVector3_unsatisfied, identityVectorSet13467);
             try_invalid_decryption(pairing, publicKey, masterKey, identityVector31_unsatisfied, identityVectorSet13467);
-            try_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector3_unsatisfied, 2, "ID_1", identityVectorSet13467);
+            try_delegation_invalid_decryption(pairing, publicKey, masterKey, identityVector3_unsatisfied,
+                    identityVectorSet13467);
+
             System.out.println(engine.getEngineName() + " test passed");
         } catch (ClassNotFoundException e) {
             System.out.println("setup test failed.");
@@ -247,6 +257,11 @@ public class HIBBEEngineJUnitTest extends TestCase {
 
     public void testHIBBELLW16bEngine() {
         this.engine = HIBBELLW16bEngine.getInstance();
+        Signer signer = new PairingDigestSigner(new BB08Signer(), new SHA256Digest());
+        PairingKeyPairGenerator signKeyPairGenerator = new BB08SignKeyPairGenerator();
+        BB08SignKeyPairGenerationParameter signKeyPairGenerationParameter
+                = new BB08SignKeyPairGenerationParameter(PairingFactory.getPairingParameters(PairingUtils.PATH_a_160_512));
+        ((HIBBELLW16bEngine)this.engine).setSigner(signer, signKeyPairGenerator, signKeyPairGenerationParameter);
         runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 

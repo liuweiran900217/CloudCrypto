@@ -335,11 +335,11 @@ public class PairingUtils {
         return cipherParameters;
     }
 
-    public static void NotVerifyCipherParameterInstance(String schemeName, CipherParameters cipherParameters,
+    public static void NotVerifyCipherParameterInstance(String schemeName, Object parameters,
                                                      String className) {
             throw new IllegalArgumentException
                     ("Invalid CipherParameter Instance of " + schemeName  + ", find "
-                            + cipherParameters.getClass().getName() + ", require"
+                            + parameters.getClass().getName() + ", require"
                             + className);
     }
 }

@@ -14,6 +14,7 @@ import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.generators.KPABERW13Encrypti
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.generators.KPABERW13KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.generators.KPABERW13SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.serparams.*;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -48,16 +49,10 @@ public class KPABERW13Engine extends KPABEEngine {
 
     public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int[][] accessPolicyIntArrays, String[] rhos) {
         if (!(publicKey instanceof KPABERW13PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABERW13PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABERW13PublicKeySerParameter.class.getName());
         }
         if (!(masterKey instanceof KPABERW13MasterSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + KPABERW13MasterSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, masterKey, KPABERW13MasterSecretKeySerParameter.class.getName());
         }
         KPABERW13SecretKeyGenerator secretKeyGenerator = new KPABERW13SecretKeyGenerator();
         secretKeyGenerator.init(new KPABESecretKeyGenerationParameter(
@@ -68,10 +63,7 @@ public class KPABERW13Engine extends KPABEEngine {
 
     public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] attributes, Element message) {
         if (!(publicKey instanceof KPABERW13PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABERW13PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABERW13PublicKeySerParameter.class.getName());
         }
         KPABERW13EncryptionGenerator encryptionGenerator = new KPABERW13EncryptionGenerator();
         encryptionGenerator.init(new KPABEEncryptionGenerationParameter(publicKey, attributes, message));
@@ -81,10 +73,7 @@ public class KPABERW13Engine extends KPABEEngine {
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] attributes) {
         if (!(publicKey instanceof KPABERW13PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABERW13PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABERW13PublicKeySerParameter.class.getName());
         }
         KPABERW13EncryptionGenerator encryptionGenerator = new KPABERW13EncryptionGenerator();
         encryptionGenerator.init(new KPABEEncryptionGenerationParameter(publicKey, attributes, null));
@@ -96,22 +85,13 @@ public class KPABERW13Engine extends KPABEEngine {
             PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] attributes,
             PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof KPABERW13PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABERW13PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABERW13PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof KPABERW13SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + KPABERW13SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, KPABERW13SecretKeySerParameter.class.getName());
         }
         if (!(ciphertext instanceof KPABERW13CiphertextSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + ciphertext.getClass().getName() + ", require "
-                            + KPABERW13CiphertextSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, ciphertext, KPABERW13CiphertextSerParameter.class.getName());
         }
         KPABERW13DecryptionGenerator decryptionGenerator = new KPABERW13DecryptionGenerator();
         decryptionGenerator.init(new KPABEDecryptionGenerationParameter(
@@ -123,22 +103,13 @@ public class KPABERW13Engine extends KPABEEngine {
             PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String[] attributes,
             PairingCipherSerParameter header) throws InvalidCipherTextException {
         if (!(publicKey instanceof KPABERW13PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + KPABERW13PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, KPABERW13PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof KPABERW13SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + KPABERW13SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, KPABERW13SecretKeySerParameter.class.getName());
         }
         if (!(header instanceof KPABERW13HeaderSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + header.getClass().getName() + ", require "
-                            + KPABERW13HeaderSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, header, KPABERW13HeaderSerParameter.class.getName());
         }
         KPABERW13DecryptionGenerator decryptionGenerator = new KPABERW13DecryptionGenerator();
         decryptionGenerator.init(new KPABEDecryptionGenerationParameter(

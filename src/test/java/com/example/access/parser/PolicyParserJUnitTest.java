@@ -9,6 +9,7 @@ import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
+import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
 
@@ -60,12 +61,10 @@ public class PolicyParserJUnitTest extends TestCase {
             "A_40", "A_41", "A_42", "A_43", "A_44", "A_45", "A_46", "A_47", "A_48", "A_49",
     };
 
-    private PolicyParserJUnitTest policyParserJUnitTest;
-
     private LSSSPolicyEngine lsssPolicyEngine;
-    private Pairing pairing;
 
-    private void try_valid_access_policy(int testIndex, String accessPolicyString, final String[] attributeSet) {
+    private void try_valid_access_policy(
+            Pairing pairing, int testIndex, String accessPolicyString, final String[] attributeSet) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
 //            for (int i = 0; i < accessPolicy.length; i++) {
@@ -107,7 +106,8 @@ public class PolicyParserJUnitTest extends TestCase {
         }
     }
 
-    private void try_invalid_access_policy(int testIndex, String accessPolicyString, final String[] attributeSet) {
+    private void try_invalid_access_policy(
+            Pairing pairing, int testIndex, String accessPolicyString, final String[] attributeSet) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
@@ -135,27 +135,23 @@ public class PolicyParserJUnitTest extends TestCase {
         }
     }
 
-    private void runAllTests() {
-        try_valid_access_policy(1, access_policy_example_1, access_policy_exampe_1_satisfied_1);
-        try_valid_access_policy(2, access_policy_example_1, access_policy_exampe_1_satisfied_2);
-        try_valid_access_policy(11, access_policy_example_2, access_policy_exampe_2_satisfied_1);
-        try_valid_access_policy(12, access_policy_example_2, access_policy_exampe_2_satisfied_2);
-        try_valid_access_policy(21, access_policy_example_3, access_policy_exampe_3_satisfied_1);
+    private void runAllTests(PairingParameters pairingParameters) {
+        Pairing pairing = PairingFactory.getPairing(pairingParameters);
+        try_valid_access_policy(pairing, 1, access_policy_example_1, access_policy_exampe_1_satisfied_1);
+        try_valid_access_policy(pairing, 2, access_policy_example_1, access_policy_exampe_1_satisfied_2);
+        try_valid_access_policy(pairing, 11, access_policy_example_2, access_policy_exampe_2_satisfied_1);
+        try_valid_access_policy(pairing, 12, access_policy_example_2, access_policy_exampe_2_satisfied_2);
+        try_valid_access_policy(pairing, 21, access_policy_example_3, access_policy_exampe_3_satisfied_1);
 
-        try_invalid_access_policy(1, access_policy_example_1, access_policy_exampe_1_unsatisfied_1);
-        try_invalid_access_policy(11, access_policy_example_2, access_policy_exampe_2_unsatisfied_1);
-        try_invalid_access_policy(12, access_policy_example_2, access_policy_exampe_2_unsatisfied_2);
-        try_invalid_access_policy(21, access_policy_example_3, access_policy_exampe_3_unsatisfied_1);
-        try_invalid_access_policy(22, access_policy_example_3, access_policy_exampe_3_unsatisfied_2);
-    }
-
-    public void setUp() {
-        policyParserJUnitTest = new PolicyParserJUnitTest();
-        policyParserJUnitTest.pairing = PairingFactory.getPairing(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256);
-        policyParserJUnitTest.lsssPolicyEngine = LSSSLW10Engine.getInstance();
+        try_invalid_access_policy(pairing, 1, access_policy_example_1, access_policy_exampe_1_unsatisfied_1);
+        try_invalid_access_policy(pairing, 11, access_policy_example_2, access_policy_exampe_2_unsatisfied_1);
+        try_invalid_access_policy(pairing, 12, access_policy_example_2, access_policy_exampe_2_unsatisfied_2);
+        try_invalid_access_policy(pairing, 21, access_policy_example_3, access_policy_exampe_3_unsatisfied_1);
+        try_invalid_access_policy(pairing, 22, access_policy_example_3, access_policy_exampe_3_unsatisfied_2);
     }
 
     public void testPolicyParser() {
-        policyParserJUnitTest.runAllTests();
+        this.lsssPolicyEngine = LSSSLW10Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

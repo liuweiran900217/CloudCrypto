@@ -5,8 +5,10 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06b.KPABEGPSW06bEngine;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.KPABERW13Engine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.OOKPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.hw14.OOKPABEHW14Engine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.llw14.KPABELLW14Engine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.llw16.OOKPABELLW16Engine;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.utils.Timer;
 import com.example.TestUtils;
@@ -45,10 +47,17 @@ public class KPABEPerformanceTest extends TestCase {
     private double[] timeEncapsulation;
     //key encryption time
     private double[] timeEncryption;
+    //online offline
+    private double[] timeOfflineEncryption;
+    private double[] timeOnlineEncryption;
+    private double[] timeOnlineEncapsulation;
 
     //decapsulation time
     private double[] timeDecapsulation;
     private double[] timeDecryption;
+    //online offline
+    private double[] timeOnlineDecapsulation;
+    private double[] timeOnlineDecryption;
 
     private KPABEEngine engine;
 
@@ -60,8 +69,13 @@ public class KPABEPerformanceTest extends TestCase {
         this.accessPolicies = new String[maximal_attributes];
         this.timeEncapsulation = new double[maximal_attributes];
         this.timeEncryption = new double[maximal_attributes];
+        this.timeOfflineEncryption = new double[maximal_attributes];
+        this.timeOnlineEncryption = new double[maximal_attributes];
+        this.timeOnlineEncapsulation = new double[maximal_attributes];
         this.timeDecapsulation = new double[maximal_attributes];
         this.timeDecryption = new double[maximal_attributes];
+        this.timeOnlineDecapsulation = new double[maximal_attributes];
+        this.timeOnlineDecryption = new double[maximal_attributes];
 
         //create attributeSets
         for (int i = 0; i < maximal_attributes; i++){
@@ -148,6 +162,43 @@ public class KPABEPerformanceTest extends TestCase {
             out.print("\t" + this.timeDecapsulation[i] / test_round);
         }
         out.println();
+
+        if (this.engine instanceof OOKPABEEngine) {
+            //write offline encryption
+            out.print("Offline Encryption: ");
+            for (int i = 0; i < maximal_attributes; i++) {
+                out.print("\t" + this.timeOfflineEncryption[i] / test_round);
+            }
+            out.println();
+
+            //write online encapsulation
+            out.print("Online Encapsulation: ");
+            for (int i = 0; i < maximal_attributes; i++) {
+                out.print("\t" + this.timeOnlineEncapsulation[i] / test_round);
+            }
+            out.println();
+
+            //write online encryption
+            out.print("Online Encryption: ");
+            for (int i = 0; i < maximal_attributes; i++) {
+                out.print("\t" + this.timeOnlineEncryption[i] / test_round);
+            }
+            out.println();
+
+            //write online decryption
+            out.print("Online Decryption: ");
+            for (int i = 0; i < maximal_attributes; i++) {
+                out.print("\t" + this.timeOnlineDecryption[i] / test_round);
+            }
+            out.println();
+
+            //write online decapsulation
+            out.print("Online Decapsulation: ");
+            for (int i = 0; i < maximal_attributes; i++) {
+                out.print("\t" + this.timeOnlineDecapsulation[i] / test_round);
+            }
+            out.println();
+        }
     }
 
     private void run_one_round() {
@@ -239,6 +290,79 @@ public class KPABEPerformanceTest extends TestCase {
             }
             out.println();
             System.out.println();
+
+            if (this.engine instanceof OOKPABEEngine) {
+                OOKPABEEngine ooEngine = (OOKPABEEngine)this.engine;
+
+                out.print("Offline Encryption: ");
+                //test offline encryption performance
+                PairingCipherSerParameter[] intermediates = new PairingCipherSerParameter[maximal_attributes];
+                for (int i = 0; i < maximal_attributes; i++) {
+                    System.out.print("Offline Encryption " + i + "; ");
+                    timer.start(i);
+                    intermediates[i] = ooEngine.offlineEncryption(publicKey, attributeSets[i].length);
+                    temperTime = timer.stop(i);
+                    out.print("\t" + temperTime);
+                    this.timeOfflineEncryption[i] += temperTime;
+                }
+                out.println();
+                System.out.println();
+
+                out.print("Online Encryption: ");
+                //test online encryption performance
+                PairingCipherSerParameter[] onlineCiphertexts = new PairingCipherSerParameter[maximal_attributes];
+                for (int i = 0; i < maximal_attributes; i++) {
+                    Element message = pairing.getGT().newRandomElement().getImmutable();
+                    System.out.print("Encryption " + i + "; ");
+                    timer.start(i);
+                    onlineCiphertexts[i] = ooEngine.encryption(publicKey, intermediates[i], attributeSets[i], message);
+                    temperTime = timer.stop(i);
+                    out.print("\t" + temperTime);
+                    this.timeOnlineEncryption[i] += temperTime;
+                }
+                out.println();
+                System.out.println();
+
+                out.print("Online Encapsulation: ");
+                //test encryption performance
+                PairingCipherSerParameter[] onlineHeaders = new PairingCipherSerParameter[maximal_attributes];
+                for (int i = 0; i < maximal_attributes; i++) {
+                    System.out.print("Online Encapsulation " + i + "; ");
+                    timer.start(i);
+                    onlineHeaders[i] = ooEngine.encapsulation(publicKey, intermediates[i], attributeSets[i]).getHeader();
+                    temperTime = timer.stop(i);
+                    out.print("\t" + temperTime);
+                    this.timeOnlineEncapsulation[i] += temperTime;
+                }
+                out.println();
+                System.out.println();
+
+                //test decryption performance
+                out.print("Online Decryption; ");
+                for (int i = 0; i < maximal_attributes; i++) {
+                    System.out.print("Online Decryption " + i + "; ");
+                    timer.start(i);
+                    engine.decryption(publicKey, secretKeys[i], attributeSets[i], onlineCiphertexts[i]);
+                    temperTime = timer.stop(i);
+                    out.print("\t" + temperTime);
+                    this.timeOnlineDecryption[i] += temperTime;
+                }
+                out.println();
+                System.out.println();
+
+                out.print("Online Decapsulation: ");
+                //test decapsulation performance
+                for (int i = 0; i < maximal_attributes; i++) {
+                    System.out.print("Online Decapsulation " + i + "; ");
+                    timer.start(i);
+                    engine.decapsulation(publicKey, secretKeys[i], attributeSets[i], onlineHeaders[i]);
+                    temperTime = timer.stop(i);
+                    out.print("\t" + temperTime);
+                    this.timeOnlineDecapsulation[i] += temperTime;
+                }
+                out.println();
+                System.out.println();
+            }
         } catch (InvalidCipherTextException e) {
             e.printStackTrace();
         } catch (PolicySyntaxException e) {
@@ -246,7 +370,33 @@ public class KPABEPerformanceTest extends TestCase {
         }
     }
 
-    public void testRW13Performance() {
+//    public void testRW13Performance() {
+//        KPABEPerformanceTest performanceTest = new KPABEPerformanceTest();
+////        performanceTest.maximal_attributes = 10;
+////        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+////        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+//        performanceTest.maximal_attributes = 50;
+//        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+//        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+//        performanceTest.engine = KPABERW13Engine.getInstance();
+//        performanceTest.init();
+//        performanceTest.runPerformanceTest();
+//    }
+//
+//    public void testGPSW06bPerformance() {
+//        KPABEPerformanceTest performanceTest = new KPABEPerformanceTest();
+////        performanceTest.maximal_attributes = 10;
+////        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+////        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+//        performanceTest.maximal_attributes = 50;
+//        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+//        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+//        performanceTest.engine = KPABEGPSW06bEngine.getInstance();
+//        performanceTest.init();
+//        performanceTest.runPerformanceTest();
+//    }
+
+    public void testLLW14Performance() {
         KPABEPerformanceTest performanceTest = new KPABEPerformanceTest();
 //        performanceTest.maximal_attributes = 10;
 //        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
@@ -254,12 +404,12 @@ public class KPABEPerformanceTest extends TestCase {
         performanceTest.maximal_attributes = 50;
         performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
         performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
-        performanceTest.engine = KPABERW13Engine.getInstance();
+        performanceTest.engine = KPABELLW14Engine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
     }
 
-    public void testGPSW06bPerformance() {
+    public void testHW14Performance() {
         KPABEPerformanceTest performanceTest = new KPABEPerformanceTest();
 //        performanceTest.maximal_attributes = 10;
 //        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
@@ -267,7 +417,20 @@ public class KPABEPerformanceTest extends TestCase {
         performanceTest.maximal_attributes = 50;
         performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
         performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
-        performanceTest.engine = KPABEGPSW06bEngine.getInstance();
+        performanceTest.engine = OOKPABEHW14Engine.getInstance();
+        performanceTest.init();
+        performanceTest.runPerformanceTest();
+    }
+
+    public void testLLW16Performance() {
+        KPABEPerformanceTest performanceTest = new KPABEPerformanceTest();
+//        performanceTest.maximal_attributes = 10;
+//        performanceTest.pairingParameterPath = TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256;
+//        performanceTest.test_round = TestUtils.DEFAULT_SIMU_TEST_ROUND;
+        performanceTest.maximal_attributes = 50;
+        performanceTest.pairingParameterPath = PairingUtils.PATH_a_160_512;
+        performanceTest.test_round = TestUtils.DEFAULT_PRIME_ORDER_TEST_ROUND;
+        performanceTest.engine = OOKPABELLW16Engine.getInstance();
         performanceTest.init();
         performanceTest.runPerformanceTest();
     }

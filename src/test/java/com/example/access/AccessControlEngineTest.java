@@ -3,13 +3,16 @@ package com.example.access;
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
+import cn.edu.buaa.crypto.access.lsss.lw10.LSSSLW10Engine;
 import cn.edu.buaa.crypto.access.parser.ParserUtils;
 import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
+import cn.edu.buaa.crypto.access.tree.AccessTreeEngine;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.junit.Assert;
 
@@ -21,151 +24,148 @@ import java.util.Map;
  *
  * Access control engine test.
  */
-public class AccessControlEngineTest {
+public class AccessControlEngineTest extends TestCase {
     private AccessControlEngine accessControlEngine;
-    private Pairing pairing;
 
-    public AccessControlEngineTest(AccessControlEngine accessControlEngine, PairingParameters pairingParameters) {
-       this.accessControlEngine = accessControlEngine;
-        this.pairing = PairingFactory.getPairing(pairingParameters);
-    }
-
-    public void runAllTests() {
+    public void runAllTests(PairingParameters pairingParameters) {
+        Pairing pairing = PairingFactory.getPairing(pairingParameters);
         //test satisfied access control
         if (this.accessControlEngine.isSupportThresholdGate()) {
-            test_valid_access_policy(1,
+            try_valid_access_policy(pairing, 1,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied01);
-            test_valid_access_policy(2,
+            try_valid_access_policy(pairing, 2,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied02);
-            test_valid_access_policy(3,
+            try_valid_access_policy(pairing, 3,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied03);
-            test_valid_access_policy(4,
+            try_valid_access_policy(pairing, 4,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied04);
-            test_valid_access_policy(5,
+            try_valid_access_policy(pairing, 5,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied05);
-            test_valid_access_policy(6,
+            try_valid_access_policy(pairing, 6,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied06);
-            test_valid_access_policy(7,
+            try_valid_access_policy(pairing, 7,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied07);
-            test_valid_access_policy(8,
+            try_valid_access_policy(pairing, 8,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied08);
-            test_valid_access_policy(9,
+            try_valid_access_policy(pairing, 9,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied09);
-            test_valid_access_policy(10,
+            try_valid_access_policy(pairing, 10,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied10);
-            test_valid_access_policy(11,
+            try_valid_access_policy(pairing, 11,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_satisfied11);
-            test_valid_access_policy(20,
+            try_valid_access_policy(pairing, 20,
                     AccessPolicyExamples.access_policy_threshold_example_2_tree,
                     AccessPolicyExamples.access_policy_threshold_example_2_rho,
                     AccessPolicyExamples.access_policy_threshold_example_2_satisfied01);
 
             //test unsatisfied access control
-            test_invalid_access_policy(1,
+            try_invalid_access_policy(pairing, 1,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied01);
-            test_invalid_access_policy(2,
+            try_invalid_access_policy(pairing, 2,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied02);
-            test_invalid_access_policy(3,
+            try_invalid_access_policy(pairing, 3,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied03);
-            test_invalid_access_policy(4,
+            try_invalid_access_policy(pairing, 4,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied04);
-            test_invalid_access_policy(5,
+            try_invalid_access_policy(pairing, 5,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied05);
-            test_invalid_access_policy(6,
+            try_invalid_access_policy(pairing, 6,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied06);
-            test_invalid_access_policy(7,
+            try_invalid_access_policy(pairing, 7,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied07);
-            test_invalid_access_policy(8,
+            try_invalid_access_policy(pairing, 8,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied08);
-            test_invalid_access_policy(9,
+            try_invalid_access_policy(pairing, 9,
                     AccessPolicyExamples.access_policy_threshold_example_1_tree,
                     AccessPolicyExamples.access_policy_threshold_example_1_rho,
                     AccessPolicyExamples.access_policy_threshold_example_1_unsatisfied09);
-            test_invalid_access_policy(20,
+            try_invalid_access_policy(pairing, 20,
                     AccessPolicyExamples.access_policy_threshold_example_2_tree,
                     AccessPolicyExamples.access_policy_threshold_example_2_rho,
                     AccessPolicyExamples.access_policy_threshold_example_2_unsatisfied01);
-            test_invalid_access_policy(21,
+            try_invalid_access_policy(pairing, 21,
                     AccessPolicyExamples.access_policy_threshold_example_2_tree,
                     AccessPolicyExamples.access_policy_threshold_example_2_rho,
                     AccessPolicyExamples.access_policy_threshold_example_2_unsatisfied02);
         }
 
-        test_valid_access_policy(31,
+        try_valid_access_policy(pairing, 31,
                 AccessPolicyExamples.access_policy_example_1,
                 AccessPolicyExamples.access_policy_exampe_1_satisfied_1);
-        test_valid_access_policy(32,
+        try_valid_access_policy(pairing, 32,
                 AccessPolicyExamples.access_policy_example_1,
                 AccessPolicyExamples.access_policy_exampe_1_satisfied_2);
-        test_valid_access_policy(41,
+        try_valid_access_policy(pairing, 41,
                 AccessPolicyExamples.access_policy_example_2,
                 AccessPolicyExamples.access_policy_exampe_2_satisfied_1);
-        test_valid_access_policy(42,
+        try_valid_access_policy(pairing, 42,
                 AccessPolicyExamples.access_policy_example_2,
                 AccessPolicyExamples.access_policy_exampe_2_satisfied_2);
-        test_valid_access_policy(51,
+        try_valid_access_policy(pairing, 51,
                 AccessPolicyExamples.access_policy_example_3,
                 AccessPolicyExamples.access_policy_exampe_3_satisfied_1);
 
-        test_invalid_access_policy(31,
+        try_invalid_access_policy(pairing, 31,
                 AccessPolicyExamples.access_policy_example_1,
                 AccessPolicyExamples.access_policy_exampe_1_unsatisfied_1);
-        test_invalid_access_policy(41,
+        try_invalid_access_policy(pairing, 41,
                 AccessPolicyExamples.access_policy_example_2,
                 AccessPolicyExamples.access_policy_exampe_2_unsatisfied_1);
-        test_invalid_access_policy(42,
+        try_invalid_access_policy(pairing, 42,
                 AccessPolicyExamples.access_policy_example_2,
                 AccessPolicyExamples.access_policy_exampe_2_unsatisfied_2);
-        test_invalid_access_policy(53,
+        try_invalid_access_policy(pairing, 53,
                 AccessPolicyExamples.access_policy_example_2,
                 AccessPolicyExamples.access_policy_exampe_2_unsatisfied_3);
-        test_invalid_access_policy(51,
+        try_invalid_access_policy(pairing, 51,
                 AccessPolicyExamples.access_policy_example_3,
                 AccessPolicyExamples.access_policy_exampe_3_unsatisfied_1);
-        test_invalid_access_policy(52,
+        try_invalid_access_policy(pairing, 52,
                 AccessPolicyExamples.access_policy_example_3,
                 AccessPolicyExamples.access_policy_exampe_3_unsatisfied_2);
     }
 
-    private void test_valid_access_policy(int testIndex, final String accessPolicyString, final String[] attributeSet) {
+    private void try_valid_access_policy(
+            Pairing pairing, int testIndex,
+            final String accessPolicyString, final String[] attributeSet) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
 //            for (int i = 0; i < accessPolicy.length; i++) {
@@ -176,14 +176,16 @@ public class AccessControlEngineTest {
 //            }
 //            System.out.println();
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
-            test_valid_access_policy(testIndex, accessPolicy, rhos, attributeSet);
+            try_valid_access_policy(pairing, testIndex, accessPolicy, rhos, attributeSet);
         } catch (PolicySyntaxException e) {
             System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for parsing...");
             e.printStackTrace();
         }
     }
 
-    private void test_invalid_access_policy(int testIndex, final String accessPolicyString, final String[] attributeSet) {
+    private void try_invalid_access_policy(
+            Pairing pairing, int testIndex,
+            final String accessPolicyString, final String[] attributeSet) {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
 //            for (int i = 0; i < accessPolicy.length; i++) {
@@ -194,7 +196,7 @@ public class AccessControlEngineTest {
 //            }
 //            System.out.println();
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
-            test_invalid_access_policy(testIndex, accessPolicy, rhos, attributeSet);
+            try_invalid_access_policy(pairing, testIndex, accessPolicy, rhos, attributeSet);
         } catch (PolicySyntaxException e) {
             System.out.println("Access Policy with Combined Gate Satisfied Test " + testIndex + ", Error for parsing...");
             e.printStackTrace();
@@ -202,7 +204,9 @@ public class AccessControlEngineTest {
     }
 
 
-    private void test_valid_access_policy(int testIndex, final int[][] accessPolicy, final String[] rhos, final String[] attributeSet) {
+    private void try_valid_access_policy(
+            Pairing pairing, int testIndex,
+            final int[][] accessPolicy, final String[] rhos, final String[] attributeSet) {
         try {
             //Access Policy Generation
             AccessControlParameter accessControlParameter = accessControlEngine.generateAccessControl(accessPolicy, rhos);
@@ -246,7 +250,9 @@ public class AccessControlEngineTest {
         }
     }
 
-    private void test_invalid_access_policy(int testIndex, final int[][] accessPolicy, final String[] rhos, final String[] attributeSet) {
+    private void try_invalid_access_policy(
+            Pairing pairing, int testIndex,
+            final int[][] accessPolicy, final String[] rhos, final String[] attributeSet) {
         try {
             //Access Policy Generation
             AccessControlParameter accessControlParameter = accessControlEngine.generateAccessControl(accessPolicy, rhos);
@@ -267,5 +273,15 @@ public class AccessControlEngineTest {
         } catch (UnsatisfiedAccessControlException e) {
             System.out.println("Access Policy with Combined Gate Unsatisfied Test " + testIndex + " Passed.");
         }
+    }
+
+    public void testAccessTreeEngine() {
+        this.accessControlEngine = AccessTreeEngine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testLSSSLW10Engine() {
+        this.accessControlEngine = LSSSLW10Engine.getInstance();
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

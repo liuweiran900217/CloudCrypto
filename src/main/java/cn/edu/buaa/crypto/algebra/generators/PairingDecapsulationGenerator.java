@@ -1,6 +1,5 @@
 package cn.edu.buaa.crypto.algebra.generators;
 
-import it.unisa.dia.gas.jpbc.Element;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 

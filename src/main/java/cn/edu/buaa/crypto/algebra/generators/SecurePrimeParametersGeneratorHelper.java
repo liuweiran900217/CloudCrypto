@@ -10,7 +10,7 @@ import java.security.SecureRandom;
  *
  * Helper for finding a pair of prime BigInteger's {p, q; p = 2q + 1}
  */
-public class SecurePrimeParametersGeneratorHelper {
+class SecurePrimeParametersGeneratorHelper {
     private static final BigInteger ONE = BigInteger.valueOf(1);
     private static final BigInteger TWO = BigInteger.valueOf(2);
 
@@ -19,7 +19,7 @@ public class SecurePrimeParametersGeneratorHelper {
      *
      * (see: Handbook of Applied Cryptography 4.86)
      */
-    public static BigInteger[] generateSafePrimes(int size, int certainty, SecureRandom random) {
+    static BigInteger[] generateSafePrimes(int size, int certainty, SecureRandom random) {
         BigInteger p, q;
         int qLength = size - 1;
 
@@ -34,7 +34,7 @@ public class SecurePrimeParametersGeneratorHelper {
         return new BigInteger[]{p, q};
     }
 
-    public static BigInteger selectGenerator(BigInteger p, SecureRandom random) {
+    static BigInteger selectGenerator(BigInteger p, SecureRandom random) {
         BigInteger pMinusTwo = p.subtract(TWO);
         BigInteger g;
 

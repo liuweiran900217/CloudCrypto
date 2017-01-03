@@ -17,6 +17,7 @@ import cn.edu.buaa.crypto.encryption.be.genparams.BEDecapsulationGenerationParam
 import cn.edu.buaa.crypto.encryption.be.genparams.BEEncapsulationGenerationParameter;
 import cn.edu.buaa.crypto.encryption.be.genparams.BEKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.be.genparams.BESecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -51,16 +52,10 @@ public class BEBGW05Engine extends BEEngine {
 
     public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, int index) {
         if (!(publicKey instanceof BEBGW05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + BEBGW05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, BEBGW05PublicKeySerParameter.class.getName());
         }
         if (!(masterKey instanceof BEBGW05MasterSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + BEBGW05MasterSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, masterKey, BEBGW05MasterSecretKeySerParameter.class.getName());
         }
         BEBGW05SecretKeyGenerator secretKeyGenerator = new BEBGW05SecretKeyGenerator();
         secretKeyGenerator.init(new BESecretKeyGenerationParameter(
@@ -71,10 +66,7 @@ public class BEBGW05Engine extends BEEngine {
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[] indexSet) {
         if (!(publicKey instanceof BEBGW05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + BEBGW05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, BEBGW05PublicKeySerParameter.class.getName());
         }
         BEBGW05EncapsulationPairGenerator keyEncapsulationPairGenerator = new BEBGW05EncapsulationPairGenerator();
         keyEncapsulationPairGenerator.init(new BEEncapsulationGenerationParameter(
@@ -86,22 +78,13 @@ public class BEBGW05Engine extends BEEngine {
     public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                                 int[] indexSet, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof BEBGW05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + BEBGW05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, BEBGW05PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof BEBGW05SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + BEBGW05SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, BEBGW05SecretKeySerParameter.class.getName());
         }
         if (!(ciphertext instanceof BEBGW05HeaderSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + ciphertext.getClass().getName() + ", require "
-                            + BEBGW05HeaderSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, ciphertext, BEBGW05HeaderSerParameter.class.getName());
         }
         BEBGW05DecapsulationGenerator keyDecapsulationGenerator = new BEBGW05DecapsulationGenerator();
         keyDecapsulationGenerator.init(new BEDecapsulationGenerationParameter(

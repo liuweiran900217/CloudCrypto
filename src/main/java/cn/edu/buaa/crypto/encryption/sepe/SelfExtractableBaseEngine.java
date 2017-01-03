@@ -4,6 +4,7 @@ import cn.edu.buaa.crypto.algebra.Engine;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.sepe.serparams.SEPEHeaderParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.PBEParametersGenerator;
@@ -106,10 +107,7 @@ public class SelfExtractableBaseEngine extends Engine {
 
     public byte[] selfDecapsulation(byte[] ek, PairingCipherSerParameter header) {
         if (!(header instanceof SEPEHeaderParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + this.engine_name  + ", find "
-                            + header.getClass().getName() + ", require "
-                            + SEPEHeaderParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(this.engine_name, header, SEPEHeaderParameter.class.getName());
         }
         SEPEHeaderParameter seHeaderParameter = (SEPEHeaderParameter)header;
         PairingCipherSerParameter ct_y = seHeaderParameter.getCtY();

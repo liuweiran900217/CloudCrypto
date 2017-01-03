@@ -11,6 +11,7 @@ import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05KeyPairGener
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.*;
 import cn.edu.buaa.crypto.encryption.hibe.genparams.*;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -46,16 +47,10 @@ public class HIBEBBG05Engine extends HIBEEngine {
 
     public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String... ids) {
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + HIBEBBG05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, HIBEBBG05PublicKeySerParameter.class.getName());
         }
         if (!(masterKey instanceof HIBEBBG05MasterSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + HIBEBBG05MasterSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, masterKey, HIBEBBG05MasterSecretKeySerParameter.class.getName());
         }
         HIBEBBG05SecretKeyGenerator secretKeyGenerator = new HIBEBBG05SecretKeyGenerator();
         secretKeyGenerator.init(new HIBESecretKeyGenerationParameter(
@@ -66,16 +61,10 @@ public class HIBEBBG05Engine extends HIBEEngine {
 
     public PairingKeySerParameter delegate(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey, String id) {
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + HIBEBBG05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, HIBEBBG05PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof HIBEBBG05SecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require"
-                            + HIBEBBG05SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, HIBEBBG05SecretKeySerParameter.class.getName());
         }
         HIBEBBG05SecretKeyGenerator secretKeyGenerator = new HIBEBBG05SecretKeyGenerator();
         secretKeyGenerator.init(new HIBEDelegateGenerationParameter(
@@ -86,10 +75,7 @@ public class HIBEBBG05Engine extends HIBEEngine {
 
     public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String[] ids, Element message){
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + HIBEBBG05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, HIBEBBG05PublicKeySerParameter.class.getName());
         }
         HIBEBBG05EncryptionGenerator encryptionGenerator = new HIBEBBG05EncryptionGenerator();
         encryptionGenerator.init(new HIBEEncryptionGenerationParameter(publicKey, ids, message));
@@ -99,10 +85,7 @@ public class HIBEBBG05Engine extends HIBEEngine {
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String[] ids){
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + HIBEBBG05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, HIBEBBG05PublicKeySerParameter.class.getName());
         }
         HIBEBBG05EncryptionGenerator encryptionGenerator = new HIBEBBG05EncryptionGenerator();
         encryptionGenerator.init(new HIBEEncryptionGenerationParameter(publicKey, ids, null));
@@ -113,22 +96,13 @@ public class HIBEBBG05Engine extends HIBEEngine {
     public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               String[] ids, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + HIBEBBG05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, HIBEBBG05PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof HIBEBBG05SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + HIBEBBG05SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, HIBEBBG05SecretKeySerParameter.class.getName());
         }
         if (!(ciphertext instanceof HIBEBBG05CiphertextSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + ciphertext.getClass().getName() + ", require "
-                            + HIBEBBG05CiphertextSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, ciphertext, HIBEBBG05CiphertextSerParameter.class.getName());
         }
         HIBEBBG05DecryptionGenerator decapsulationGenerator = new HIBEBBG05DecryptionGenerator();
         decapsulationGenerator.init(new HIBEDecryptionGenerationParameter(
@@ -139,22 +113,13 @@ public class HIBEBBG05Engine extends HIBEEngine {
     public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               String[] ids, PairingCipherSerParameter header) throws InvalidCipherTextException {
         if (!(publicKey instanceof HIBEBBG05PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + HIBEBBG05PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, HIBEBBG05PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof HIBEBBG05SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + HIBEBBG05SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, HIBEBBG05SecretKeySerParameter.class.getName());
         }
         if (!(header instanceof HIBEBBG05HeaderSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + header.getClass().getName() + ", require "
-                            + HIBEBBG05HeaderSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, header, HIBEBBG05HeaderSerParameter.class.getName());
         }
         HIBEBBG05DecryptionGenerator decapsulationGenerator = new HIBEBBG05DecryptionGenerator();
         decapsulationGenerator.init(new HIBEDecryptionGenerationParameter(

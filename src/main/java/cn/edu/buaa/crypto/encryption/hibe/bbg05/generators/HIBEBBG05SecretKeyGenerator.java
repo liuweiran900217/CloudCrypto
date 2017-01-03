@@ -104,12 +104,10 @@ public class HIBEBBG05SecretKeyGenerator implements PairingKeyParameterGenerator
             return new HIBEBBG05SecretKeySerParameter(publicKeyParameters.getParameters(),
                     ids, elementIds, a0, a1, hs);
         } else {
-            throw new IllegalArgumentException
-                    ("Invalid KeyGenerationParameters for " + HIBEBBG05Engine.SCHEME_NAME
-                            + " Secret Key Generatation, find "
-                            + params.getClass().getName() + ", require "
-                            + HIBESecretKeyGenerationParameter.class.getName() + " or "
+            PairingUtils.NotVerifyCipherParameterInstance(HIBEBBG05Engine.SCHEME_NAME, params,
+                    HIBESecretKeyGenerationParameter.class.getName() + " or "
                             + HIBEDelegateGenerationParameter.class.getName());
+            return null;
         }
     }
 }

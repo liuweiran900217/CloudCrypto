@@ -5,9 +5,9 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import cn.edu.buaa.crypto.encryption.sepe.SelfExtractableBaseEngine;
 import cn.edu.buaa.crypto.encryption.sepe.serparams.SEPEHeaderParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.Digest;
@@ -50,10 +50,8 @@ public class SelfExtractableIBEEngine extends Engine {
     public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                                 String id, PairingCipherSerParameter header) throws InvalidCipherTextException {
         if (!(header instanceof SEPEHeaderParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + this.selfExtractableBaseEngine.getEngineName()  + ", find "
-                            + header.getClass().getName() + ", require "
-                            + SEPEHeaderParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(this.selfExtractableBaseEngine.getEngineName(), header,
+                    SEPEHeaderParameter.class.getName());
         }
         SEPEHeaderParameter seHeaderParameter = (SEPEHeaderParameter)header;
         PairingCipherSerParameter headerParameter = seHeaderParameter.getCtY();

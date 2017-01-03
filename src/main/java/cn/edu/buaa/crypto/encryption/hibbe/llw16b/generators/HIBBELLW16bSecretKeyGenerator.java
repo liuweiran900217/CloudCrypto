@@ -4,6 +4,7 @@ import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEDelegateGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBESecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.encryption.hibbe.llw16b.HIBBELLW16bEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bPublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bSecretKeySerParameter;
@@ -29,8 +30,10 @@ public class HIBBELLW16bSecretKeyGenerator  implements PairingKeyParameterGenera
         if (params instanceof HIBBESecretKeyGenerationParameter) {
             HIBBESecretKeyGenerationParameter parameters = (HIBBESecretKeyGenerationParameter)params;
 
-            HIBBELLW16bPublicKeySerParameter publicKeyParameters = (HIBBELLW16bPublicKeySerParameter)parameters.getPublicKeyParameter();
-            HIBBELLW16bMasterSecretKeySerParameter masterSecretKeyParameters = (HIBBELLW16bMasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
+            HIBBELLW16bPublicKeySerParameter publicKeyParameters
+                    = (HIBBELLW16bPublicKeySerParameter)parameters.getPublicKeyParameter();
+            HIBBELLW16bMasterSecretKeySerParameter masterSecretKeyParameters
+                    = (HIBBELLW16bMasterSecretKeySerParameter)parameters.getMasterSecretKeyParameter();
             if (parameters.getIds().length != publicKeyParameters.getMaxUser()) {
                 throw new IllegalArgumentException("Invalid identity vector length");
             }
@@ -111,11 +114,10 @@ public class HIBBELLW16bSecretKeyGenerator  implements PairingKeyParameterGenera
             return new HIBBELLW16bSecretKeySerParameter(publicKeyParameters.getParameters(),
                     ids, elementIds, a0, a1, bs, bv);
         } else {
-            throw new IllegalArgumentException
-                    ("Invalid KeyGenerationParameters for Secret Key Generatation, find "
-                            + params.getClass().getName() + ", require "
-                            + HIBBESecretKeyGenerationParameter.class.getName() + " or "
-                            + HIBBEDelegateGenerationParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(HIBBELLW16bEngine.SCHEME_NAME, params,
+                    HIBBESecretKeyGenerationParameter.class.getName() + " or "
+                    + HIBBEDelegateGenerationParameter.class.getName());
+            return null;
         }
     }
 }

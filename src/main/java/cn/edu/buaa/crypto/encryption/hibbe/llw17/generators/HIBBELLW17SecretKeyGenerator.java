@@ -122,12 +122,10 @@ public class HIBBELLW17SecretKeyGenerator implements PairingKeyParameterGenerato
             return new HIBBELLW17SecretKeySerParameter(publicKeyParameters.getParameters(),
                     ids, elementIds, a0, a1, bs, bv);
         } else {
-            throw new IllegalArgumentException
-                    ("Invalid KeyGenerationParameters for " + HIBBELLW17Engine.SCHEME_NAME
-                            + " Secret Key Generatation, find "
-                            + params.getClass().getName() + ", require "
-                            + HIBBESecretKeyGenerationParameter.class.getName() + " or "
-                            + HIBBEDelegateGenerationParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(HIBBELLW17Engine.SCHEME_NAME, params,
+                    HIBBESecretKeyGenerationParameter.class.getName() + " or "
+                    + HIBBEDelegateGenerationParameter.class.getName());
+            return null;
         }
     }
 }

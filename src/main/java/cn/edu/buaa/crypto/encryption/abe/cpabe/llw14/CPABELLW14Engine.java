@@ -18,6 +18,7 @@ import cn.edu.buaa.crypto.encryption.abe.cpabe.llw14.generators.CPABELLW14Encryp
 import cn.edu.buaa.crypto.encryption.abe.cpabe.llw14.generators.CPABELLW14KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.llw14.generators.CPABELLW14SecretKeyGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.llw14.serparams.*;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -67,52 +68,37 @@ public class CPABELLW14Engine extends CPABEEngine {
 
     public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String[] attributes) {
         if (!(publicKey instanceof CPABELLW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + CPABELLW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, CPABELLW14PublicKeySerParameter.class.getName());
         }
         if (!(masterKey instanceof CPABELLW14MasterSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + CPABELLW14MasterSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, masterKey, CPABELLW14MasterSecretKeySerParameter.class.getName());
         }
         CPABELLW14SecretKeyGenerator secretKeyGenerator = new CPABELLW14SecretKeyGenerator();
         secretKeyGenerator.init(new CPABESecretKeyGenerationParameter(publicKey, masterKey, attributes));
-
         return secretKeyGenerator.generateKey();
     }
 
     public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos, Element message) {
         if (!(publicKey instanceof CPABELLW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + CPABELLW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, CPABELLW14PublicKeySerParameter.class.getName());
         }
         CPABELLW14EncryptionGenerator encryptionGenerator = new CPABELLW14EncryptionGenerator();
         CPABEEncryptionGenerationParameter encryptionGenerationParameter
                 = new CPABEEncryptionGenerationParameter(accessControlEngine, publicKey, accessPolicyIntArrays, rhos, message);
         encryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
         encryptionGenerator.init(encryptionGenerationParameter);
-
         return encryptionGenerator.generateCiphertext();
     }
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos) {
         if (!(publicKey instanceof CPABELLW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + CPABELLW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, CPABELLW14PublicKeySerParameter.class.getName());
         }
         CPABELLW14EncryptionGenerator encryptionGenerator = new CPABELLW14EncryptionGenerator();
         CPABEEncryptionGenerationParameter encryptionGenerationParameter
                 = new CPABEEncryptionGenerationParameter(accessControlEngine, publicKey, accessPolicyIntArrays, rhos, null);
         encryptionGenerationParameter.setChameleonHasher(this.chameleonHasher);
         encryptionGenerator.init(encryptionGenerationParameter);
-
         return encryptionGenerator.generateEncryptionPair();
     }
 
@@ -120,22 +106,13 @@ public class CPABELLW14Engine extends CPABEEngine {
                               int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter ciphertext)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof CPABELLW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + CPABELLW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, CPABELLW14PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof CPABELLW14SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + CPABELLW14SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, CPABELLW14SecretKeySerParameter.class.getName());
         }
         if (!(ciphertext instanceof CPABELLW14CiphertextSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + ciphertext.getClass().getName() + ", require "
-                            + CPABELLW14CiphertextSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, ciphertext, CPABELLW14CiphertextSerParameter.class.getName());
         }
         CPABELLW14DecryptionGenerator decryptionGenerator = new CPABELLW14DecryptionGenerator();
         CPABEDecryptionGenerationParameter decryptionGenerationParameter
@@ -150,22 +127,13 @@ public class CPABELLW14Engine extends CPABEEngine {
                                 int[][] accessPolicyIntArrays, String[] rhos, PairingCipherSerParameter header)
             throws InvalidCipherTextException {
         if (!(publicKey instanceof CPABELLW14PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + CPABELLW14PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, CPABELLW14PublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof CPABELLW14SecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + CPABELLW14SecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, CPABELLW14SecretKeySerParameter.class.getName());
         }
         if (!(header instanceof CPABELLW14HeaderSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + header.getClass().getName() + ", require "
-                            + CPABELLW14HeaderSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, header, CPABELLW14HeaderSerParameter.class.getName());
         }
         CPABELLW14DecryptionGenerator decryptionGenerator = new CPABELLW14DecryptionGenerator();
         CPABEDecryptionGenerationParameter decryptionGenerationParameter

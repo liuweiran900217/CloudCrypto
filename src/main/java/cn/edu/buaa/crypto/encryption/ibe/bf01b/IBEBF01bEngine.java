@@ -18,6 +18,7 @@ import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEDecryptionGenerationParame
 import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEKeyPairGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.genparams.IBESecretKeyGenerationParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -53,16 +54,10 @@ public class IBEBF01bEngine extends IBEEngine {
 
     public PairingKeySerParameter keyGen(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey, String id) {
         if (!(publicKey instanceof IBEBF01bPublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + IBEBF01bPublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, IBEBF01bPublicKeySerParameter.class.getName());
         }
         if (!(masterKey instanceof IBEBF01bMasterSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + IBEBF01bMasterSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, masterKey, IBEBF01bMasterSecretKeySerParameter.class.getName());
         }
         IBEBF01bSecretKeyGenerator secretKeyGenerator = new IBEBF01bSecretKeyGenerator();
         secretKeyGenerator.init(new IBESecretKeyGenerationParameter(
@@ -73,10 +68,7 @@ public class IBEBF01bEngine extends IBEEngine {
 
     public PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, String id){
         if (!(publicKey instanceof IBEBF01bPublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + IBEBF01bPublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, IBEBF01bPublicKeySerParameter.class.getName());
         }
         IBEBF01bEncryptionGenerator encryptionGenerator = new IBEBF01bEncryptionGenerator();
         encryptionGenerator.init(new IBEEncryptionGenerationParameter(publicKey, id, null));
@@ -86,10 +78,7 @@ public class IBEBF01bEngine extends IBEEngine {
 
     public PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, String id, Element message){
         if (!(publicKey instanceof IBEBF01bPublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + IBEBF01bPublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, IBEBF01bPublicKeySerParameter.class.getName());
         }
         IBEBF01bEncryptionGenerator encryptionGenerator = new IBEBF01bEncryptionGenerator();
         encryptionGenerator.init(new IBEEncryptionGenerationParameter(publicKey, id, message));
@@ -100,22 +89,13 @@ public class IBEBF01bEngine extends IBEEngine {
     public Element decryption(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                               String id, PairingCipherSerParameter ciphertext) throws InvalidCipherTextException {
         if (!(publicKey instanceof IBEBF01bPublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + IBEBF01bPublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, IBEBF01bPublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof IBEBF01bSecretKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + IBEBF01bSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, IBEBF01bSecretKeySerParameter.class.getName());
         }
         if (!(ciphertext instanceof IBEBF01bCiphertextSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + ciphertext.getClass().getName() + ", require "
-                            + IBEBF01bCiphertextSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, ciphertext, IBEBF01bCiphertextSerParameter.class.getName());
         }
         IBEBF01bDecryptionGenerator decryptionGenerator = new IBEBF01bDecryptionGenerator();
         decryptionGenerator.init(new IBEDecryptionGenerationParameter(
@@ -126,22 +106,13 @@ public class IBEBF01bEngine extends IBEEngine {
     public byte[] decapsulation(PairingKeySerParameter publicKey, PairingKeySerParameter secretKey,
                                 String id, PairingCipherSerParameter header) throws InvalidCipherTextException {
         if (!(publicKey instanceof IBEBF01bPublicKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + IBEBF01bPublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, IBEBF01bPublicKeySerParameter.class.getName());
         }
         if (!(secretKey instanceof IBEBF01bSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME + ", find "
-                            + secretKey.getClass().getName() + ", require "
-                            + IBEBF01bSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, secretKey, IBEBF01bSecretKeySerParameter.class.getName());
         }
         if (!(header instanceof IBEBF01aHeaderSerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME + ", find "
-                            + header.getClass().getName() + ", require "
-                            + IBEBF01aHeaderSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, header, IBEBF01aHeaderSerParameter.class.getName());
         }
         IBEBF01bDecryptionGenerator decryptionGenerator = new IBEBF01bDecryptionGenerator();
         decryptionGenerator.init(new IBEDecryptionGenerationParameter(

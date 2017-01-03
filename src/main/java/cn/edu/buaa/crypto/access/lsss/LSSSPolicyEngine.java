@@ -4,10 +4,10 @@ import Jama.Matrix;
 import cn.edu.buaa.crypto.access.AccessControlEngine;
 import cn.edu.buaa.crypto.access.AccessControlParameter;
 import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +21,7 @@ import java.util.Map;
 public abstract class LSSSPolicyEngine implements AccessControlEngine {
     public Map<String, Element> secretSharing(Pairing pairing, Element secret, AccessControlParameter accessControlParameter) {
         if (!(accessControlParameter instanceof LSSSPolicyParameter)) {
-            throw new InvalidParameterException("Invalid LSSSPolicy Parameter, find " + accessControlParameter.getClass().getName());
+            PairingUtils.NotVerifyCipherParameterInstance(this.getEngineName(), accessControlParameter, LSSSPolicyParameter.class.getName());
         }
         LSSSPolicyParameter lsssPolicyParameter = (LSSSPolicyParameter)accessControlParameter;
         int row = lsssPolicyParameter.getRow();
@@ -53,7 +53,7 @@ public abstract class LSSSPolicyEngine implements AccessControlEngine {
 
     public Map<String, Element> reconstructOmegas(Pairing pairing, String[] attributes, AccessControlParameter accessControlParameter) throws UnsatisfiedAccessControlException {
         if (!(accessControlParameter instanceof LSSSPolicyParameter)) {
-            throw new UnsatisfiedAccessControlException("Invalid LSSSPolicy Parameter, find " + accessControlParameter.getClass().getName());
+            PairingUtils.NotVerifyCipherParameterInstance(this.getEngineName(), accessControlParameter, LSSSPolicyParameter.class.getName());
         }
         LSSSPolicyParameter lsssPolicyParameter = (LSSSPolicyParameter)accessControlParameter;
         int[] result;

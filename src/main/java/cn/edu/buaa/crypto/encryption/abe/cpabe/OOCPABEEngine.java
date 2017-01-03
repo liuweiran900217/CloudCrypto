@@ -1,5 +1,7 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe;
 
+import cn.edu.buaa.crypto.access.parser.ParserUtils;
+import cn.edu.buaa.crypto.access.parser.PolicySyntaxException;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
@@ -35,6 +37,13 @@ public abstract class OOCPABEEngine extends CPABEEngine {
     public abstract PairingKeyEncapsulationSerPair encapsulation(
             PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate, int[][] accessPolicyIntArrays, String[] rhos);
 
+    public PairingKeyEncapsulationSerPair encapsulation(
+            PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate, String accessPolicy) throws PolicySyntaxException {
+        int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
+        String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
+        return encapsulation(publicKey, intermediate, accessPolicyIntArrays, rhos);
+    }
+
     /**
      * Encryption Algorithm for CP-ABE
      * @param publicKey public key
@@ -46,5 +55,13 @@ public abstract class OOCPABEEngine extends CPABEEngine {
      */
     public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate,
                                                          int[][] accessPolicyIntArrays, String[] rhos, Element message);
+
+    public PairingCipherSerParameter encryption(
+            PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate,
+            String accessPolicy, Element message) throws PolicySyntaxException {
+        int[][] accessPolicyIntArrays = ParserUtils.GenerateAccessPolicy(accessPolicy);
+        String[] rhos = ParserUtils.GenerateRhos(accessPolicy);
+        return encryption(publicKey, intermediate, accessPolicyIntArrays, rhos, message);
+    }
 
 }

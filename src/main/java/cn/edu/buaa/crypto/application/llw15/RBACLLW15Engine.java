@@ -8,6 +8,7 @@ import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.application.llw15.generators.*;
 import cn.edu.buaa.crypto.application.llw15.genparams.*;
 import cn.edu.buaa.crypto.application.llw15.serparams.*;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -53,10 +54,7 @@ public class RBACLLW15Engine extends Engine {
      */
     public PairingCipherSerParameter IntermediateGen(PairingKeySerParameter publicKey) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, RBACLLW15PublicKeySerParameter.class.getName());
         }
         RBACLLW15IntermediateGenerator intermediateGenerator = new RBACLLW15IntermediateGenerator();
         intermediateGenerator.init(new RBACLLW15IntermediateGenParameter(publicKey));
@@ -135,16 +133,10 @@ public class RBACLLW15Engine extends Engine {
 
     private void isValidACGenParameters(PairingKeySerParameter publicKey, PairingKeySerParameter masterKey) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, RBACLLW15PublicKeySerParameter.class.getName());
         }
         if (!(masterKey instanceof RBACLLW15MasterSecretKeySerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + masterKey.getClass().getName() + ", require"
-                            + RBACLLW15MasterSecretKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, masterKey, RBACLLW15MasterSecretKeySerParameter.class.getName());
         }
     }
 
@@ -186,16 +178,10 @@ public class RBACLLW15Engine extends Engine {
 
     private void isValidACDeleMParameters(PairingKeySerParameter publicKey, PairingKeySerParameter accessCredentialM) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, RBACLLW15PublicKeySerParameter.class.getName());
         }
         if (!(accessCredentialM instanceof RBACLLW15AccessCredentialMSerParameter)) {
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + accessCredentialM.getClass().getName() + ", require"
-                            + RBACLLW15AccessCredentialMSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, accessCredentialM, RBACLLW15AccessCredentialMSerParameter.class.getName());
         }
     }
 
@@ -237,10 +223,7 @@ public class RBACLLW15Engine extends Engine {
 
     private void isValidKeyEncapsulationParameters(PairingKeySerParameter publicKey) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, RBACLLW15PublicKeySerParameter.class.getName());
         }
     }
 
@@ -255,16 +238,10 @@ public class RBACLLW15Engine extends Engine {
      */
     public boolean EHRAudit(PairingKeySerParameter publicKey, String id, String[] roles, String time, PairingCipherSerParameter encapsulation) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, RBACLLW15PublicKeySerParameter.class.getName());
         }
         if (!(encapsulation instanceof RBACLLW15EncapsulationSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + encapsulation.getClass().getName() + ", require "
-                            + RBACLLW15EncapsulationSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, encapsulation, RBACLLW15EncapsulationSerParameter.class.getName());
         }
         RBACLLW15EncapsulationAudit encapsulationAudit = new RBACLLW15EncapsulationAudit();
         encapsulationAudit.init(new RBACLLW15EncapsulationAuditParameter(
@@ -316,22 +293,13 @@ public class RBACLLW15Engine extends Engine {
     private void isValidAccessCredentialMDecapsulationParameters(
             PairingKeySerParameter publicKey, PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialM) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, RBACLLW15PublicKeySerParameter.class.getName());
         }
         if (!(accessCredentialM instanceof RBACLLW15AccessCredentialMSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + accessCredentialM.getClass().getName() + ", require "
-                            + RBACLLW15AccessCredentialMSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, accessCredentialM, RBACLLW15AccessCredentialMSerParameter.class.getName());
         }
         if (!(encapsulation instanceof RBACLLW15EncapsulationSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + encapsulation.getClass().getName() + ", require "
-                            + RBACLLW15EncapsulationSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, encapsulation, RBACLLW15EncapsulationSerParameter.class.getName());
         }
     }
 
@@ -378,22 +346,13 @@ public class RBACLLW15Engine extends Engine {
     private void isValidAccessCredentialPDecapsulationParameters(
             PairingKeySerParameter publicKey, PairingCipherSerParameter encapsulation, PairingKeySerParameter accessCredentialP) {
         if (!(publicKey instanceof RBACLLW15PublicKeySerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + publicKey.getClass().getName() + ", require "
-                            + RBACLLW15PublicKeySerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, publicKey, RBACLLW15PublicKeySerParameter.class.getName());
         }
         if (!(accessCredentialP instanceof RBACLLW15AccessCredentialPSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + accessCredentialP.getClass().getName() + ", require "
-                            + RBACLLW15AccessCredentialPSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, accessCredentialP, RBACLLW15AccessCredentialPSerParameter.class.getName());
         }
         if (!(encapsulation instanceof RBACLLW15EncapsulationSerParameter)){
-            throw new IllegalArgumentException
-                    ("Invalid CipherParameter Instance of " + SCHEME_NAME  + ", find "
-                            + encapsulation.getClass().getName() + ", require "
-                            + RBACLLW15EncapsulationSerParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(SCHEME_NAME, encapsulation, RBACLLW15EncapsulationSerParameter.class.getName());
         }
     }
 

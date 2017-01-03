@@ -2,6 +2,7 @@ package cn.edu.buaa.crypto.encryption.hibe.bb04.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bb04.HIBEBB04Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bb04.serparams.HIBEBB04SecretKeySerParameter;
@@ -77,11 +78,10 @@ public class HIBEBB04SecretKeyGenerator implements PairingKeyParameterGenerator 
 
             return new HIBEBB04SecretKeySerParameter(publicKeyParameters.getParameters(), ids, elementIds, d0, ds);
         } else {
-            throw new IllegalArgumentException
-                    ("Invalid KeyGenerationParameters for HIBEBB04Engine Secret Key Generatation, find "
-                            + params.getClass().getName() + ", require "
-                            + HIBESecretKeyGenerationParameter.class.getName() + " or "
-                            + HIBEDelegateGenerationParameter.class.getName());
+            PairingUtils.NotVerifyCipherParameterInstance(HIBEBB04Engine.SCHEME_NAME, params,
+                    HIBESecretKeyGenerationParameter.class.getName() + " or "
+                    + HIBEDelegateGenerationParameter.class.getName());
+            return null;
         }
     }
 }
