@@ -17,15 +17,15 @@ import java.util.Map;
  * Rouselakis-Waters KP-ABE header parameter.
  */
 public class KPABERW13HeaderSerParameter extends PairingCipherSerParameter {
-    private final String[] attributes;
+    protected final String[] attributes;
 
-    private transient Element C0;
-    private final byte[] byteArrayC0;
+    protected transient Element C0;
+    protected final byte[] byteArrayC0;
 
-    private transient Map<String, Element> C1s;
+    protected transient Map<String, Element> C1s;
     private final byte[][] byteArraysC1s;
 
-    private transient Map<String, Element> C2s;
+    protected transient Map<String, Element> C2s;
     private final byte[][] byteArraysC2s;
 
     public KPABERW13HeaderSerParameter(PairingParameters pairingParameters, Element C0,
@@ -55,7 +55,11 @@ public class KPABERW13HeaderSerParameter extends PairingCipherSerParameter {
 
     public Element getC0() { return this.C0.duplicate(); }
 
+    public Map<String, Element> getC1s() { return this.C1s; }
+
     public Element getC1sAt(String attribute) { return this.C1s.get(attribute).duplicate(); }
+
+    public Map<String, Element> getC2s() { return this.C2s; }
 
     public Element getC2sAt(String attribute) { return this.C2s.get(attribute).duplicate(); }
 

@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public class CPABEHW14SecretKeySerParameter extends CPABERW13SecretKeySerParameter {
     public CPABEHW14SecretKeySerParameter(
-            PairingParameters pairingParameters, Element K0, Element K1, Map<String, Element> K2s, Map<String, Element> K3s) {
+            PairingParameters pairingParameters, Element K0, Element K1,
+            Map<String, Element> K2s, Map<String, Element> K3s) {
         super(pairingParameters, K0, K1, K2s, K3s);
     }
 }

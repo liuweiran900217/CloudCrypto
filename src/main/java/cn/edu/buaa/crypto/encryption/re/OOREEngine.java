@@ -3,6 +3,7 @@ package cn.edu.buaa.crypto.encryption.re;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import it.unisa.dia.gas.jpbc.Element;
 
 /**
  * Created by Weiran Liu on 2016/4/5.
@@ -15,12 +16,12 @@ public abstract class OOREEngine extends REEngine {
     }
 
     /**
-     * Offline Key Encapsulation Algorithm for RE
+     * Offline Key Encryption Algorithm for RE
      * @param publicKey public key
      * @param n number of revocation identity set
      * @return session key / offline ciphertext pair associated with n
      */
-    public abstract PairingKeyEncapsulationSerPair offlineEncapsulation(PairingKeySerParameter publicKey, int n);
+    public abstract PairingKeyEncapsulationSerPair offlineEncryption(PairingKeySerParameter publicKey, int n);
 
     /**
      * Online Key Encapsulation Algorithm for RE
@@ -28,5 +29,7 @@ public abstract class OOREEngine extends REEngine {
      * @param ids revocation identity set
      * @return session key / ciphertext pair associated with the revocation identity set
      */
-    public abstract PairingKeyEncapsulationSerPair onlineEncapsulation(PairingKeySerParameter publicKey, PairingCipherSerParameter iCiphertext, String... ids);
+    public abstract PairingKeyEncapsulationSerPair encapsulation(PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate, String[] ids);
+
+    public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, PairingCipherSerParameter intermediate, String[] ids, Element message);
 }

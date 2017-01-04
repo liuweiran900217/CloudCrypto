@@ -122,13 +122,12 @@ public class KPABELLW16DecryptionGenerator extends KPABEHW14DecryptionGenerator 
     public Element recoverMessage() throws InvalidCipherTextException {
         verifyCiphertext();
         computeDecapsulation();
-        KPABELLW16CiphertextSerParameter ciphertextParameter = (KPABELLW16CiphertextSerParameter) this.parameter.getCiphertextParameter();
+        KPABELLW16CiphertextSerParameter ciphertextParameter = (KPABELLW16CiphertextSerParameter)this.headerParameter;
         return ciphertextParameter.getC().div(sessionKey).getImmutable();
     }
 
     public byte[] recoverKey() throws InvalidCipherTextException {
         verifyCiphertext();
-        computeDecapsulation();
-        return this.sessionKey.toBytes();
+        return super.recoverKey();
     }
 }
