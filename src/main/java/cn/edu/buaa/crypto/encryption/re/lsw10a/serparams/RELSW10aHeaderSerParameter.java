@@ -46,7 +46,11 @@ public class RELSW10aHeaderSerParameter extends PairingCipherSerParameter {
 
     public Element getC0() { return this.C0.duplicate(); }
 
+    public Map<String, Element> getC1s() { return this.C1s; }
+
     public Element getC1sAt(String revokeId) { return this.C1s.get(revokeId).duplicate(); }
+
+    public Map<String, Element> getC2s() { return this.C2s; }
 
     public Element getC2sAt(String revokeId) { return this.C2s.get(revokeId).duplicate(); }
 

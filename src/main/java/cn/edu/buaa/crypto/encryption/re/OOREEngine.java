@@ -21,7 +21,7 @@ public abstract class OOREEngine extends REEngine {
      * @param n number of revocation identity set
      * @return session key / offline ciphertext pair associated with n
      */
-    public abstract PairingKeyEncapsulationSerPair offlineEncryption(PairingKeySerParameter publicKey, int n);
+    public abstract PairingCipherSerParameter offlineEncryption(PairingKeySerParameter publicKey, int n);
 
     /**
      * Online Key Encapsulation Algorithm for RE

@@ -1,11 +1,18 @@
 package com.example.encryption.re;
 
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.generators.AsymmetricKeySerPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.*;
+import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.KR00bDigestHasher;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyGenerationParameters;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bKeyPairGenerator;
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bUniversalHasher;
+import cn.edu.buaa.crypto.encryption.re.OOREEngine;
 import cn.edu.buaa.crypto.encryption.re.REEngine;
+import cn.edu.buaa.crypto.encryption.re.llw16a.OORELLW16aEngine;
+import cn.edu.buaa.crypto.encryption.re.llw16b.OORELLW16bEngine;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.RELSW10aEngine;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -14,9 +21,12 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import junit.framework.TestCase;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
+import org.bouncycastle.crypto.KeyGenerationParameters;
+import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 
 /**
@@ -97,6 +107,40 @@ public class REEngineJUnitTest extends TestCase {
         //Decryption
         byte[] anSessionKey = engine.decapsulation(publicKey, secretKey, identityRevokeSet, header);
         Assert.assertArrayEquals(sessionKey, anSessionKey);
+
+        if (this.engine instanceof OOREEngine) {
+            OOREEngine ooEngine = (OOREEngine)this.engine;
+            //offline encryption and serialization
+            PairingCipherSerParameter intermediate = ooEngine.offlineEncryption(publicKey, PairingUtils.removeDuplicates(identityRevokeSet).length);
+            byte[] byteArrayIntermediate = TestUtils.SerCipherParameter(intermediate);
+            CipherParameters anIntermediate = TestUtils.deserCipherParameters(byteArrayIntermediate);
+            Assert.assertEquals(intermediate, anIntermediate);
+            intermediate = (PairingCipherSerParameter)anIntermediate;
+
+            //Encryption and serialization
+            ciphertext = ooEngine.encryption(publicKey, intermediate, identityRevokeSet, message);
+            byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
+            anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
+            Assert.assertEquals(ciphertext, anCiphertext);
+            ciphertext = (PairingCipherSerParameter)anCiphertext;
+
+            //Decryption
+            anMessage = engine.decryption(publicKey, secretKey, identityRevokeSet, ciphertext);
+            Assert.assertEquals(message, anMessage);
+
+            //Encapsulation and serialization
+            encapsulationPair = ooEngine.encapsulation(publicKey, intermediate, identityRevokeSet);
+            sessionKey = encapsulationPair.getSessionKey();
+            header = encapsulationPair.getHeader();
+            byteArrayHeader = TestUtils.SerCipherParameter(header);
+            anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+            Assert.assertEquals(header, anHeader);
+            header = (PairingCipherSerParameter)anHeader;
+
+            //Decapsulation
+            anSessionKey = engine.decapsulation(publicKey, secretKey, identityRevokeSet, header);
+            Assert.assertArrayEquals(sessionKey, anSessionKey);
+        }
     }
 
     private void runAllTest(PairingParameters pairingParameters) {
@@ -123,7 +167,7 @@ public class REEngineJUnitTest extends TestCase {
             try_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet3);
             try_valid_decryption(pairing, publicKey, masterKey, identity, identityRevokeSet4);
 
-            //test valid example
+            //test invalid example
             System.out.println("Test invalid examples");
             try_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet1);
             try_invalid_decryption(pairing, publicKey, masterKey, identityRevoke, identityRevokeSet2);
@@ -143,6 +187,21 @@ public class REEngineJUnitTest extends TestCase {
 
     public void testRELSW10aEngine() {
         this.engine = RELSW10aEngine.getInstance();
+        runAllTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testRELLW16aEngine() {
+        this.engine = OORELLW16aEngine.getInstance();
+        runAllTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
+    public void testRELLW16bEngine() {
+        this.engine = OORELLW16bEngine.getInstance();
+        ChameleonHasher chameleonHasher  = new KR00bDigestHasher(new DLogKR00bUniversalHasher(new SHA256Digest()), new SHA256Digest());
+        AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
+        KeyGenerationParameters keyGenerationParameters = new DLogKR00bKeyGenerationParameters(new SecureRandom(),
+                SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);
+        ((OORELLW16bEngine)this.engine).setChameleonHasher(chameleonHasher, chKeyPairGenerator, keyGenerationParameters);
         runAllTest(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 }

@@ -23,31 +23,32 @@ import java.util.Map;
  * Lewko-Sahai-Waters revocation encryption generator.
  */
 public class RELSW10aEncryptionGenerator implements PairingEncryptionGenerator, PairingEncapsulationPairGenerator {
-    private REEncryptionGenerationParameter params;
+    protected REEncryptionGenerationParameter parameter;
 
-    private Element sessionKey;
+    protected Element s;
+    protected Element sessionKey;
     private RELSW10aPublicKeySerParameter publicKeyParameter;
-    private Element C0;
-    private Map<String, Element> C1s;
-    private Map<String, Element> C2s;
+    protected Element C0;
+    protected Map<String, Element> C1s;
+    protected Map<String, Element> C2s;
 
     public void init(CipherParameters params) {
-        this.params = (REEncryptionGenerationParameter)params;
-        this.publicKeyParameter = (RELSW10aPublicKeySerParameter)this.params.getPublicKeyParameter();
+        this.parameter = (REEncryptionGenerationParameter)params;
+        this.publicKeyParameter = (RELSW10aPublicKeySerParameter)this.parameter.getPublicKeyParameter();
     }
 
-    private void computeEncapsulation() {
+    protected void computeEncapsulation() {
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
-        Element s = pairing.getZr().newZeroElement().getImmutable();
+        this.s = pairing.getZr().newZeroElement().getImmutable();
 
         this.C1s = new HashMap<String, Element>();
         this.C2s = new HashMap<String, Element>();
-        for (String revokeId : this.params.getIds()) {
+        for (String revokeId : this.parameter.getIds()) {
             Element elementId = PairingUtils.MapStringToGroup(pairing, revokeId, PairingUtils.PairingGroupType.Zr);
             Element ss = pairing.getZr().newRandomElement().getImmutable();
             C1s.put(revokeId, publicKeyParameter.getGb().powZn(ss).getImmutable());
             C2s.put(revokeId, publicKeyParameter.getGb2().powZn(elementId).mul(publicKeyParameter.getHb()).powZn(ss).getImmutable());
-            s = s.add(ss).getImmutable();
+            this.s = s.add(ss).getImmutable();
         }
 
         this.sessionKey = publicKeyParameter.getEggAlpha().powZn(s).getImmutable();
@@ -56,7 +57,7 @@ public class RELSW10aEncryptionGenerator implements PairingEncryptionGenerator, 
 
     public PairingCipherSerParameter generateCiphertext() {
         computeEncapsulation();
-        Element C = this.sessionKey.mul(this.params.getMessage()).getImmutable();
+        Element C = this.sessionKey.mul(this.parameter.getMessage()).getImmutable();
         return new RELSW10aCiphertextSerParameter(publicKeyParameter.getParameters(), C, C0, C1s, C2s);
     }
 

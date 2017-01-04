@@ -7,7 +7,6 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,11 +27,13 @@ public class RELLW16aHeaderSerParameter extends RELSW10aHeaderSerParameter {
         this.C3s = new HashMap<String, Element>();
         this.byteArraysC3s = new HashMap<String, byte[]>();
 
-        for (String revokeId : C1s.keySet()) {
+        for (String revokeId : C3s.keySet()) {
             this.C3s.put(revokeId, C3s.get(revokeId).duplicate().getImmutable());
             this.byteArraysC3s.put(revokeId, C3s.get(revokeId).duplicate().getImmutable().toBytes());
         }
     }
+
+    public Map<String, Element> getC3s() { return this.C3s; }
 
     public Element getC3sAt(String revokeId) { return this.C3s.get(revokeId).duplicate(); }
 
@@ -60,9 +61,9 @@ public class RELLW16aHeaderSerParameter extends RELSW10aHeaderSerParameter {
             throws java.io.IOException, ClassNotFoundException {
         objectInputStream.defaultReadObject();
         Pairing pairing = PairingFactory.getPairing(this.getParameters());
+        this.C3s = new HashMap<String, Element>();
         for (String revokeId : this.byteArraysC3s.keySet()) {
-            this.C3s.put(revokeId, pairing.getG1().newElementFromBytes(this.byteArraysC3s.get(revokeId)).getImmutable());
-            this.C3s.put(revokeId, pairing.getG1().newElementFromBytes(this.byteArraysC3s.get(revokeId)).getImmutable());
+            this.C3s.put(revokeId, pairing.getZr().newElementFromBytes(this.byteArraysC3s.get(revokeId)).getImmutable());
         }
     }
 }

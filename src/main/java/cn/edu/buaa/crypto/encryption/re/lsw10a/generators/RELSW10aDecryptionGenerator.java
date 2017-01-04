@@ -20,20 +20,20 @@ import org.bouncycastle.crypto.InvalidCipherTextException;
  * Lewko-Sahai-Waters revocation encryption decryption generator.
  */
 public class RELSW10aDecryptionGenerator implements PairingDecryptionGenerator, PairingDecapsulationGenerator {
-    private REDecryptionGenerationParameter params;
-    private Element sessionKey;
+    protected REDecryptionGenerationParameter parameter;
+    protected Element sessionKey;
 
     public void init(CipherParameters params) {
-        this.params = (REDecryptionGenerationParameter)params;
+        this.parameter = (REDecryptionGenerationParameter)params;
     }
 
-    private void computeDecapsulation() throws InvalidCipherTextException {
-        RELSW10aPublicKeySerParameter publicKeyParameters = (RELSW10aPublicKeySerParameter)this.params.getPublicKeyParameter();
-        RELSW10aSecretKeySerParameter secretKeyParameters = (RELSW10aSecretKeySerParameter)this.params.getSecretKeyParameter();
-        RELSW10aHeaderSerParameter ciphertextParameters = (RELSW10aHeaderSerParameter)this.params.getCiphertextParameter();
+    protected void computeDecapsulation() throws InvalidCipherTextException {
+        RELSW10aPublicKeySerParameter publicKeyParameters = (RELSW10aPublicKeySerParameter)this.parameter.getPublicKeyParameter();
+        RELSW10aSecretKeySerParameter secretKeyParameters = (RELSW10aSecretKeySerParameter)this.parameter.getSecretKeyParameter();
+        RELSW10aHeaderSerParameter ciphertextParameters = (RELSW10aHeaderSerParameter)this.parameter.getCiphertextParameter();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameters.getParameters());
         //remove repeated ids
-        String[] ids = PairingUtils.removeDuplicates(this.params.getIds());
+        String[] ids = PairingUtils.removeDuplicates(this.parameter.getIds());
 
         Element C1 = pairing.getG1().newOneElement().getImmutable();
         Element C2 = pairing.getG1().newOneElement().getImmutable();
@@ -52,7 +52,7 @@ public class RELSW10aDecryptionGenerator implements PairingDecryptionGenerator, 
 
     public Element recoverMessage() throws InvalidCipherTextException {
         computeDecapsulation();
-        RELSW10aCiphertextSerParameter ciphertextParameters = (RELSW10aCiphertextSerParameter)this.params.getCiphertextParameter();
+        RELSW10aCiphertextSerParameter ciphertextParameters = (RELSW10aCiphertextSerParameter)this.parameter.getCiphertextParameter();
         return ciphertextParameters.getC().div(sessionKey).getImmutable();
     }
 

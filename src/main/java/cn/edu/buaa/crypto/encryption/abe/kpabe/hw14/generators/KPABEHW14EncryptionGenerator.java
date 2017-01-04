@@ -39,7 +39,7 @@ public class KPABEHW14EncryptionGenerator extends KPABERW13EncryptionGenerator {
 
     protected void computeEncapsulation() {
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
-        String[] attributes = this.parameter.getAttributes();
+        attributes = this.parameter.getAttributes();
         this.C3s = new HashMap<String, Element>();
 
         if (this.intermedate != null) {

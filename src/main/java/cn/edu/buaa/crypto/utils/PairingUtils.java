@@ -2,12 +2,6 @@ package cn.edu.buaa.crypto.utils;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
-import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
-import it.unisa.dia.gas.plaf.jpbc.pairing.a1.TypeA1CurveGenerator;
-import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
-import it.unisa.dia.gas.plaf.jpbc.util.ElementUtils;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.util.encoders.Hex;
 
@@ -23,10 +17,10 @@ import java.util.*;
  */
 public class PairingUtils {
     public static final String PATH_a_160_512 = "params/a_160_512.properties";
-    public static final String PATH_a_320_512 = "params/a_320_512.properties";
-    public static final String PATH_a1_2_256 = "params/a1_2_256.properties";
-    public static final String PATH_a1_3_256 = "params/a1_3_256.properties";
-    public static final String PATH_a1_2_512 = "params/a1_2_512.properties";
+//    public static final String PATH_a_320_512 = "params/a_320_512.properties";
+//    public static final String PATH_a1_2_256 = "params/a1_2_256.properties";
+//    public static final String PATH_a1_3_256 = "params/a1_3_256.properties";
+//    public static final String PATH_a1_2_512 = "params/a1_2_512.properties";
     public static final String PATH_a1_3_512 = "params/a1_3_512.properties";
 
     public enum PairingGroupType {
@@ -35,52 +29,52 @@ public class PairingUtils {
 
 //    public static final PairingParameters DEFAULT_TYPE_A_160_512_PAIRING_PARAMETER = PairingFactory.getPairingParameters()
 
-    /**
-     * Generate type A parameter for further used in paiaring-based cryptography.
-     * @param rBitLength Bit length for the group Z_r
-     * @param qBitLength Bit length for the group G and G_T
-     * @return Type A pairing parameters
-     */
-    public static PropertiesParameters GenerateTypeAParameters(int rBitLength, int qBitLength) {
-        PropertiesParameters parameters;
-        Pairing pairing;
-        Element g;
-        // Generate curve parameters
-        while (true) {
-            parameters = generate_type_a_curve_params(rBitLength, qBitLength);
-            pairing = PairingFactory.getPairing(parameters);
-            g = pairing.getG1().newRandomElement().getImmutable();
-            if (!pairing.pairing(g, g).isOne()) { break; }
-        }
-        return parameters;
-    }
+//    /**
+//     * Generate type A parameter for further used in paiaring-based cryptography.
+//     * @param rBitLength Bit length for the group Z_r
+//     * @param qBitLength Bit length for the group G and G_T
+//     * @return Type A pairing parameters
+//     */
+//    public static PropertiesParameters GenerateTypeAParameters(int rBitLength, int qBitLength) {
+//        PropertiesParameters parameters;
+//        Pairing pairing;
+//        Element g;
+//        // Generate curve parameters
+//        while (true) {
+//            parameters = generate_type_a_curve_params(rBitLength, qBitLength);
+//            pairing = PairingFactory.getPairing(parameters);
+//            g = pairing.getG1().newRandomElement().getImmutable();
+//            if (!pairing.pairing(g, g).isOne()) { break; }
+//        }
+//        return parameters;
+//    }
 
-    public static PropertiesParameters GenerateTypeA1Parameters(int qBitLength) {
-        PropertiesParameters parameters;
-        Pairing pairing;
-        Element generator;
-        Element g;
+//    public static PropertiesParameters GenerateTypeA1Parameters(int qBitLength) {
+//        PropertiesParameters parameters;
+//        Pairing pairing;
+//        Element generator;
+//        Element g;
+//
+//        // Generate curve parameters
+//        while (true) {
+//            parameters = generate_type_a1_curve_params(qBitLength);
+//            pairing = PairingFactory.getPairing(parameters);
+//            generator = pairing.getG1().newRandomElement().getImmutable();
+//            g = ElementUtils.getGenerator(pairing, generator, parameters, 0, 3).getImmutable();
+//            if (!pairing.pairing(g, g).isOne()) { break; }
+//        }
+//        return parameters;
+//    }
 
-        // Generate curve parameters
-        while (true) {
-            parameters = generate_type_a1_curve_params(qBitLength);
-            pairing = PairingFactory.getPairing(parameters);
-            generator = pairing.getG1().newRandomElement().getImmutable();
-            g = ElementUtils.getGenerator(pairing, generator, parameters, 0, 3).getImmutable();
-            if (!pairing.pairing(g, g).isOne()) { break; }
-        }
-        return parameters;
-    }
+//    private static PropertiesParameters generate_type_a_curve_params(int rBitLength, int qBitLength) {
+//        PairingParametersGenerator parametersGenerator = new TypeACurveGenerator(rBitLength, qBitLength);
+//        return (PropertiesParameters) parametersGenerator.generate();
+//    }
 
-    private static PropertiesParameters generate_type_a_curve_params(int rBitLength, int qBitLength) {
-        PairingParametersGenerator parametersGenerator = new TypeACurveGenerator(rBitLength, qBitLength);
-        return (PropertiesParameters) parametersGenerator.generate();
-    }
-
-    private static PropertiesParameters generate_type_a1_curve_params(int qBitLength) {
-        PairingParametersGenerator parametersGenerator = new TypeA1CurveGenerator(3, qBitLength);
-        return (PropertiesParameters) parametersGenerator.generate();
-    }
+//    private static PropertiesParameters generate_type_a1_curve_params(int qBitLength) {
+//        PairingParametersGenerator parametersGenerator = new TypeA1CurveGenerator(3, qBitLength);
+//        return (PropertiesParameters) parametersGenerator.generate();
+//    }
 
     /**
      * A standard collision resistant hash function implementations used privately for Map.
@@ -108,6 +102,7 @@ public class PairingUtils {
             //Impossible to get this exception
             e.printStackTrace();
         }
+        assert (md != null);
         md.update(message);
         return md.digest();
     }
@@ -141,14 +136,6 @@ public class PairingUtils {
         return pairing.getZr().newElementFromBytes(hash).getImmutable();
     }
 
-    public static Element[] MapByteArraysToGroup(Pairing pairing, byte[][] message, PairingGroupType pairingGroupType){
-        Element[] elements = new Element[message.length];
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapByteArrayToGroup(pairing, message[i], pairingGroupType);
-        }
-        return elements;
-    }
-
     public static Element[] MapStringArrayToGroup(Pairing pairing, String[] message, PairingGroupType pairingGroupType){
         Element[] elements = new Element[message.length];
         for (int i = 0; i < elements.length; i++) {
@@ -156,14 +143,6 @@ public class PairingUtils {
                 continue;
             }
             elements[i] = PairingUtils.MapByteArrayToGroup(pairing, message[i].getBytes(), pairingGroupType);
-        }
-        return elements;
-    }
-
-    public static Element[] MapByteArraysToFirstHalfZr(Pairing pairing, byte[][] message){
-        Element[] elements = new Element[message.length];
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = PairingUtils.MapByteArrayToFirstHalfZr(pairing, message[i]);
         }
         return elements;
     }
@@ -223,21 +202,6 @@ public class PairingUtils {
         }
         for (int i=0; i<thisByteArrays.length; i++){
             if (!(Arrays.equals(thisByteArrays[i], thatByteArrays[i]))){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isEqualIntArrays(final int[][] thisIntArrays, final int[][] thatIntArrays) {
-        if (thisIntArrays == thatIntArrays) {
-            return true;
-        }
-        if (thisIntArrays.length != thatIntArrays.length) {
-            return false;
-        }
-        for (int i=0; i<thisIntArrays.length; i++){
-            if (!(Arrays.equals(thisIntArrays[i], thatIntArrays[i]))){
                 return false;
             }
         }

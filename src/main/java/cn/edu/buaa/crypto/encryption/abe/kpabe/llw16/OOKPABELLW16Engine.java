@@ -43,7 +43,7 @@ public class OOKPABELLW16Engine extends OOKPABEEngine {
     }
 
     private OOKPABELLW16Engine() {
-        super(SCHEME_NAME, Engine.ProveSecModel.Standard, Engine.PayloadSecLevel.CPA, Engine.PredicateSecLevel.NON_ANON);
+        super(SCHEME_NAME, Engine.ProveSecModel.Standard, Engine.PayloadSecLevel.CCA2, Engine.PredicateSecLevel.NON_ANON);
     }
 
     public void setChameleonHasher(ChameleonHasher chameleonHasher,

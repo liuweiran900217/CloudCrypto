@@ -41,15 +41,15 @@ public class RELLW16aIntermediateGenerator implements PairingEncryptionGenerator
 
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         this.s = pairing.getZr().newZeroElement().getImmutable();
-        this.C0 = publicKeyParameter.getG().powZn(s).getImmutable();
         for (int i = 0; i < n; i++) {
             this.ss[i] = pairing.getZr().newRandomElement().getImmutable();
-            this.s = this.s.add(this.ss[i]).getImmutable();
             this.xs[i] = pairing.getZr().newRandomElement().getImmutable();
             this.C1s[i] = publicKeyParameter.getGb().powZn(ss[i]).getImmutable();
             this.C2s[i] = publicKeyParameter.getGb2().powZn(xs[i]).mul(publicKeyParameter.getHb()).powZn(ss[i]).getImmutable();
+            this.s = this.s.add(this.ss[i]).getImmutable();
         }
         this.sessionKey = publicKeyParameter.getEggAlpha().powZn(s).getImmutable();
+        this.C0 = publicKeyParameter.getG().powZn(s).getImmutable();
     }
 
     public PairingCipherSerParameter generateCiphertext() {

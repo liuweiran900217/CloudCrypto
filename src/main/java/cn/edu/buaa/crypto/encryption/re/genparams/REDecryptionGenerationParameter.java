@@ -3,6 +3,7 @@ package cn.edu.buaa.crypto.encryption.re.genparams;
 import cn.edu.buaa.crypto.algebra.genparams.PairingDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.chameleonhash.ChameleonHasher;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 
 /**
@@ -12,6 +13,7 @@ import cn.edu.buaa.crypto.utils.PairingUtils;
  */
 public class REDecryptionGenerationParameter extends PairingDecryptionGenerationParameter {
     private String[] ids;
+    private ChameleonHasher chameleonHasher;
 
     public REDecryptionGenerationParameter(
             PairingKeySerParameter publicKeyParameter, PairingKeySerParameter secretKeyParameter,
@@ -25,5 +27,9 @@ public class REDecryptionGenerationParameter extends PairingDecryptionGeneration
 
     public String[] getIds() { return this.ids; }
 
-    public String getIdsAt(int index) { return this.ids[index]; }
+    public void setChameleonHasher(ChameleonHasher chameleonHasher) {
+        this.chameleonHasher = chameleonHasher;
+    }
+
+    public ChameleonHasher getChameleonHasher() { return this.chameleonHasher; }
 }
