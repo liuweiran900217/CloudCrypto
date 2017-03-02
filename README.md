@@ -203,12 +203,12 @@ This is because the signature results contain at least two Elements so that we n
 
 The most important feature of the Boneh-Lynn-Shacham scheme is that the resulting signature length can be short. 
 To achieve this feature, we use toBytesCompressed() in CurveElement to compress the Element, and serialize it without using any encoding methods. 
-Further, we recommend leveraging it using Type F curve (with PairingParameters shown in /params/f_160.properties). 
+Further, we recommend using Type F curve (with PairingParameters shown in /params/f_160.properties). 
 The resulting signature length can be short. In fact, for Type F curve with r bit length 160, the signature length is 21 bytes, i.e., 168 bits.
 
 For detailed information, please see the implemention shown in BLS01Signer. 
 
-We thank an anonymous employee from Medica Corp. for offering solutions for shortening the byte array length of Element. 
+We thank an anonymous employee from Medica Corp. for finding this problem and offering solutions for shortening the byte array length of Element. 
 
 ### Chameleon Hash Functions
 
