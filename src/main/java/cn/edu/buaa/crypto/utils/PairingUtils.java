@@ -22,6 +22,7 @@ public class PairingUtils {
 //    public static final String PATH_a1_3_256 = "params/a1_3_256.properties";
 //    public static final String PATH_a1_2_512 = "params/a1_2_512.properties";
     public static final String PATH_a1_3_512 = "params/a1_3_512.properties";
+    public static final String PATH_f_160 = "params/f_160.properties";
 
     public enum PairingGroupType {
         Zr, G1, G2, GT,
@@ -78,26 +79,14 @@ public class PairingUtils {
 
     /**
      * A standard collision resistant hash function implementations used privately for Map.
-     * The used hash function depends on the security parameter of the pairing-based cryptography system.
-     * If the security parameter is less than 256, we choose SHA-256;
-     * If the security parameter is greater than 256, but less than 384, we choose SHA-384;
-     * If the security parameter is greater than 384, we choose SHA-512;
-     * @param bitLength security parameter of the underlying cryptography system
+     * The used hash function is SHA-256.
      * @param message mmessage to be hashed
      * @return hash result
      */
-    private static byte[] hash(int bitLength, byte[] message) {
+    private static byte[] hash(byte[] message) {
         MessageDigest md = null;
         try {
-            if (bitLength <= 256) {
-                md = MessageDigest.getInstance("SHA-256");
-            } else if (bitLength <= 384) {
-                md = MessageDigest.getInstance("SHA-384");
-            } else if (bitLength <= 512) {
-                md = MessageDigest.getInstance("SHA-512");
-            } else {
-                md = MessageDigest.getInstance("SHA-512");
-            }
+            md = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             //Impossible to get this exception
             e.printStackTrace();
@@ -108,7 +97,7 @@ public class PairingUtils {
     }
 
     public static Element MapByteArrayToGroup(Pairing pairing, byte[] message, PairingGroupType pairingGroupType) {
-        byte[] shaResult = hash(512, message);
+        byte[] shaResult = hash(message);
         switch (pairingGroupType) {
             case Zr: return pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
             case G1: return pairing.getG1().newElement().setFromHash(shaResult, 0, shaResult.length).getImmutable();
@@ -123,14 +112,14 @@ public class PairingUtils {
     }
 
     public static Element MapByteArrayToFirstHalfZr(Pairing pairing, byte[] message) {
-        byte[] shaResult = hash(512, message);
+        byte[] shaResult = hash(message);
         byte[] hashZr = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).toBytes();
         hashZr[0] &= 0xEF;
         return pairing.getZr().newElementFromBytes(hashZr).getImmutable();
     }
 
     public static Element MapByteArrayToSecondHalfZr(Pairing pairing, byte[] message) {
-        byte[] shaResult = hash(512, message);
+        byte[] shaResult = hash(message);
         byte[] hash = pairing.getZr().newElement().setFromHash(shaResult, 0, shaResult.length).toBytes();
         hash[0] |= 0x80;
         return pairing.getZr().newElementFromBytes(hash).getImmutable();

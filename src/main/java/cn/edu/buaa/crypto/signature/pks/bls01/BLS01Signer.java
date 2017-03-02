@@ -6,10 +6,9 @@ import cn.edu.buaa.crypto.signature.pks.PairingSigner;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.plaf.jpbc.field.curve.CurveElement;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import org.bouncycastle.asn1.*;
 import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.util.encoders.Hex;
 
 import java.io.IOException;
 
@@ -41,7 +40,7 @@ public class BLS01Signer implements PairingSigner {
         BLS01SignSecretPairingKeySerParameter secretKeyParameters = (BLS01SignSecretPairingKeySerParameter) this.pairingKeySerParameter;
         Element x = secretKeyParameters.getX();
 
-        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G2);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G1);
         Element sigma = m.powZn(x).getImmutable();
 
         return new Element[]{sigma};
@@ -51,30 +50,28 @@ public class BLS01Signer implements PairingSigner {
         PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
         BLS01SignPublicPairingKeySerParameter publicKeyParameters = (BLS01SignPublicPairingKeySerParameter) this.pairingKeySerParameter;
-        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G2);
+        Element m = PairingUtils.MapByteArrayToGroup(pairing, message, PairingUtils.PairingGroupType.G1);
         Element g = publicKeyParameters.getG();
         Element v = publicKeyParameters.getV();
 
         Element sigma = signature[0];
 
-        Element temp1 = pairing.pairing(g, sigma);
-        Element temp2 = pairing.pairing(v, m);
+        Element temp1 = pairing.pairing(sigma, g);
+        Element temp2 = pairing.pairing(m, v);
         return PairingUtils.isEqualElement(temp1, temp2);
     }
 
     public byte[] derEncode(Element[] signElements) throws IOException {
-        ASN1EncodableVector v = new ASN1EncodableVector();
-        v.add(new DERPrintableString(Hex.toHexString(signElements[0].toBytes())));
-        return new DERSequence(v).getEncoded(ASN1Encoding.DER);
+        return ((CurveElement)signElements[0]).toBytesCompressed();
     }
 
     public Element[] derDecode(byte[] encoding) throws IOException {
-        ASN1Sequence s = (ASN1Sequence) ASN1Primitive.fromByteArray(encoding);
         PairingParameters params = this.pairingKeySerParameter.getParameters();
         Pairing pairing = PairingFactory.getPairing(params);
-
+        Element signature = pairing.getG1().newZeroElement();
+        ((CurveElement)signature).setFromBytesCompressed(encoding);
         return new Element[]{
-                pairing.getG2().newElementFromBytes(Hex.decode(((ASN1String) s.getObjectAt(0)).getString())),
+                signature,
         };
     }
 

@@ -17,25 +17,20 @@ import cn.edu.buaa.crypto.utils.PairingUtils;
 import com.example.TestUtils;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import junit.framework.TestCase;
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 
-import static org.junit.Assert.assertEquals;
 /**
  * Created by Weiran Liu on 2016/10/18.
  *
  * Public key signature test.
  */
-public class PKSSignerTest {
+public class PKSSignerTest extends TestCase {
     private PairingKeyPairGenerator asymmetricKeySerPairGenerator;
     private Signer signer;
 
-    private PKSSignerTest(PairingKeyPairGenerator asymmetricKeySerPairGenerator, Signer signer) {
-        this.asymmetricKeySerPairGenerator = asymmetricKeySerPairGenerator;
-        this.signer = signer;
-    }
-
-    public void processTest() {
+    private void processTest() {
         //KeyGen
         PairingKeySerPair keyPair = this.asymmetricKeySerPairGenerator.generateKeyPair();
         PairingKeySerParameter publicKey = keyPair.getPublic();
@@ -49,11 +44,13 @@ public class PKSSignerTest {
             signer.init(true, secretKey);
             signer.update(message, 0, message.length);
             byte[] signature = signer.generateSignature();
+            System.out.println("Signature length = " + signature.length);
 
             byte[] messagePrime = "MessagePrime".getBytes();
             signer.init(true, secretKey);
             signer.update(messagePrime, 0, messagePrime.length);
             byte[] signaturePrime = signer.generateSignature();
+            System.out.println("Signature' length = " + signature.length);
 
             //verify
             signer.init(false, publicKey);
@@ -97,28 +94,30 @@ public class PKSSignerTest {
         }
     }
 
-    public static void main(String[] args) {
-        PairingParameters pairingParameters = PairingFactory.getPairingParameters(PairingUtils.PATH_a_160_512);
-
-        //test Boneh-Boyen 2004 signature.
-        System.out.println("Test Boneh-Boyen 2004 signature.");
-        PairingKeyPairGenerator signKeyPairGenerator = new BB04SignKeyPairGenerator();
-        signKeyPairGenerator.init(new BB04SignKeyPairGenerationParameter(pairingParameters));
-        Signer signer = new PairingDigestSigner(new BB04Signer(), new SHA256Digest());
-        new PKSSignerTest(signKeyPairGenerator, signer).processTest();
-
-        //test Boneh-Lynn-Shacham signature.
+    public void testBLS01Signer() {
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(PairingUtils.PATH_f_160);
         System.out.println("Test Boneh-Lynn-Shacham 2001 signature.");
-        signKeyPairGenerator = new BLS01SignKeyPairGenerator();
-        signKeyPairGenerator.init(new BLS01SignKeyPairGenerationParameter(pairingParameters));
-        signer = new PairingDigestSigner(new BLS01Signer(), new SHA256Digest());
-        new PKSSignerTest(signKeyPairGenerator, signer).processTest();
+        this.asymmetricKeySerPairGenerator = new BLS01SignKeyPairGenerator();
+        this.asymmetricKeySerPairGenerator.init(new BLS01SignKeyPairGenerationParameter(pairingParameters));
+        this.signer = new PairingDigestSigner(new BLS01Signer(), new SHA256Digest());
+        this.processTest();
+    }
 
-        //test Boneh-Boyen 2008 signature.
+    public void testBB04Signer() {
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(PairingUtils.PATH_a_160_512);
+        System.out.println("Test Boneh-Boyen 2004 signature.");
+        this.asymmetricKeySerPairGenerator = new BB04SignKeyPairGenerator();
+        this.asymmetricKeySerPairGenerator.init(new BB04SignKeyPairGenerationParameter(pairingParameters));
+        this.signer = new PairingDigestSigner(new BB04Signer(), new SHA256Digest());
+        this.processTest();
+    }
+
+    public void testBB08Signer() {
+        PairingParameters pairingParameters = PairingFactory.getPairingParameters(PairingUtils.PATH_a_160_512);
         System.out.println("Test Boneh-Boyen 2008 signature.");
-        signKeyPairGenerator = new BB08SignKeyPairGenerator();
-        signKeyPairGenerator.init(new BB08SignKeyPairGenerationParameter(pairingParameters));
-        signer = new PairingDigestSigner(new BB08Signer(), new SHA256Digest());
-        new PKSSignerTest(signKeyPairGenerator, signer).processTest();
+        this.asymmetricKeySerPairGenerator = new BB08SignKeyPairGenerator();
+        this.asymmetricKeySerPairGenerator.init(new BB08SignKeyPairGenerationParameter(pairingParameters));
+        this.signer = new PairingDigestSigner(new BB08Signer(), new SHA256Digest());
+        this.processTest();
     }
 }

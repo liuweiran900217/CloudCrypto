@@ -9,6 +9,10 @@ Traditional public key cryptographic primitives (e.g., Diffie-Hellman, RSA, ElGa
 **CloudCrypto** project aims at implementing advanced cryptographic schemes under the well-designed Java Cryptographic Architecture (JCA). To achieve this target, **CloudCrypto** leverages [Bouncy Castle](http://www.bouncycastle.org/java.html) as the underlying library, which strictly follows JCA standard. In general, Java seems not a good choice for Crypto implementations due to runtime effiency. 
 We choose Java as the programming language since Java provides good portability so that **CloudCrypto** can be even **directly** port to mobile and / or other embedded devices, e.g., Android. 
 
+We are providing the source code of **CloudCrypto** with no license fee. It is open source and free to use for Research & Development purpose. 
+
+We are glad to notice that Medica Corp. is experimenting with **CloudCrypto** for Research & Development purpose. 
+
 ## Develop Environments
 
 **CloudCrypto** is buit using Maven 2. Please see `pom.xml` for the dependent libiraries. In its current version, **CloudCrypto** leverages the following libraries:
@@ -53,6 +57,7 @@ The most important object for invoking pairing-based cryptographic schemes is `P
 - `a_160_512.properties`: Type A prime-order bilinear groups with 160-bit Z_p and 512-bit G. 
 - `a1_3_128.properties` : Type A1 composite-order bilinear groups with 3 prime factors, all of which have size 128-bit. Note that the group order cannnot meet the security needs for today's sstem. This parameter can only be used for testing the correctness of the scheme implementations.
 - `a1_3_512.properties`: Type A1 composite-order bilinear groups with 3 prime factors, all of which have size 512-bit.
+- `f_160.properties`: Type F prime-order bilinear groups with 160-bit Z_p. Note that this group is an asymmetric bilinear group so that it can be only used for schemes built on asymmetric bilinear groups. We recommend using this properties for the Boneh-Lynn-Shacham short signature scheme.
 
 The following code shows how to get PairingParameters from files in /params:
 
@@ -192,6 +197,18 @@ The following code shows how to use Boneh-Boyen signatures under the JCA standar
     } catch (CryptoException e) {
         //useless, just for satisfying JCA standard
     }
+
+Note that the signature of the Boneh-Boyen-04 scheme and the Boneh-Boyen-08 scheme are serialized using ASN1 encodings. 
+This is because the signature results contain at least two Elements so that we need to leverage an encoding method to distinct Elements.
+
+The most important feature of the Boneh-Lynn-Shacham scheme is that the resulting signature length can be short. 
+To achieve this feature, we use toBytesCompressed() in CurveElement to compress the Element, and serialize it without using any encoding methods. 
+Further, we recommend leveraging it using Type F curve (with PairingParameters shown in /params/f_160.properties). 
+The resulting signature length can be short. In fact, for Type F curve with r bit length 160, the signature length is 21 bytes, i.e., 168 bits.
+
+For detailed information, please see the implemention shown in BLS01Signer. 
+
+We thank an anonymous employee from Medica Corp. for offering solutions for shortening the byte array length of Element. 
 
 ### Chameleon Hash Functions
 

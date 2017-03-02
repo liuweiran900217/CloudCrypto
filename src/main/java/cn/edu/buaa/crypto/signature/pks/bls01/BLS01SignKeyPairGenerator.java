@@ -23,7 +23,7 @@ public class BLS01SignKeyPairGenerator implements PairingKeyPairGenerator {
         Pairing pairing = PairingFactory.getPairing(this.param.getPairingParameters());
 
         Element x = pairing.getZr().newRandomElement().getImmutable();
-        Element g = pairing.getG1().newRandomElement().getImmutable();
+        Element g = pairing.getG2().newRandomElement().getImmutable();
         Element v = g.powZn(x).getImmutable();
         BLS01SignPublicPairingKeySerParameter publicKeyParameters = new BLS01SignPublicPairingKeySerParameter(this.param.getPairingParameters(), g, v);
 
