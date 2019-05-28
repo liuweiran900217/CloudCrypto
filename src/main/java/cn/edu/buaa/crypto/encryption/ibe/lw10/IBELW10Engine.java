@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.ibe.lw10;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibe.IBEEngine;
 import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEDecryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.ibe.genparams.IBEEncryptionGenerationParameter;

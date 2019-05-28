@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.algebra.genparams;
 
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import org.bouncycastle.crypto.CipherParameters;
 
 /**

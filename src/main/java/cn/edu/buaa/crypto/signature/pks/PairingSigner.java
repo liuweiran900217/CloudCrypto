@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.signature.pks;
 
 import it.unisa.dia.gas.jpbc.Element;
-import org.bouncycastle.crypto.*;
+import org.bouncycastle.crypto.CipherParameters;
 
 import java.io.IOException;
 

@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw17;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.HIBBEEngine;
 import cn.edu.buaa.crypto.encryption.hibbe.genparams.*;
 import cn.edu.buaa.crypto.encryption.hibbe.llw17.generators.HIBBELLW17DecryptionGenerator;

@@ -1,7 +1,7 @@
 package cn.edu.buaa.crypto.chameleonhash.kr00b.dlog;
 
+import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.DLogKR00bPublicKeySerParameter;
 import org.bouncycastle.crypto.Digest;
-import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.serparams.*;
 
 import java.math.BigInteger;
 

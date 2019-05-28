@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.hibe.bbg05;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.HIBEEngine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05DecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.generators.HIBEBBG05EncryptionGenerator;

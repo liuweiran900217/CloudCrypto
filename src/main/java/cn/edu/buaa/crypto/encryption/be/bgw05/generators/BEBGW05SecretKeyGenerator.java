@@ -7,8 +7,6 @@ import cn.edu.buaa.crypto.encryption.be.bgw05.serparams.BEBGW05PublicKeySerParam
 import cn.edu.buaa.crypto.encryption.be.bgw05.serparams.BEBGW05SecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.be.genparams.BESecretKeyGenerationParameter;
 import it.unisa.dia.gas.jpbc.Element;
-import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
 /**

@@ -1,7 +1,5 @@
 package cn.edu.buaa.crypto.access.parser;
 
-import cn.edu.buaa.crypto.access.lsss.LSSSPolicyParameter;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 

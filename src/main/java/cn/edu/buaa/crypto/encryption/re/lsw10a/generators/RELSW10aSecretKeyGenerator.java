@@ -2,11 +2,11 @@ package cn.edu.buaa.crypto.encryption.re.lsw10a.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.utils.PairingUtils;
+import cn.edu.buaa.crypto.encryption.re.genparams.RESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aMasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aPublicKeySerParameter;
-import cn.edu.buaa.crypto.encryption.re.genparams.RESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.re.lsw10a.serparams.RELSW10aSecretKeySerParameter;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

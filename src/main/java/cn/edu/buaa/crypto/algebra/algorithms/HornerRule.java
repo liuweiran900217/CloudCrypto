@@ -2,10 +2,6 @@ package cn.edu.buaa.crypto.algebra.algorithms;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
-import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
-import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
-import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
-import it.unisa.dia.gas.plaf.jpbc.pairing.parameters.PropertiesParameters;
 
 /**
  * Created by Weiran Liu on 2016/8/22.

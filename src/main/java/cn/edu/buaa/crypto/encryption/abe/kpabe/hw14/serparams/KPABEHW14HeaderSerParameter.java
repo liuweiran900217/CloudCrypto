@@ -1,6 +1,5 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.hw14.serparams;
 
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.rw13.serparams.KPABERW13HeaderSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
@@ -8,7 +7,6 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

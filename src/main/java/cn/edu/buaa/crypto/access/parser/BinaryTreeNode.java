@@ -1,7 +1,5 @@
 package cn.edu.buaa.crypto.access.parser;
 
-import cn.edu.buaa.crypto.access.UnsatisfiedAccessControlException;
-
 import java.util.LinkedList;
 
 /**
