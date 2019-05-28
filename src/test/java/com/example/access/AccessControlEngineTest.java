@@ -129,38 +129,38 @@ public class AccessControlEngineTest extends TestCase {
 
         try_valid_access_policy(pairing, 31,
                 AccessPolicyExamples.access_policy_example_1,
-                AccessPolicyExamples.access_policy_exampe_1_satisfied_1);
+                AccessPolicyExamples.access_policy_example_1_satisfied_1);
         try_valid_access_policy(pairing, 32,
                 AccessPolicyExamples.access_policy_example_1,
-                AccessPolicyExamples.access_policy_exampe_1_satisfied_2);
+                AccessPolicyExamples.access_policy_example_1_satisfied_2);
         try_valid_access_policy(pairing, 41,
                 AccessPolicyExamples.access_policy_example_2,
-                AccessPolicyExamples.access_policy_exampe_2_satisfied_1);
+                AccessPolicyExamples.access_policy_example_2_satisfied_1);
         try_valid_access_policy(pairing, 42,
                 AccessPolicyExamples.access_policy_example_2,
-                AccessPolicyExamples.access_policy_exampe_2_satisfied_2);
+                AccessPolicyExamples.access_policy_example_2_satisfied_2);
         try_valid_access_policy(pairing, 51,
                 AccessPolicyExamples.access_policy_example_3,
-                AccessPolicyExamples.access_policy_exampe_3_satisfied_1);
+                AccessPolicyExamples.access_policy_example_3_satisfied_1);
 
         try_invalid_access_policy(pairing, 31,
                 AccessPolicyExamples.access_policy_example_1,
-                AccessPolicyExamples.access_policy_exampe_1_unsatisfied_1);
+                AccessPolicyExamples.access_policy_example_1_unsatisfied_1);
         try_invalid_access_policy(pairing, 41,
                 AccessPolicyExamples.access_policy_example_2,
-                AccessPolicyExamples.access_policy_exampe_2_unsatisfied_1);
+                AccessPolicyExamples.access_policy_example_2_unsatisfied_1);
         try_invalid_access_policy(pairing, 42,
                 AccessPolicyExamples.access_policy_example_2,
-                AccessPolicyExamples.access_policy_exampe_2_unsatisfied_2);
+                AccessPolicyExamples.access_policy_example_2_unsatisfied_2);
         try_invalid_access_policy(pairing, 53,
                 AccessPolicyExamples.access_policy_example_2,
-                AccessPolicyExamples.access_policy_exampe_2_unsatisfied_3);
+                AccessPolicyExamples.access_policy_example_2_unsatisfied_3);
         try_invalid_access_policy(pairing, 51,
                 AccessPolicyExamples.access_policy_example_3,
-                AccessPolicyExamples.access_policy_exampe_3_unsatisfied_1);
+                AccessPolicyExamples.access_policy_example_3_unsatisfied_1);
         try_invalid_access_policy(pairing, 52,
                 AccessPolicyExamples.access_policy_example_3,
-                AccessPolicyExamples.access_policy_exampe_3_unsatisfied_2);
+                AccessPolicyExamples.access_policy_example_3_unsatisfied_2);
     }
 
     private void try_valid_access_policy(

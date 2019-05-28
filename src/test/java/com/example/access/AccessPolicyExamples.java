@@ -8,16 +8,16 @@ package com.example.access;
 public class AccessPolicyExamples {
 
     public static final String access_policy_example_1 = "0 and 1 and (2 or 3)";
-    public static final String[] access_policy_exampe_1_satisfied_1 = new String[] {"0", "1", "2"};
-    public static final String[] access_policy_exampe_1_satisfied_2 = new String[] {"0", "1", "2", "3"};
-    public static final String[] access_policy_exampe_1_unsatisfied_1 = new String[] {"1", "2", "3"};
+    public static final String[] access_policy_example_1_satisfied_1 = new String[] {"0", "1", "2"};
+    public static final String[] access_policy_example_1_satisfied_2 = new String[] {"0", "1", "2", "3"};
+    public static final String[] access_policy_example_1_unsatisfied_1 = new String[] {"1", "2", "3"};
 
     public static final String access_policy_example_2 = "((0 and 1 and 2) and (3 or 4 or 5) and (6 and 7 and (8 or 9 or 10 or 11)))";
-    public static final String[] access_policy_exampe_2_satisfied_1 = new String[] {"0", "1", "2", "4", "6", "7", "10"};
-    public static final String[] access_policy_exampe_2_satisfied_2 = new String[] {"0", "1", "2", "5", "4", "6", "7", "8", "9", "10", "11"};
-    public static final String[] access_policy_exampe_2_unsatisfied_1 = new String[] {"0", "1", "2", "6", "7", "10"};
-    public static final String[] access_policy_exampe_2_unsatisfied_2 = new String[] {"0", "1", "2", "4", "6", "10"};
-    public static final String[] access_policy_exampe_2_unsatisfied_3 = new String[] {"0", "1", "2", "3", "6", "7"};
+    public static final String[] access_policy_example_2_satisfied_1 = new String[] {"0", "1", "2", "4", "6", "7", "10"};
+    public static final String[] access_policy_example_2_satisfied_2 = new String[] {"0", "1", "2", "5", "4", "6", "7", "8", "9", "10", "11"};
+    public static final String[] access_policy_example_2_unsatisfied_1 = new String[] {"0", "1", "2", "6", "7", "10"};
+    public static final String[] access_policy_example_2_unsatisfied_2 = new String[] {"0", "1", "2", "4", "6", "10"};
+    public static final String[] access_policy_example_2_unsatisfied_3 = new String[] {"0", "1", "2", "3", "6", "7"};
 
     public static final String access_policy_example_3 =
             "00 and 01 and 02 and 03 and 04 and 05 and 06 and 07 and 08 and 09 and " +
@@ -25,21 +25,21 @@ public class AccessPolicyExamples {
             "20 and 21 and 22 and 23 and 24 and 25 and 26 and 27 and 28 and 29 and " +
             "30 and 31 and 32 and 33 and 34 and 35 and 36 and 37 and 38 and 39 and " +
             "40 and 41 and 42 and 43 and 44 and 45 and 46 and 47 and 48 and 49";
-    public static final String[] access_policy_exampe_3_satisfied_1 = new String[] {
+    public static final String[] access_policy_example_3_satisfied_1 = new String[] {
             "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
             "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
             "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
             "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
             "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
     };
-    public static final String[] access_policy_exampe_3_unsatisfied_1 = new String[] {
+    public static final String[] access_policy_example_3_unsatisfied_1 = new String[] {
             "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
             "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
             "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
             "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
             "40", "41", "42", "43", "44", "45", "46", "47", "48",
     };
-    public static final String[] access_policy_exampe_3_unsatisfied_2 = new String[] {
+    public static final String[] access_policy_example_3_unsatisfied_2 = new String[] {
             "04", "05", "06", "07", "08", "09",
             "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
             "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
