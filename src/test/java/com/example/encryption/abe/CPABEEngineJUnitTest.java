@@ -197,53 +197,53 @@ public class CPABEEngineJUnitTest extends TestCase {
             try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_1,
-                    AccessPolicyExamples.access_policy_exampe_1_satisfied_1);
+                    AccessPolicyExamples.access_policy_example_1_satisfied_1);
             try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_1,
-                    AccessPolicyExamples.access_policy_exampe_1_satisfied_2);
+                    AccessPolicyExamples.access_policy_example_1_satisfied_2);
             try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_1,
-                    AccessPolicyExamples.access_policy_exampe_1_unsatisfied_1);
+                    AccessPolicyExamples.access_policy_example_1_unsatisfied_1);
 
             //test example 2
             System.out.println("Test example 2");
             try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
-                    AccessPolicyExamples.access_policy_exampe_2_satisfied_1);
+                    AccessPolicyExamples.access_policy_example_2_satisfied_1);
             try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
-                    AccessPolicyExamples.access_policy_exampe_2_satisfied_2);
+                    AccessPolicyExamples.access_policy_example_2_satisfied_2);
             try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
-                    AccessPolicyExamples.access_policy_exampe_2_unsatisfied_1);
+                    AccessPolicyExamples.access_policy_example_2_unsatisfied_1);
             try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
-                    AccessPolicyExamples.access_policy_exampe_2_unsatisfied_2);
+                    AccessPolicyExamples.access_policy_example_2_unsatisfied_2);
             try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_2,
-                    AccessPolicyExamples.access_policy_exampe_2_unsatisfied_3);
+                    AccessPolicyExamples.access_policy_example_2_unsatisfied_3);
 
             //test example 3
             System.out.println("Test example 3");
             try_valid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_3,
-                    AccessPolicyExamples.access_policy_exampe_3_satisfied_1);
+                    AccessPolicyExamples.access_policy_example_3_satisfied_1);
             try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_3,
-                    AccessPolicyExamples.access_policy_exampe_3_unsatisfied_1);
+                    AccessPolicyExamples.access_policy_example_3_unsatisfied_1);
             try_invalid_access_policy(
                     pairing, publicKey, masterKey,
                     AccessPolicyExamples.access_policy_example_3,
-                    AccessPolicyExamples.access_policy_exampe_3_unsatisfied_2);
+                    AccessPolicyExamples.access_policy_example_3_unsatisfied_2);
 
             if (engine.isAccessControlEngineSupportThresholdGate()) {
                 //test threshold example 1
