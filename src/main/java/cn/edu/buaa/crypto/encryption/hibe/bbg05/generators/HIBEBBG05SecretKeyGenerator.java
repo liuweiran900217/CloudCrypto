@@ -2,13 +2,13 @@ package cn.edu.buaa.crypto.encryption.hibe.bbg05.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingKeyParameterGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
+import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05PublicKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.bbg05.serparams.HIBEBBG05SecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBEDelegateGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibe.genparams.HIBESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
-import cn.edu.buaa.crypto.encryption.hibe.bbg05.HIBEBBG05Engine;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;

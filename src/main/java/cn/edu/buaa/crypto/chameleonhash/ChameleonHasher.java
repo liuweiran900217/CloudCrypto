@@ -1,12 +1,8 @@
 package cn.edu.buaa.crypto.chameleonhash;
 
-import it.unisa.dia.gas.jpbc.Element;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.CryptoException;
 import org.bouncycastle.crypto.DataLengthException;
-import org.bouncycastle.crypto.Digest;
-
-import java.io.IOException;
 
 /**
  * Created by Weiran Liu on 2016/10/19.

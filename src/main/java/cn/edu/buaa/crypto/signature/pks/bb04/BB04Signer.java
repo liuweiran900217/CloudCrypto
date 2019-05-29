@@ -1,14 +1,14 @@
 package cn.edu.buaa.crypto.signature.pks.bb04;
 
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.utils.PairingUtils;
 import cn.edu.buaa.crypto.signature.pks.PairingSigner;
+import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.asn1.*;
-import org.bouncycastle.crypto.*;
+import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.util.encoders.Hex;
 
 import java.io.IOException;

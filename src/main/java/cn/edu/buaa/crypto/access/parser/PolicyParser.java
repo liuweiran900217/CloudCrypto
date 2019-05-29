@@ -14,9 +14,8 @@ package cn.edu.buaa.crypto.access.parser;
 //### static char yysccsid[] = "@(#)yaccpar	1.8 (Berkeley) 01/20/90";
 
 //#line 2 "policy_lang.y"
-import java.util.List;
+
 import java.util.StringTokenizer;
-import java.util.ArrayList;
 //#line 23 "Parser.java"
 
 public class PolicyParser {

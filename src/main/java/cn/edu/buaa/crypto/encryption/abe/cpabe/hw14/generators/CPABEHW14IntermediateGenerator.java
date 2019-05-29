@@ -10,8 +10,6 @@ import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import org.bouncycastle.crypto.CipherParameters;
 
-import java.util.Map;
-
 /**
  * Created by Weiran Liu on 2017/1/1.
  *

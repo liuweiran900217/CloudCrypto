@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.application.llw15.genparams;
 
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyDelegationParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15AccessCredentialMSerParameter;
 import cn.edu.buaa.crypto.application.llw15.serparams.RBACLLW15IntermediateSerParameter;
 

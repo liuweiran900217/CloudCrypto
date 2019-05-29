@@ -1,8 +1,8 @@
 package cn.edu.buaa.crypto.encryption.re;
 
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
 import it.unisa.dia.gas.jpbc.Element;
 
 /**

@@ -5,8 +5,6 @@ import cn.edu.buaa.crypto.algebra.genparams.PairingKeyPairGenerationParameter;
 import it.unisa.dia.gas.jpbc.PairingParameters;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 
-import java.security.Key;
-
 /**
  * Created by Weiran Liu on 2016/11/19.
  *

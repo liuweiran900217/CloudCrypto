@@ -1,7 +1,6 @@
 package cn.edu.buaa.crypto.encryption.re.llw16b.serparams;
 
 import cn.edu.buaa.crypto.algebra.serparams.AsymmetricKeySerParameter;
-import cn.edu.buaa.crypto.encryption.re.llw16a.serparams.RELLW16aCiphertextSerParameter;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;

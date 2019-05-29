@@ -1,18 +1,18 @@
 package cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.KPABEEngine;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEDecryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEEncryptionGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEKeyPairGenerationParameter;
+import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aDecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aEncryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aKeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.generators.KPABEGPSW06aSecretKeyGenerator;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEEncryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEDecryptionGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABEKeyPairGenerationParameter;
-import cn.edu.buaa.crypto.encryption.abe.kpabe.genparams.KPABESecretKeyGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.kpabe.gpsw06a.serparams.*;
 import cn.edu.buaa.crypto.utils.PairingUtils;
 import it.unisa.dia.gas.jpbc.Element;

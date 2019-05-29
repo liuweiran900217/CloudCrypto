@@ -1,12 +1,12 @@
 package cn.edu.buaa.crypto.encryption.hibbe.llw16b.generators;
 
 import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
 import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
+import cn.edu.buaa.crypto.algebra.generators.PairingKeyPairGenerator;
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.genparams.HIBBEEncryptionGenerationParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bCiphertextSerParameter;
 import cn.edu.buaa.crypto.encryption.hibbe.llw16b.serparams.HIBBELLW16bHeaderSerParameter;

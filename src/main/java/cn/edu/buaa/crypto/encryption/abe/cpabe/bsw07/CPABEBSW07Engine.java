@@ -1,9 +1,9 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07DecryptionGenerator;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.generators.CPABEBSW07EncryptionGenerator;

@@ -1,14 +1,14 @@
 package cn.edu.buaa.crypto.encryption.ibbe.del07;
 
+import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
+import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerPair;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.IBBEEngine;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07DecapsulationGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07EncapsulationPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07KeyPairGenerator;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.generators.IBBEDel07SecretKeyGenerator;
-import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07HeaderSerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07MasterSecretKeySerParameter;
 import cn.edu.buaa.crypto.encryption.ibbe.del07.serparams.IBBEDel07PublicKeySerParameter;

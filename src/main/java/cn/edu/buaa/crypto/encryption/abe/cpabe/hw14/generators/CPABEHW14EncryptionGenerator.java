@@ -1,9 +1,6 @@
 package cn.edu.buaa.crypto.encryption.abe.cpabe.hw14.generators;
 
 import cn.edu.buaa.crypto.access.AccessControlEngine;
-import cn.edu.buaa.crypto.access.AccessControlParameter;
-import cn.edu.buaa.crypto.algebra.generators.PairingEncapsulationPairGenerator;
-import cn.edu.buaa.crypto.algebra.generators.PairingEncryptionGenerator;
 import cn.edu.buaa.crypto.algebra.serparams.PairingCipherSerParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeyEncapsulationSerPair;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEEncryptionGenerationParameter;

@@ -2,7 +2,6 @@ package cn.edu.buaa.crypto.encryption.hibbe.genparams;
 
 import cn.edu.buaa.crypto.algebra.genparams.PairingKeyGenerationParameter;
 import cn.edu.buaa.crypto.algebra.serparams.PairingKeySerParameter;
-import cn.edu.buaa.crypto.encryption.hibbe.llw14.serparams.HIBBELLW14PublicKeySerParameter;
 
 /**
  * Created by Weiran Liu on 2016/5/16.

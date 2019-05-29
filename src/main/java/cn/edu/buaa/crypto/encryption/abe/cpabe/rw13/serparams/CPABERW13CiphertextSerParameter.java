@@ -7,7 +7,6 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
