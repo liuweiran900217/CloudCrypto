@@ -25,6 +25,7 @@ public class CPABELLW16KeyPairGenerator extends CPABEHW14KeyPairGenerator {
                 publicKeyRW13Parameter.getH(),
                 publicKeyRW13Parameter.getW(),
                 publicKeyRW13Parameter.getV(),
+                publicKeyRW13Parameter.getF(),
                 publicKeyRW13Parameter.getEggAlpha()
         );
         CPABELLW16MasterSecretKeySerParameter masterKeyParameter = new CPABELLW16MasterSecretKeySerParameter(

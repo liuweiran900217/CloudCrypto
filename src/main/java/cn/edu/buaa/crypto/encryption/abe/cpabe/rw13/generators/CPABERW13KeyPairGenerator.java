@@ -13,6 +13,7 @@ import org.bouncycastle.crypto.KeyGenerationParameters;
 /**
  * Created by Weiran Liu on 2016/11/29.
  *
+ * 对应setup
  * Rouselakis-Waters CP-ABE public key / master secret key generator.
  */
 public class CPABERW13KeyPairGenerator implements PairingKeyPairGenerator {
@@ -31,10 +32,11 @@ public class CPABERW13KeyPairGenerator implements PairingKeyPairGenerator {
         Element h = pairing.getG1().newRandomElement().getImmutable();
         Element w = pairing.getG1().newRandomElement().getImmutable();
         Element v = pairing.getG1().newRandomElement().getImmutable();
+        Element f = pairing.getG1().newRandomElement().getImmutable();
         Element eggAlpha = pairing.pairing(g, g).powZn(alpha).getImmutable();
 
         return new PairingKeySerPair(
-                new CPABERW13PublicKeySerParameter(this.parameters.getPairingParameters(), g, u, h, w, v, eggAlpha),
+                new CPABERW13PublicKeySerParameter(this.parameters.getPairingParameters(), g, u, h, w, v, f, eggAlpha),
                 new CPABERW13MasterSecretKeySerParameter(this.parameters.getPairingParameters(), alpha));
     }
 }

@@ -34,6 +34,7 @@ public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator,
     protected Map<String, Element> C1s;
     protected Map<String, Element> C2s;
     protected Map<String, Element> C3s;
+    protected Element C4;
 
     public void init(CipherParameters parameter) {
         this.parameter = (CPABEEncryptionGenerationParameter) parameter;
@@ -62,19 +63,20 @@ public class CPABERW13EncryptionGenerator implements PairingEncryptionGenerator,
             C2s.put(rho, publicKeyParameter.getU().powZn(elementRho).mul(publicKeyParameter.getH()).powZn(ti.negate()).getImmutable());
             C3s.put(rho, publicKeyParameter.getG().powZn(ti).getImmutable());
         }
+        this.C4 = publicKeyParameter.getF().powZn(s).getImmutable();
     }
 
     public PairingCipherSerParameter generateCiphertext() {
         computeEncapsulation();
         Element C = this.sessionKey.mul(this.parameter.getMessage()).getImmutable();
-        return new CPABERW13CiphertextSerParameter(publicKeyParameter.getParameters(), C, C0, C1s, C2s, C3s);
+        return new CPABERW13CiphertextSerParameter(publicKeyParameter.getParameters(), C, C0, C1s, C2s, C3s, C4);
     }
 
     public PairingKeyEncapsulationSerPair generateEncryptionPair() {
         computeEncapsulation();
         return new PairingKeyEncapsulationSerPair(
                 this.sessionKey.toBytes(),
-                new CPABERW13HeaderSerParameter(publicKeyParameter.getParameters(), C0, C1s, C2s, C3s)
+                new CPABERW13HeaderSerParameter(publicKeyParameter.getParameters(), C0, C1s, C2s, C3s, C4)
         );
     }
 }

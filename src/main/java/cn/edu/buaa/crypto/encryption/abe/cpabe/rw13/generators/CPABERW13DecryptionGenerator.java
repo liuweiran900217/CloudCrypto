@@ -35,6 +35,7 @@ public class CPABERW13DecryptionGenerator implements PairingDecryptionGenerator,
         CPABERW13PublicKeySerParameter publicKeyParameter = (CPABERW13PublicKeySerParameter) this.parameter.getPublicKeyParameter();
         CPABERW13SecretKeySerParameter secretKeyParameter = (CPABERW13SecretKeySerParameter) this.parameter.getSecretKeyParameter();
         CPABERW13HeaderSerParameter ciphertextParameter = (CPABERW13HeaderSerParameter) this.parameter.getCiphertextParameter();
+
         AccessControlEngine accessControlEngine = this.parameter.getAccessControlEngine();
         Pairing pairing = PairingFactory.getPairing(publicKeyParameter.getParameters());
         try {

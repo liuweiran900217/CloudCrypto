@@ -24,6 +24,7 @@ public class CPABEHW14KeyPairGenerator extends CPABERW13KeyPairGenerator {
                 oriPublicKeyParameter.getH(),
                 oriPublicKeyParameter.getW(),
                 oriPublicKeyParameter.getV(),
+                oriPublicKeyParameter.getF(),
                 oriPublicKeyParameter.getEggAlpha()
         );
         CPABEHW14MasterSecretKeySerParameter masterSecretKeyParameter = new CPABEHW14MasterSecretKeySerParameter(

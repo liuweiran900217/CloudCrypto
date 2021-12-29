@@ -30,11 +30,14 @@ public class CPABERW13PublicKeySerParameter extends PairingKeySerParameter {
     private transient Element v;
     private final byte[] byteArrayV;
 
+    private transient Element f;
+    private final byte[] byteArrayF;
+
     private transient Element eggAlpha;
     private final byte[] byteArrayEggAlpha;
 
     public CPABERW13PublicKeySerParameter(
-            PairingParameters parameters, Element g, Element u, Element h, Element w, Element v, Element eggAlpha) {
+            PairingParameters parameters, Element g, Element u, Element h, Element w, Element v, Element f, Element eggAlpha) {
         super(false, parameters);
 
         this.g = g.getImmutable();
@@ -52,6 +55,8 @@ public class CPABERW13PublicKeySerParameter extends PairingKeySerParameter {
         this.v = w.getImmutable();
         this.byteArrayV = this.w.toBytes();
 
+        this.f = f.getImmutable();
+        this.byteArrayF = this.f.toBytes();
 
         this.eggAlpha = eggAlpha.getImmutable();
         this.byteArrayEggAlpha = this.eggAlpha.toBytes();
@@ -66,6 +71,8 @@ public class CPABERW13PublicKeySerParameter extends PairingKeySerParameter {
     public Element getW() { return this.w.duplicate(); }
 
     public Element getV() { return this.v.duplicate(); }
+
+    public Element getF() { return this.f.duplicate(); }
 
     public Element getEggAlpha() { return this.eggAlpha.duplicate(); }
 
@@ -111,6 +118,13 @@ public class CPABERW13PublicKeySerParameter extends PairingKeySerParameter {
             if (!Arrays.equals(this.byteArrayV, that.byteArrayV)) {
                 return false;
             }
+            //Compare f
+            if (!PairingUtils.isEqualElement(this.f, that.f)) {
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayF, that.byteArrayF)) {
+                return false;
+            }
             //Compare eggAlpha
             if (!PairingUtils.isEqualElement(this.eggAlpha, that.eggAlpha)) {
                 return false;
@@ -133,6 +147,7 @@ public class CPABERW13PublicKeySerParameter extends PairingKeySerParameter {
         this.h = pairing.getG1().newElementFromBytes(this.byteArrayH).getImmutable();
         this.w = pairing.getG1().newElementFromBytes(this.byteArrayW).getImmutable();
         this.v = pairing.getG1().newElementFromBytes(this.byteArrayV).getImmutable();
+        this.f = pairing.getG1().newElementFromBytes(this.byteArrayF).getImmutable();
         this.eggAlpha = pairing.getGT().newElementFromBytes(this.byteArrayEggAlpha).getImmutable();
     }
 }

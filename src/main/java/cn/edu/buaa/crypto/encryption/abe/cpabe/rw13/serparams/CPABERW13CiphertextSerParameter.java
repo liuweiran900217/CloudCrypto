@@ -19,8 +19,8 @@ public class CPABERW13CiphertextSerParameter extends CPABERW13HeaderSerParameter
     private final byte[] byteArrayC;
 
     public CPABERW13CiphertextSerParameter(PairingParameters pairingParameters, Element C, Element C0,
-            Map<String, Element> C1s, Map<String, Element> C2s, Map<String, Element> C3s) {
-        super(pairingParameters, C0, C1s, C2s, C3s);
+            Map<String, Element> C1s, Map<String, Element> C2s, Map<String, Element> C3s, Element C4) {
+        super(pairingParameters, C0, C1s, C2s, C3s, C4);
 
         this.C = C.getImmutable();
         this.byteArrayC = this.C.toBytes();

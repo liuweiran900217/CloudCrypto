@@ -30,8 +30,12 @@ public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
     protected transient Map<String, Element> C3s;
     private final byte[][] byteArraysC3s;
 
+    protected transient Element C4;
+    protected final byte[] byteArrayC4;
+
     public CPABERW13HeaderSerParameter(PairingParameters pairingParameters, Element C0,
-                                       Map<String, Element> C1s, Map<String, Element> C2s, Map<String, Element> C3s) {
+                                       Map<String, Element> C1s, Map<String, Element> C2s,
+                                       Map<String, Element> C3s, Element C4) {
         super(pairingParameters);
 
         this.rhos = C1s.keySet().toArray(new String[1]);
@@ -44,6 +48,9 @@ public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
         this.byteArraysC2s = new byte[this.rhos.length][];
         this.C3s = new HashMap<String, Element>();
         this.byteArraysC3s = new byte[this.rhos.length][];
+
+        this.C4 = C4.getImmutable();
+        this.byteArrayC4 = this.C4.toBytes();
 
         for (int i = 0; i < this.rhos.length; i++) {
             Element C1 = C1s.get(this.rhos[i]).duplicate().getImmutable();
@@ -73,6 +80,8 @@ public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
     public Map<String, Element> getC3s() { return this.C3s; }
 
     public Element getC3sAt(String rho) { return this.C3s.get(rho).duplicate(); }
+
+    public Element getC4() { return this.C4.duplicate(); }
 
     @Override
     public boolean equals(Object anObject) {
@@ -109,6 +118,13 @@ public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
             if (!PairingUtils.isEqualByteArrays(this.byteArraysC3s, that.byteArraysC3s)) {
                 return false;
             }
+            //Compare C4
+            if (!PairingUtils.isEqualElement(this.C4, that.C4)) {
+                return false;
+            }
+            if (!Arrays.equals(this.byteArrayC4, that.byteArrayC4)) {
+                return false;
+            }
             //Compare Pairing Parameters
             return this.getParameters().toString().equals(that.getParameters().toString());
         }
@@ -128,5 +144,6 @@ public class CPABERW13HeaderSerParameter extends PairingCipherSerParameter {
             this.C2s.put(this.rhos[i], pairing.getG1().newElementFromBytes(this.byteArraysC2s[i]).getImmutable());
             this.C3s.put(this.rhos[i], pairing.getG1().newElementFromBytes(this.byteArraysC3s[i]).getImmutable());
         }
+        this.C4 = pairing.getG1().newElementFromBytes(this.byteArrayC4).getImmutable();
     }
 }

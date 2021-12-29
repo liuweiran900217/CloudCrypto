@@ -10,8 +10,8 @@ import it.unisa.dia.gas.jpbc.PairingParameters;
  * Liu-Liu-Wu-16 CCA2-secure CP-ABE public key parameter.
  */
 public class CPABELLW16PublicKeySerParameter extends CPABEHW14PublicKeySerParameter {
-    public CPABELLW16PublicKeySerParameter(
-            PairingParameters parameters, Element g, Element u, Element h, Element w, Element v, Element eggAlpha) {
-        super(parameters, g, u, h, w, v, eggAlpha);
+    public CPABELLW16PublicKeySerParameter(PairingParameters parameters, Element g, Element u,
+                                           Element h, Element w, Element v, Element f, Element eggAlpha) {
+        super(parameters, g, u, h, w, v, f, eggAlpha);
     }
 }

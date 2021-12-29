@@ -76,6 +76,7 @@ public abstract class CPABEEngine extends Engine {
     public abstract PairingCipherSerParameter encryption(PairingKeySerParameter publicKey, int[][] accessPolicyIntArrays, String[] rhos, Element message);
 
     /**
+     * 通过公钥和访问策略生成一个随机会话密钥
      * Encapsulation Algorithm for CP-ABE
      * @param publicKey public key
      * @param accessPolicy associated access policy, given by string
@@ -130,6 +131,7 @@ public abstract class CPABEEngine extends Engine {
             throws InvalidCipherTextException;
 
     /**
+     * 通过公钥、属性密钥、策略、密文进行解封装：得到会话密钥
      * Decapsulation Algorithm for CP-ABE
      * @param publicKey public key
      * @param secretKey secret key associated with an attribute set

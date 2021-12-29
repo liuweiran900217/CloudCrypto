@@ -14,6 +14,7 @@ import cn.edu.buaa.crypto.chameleonhash.kr00b.dlog.DLogKR00bUniversalHasher;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.CPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.OOCPABEEngine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.bsw07.CPABEBSW07Engine;
+import cn.edu.buaa.crypto.encryption.abe.cpabe.genparams.CPABEReEncGenerationParameter;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.hw14.OOCPABEHW14Engine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.llw14.CPABELLW14Engine;
 import cn.edu.buaa.crypto.encryption.abe.cpabe.llw16.OOCPABELLW16Engine;
@@ -43,13 +44,16 @@ import java.util.Arrays;
  */
 public class CPABEEngineJUnitTest extends TestCase {
     private CPABEEngine engine;
+    private CPABERW13Engine rw13Engine = CPABERW13Engine.getInstance();
 
     private void try_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                          final String accessPolicyString, final String[] attributes) {
         try {
+            System.out.println("accessPolicyString:" + accessPolicyString);
+            System.out.println("attributes:" + Arrays.asList(attributes));
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
-            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy_ABPRE(pairing, publicKey, masterKey, accessPolicy, rhos, attributes, "gaga");
         } catch (Exception e) {
             System.out.println("Access policy satisfied test failed, " +
                     "access policy = " + accessPolicyString + ", " +
@@ -62,7 +66,7 @@ public class CPABEEngineJUnitTest extends TestCase {
     private void try_valid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                          final int[][] accessPolicy, final String[] rhos, final String[] attributes) {
         try {
-            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy_ABPRE(pairing, publicKey, masterKey, accessPolicy, rhos, attributes, "gaga");
         } catch (Exception e) {
             System.out.println("Access policy satisfied test failed, " +
                     "attributes = " + Arrays.toString(attributes));
@@ -76,7 +80,7 @@ public class CPABEEngineJUnitTest extends TestCase {
         try {
             int[][] accessPolicy = ParserUtils.GenerateAccessPolicy(accessPolicyString);
             String[] rhos = ParserUtils.GenerateRhos(accessPolicyString);
-            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy_ABPRE(pairing, publicKey, masterKey, accessPolicy, rhos, attributes, "gaga");
         } catch (InvalidCipherTextException e) {
             //correct, expected exception, nothing to do.
         } catch (Exception e) {
@@ -91,7 +95,7 @@ public class CPABEEngineJUnitTest extends TestCase {
     private void try_invalid_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                            final int[][] accessPolicy, final String[] rhos, final String[] attributes) {
         try {
-            try_access_policy(pairing, publicKey, masterKey, accessPolicy, rhos, attributes);
+            try_access_policy_ABPRE(pairing, publicKey, masterKey, accessPolicy, rhos, attributes,  "gaga");
         } catch (InvalidCipherTextException e) {
             //correct, expected exception, nothing to do.
         } catch (InvalidParameterException e) {
@@ -104,18 +108,89 @@ public class CPABEEngineJUnitTest extends TestCase {
         }
     }
 
+    private void try_access_policy_ABPRE(Pairing pairing, PairingKeySerParameter publicKey,
+                                         PairingKeySerParameter masterKey, final int[][] accessPolicy,
+                                         final String[] rhos, final String[] attributes, final String ID)
+            throws InvalidCipherTextException, IOException, ClassNotFoundException {
+        //KeyGen and serialization
+        PairingKeySerParameter secretKey = rw13Engine.keyGen(publicKey, masterKey, attributes);
+        // 将产生的私钥序列化
+        byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
+        CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
+        Assert.assertEquals(secretKey, anSecretKey);
+        // ？
+        secretKey = (PairingKeySerParameter)anSecretKey;
+
+        //IDKeyGen and serialization
+        PairingKeySerParameter IDSecretKey = rw13Engine.IDKeyGen(publicKey, masterKey, ID);
+        // 将产生的ID私钥序列化
+        byte[] byteArrayIDSecretKey = TestUtils.SerCipherParameter(IDSecretKey);
+        CipherParameters anIDSecretKey = TestUtils.deserCipherParameters(byteArrayIDSecretKey);
+        Assert.assertEquals(IDSecretKey, anIDSecretKey);
+        IDSecretKey = (PairingKeySerParameter)anIDSecretKey;
+
+        //Encryption and serialization
+        Element message = pairing.getGT().newRandomElement().getImmutable();
+        PairingCipherSerParameter ciphertext = rw13Engine.encryption(publicKey, accessPolicy, rhos, message);
+        byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
+        CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
+        Assert.assertEquals(ciphertext, anCiphertext);
+        ciphertext = (PairingCipherSerParameter)anCiphertext;
+
+        //reKeyGen and serialization
+        PairingKeySerParameter reEncKey = rw13Engine.reKeyGen(publicKey, secretKey, ID);
+        // 将产生的私钥序列化
+        byte[] byteArrayReEncKey = TestUtils.SerCipherParameter(reEncKey);
+        CipherParameters anReEncKey = TestUtils.deserCipherParameters(byteArrayReEncKey);
+        Assert.assertEquals(reEncKey, anReEncKey);
+        reEncKey = (PairingKeySerParameter)anReEncKey;
+
+        //Decryption
+        Element anMessage = rw13Engine.decryption(publicKey, secretKey, accessPolicy, rhos, ciphertext);
+        Assert.assertEquals(message, anMessage);
+
+
+        //reEncryption and serialization
+        PairingCipherSerParameter reEncCiphertext = rw13Engine
+                .reEncryption(publicKey, reEncKey, ciphertext, accessPolicy, rhos);
+        byte[] byteArrayReEncCiphertext = TestUtils.SerCipherParameter(reEncCiphertext);
+        CipherParameters anReEncCiphertext = TestUtils.deserCipherParameters(byteArrayReEncCiphertext);
+        Assert.assertEquals(reEncCiphertext, anReEncCiphertext);
+        reEncCiphertext = (PairingCipherSerParameter)anReEncCiphertext;
+
+        //reDecryption
+        Element anReDecMessage = rw13Engine.reDecryption(publicKey, IDSecretKey, reEncCiphertext);
+        Assert.assertEquals(message, anReDecMessage);
+
+        //Encapsulation and serialization
+        PairingKeyEncapsulationSerPair encapsulationPair = rw13Engine.encapsulation(publicKey, accessPolicy, rhos);
+        byte[] sessionKey = encapsulationPair.getSessionKey();
+        PairingCipherSerParameter header = encapsulationPair.getHeader();
+        byte[] byteArrayHeader = TestUtils.SerCipherParameter(header);
+        CipherParameters anHeader = TestUtils.deserCipherParameters(byteArrayHeader);
+        Assert.assertEquals(header, anHeader);
+        header = (PairingCipherSerParameter)anHeader;
+
+        //Decapsulation
+        byte[] anSessionKey = rw13Engine.decapsulation(publicKey, secretKey, accessPolicy, rhos, header);
+        Assert.assertArrayEquals(sessionKey, anSessionKey);
+    }
+
     private void try_access_policy(Pairing pairing, PairingKeySerParameter publicKey, PairingKeySerParameter masterKey,
                                    final int[][] accessPolicy, final String[] rhos, final String[] attributes)
             throws InvalidCipherTextException, IOException, ClassNotFoundException {
         //KeyGen and serialization
         PairingKeySerParameter secretKey = engine.keyGen(publicKey, masterKey, attributes);
+        // 将产生的私钥序列化
         byte[] byteArraySecretKey = TestUtils.SerCipherParameter(secretKey);
         CipherParameters anSecretKey = TestUtils.deserCipherParameters(byteArraySecretKey);
         Assert.assertEquals(secretKey, anSecretKey);
+        // ？
         secretKey = (PairingKeySerParameter)anSecretKey;
 
         //Encryption and serialization
         Element message = pairing.getGT().newRandomElement().getImmutable();
+        System.out.println("pt:" + message);
         PairingCipherSerParameter ciphertext = engine.encryption(publicKey, accessPolicy, rhos, message);
         byte[] byteArrayCiphertext = TestUtils.SerCipherParameter(ciphertext);
         CipherParameters anCiphertext = TestUtils.deserCipherParameters(byteArrayCiphertext);
@@ -124,6 +199,7 @@ public class CPABEEngineJUnitTest extends TestCase {
 
         //Decryption
         Element anMessage = engine.decryption(publicKey, secretKey, accessPolicy, rhos, ciphertext);
+        System.out.println("dec(ct)::" + anMessage);
         Assert.assertEquals(message, anMessage);
 
         //Encapsulation and serialization
@@ -401,6 +477,18 @@ public class CPABEEngineJUnitTest extends TestCase {
         runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
+    public void testCPAB_PRERW13Engine() {
+        this.engine = CPABERW13Engine.getInstance();
+        System.out.println("test rw13 CP-AB-PRE schemes:");
+        System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
+        engine.setAccessControlEngine(AccessTreeEngine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+
+        System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
+        engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
+        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+    }
+
     public void testCPABELLW14Engine() {
         this.engine = CPABELLW14Engine.getInstance();
         System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
@@ -429,20 +517,20 @@ public class CPABEEngineJUnitTest extends TestCase {
         runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
     }
 
-    public void testCPABELLW16Engine() {
-        this.engine = OOCPABELLW16Engine.getInstance();
-        System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
-        engine.setAccessControlEngine(AccessTreeEngine.getInstance());
-
-        ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bUniversalHasher(new SHA256Digest()), new SHA256Digest());
-        AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
-        KeyGenerationParameters keyGenerationParameters = new DLogKR00bKeyGenerationParameters(new SecureRandom(),
-                SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);
-        ((OOCPABELLW16Engine)this.engine).setChameleonHasher(chameleonHasher, chKeyPairGenerator, keyGenerationParameters);
-        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
-
-        System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
-        engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
-        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
-    }
+//    public void testCPABELLW16Engine() {
+//        this.engine = OOCPABELLW16Engine.getInstance();
+//        System.out.println("Test " + engine.getEngineName() + " using " + AccessTreeEngine.SCHEME_NAME);
+//        engine.setAccessControlEngine(AccessTreeEngine.getInstance());
+//
+//        ChameleonHasher chameleonHasher = new KR00bDigestHasher(new DLogKR00bUniversalHasher(new SHA256Digest()), new SHA256Digest());
+//        AsymmetricKeySerPairGenerator chKeyPairGenerator = new DLogKR00bKeyPairGenerator();
+//        KeyGenerationParameters keyGenerationParameters = new DLogKR00bKeyGenerationParameters(new SecureRandom(),
+//                SecurePrimeSerParameter.RFC3526_1536BIT_MODP_GROUP);
+//        ((OOCPABELLW16Engine)this.engine).setChameleonHasher(chameleonHasher, chKeyPairGenerator, keyGenerationParameters);
+//        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+//
+//        System.out.println("Test " + engine.getEngineName() + " using " + LSSSLW10Engine.SCHEME_NAME);
+//        engine.setAccessControlEngine(LSSSLW10Engine.getInstance());
+//        runAllTests(PairingFactory.getPairingParameters(TestUtils.TEST_PAIRING_PARAMETERS_PATH_a_80_256));
+//    }
 }

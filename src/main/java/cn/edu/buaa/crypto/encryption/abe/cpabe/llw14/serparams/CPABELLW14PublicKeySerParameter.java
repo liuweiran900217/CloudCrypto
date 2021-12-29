@@ -15,8 +15,8 @@ public class CPABELLW14PublicKeySerParameter extends CPABERW13PublicKeySerParame
 
     public CPABELLW14PublicKeySerParameter(
             PairingParameters parameters, AsymmetricKeySerParameter chameleonHashPublicKey,
-            Element g, Element u, Element h, Element w, Element v, Element eggAlpha) {
-        super(parameters, g, u, h, w, v, eggAlpha);
+            Element g, Element u, Element h, Element w, Element v, Element f, Element eggAlpha) {
+        super(parameters, g, u, h, w, v, f, eggAlpha);
         this.chameleonHashPublicKey = chameleonHashPublicKey;
     }
 

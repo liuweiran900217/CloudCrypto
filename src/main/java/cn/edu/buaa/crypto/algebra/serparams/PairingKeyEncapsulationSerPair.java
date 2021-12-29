@@ -4,7 +4,7 @@ import org.bouncycastle.crypto.CipherParameters;
 
 /**
  * Created by Weiran Liu on 15-9-30.
- *
+ * 通用的基于配对的密钥封装密文/会话密钥封装对
  * Generic pairing-based key encapsulation ciphertext / session key encapsulation pair.
  */
 public class PairingKeyEncapsulationSerPair implements CipherParameters {
